@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import InputField from './InputField';
 import ResultCard from './ResultCard';
@@ -310,20 +309,36 @@ const FilterOpexCalculator = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Column 1 & 2: Labels & Inputs */}
             <div className="md:col-span-2 space-y-4">
-              <InputField
-                label="Air Volume:"
-                value={airVolumeM3h}
-                onChange={handleAirVolumeM3hChange}
-                type="number"
-                placeholder="Enter value"
-                units="m³/h"
-                secondaryInput={{
-                  value: airVolumeACFM,
-                  onChange: handleAirVolumeACFMChange,
-                  units: "ACFM",
-                  label: "ACFM"
-                }}
-              />
+              <div className="flex items-center mb-4">
+                <div className="calculator-field-label">Air Volume:</div>
+                <div className="calculator-field-input flex items-center space-x-2">
+                  <div className="flex items-center">
+                    <input
+                      type="number"
+                      value={airVolumeM3h}
+                      onChange={(e) => handleAirVolumeM3hChange(e.target.value)}
+                      className="calculator-input rounded-r-none border-r-0 w-24 md:w-32"
+                      placeholder="Enter value"
+                    />
+                    <span className="inline-flex items-center px-3 py-2 text-sm text-gray-500 bg-gray-50 border border-gray-200 rounded-r-md">
+                      m³/h
+                    </span>
+                  </div>
+                  
+                  <div className="flex items-center">
+                    <input
+                      type="number"
+                      value={airVolumeACFM}
+                      onChange={(e) => handleAirVolumeACFMChange(e.target.value)}
+                      className="calculator-input rounded-r-none border-r-0 w-24 md:w-32"
+                      placeholder="Enter value"
+                    />
+                    <span className="inline-flex items-center px-3 py-2 text-sm text-gray-500 bg-gray-50 border border-gray-200 rounded-r-md">
+                      ACFM
+                    </span>
+                  </div>
+                </div>
+              </div>
               
               <InputField
                 label="TOTAL No. EMC Flaps:"
