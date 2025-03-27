@@ -39,33 +39,47 @@ interface OperationalParametersProps {
 const OperationalParameters: React.FC<OperationalParametersProps> = (props) => {
   return (
     <div className="space-y-6">
-      {/* New Filter Bag Lifetime Section */}
-      <div className="bg-blue-50/50 p-4 rounded-lg border border-blue-100">
-        <h3 className="text-lg font-medium text-blue-800 mb-4">Filter Bag Lifetime</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-2">
-            <Label htmlFor="currentLifeTime">Filter Bag Life time<br />Current Situation (Months):</Label>
-            <Input
-              id="currentLifeTime"
-              type="number"
-              value={props.currentLifeTime}
-              onChange={(e) => props.setCurrentLifeTime(Number(e.target.value))}
-              min={1}
-              max={60}
-              className="w-full"
-            />
+      {/* Filter Bag Lifetime Section - Updated Format */}
+      <div className="space-y-4 mb-6">
+        <h3 className="text-sm font-medium text-gray-700 border-b pb-2">Filter Bag Lifetime</h3>
+        
+        <div className="space-y-1">
+          <div className="text-sm font-medium text-gray-700">Filter Bag Life time</div>
+          <div className="text-sm text-gray-500">Current Situation:</div>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="flex items-center">
+              <input
+                type="number"
+                value={props.currentLifeTime}
+                onChange={(e) => props.setCurrentLifeTime(parseFloat(e.target.value) || 0)}
+                className="w-full min-w-0 rounded-l-md border border-gray-200 px-2 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                min={1}
+                max={60}
+              />
+              <span className="inline-flex items-center px-2 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md whitespace-nowrap">
+                Months
+              </span>
+            </div>
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="scheuchLifeTime">Filter Bag Life time<br />Scheuch EMC Technology (Months):</Label>
-            <Input
-              id="scheuchLifeTime"
-              type="number"
-              value={props.scheuchLifeTime}
-              onChange={(e) => props.setScheuchLifeTime(Number(e.target.value))}
-              min={1}
-              max={60}
-              className="w-full"
-            />
+        </div>
+        
+        <div className="space-y-1">
+          <div className="text-sm font-medium text-gray-700">Filter Bag Life time</div>
+          <div className="text-sm text-gray-500">Scheuch EMC Technology:</div>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="flex items-center">
+              <input
+                type="number"
+                value={props.scheuchLifeTime}
+                onChange={(e) => props.setScheuchLifeTime(parseFloat(e.target.value) || 0)}
+                className="w-full min-w-0 rounded-l-md border border-gray-200 px-2 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                min={1}
+                max={60}
+              />
+              <span className="inline-flex items-center px-2 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md whitespace-nowrap">
+                Months
+              </span>
+            </div>
           </div>
         </div>
       </div>
