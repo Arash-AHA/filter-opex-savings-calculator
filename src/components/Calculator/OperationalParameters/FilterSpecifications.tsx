@@ -166,7 +166,8 @@ const CleaningCycleParameters: React.FC<CleaningCycleParametersProps> = ({
   setAvgPulseInterval,
   numEMCFlaps
 }) => {
-  const totalNumEMCFlaps = numEMCFlaps * 5; // Total number of EMC flaps (5 per row)
+  // Use numEMCFlaps directly as the total number of EMC flaps
+  const totalNumEMCFlaps = numEMCFlaps; // Total number of EMC flaps from input
   
   // Calculate complete cycle time:
   // Each valve takes (pulse interval + fixed time) seconds
@@ -231,7 +232,8 @@ const LifetimeDisplay: React.FC<LifetimeDisplayProps> = ({
   currentLifeTime,
   scheuchLifeTime
 }) => {
-  const totalNumEMCFlaps = numEMCFlaps * 5; // Total number of EMC flaps (5 per row)
+  // Use numEMCFlaps directly as the total number of EMC flaps
+  const totalNumEMCFlaps = numEMCFlaps; // Total number of EMC flaps from input
   
   // Using the same formula as in CleaningCycleParameters
   const minCompleteCycle = totalNumEMCFlaps * (minPulseInterval + 3) / 60;
