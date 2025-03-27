@@ -1,3 +1,4 @@
+
 import React from 'react';
 import InputField from '../InputField';
 
@@ -36,8 +37,8 @@ const FilterSpecifications: React.FC<FilterSpecificationsProps> = ({
       
       <div className="mb-6">
         <div className="font-medium text-gray-700 mb-3">Filter Bag:</div>
-        <div className="space-y-2">
-          <label className="relative flex cursor-pointer rounded-lg border border-gray-200 bg-white p-3 shadow-sm focus:outline-none">
+        <div className="flex space-x-3">
+          <label className="relative flex-1 flex cursor-pointer rounded-lg border border-gray-200 bg-white p-3 shadow-sm focus:outline-none">
             <input 
               type="radio" 
               name="bagQuality" 
@@ -58,7 +59,7 @@ const FilterSpecifications: React.FC<FilterSpecificationsProps> = ({
             </span>
           </label>
           
-          <label className="relative flex cursor-pointer rounded-lg border border-gray-200 bg-white p-3 shadow-sm focus:outline-none">
+          <label className="relative flex-1 flex cursor-pointer rounded-lg border border-gray-200 bg-white p-3 shadow-sm focus:outline-none">
             <input 
               type="radio" 
               name="bagQuality" 
