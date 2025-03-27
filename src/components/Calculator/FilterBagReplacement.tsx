@@ -18,7 +18,7 @@ interface FilterBagReplacementProps {
   setTravelCost: (value: number) => void;
   bagReplacementCost: number;
   setBagReplacementCost: (value: number) => void;
-  calculateTravelCost: (daysToReplace: number) => void;
+  calculateTravelCost: () => void;
   formattedResults: any;
 }
 
@@ -93,7 +93,7 @@ const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
           type="number"
           min={0}
           estimateButton={{
-            onClick: () => calculateTravelCost(parseFloat(formattedResults.daysToReplace) || 0),
+            onClick: calculateTravelCost,
             label: "Estimate"
           }}
         />
