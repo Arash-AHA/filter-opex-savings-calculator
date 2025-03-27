@@ -265,53 +265,12 @@ const FilterOpexCalculator = () => {
           delay={100}
           className="bg-gradient-to-r from-blue-50 to-blue-100/30 border border-blue-100"
         >
-          <div className="mb-6">
-            <div className="font-medium text-gray-700 mb-2">Filter Design Type:</div>
-            <div className="flex gap-4 flex-wrap">
-              <label className="relative flex cursor-pointer rounded-lg border border-gray-200 p-4 shadow-sm focus:outline-none">
-                <input 
-                  type="radio" 
-                  name="designType" 
-                  value="bolt-weld" 
-                  checked={designType === 'bolt-weld'} 
-                  onChange={() => setDesignType('bolt-weld')}
-                  className="peer sr-only"
-                />
-                <span className="absolute top-0 right-0 block h-3 w-3">
-                  <span className={`absolute inline-flex h-full w-full animate-pulse rounded-full ${designType === 'bolt-weld' ? 'bg-primary/70' : 'bg-transparent'} opacity-75`}></span>
-                </span>
-                <span className="flex h-full flex-col">
-                  <span className="block text-sm font-semibold">Bolt/Weld Design</span>
-                  <span className="mt-1 flex items-center text-xs text-gray-500">Standard industrial configuration</span>
-                </span>
-              </label>
-              
-              <label className="relative flex cursor-pointer rounded-lg border border-gray-200 p-4 shadow-sm focus:outline-none">
-                <input 
-                  type="radio" 
-                  name="designType" 
-                  value="modular" 
-                  checked={designType === 'modular'} 
-                  onChange={() => setDesignType('modular')}
-                  className="peer sr-only"
-                />
-                <span className="absolute top-0 right-0 block h-3 w-3">
-                  <span className={`absolute inline-flex h-full w-full animate-pulse rounded-full ${designType === 'modular' ? 'bg-primary/70' : 'bg-transparent'} opacity-75`}></span>
-                </span>
-                <span className="flex h-full flex-col">
-                  <span className="block text-sm font-semibold">Modular Design</span>
-                  <span className="mt-1 flex items-center text-xs text-gray-500">Modern sectional design</span>
-                </span>
-              </label>
-            </div>
-          </div>
-          
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Column 1 & 2: Labels & Inputs */}
             <div className="md:col-span-2 space-y-4">
               <div className="flex items-center mb-4">
-                <div className="calculator-field-label w-32">Air Volume:</div>
-                <div className="calculator-field-input flex items-center space-x-2 ml-0">
+                <div className="calculator-field-label w-32 pr-4">Air Volume:</div>
+                <div className="calculator-field-input flex items-center space-x-4 ml-0">
                   <div className="flex items-center">
                     <input
                       type="number"
@@ -341,7 +300,7 @@ const FilterOpexCalculator = () => {
               </div>
               
               <div className="flex items-center">
-                <div className="calculator-field-label w-32">TOTAL No. EMC Flaps:</div>
+                <div className="calculator-field-label w-32 pr-4">TOTAL No. EMC Flaps:</div>
                 <div className="calculator-field-input ml-0">
                   <input
                     type="number"
@@ -355,7 +314,7 @@ const FilterOpexCalculator = () => {
               </div>
               
               <div className="flex items-center">
-                <div className="calculator-field-label w-32">No. Bags in a Row:</div>
+                <div className="calculator-field-label w-32 pr-4">No. Bags in a Row:</div>
                 <div className="calculator-field-input ml-0">
                   <select
                     value={bagsPerRow}
@@ -375,7 +334,7 @@ const FilterOpexCalculator = () => {
               </div>
               
               <div className="flex items-center">
-                <div className="calculator-field-label w-32">Bag Length:</div>
+                <div className="calculator-field-label w-32 pr-4">Bag Length:</div>
                 <div className="calculator-field-input ml-0">
                   <select
                     value={bagLength}
