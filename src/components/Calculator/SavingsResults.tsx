@@ -6,6 +6,10 @@ import ResultCard from './ResultCard';
 interface SavingsResultsProps {
   savingYears: number;
   setSavingYears: (value: number) => void;
+  daysPerYear: number;
+  setDaysPerYear: (value: number) => void;
+  hoursPerDay: number;
+  setHoursPerDay: (value: number) => void;
   workingHours: number;
   setWorkingHours: (value: number) => void;
   kwhCost: number;
@@ -31,6 +35,10 @@ interface SavingsResultsProps {
 const SavingsResults: React.FC<SavingsResultsProps> = ({
   savingYears,
   setSavingYears,
+  daysPerYear,
+  setDaysPerYear,
+  hoursPerDay,
+  setHoursPerDay,
   workingHours,
   setWorkingHours,
   kwhCost,
@@ -62,14 +70,37 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
             className="mb-6"
           />
           
-          <InputField
-            label="Working hours per year:"
-            value={workingHours}
-            onChange={(value) => setWorkingHours(parseInt(value) || 0)}
-            type="number"
-            min={1}
-            className="mb-6"
-          />
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Working hours per year:</label>
+            <div className="grid grid-cols-2 gap-3 mb-2">
+              <div>
+                <label className="block text-xs text-gray-600 mb-1">Days/Year:</label>
+                <InputField
+                  value={daysPerYear}
+                  onChange={(value) => setDaysPerYear(parseInt(value) || 0)}
+                  type="number"
+                  min={1}
+                  className="mb-0"
+                  labelClassName="hidden"
+                />
+              </div>
+              <div>
+                <label className="block text-xs text-gray-600 mb-1">Hours/Day:</label>
+                <InputField
+                  value={hoursPerDay}
+                  onChange={(value) => setHoursPerDay(parseInt(value) || 0)}
+                  type="number"
+                  min={1}
+                  className="mb-0"
+                  labelClassName="hidden"
+                />
+              </div>
+            </div>
+            <div className="flex items-center bg-gray-50 px-3 py-2 rounded-md border border-gray-200 text-sm">
+              <span className="font-medium mr-2">Total:</span>
+              <span>{workingHours} hours/year</span>
+            </div>
+          </div>
           
           <InputField
             label="USD per kWh for plant:"
