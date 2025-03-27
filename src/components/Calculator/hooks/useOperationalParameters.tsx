@@ -1,8 +1,9 @@
+
 import { useState } from 'react';
 
 export const useOperationalParameters = () => {
-  // Bag lifetimes that were missing in the previous code
-  const [currentLifeTime, setCurrentLifeTime] = useState(8); // Default value
+  // Bag lifetimes with updated default value for currentLifeTime
+  const [currentLifeTime, setCurrentLifeTime] = useState(48); // Updated default value from 8 to 48
   const [scheuchLifeTime, setScheuchLifeTime] = useState(18); // Default value
   
   // Operational parameters
