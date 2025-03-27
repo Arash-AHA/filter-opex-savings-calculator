@@ -1,3 +1,4 @@
+
 import React from 'react';
 import InputField from '../InputField';
 
@@ -225,35 +226,44 @@ const LifetimeDisplay: React.FC<LifetimeDisplayProps> = ({
   currentLifeTime,
   scheuchLifeTime
 }) => {
+  // Calculate min and avg complete cycle times
+  const minCompleteCycle = numEMCFlaps * (5 * minPulseInterval + 3) / 60;
+  const avgCompleteCycle = numEMCFlaps * (5 * avgPulseInterval + 3) / 60;
+  
+  // Display title based on bag quality and cleaning pressure
+  const displayTitle = cleaningPressure === '2-3-bar' && bagQuality === 'ptfe-membrane' 
+    ? "Filter Bag Life Time - EMC / PTFE-Membrane" 
+    : "Life Time - EMC";
+  
+  // Calculate minimum and average lifetimes
+  let minLifetime = "-";
+  let avgLifetime = "-";
+  
+  if (cleaningPressure === '2-3-bar') {
+    if (bagQuality === 'ptfe-membrane') {
+      // Formula for PTFE-Membrane with 2-3 bar
+      minLifetime = ((150000 * minCompleteCycle) / 60 / workingHours).toFixed(1) + " years";
+      avgLifetime = ((150000 * avgCompleteCycle) / 60 / workingHours).toFixed(1) + " years";
+    } else {
+      // Formula for needle-felt with 2-3 bar
+      minLifetime = ((300000 * minCompleteCycle) / 60 / workingHours).toFixed(1) + " years";
+      avgLifetime = ((450000 * avgCompleteCycle) / 60 / workingHours).toFixed(1) + " years";
+    }
+  }
+  
   return (
     <div className="mt-6">
       <div className="font-medium text-gray-700 mb-2">
-        Life Time - EMC
+        {displayTitle}
       </div>
       <div className="bg-white p-4 rounded-lg shadow-sm border border-amber-200">
         <div className="mb-2">
           <span className="font-medium text-sm">Minimum: </span>
-          <span className="text-sm">
-            {cleaningPressure === '2-3-bar' ? (
-              bagQuality === 'needle-felt' ? 
-                `${((300000 * ((numEMCFlaps * 5 * minPulseInterval) / 60) / workingHours) / 60).toFixed(1)} years` : 
-                `${((150000 * ((numEMCFlaps * 5 * minPulseInterval) / 60) / workingHours) / 60).toFixed(1)} years`
-            ) : (
-              "-"
-            )}
-          </span>
+          <span className="text-sm">{minLifetime}</span>
         </div>
         <div>
           <span className="font-medium text-sm">Average: </span>
-          <span className="text-sm">
-            {cleaningPressure === '2-3-bar' ? (
-              bagQuality === 'needle-felt' ? 
-                `${((450000 * ((numEMCFlaps * 5 * avgPulseInterval) / 60) / workingHours) / 60).toFixed(1)} years` : 
-                `${((250000 * ((numEMCFlaps * 5 * avgPulseInterval) / 60) / workingHours) / 60).toFixed(1)} years`
-            ) : (
-              "-"
-            )}
-          </span>
+          <span className="text-sm">{avgLifetime}</span>
         </div>
       </div>
     </div>
