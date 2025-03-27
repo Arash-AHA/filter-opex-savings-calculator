@@ -85,7 +85,6 @@ const OperationalParameters: React.FC<OperationalParametersProps> = ({
               </div>
               
               <div className="flex items-start ml-4">
-                <div className="text-sm text-gray-500 mt-1">Equivalent</div>
                 <div className="flex-1 ml-4">
                   <div className="flex items-center">
                     <input
@@ -122,7 +121,6 @@ const OperationalParameters: React.FC<OperationalParametersProps> = ({
               </div>
               
               <div className="flex items-start ml-4">
-                <div className="text-sm text-gray-500 mt-1">Equivalent</div>
                 <div className="flex-1 ml-4">
                   <div className="flex items-center">
                     <input
@@ -164,7 +162,6 @@ const OperationalParameters: React.FC<OperationalParametersProps> = ({
               </div>
               
               <div className="flex items-start ml-4">
-                <div className="text-sm text-gray-500 mt-1">Equivalent</div>
                 <div className="flex-1 ml-4">
                   <div className="flex items-center">
                     <input
@@ -201,7 +198,6 @@ const OperationalParameters: React.FC<OperationalParametersProps> = ({
               </div>
               
               <div className="flex items-start ml-4">
-                <div className="text-sm text-gray-500 mt-1">Equivalent</div>
                 <div className="flex-1 ml-4">
                   <div className="flex items-center">
                     <input
@@ -243,7 +239,6 @@ const OperationalParameters: React.FC<OperationalParametersProps> = ({
               </div>
               
               <div className="flex items-start ml-4">
-                <div className="text-sm text-gray-500 mt-1">Equivalent</div>
                 <div className="flex-1 ml-4">
                   <div className="flex items-center">
                     <input
@@ -280,7 +275,6 @@ const OperationalParameters: React.FC<OperationalParametersProps> = ({
               </div>
               
               <div className="flex items-start ml-4">
-                <div className="text-sm text-gray-500 mt-1">Equivalent</div>
                 <div className="flex-1 ml-4">
                   <div className="flex items-center">
                     <input
