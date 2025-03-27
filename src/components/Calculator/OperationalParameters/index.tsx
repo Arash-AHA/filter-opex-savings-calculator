@@ -38,54 +38,73 @@ interface OperationalParametersProps {
 const OperationalParameters: React.FC<OperationalParametersProps> = (props) => {
   return (
     <div className="space-y-6">
-      {/* Filter Bag Lifetime Section - Updated Format */}
-      <div className="space-y-4 mb-6">
-        <h3 className="text-sm font-medium text-gray-700 border-b pb-2">Filter Bag Lifetime</h3>
-        
-        <div className="space-y-1">
-          <div className="text-sm font-medium text-gray-700">Filter Bag Life time</div>
-          <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1">
-              <div className="text-sm text-gray-500">Current Situation:</div>
-              <div className="flex items-center">
-                <input
-                  type="number"
-                  value={props.currentLifeTime}
-                  onChange={(e) => props.setCurrentLifeTime(parseFloat(e.target.value) || 0)}
-                  className="w-full min-w-0 rounded-l-md border border-gray-200 px-2 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
-                  min={1}
-                  max={60}
-                />
-                <span className="inline-flex items-center px-2 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md whitespace-nowrap">
-                  Months
-                </span>
+      {/* Top Section with Filter Bag Lifetime and Filter Specifications side by side */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Filter Bag Lifetime Section */}
+        <div className="space-y-4">
+          <h3 className="text-sm font-medium text-gray-700 border-b pb-2">Filter Bag Lifetime</h3>
+          
+          <div className="space-y-1">
+            <div className="text-sm font-medium text-gray-700">Filter Bag Life time</div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
+                <div className="text-sm text-gray-500">Current Situation:</div>
+                <div className="flex items-center">
+                  <input
+                    type="number"
+                    value={props.currentLifeTime}
+                    onChange={(e) => props.setCurrentLifeTime(parseFloat(e.target.value) || 0)}
+                    className="w-full min-w-0 rounded-l-md border border-gray-200 px-2 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                    min={1}
+                    max={60}
+                  />
+                  <span className="inline-flex items-center px-2 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md whitespace-nowrap">
+                    Months
+                  </span>
+                </div>
               </div>
-            </div>
-            
-            <div className="space-y-1">
-              <div className="text-sm text-gray-500">Scheuch EMC Technology:</div>
-              <div className="flex items-center">
-                <input
-                  type="number"
-                  value={props.scheuchLifeTime}
-                  onChange={(e) => props.setScheuchLifeTime(parseFloat(e.target.value) || 0)}
-                  className="w-full min-w-0 rounded-l-md border border-gray-200 px-2 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
-                  min={1}
-                  max={60}
-                />
-                <span className="inline-flex items-center px-2 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md whitespace-nowrap">
-                  Months
-                </span>
+              
+              <div className="space-y-1">
+                <div className="text-sm text-gray-500">Scheuch EMC Technology:</div>
+                <div className="flex items-center">
+                  <input
+                    type="number"
+                    value={props.scheuchLifeTime}
+                    onChange={(e) => props.setScheuchLifeTime(parseFloat(e.target.value) || 0)}
+                    className="w-full min-w-0 rounded-l-md border border-gray-200 px-2 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                    min={1}
+                    max={60}
+                  />
+                  <span className="inline-flex items-center px-2 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md whitespace-nowrap">
+                    Months
+                  </span>
+                </div>
               </div>
             </div>
           </div>
         </div>
+        
+        {/* Filter Specifications Section */}
+        <FilterSpecifications 
+          bagQuality={props.bagQuality}
+          setBagQuality={props.setBagQuality}
+          cleaningPressure={props.cleaningPressure}
+          setCleaningPressure={props.setCleaningPressure}
+          minPulseInterval={props.minPulseInterval}
+          setMinPulseInterval={props.setMinPulseInterval}
+          avgPulseInterval={props.avgPulseInterval}
+          setAvgPulseInterval={props.setAvgPulseInterval}
+          numEMCFlaps={props.numEMCFlaps}
+          workingHours={props.workingHours}
+          currentLifeTime={props.currentLifeTime}
+          scheuchLifeTime={props.scheuchLifeTime}
+        />
       </div>
       
-      {/* Original Sections */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Column 1 & 2: Labels & Inputs */}
-        <div className="md:col-span-2">
+      {/* Other Parameters Sections */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Column 1 & 2: Operational Data */}
+        <div>
           <DifferentialPressureSection 
             currentDiffPressure={props.currentDiffPressure}
             setCurrentDiffPressure={props.setCurrentDiffPressure}
@@ -107,22 +126,6 @@ const OperationalParameters: React.FC<OperationalParametersProps> = (props) => {
             setScheuchMotorKW={props.setScheuchMotorKW}
           />
         </div>
-        
-        {/* Column 3: Parameters */}
-        <FilterSpecifications 
-          bagQuality={props.bagQuality}
-          setBagQuality={props.setBagQuality}
-          cleaningPressure={props.cleaningPressure}
-          setCleaningPressure={props.setCleaningPressure}
-          minPulseInterval={props.minPulseInterval}
-          setMinPulseInterval={props.setMinPulseInterval}
-          avgPulseInterval={props.avgPulseInterval}
-          setAvgPulseInterval={props.setAvgPulseInterval}
-          numEMCFlaps={props.numEMCFlaps}
-          workingHours={props.workingHours}
-          currentLifeTime={props.currentLifeTime}
-          scheuchLifeTime={props.scheuchLifeTime}
-        />
       </div>
     </div>
   );
