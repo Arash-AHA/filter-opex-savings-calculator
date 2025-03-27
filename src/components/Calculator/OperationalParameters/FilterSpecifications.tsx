@@ -1,4 +1,3 @@
-
 import React from 'react';
 import InputField from '../InputField';
 
@@ -198,13 +197,13 @@ const CleaningCycleParameters: React.FC<CleaningCycleParametersProps> = ({
       </div>
       
       <div className="mt-4 space-y-2">
-        <div className="bg-white p-3 rounded-lg shadow-sm border border-amber-100">
+        <div>
           <div className="text-xs text-gray-600 mb-1">Min. complete cycle:</div>
-          <div className="font-medium text-sm">5.0 min</div>
+          <div className="font-medium text-sm text-gray-800">5.0 min</div>
         </div>
-        <div className="bg-white p-3 rounded-lg shadow-sm border border-amber-100">
+        <div>
           <div className="text-xs text-gray-600 mb-1">Ave. complete cycle:</div>
-          <div className="font-medium text-sm">13.3 min</div>
+          <div className="font-medium text-sm text-gray-800">13.3 min</div>
         </div>
       </div>
     </div>
