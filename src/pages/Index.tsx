@@ -9,9 +9,6 @@ const Index = () => {
         <h1 className="text-4xl font-medium text-gray-900 mb-4">
           Filter OPEX Savings Calculator
         </h1>
-        <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-          Evaluate and optimize your filtration system's operational expenditure with our advanced calculator.
-        </p>
       </header>
       
       <FilterOpexCalculator />
