@@ -1,4 +1,3 @@
-
 import React from 'react';
 import InputField from '../InputField';
 
@@ -166,8 +165,9 @@ const CleaningCycleParameters: React.FC<CleaningCycleParametersProps> = ({
   setAvgPulseInterval,
   numEMCFlaps
 }) => {
-  const minCompleteCycle = numEMCFlaps * (5 * minPulseInterval + 3) / 60;
-  const avgCompleteCycle = numEMCFlaps * (5 * avgPulseInterval + 3) / 60;
+  const totalNumEMCFlaps = numEMCFlaps * 5; // Assuming 5 EMC flaps per row
+  const minCompleteCycle = totalNumEMCFlaps * (5 * minPulseInterval + 3) / 60;
+  const avgCompleteCycle = totalNumEMCFlaps * (5 * avgPulseInterval + 3) / 60;
 
   return (
     <div className="mb-4">
@@ -199,7 +199,7 @@ const CleaningCycleParameters: React.FC<CleaningCycleParametersProps> = ({
       </div>
       
       <div className="mt-4 text-base text-gray-800 font-semibold">
-        <span>Min. complete cycle: 6.0 min, Ave. complete cycle: 14.3 min</span>
+        <span>Min. complete cycle: {minCompleteCycle.toFixed(1)} min, Ave. complete cycle: {avgCompleteCycle.toFixed(1)} min</span>
       </div>
     </div>
   );
@@ -226,26 +226,23 @@ const LifetimeDisplay: React.FC<LifetimeDisplayProps> = ({
   currentLifeTime,
   scheuchLifeTime
 }) => {
-  // Calculate min and avg complete cycle times
-  const minCompleteCycle = numEMCFlaps * (5 * minPulseInterval + 3) / 60;
-  const avgCompleteCycle = numEMCFlaps * (5 * avgPulseInterval + 3) / 60;
+  const totalNumEMCFlaps = numEMCFlaps * 5; // Assuming 5 EMC flaps per row
   
-  // Display title based on bag quality and cleaning pressure
+  const minCompleteCycle = totalNumEMCFlaps * (5 * minPulseInterval + 3) / 60;
+  const avgCompleteCycle = totalNumEMCFlaps * (5 * avgPulseInterval + 3) / 60;
+  
   const displayTitle = cleaningPressure === '2-3-bar' && bagQuality === 'ptfe-membrane' 
     ? "Filter Bag Life Time - EMC / PTFE-Membrane" 
     : "Life Time - EMC";
   
-  // Calculate minimum and average lifetimes
   let minLifetime = "-";
   let avgLifetime = "-";
   
   if (cleaningPressure === '2-3-bar') {
     if (bagQuality === 'ptfe-membrane') {
-      // Formula for PTFE-Membrane with 2-3 bar
       minLifetime = ((150000 * minCompleteCycle) / 60 / workingHours).toFixed(1) + " years";
       avgLifetime = ((150000 * avgCompleteCycle) / 60 / workingHours).toFixed(1) + " years";
     } else {
-      // Formula for needle-felt with 2-3 bar
       minLifetime = ((300000 * minCompleteCycle) / 60 / workingHours).toFixed(1) + " years";
       avgLifetime = ((450000 * avgCompleteCycle) / 60 / workingHours).toFixed(1) + " years";
     }
