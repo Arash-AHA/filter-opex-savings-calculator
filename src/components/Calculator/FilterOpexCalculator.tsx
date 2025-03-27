@@ -79,9 +79,9 @@ const FilterOpexCalculator = () => {
           />
         </CalculatorSection>
         
-        {/* Savings with Filter Bags Life time Section */}
+        {/* Operational Parameters Section - Title Updated */}
         <CalculatorSection 
-          title="Filter Bags Lifetime & Operational Parameters" 
+          title="Operational Parameters" 
           delay={500}
           className="bg-gradient-to-r from-amber-50 to-amber-100/30 border border-amber-100"
         >
