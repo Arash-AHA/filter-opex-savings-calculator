@@ -310,8 +310,8 @@ const FilterOpexCalculator = () => {
             {/* Column 1 & 2: Labels & Inputs */}
             <div className="md:col-span-2 space-y-4">
               <div className="flex items-center mb-4">
-                <div className="calculator-field-label">Air Volume:</div>
-                <div className="calculator-field-input flex items-center space-x-2">
+                <div className="calculator-field-label w-32">Air Volume:</div>
+                <div className="calculator-field-input flex items-center space-x-2 ml-0">
                   <div className="flex items-center">
                     <input
                       type="number"
@@ -340,50 +340,64 @@ const FilterOpexCalculator = () => {
                 </div>
               </div>
               
-              <InputField
-                label="TOTAL No. EMC Flaps:"
-                value={numEMCFlaps}
-                onChange={(value) => setNumEMCFlaps(parseInt(value) || 0)}
-                type="number"
-                min={1}
-              />
+              <div className="flex items-center">
+                <div className="calculator-field-label w-32">TOTAL No. EMC Flaps:</div>
+                <div className="calculator-field-input ml-0">
+                  <input
+                    type="number"
+                    value={numEMCFlaps}
+                    onChange={(e) => setNumEMCFlaps(parseInt(e.target.value) || 0)}
+                    className="calculator-input w-24 md:w-32"
+                    min={1}
+                    placeholder="Enter value"
+                  />
+                </div>
+              </div>
               
-              <InputField
-                label="No. Bags in a Row:"
-                value={bagsPerRow}
-                onChange={(value) => setBagsPerRow(parseInt(value) || 0)}
-                type="select"
-                options={
-                  designType === 'bolt-weld'
-                    ? [
-                        { value: 15, label: '15' },
-                        { value: 18, label: '18' }
-                      ]
-                    : [
-                        { value: 15, label: '15' }
-                      ]
-                }
-              />
+              <div className="flex items-center">
+                <div className="calculator-field-label w-32">No. Bags in a Row:</div>
+                <div className="calculator-field-input ml-0">
+                  <select
+                    value={bagsPerRow}
+                    onChange={(e) => setBagsPerRow(parseInt(e.target.value))}
+                    className="calculator-input w-24 md:w-32"
+                  >
+                    {designType === 'bolt-weld' ? (
+                      <>
+                        <option value={15}>15</option>
+                        <option value={18}>18</option>
+                      </>
+                    ) : (
+                      <option value={15}>15</option>
+                    )}
+                  </select>
+                </div>
+              </div>
               
-              <InputField
-                label="Bag Length:"
-                value={bagLength}
-                onChange={(value) => setBagLength(parseInt(value) || 0)}
-                type="select"
-                options={
-                  designType === 'bolt-weld'
-                    ? [
-                        { value: 8, label: '8 m' },
-                        { value: 9, label: '9 m' },
-                        { value: 10, label: '10 m' }
-                      ]
-                    : [
-                        { value: 16, label: '16 ft' },
-                        { value: 24, label: '24 ft' },
-                        { value: 28, label: '28 ft' }
-                      ]
-                }
-              />
+              <div className="flex items-center">
+                <div className="calculator-field-label w-32">Bag Length:</div>
+                <div className="calculator-field-input ml-0">
+                  <select
+                    value={bagLength}
+                    onChange={(e) => setBagLength(parseInt(e.target.value))}
+                    className="calculator-input w-24 md:w-32"
+                  >
+                    {designType === 'bolt-weld' ? (
+                      <>
+                        <option value={8}>8 m</option>
+                        <option value={9}>9 m</option>
+                        <option value={10}>10 m</option>
+                      </>
+                    ) : (
+                      <>
+                        <option value={16}>16 ft</option>
+                        <option value={24}>24 ft</option>
+                        <option value={28}>28 ft</option>
+                      </>
+                    )}
+                  </select>
+                </div>
+              </div>
             </div>
             
             {/* Column 3: Results */}
