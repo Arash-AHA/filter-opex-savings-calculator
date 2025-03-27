@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback, useMemo } from 'react';
 
 export const useCalculatorState = () => {
@@ -42,14 +41,12 @@ export const useCalculatorState = () => {
   const [bagReplacementCost, setBagReplacementCost] = useState(0);
   
   // Operational parameters
-  const [currentLifeTime, setCurrentLifeTime] = useState(0);
-  const [scheuchLifeTime, setScheuchLifeTime] = useState(0);
-  const [currentDiffPressure, setCurrentDiffPressure] = useState(0);
-  const [scheuchDiffPressure, setScheuchDiffPressure] = useState(0);
-  const [currentAirConsumption, setCurrentAirConsumption] = useState(0);
-  const [scheuchAirConsumption, setScheuchAirConsumption] = useState(0);
-  const [currentMotorKW, setCurrentMotorKW] = useState(0);
-  const [scheuchMotorKW, setScheuchMotorKW] = useState(0);
+  const [currentDiffPressure, setCurrentDiffPressure] = useState(20);
+  const [scheuchDiffPressure, setScheuchDiffPressure] = useState(15);
+  const [currentAirConsumption, setCurrentAirConsumption] = useState(350);
+  const [scheuchAirConsumption, setScheuchAirConsumption] = useState(250);
+  const [currentMotorKW, setCurrentMotorKW] = useState(50);
+  const [scheuchMotorKW, setScheuchMotorKW] = useState(40);
   const [bagQuality, setBagQuality] = useState('needle-felt');
   const [cleaningPressure, setCleaningPressure] = useState('6-bar');
   const [minPulseInterval, setMinPulseInterval] = useState(0);
@@ -181,7 +178,7 @@ export const useCalculatorState = () => {
         filterArea: `${results.filterArea.toFixed(2)} m²`,
         netFilterArea: `${results.netFilterArea.toFixed(2)} m²`,
         acRatioGross: `${results.acRatioGross.toFixed(2)} m³/h/m²`,
-        acRatioNet: `${results.acRatioNet.toFixed(2)} m³/h/m²`,
+        acRatioNet: `${results.acRatioNet.toFixed(2)} m��/h/m²`,
         baselinePower: `${results.baselinePower.toFixed(2)} kW`,
         improvedPower: `${results.improvedPower.toFixed(2)} kW`,
         totalBags: results.totalBags,
@@ -280,10 +277,6 @@ export const useCalculatorState = () => {
     calculateTravelCost,
     
     // Operational parameters
-    currentLifeTime,
-    setCurrentLifeTime,
-    scheuchLifeTime,
-    setScheuchLifeTime,
     currentDiffPressure,
     setCurrentDiffPressure,
     scheuchDiffPressure,
