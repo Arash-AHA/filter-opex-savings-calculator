@@ -197,15 +197,9 @@ const CleaningCycleParameters: React.FC<CleaningCycleParametersProps> = ({
         </div>
       </div>
       
-      <div className="mt-4 flex justify-start items-center space-x-4">
-        <div className="flex items-center space-x-2">
-          <div className="text-xs text-gray-600">Min. complete cycle:</div>
-          <div className="font-medium text-sm text-gray-800">5.0 min</div>
-        </div>
-        <div className="flex items-center space-x-2">
-          <div className="text-xs text-gray-600">Ave. complete cycle:</div>
-          <div className="font-medium text-sm text-gray-800">13.3 min</div>
-        </div>
+      <div className="mt-4 text-xs text-gray-600">
+        <span className="font-medium">Cleaning cycle parameters: </span>
+        <span>Min. complete cycle: 5.0 min, Ave. complete cycle: 13.3 min</span>
       </div>
     </div>
   );
