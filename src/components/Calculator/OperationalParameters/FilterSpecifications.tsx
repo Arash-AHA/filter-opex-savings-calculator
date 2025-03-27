@@ -234,9 +234,7 @@ const LifetimeDisplay: React.FC<LifetimeDisplayProps> = ({
   return (
     <div className="mt-6">
       <div className="font-medium text-gray-700 mb-2">
-        {bagQuality === 'needle-felt' 
-          ? 'Life Time - EMC / Needlefelt' 
-          : 'Life Time - EMC / PTFE-Membrane'}
+        Life Time - EMC
       </div>
       <div className="bg-white p-4 rounded-lg shadow-sm border border-amber-200">
         <div className="mb-2">
