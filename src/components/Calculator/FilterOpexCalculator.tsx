@@ -70,7 +70,7 @@ const FilterOpexCalculator = () => {
             setTravelCost={calculatorState.setTravelCost}
             bagReplacementCost={calculatorState.bagReplacementCost}
             setBagReplacementCost={calculatorState.setBagReplacementCost}
-            calculateTravelCost={(daysToReplace) => calculatorState.calculateTravelCost(daysToReplace)}
+            calculateTravelCost={calculatorState.calculateTravelCost}
             formattedResults={calculatorState.formattedResults}
           />
         </CalculatorSection>
