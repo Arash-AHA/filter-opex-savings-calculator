@@ -1,4 +1,3 @@
-
 import { useCallback, useMemo } from 'react';
 
 export const useResultsCalculation = (
@@ -148,9 +147,7 @@ export const useResultsCalculation = (
                            (3600 * 1000 * 0.8)) * kwhCost * workingHours * savingYears);
     
     // Compressed Air Consumption
-    const airSavings = compressedAirCost 
-      ? (currentAirConsumption - scheuchAirConsumption) * parseFloat(compressedAirCost) * workingHours * savingYears
-      : (currentMotorKW - scheuchMotorKW) * kwhCost * workingHours * savingYears;
+    const airSavings = currentAirConsumption - scheuchAirConsumption;
     
     return {
       bagSavings,
@@ -161,8 +158,8 @@ export const useResultsCalculation = (
   }, [
     savingYears, currentLifeTime, scheuchLifeTime, results.totalBags, 
     bagPrice, travelCost, airVolumeM3h, currentDiffPressure, 
-    scheuchDiffPressure, kwhCost, workingHours, compressedAirCost, 
-    currentAirConsumption, scheuchAirConsumption, currentMotorKW, scheuchMotorKW
+    scheuchDiffPressure, kwhCost, workingHours,
+    currentAirConsumption, scheuchAirConsumption
   ]);
 
   return {
