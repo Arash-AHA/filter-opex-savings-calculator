@@ -106,19 +106,19 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
                 
                 <ResultCard
                   label="Saving in Differential Pressure"
-                  value={`${(currentDiffPressure - scheuchDiffPressure) * savingYears} mbar (${((currentDiffPressure - scheuchDiffPressure) / currentDiffPressure * 100).toFixed(0)}%)`}
+                  value={`${(currentDiffPressure - scheuchDiffPressure)} mbar (${((currentDiffPressure - scheuchDiffPressure) / currentDiffPressure * 100).toFixed(0)}%)`}
                   className="bg-transparent shadow-none border-0 p-0"
                 />
                 
                 <ResultCard
                   label="Saving in Compressed Air"
-                  value={`${(currentAirConsumption - scheuchAirConsumption) * savingYears} Nm³/h (${((currentAirConsumption - scheuchAirConsumption) / currentAirConsumption * 100).toFixed(0)}%)`}
+                  value={`${(currentAirConsumption - scheuchAirConsumption)} Nm³/h (${((currentAirConsumption - scheuchAirConsumption) / currentAirConsumption * 100).toFixed(0)}%)`}
                   className="bg-transparent shadow-none border-0 p-0"
                 />
                 
                 <ResultCard
                   label="Saving in Motor KW"
-                  value={`${(currentMotorKW - scheuchMotorKW) * savingYears} kW (${((currentMotorKW - scheuchMotorKW) / currentMotorKW * 100).toFixed(0)}%)`}
+                  value={`${(currentMotorKW - scheuchMotorKW)} kW (${((currentMotorKW - scheuchMotorKW) / currentMotorKW * 100).toFixed(0)}%)`}
                   className="bg-transparent shadow-none border-0 p-0"
                 />
               </div>
