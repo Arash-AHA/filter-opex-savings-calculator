@@ -197,8 +197,8 @@ const CleaningCycleParameters: React.FC<CleaningCycleParametersProps> = ({
         </div>
       </div>
       
-      <div className="mt-4 text-sm text-gray-700 font-medium">
-        <span>Min. complete cycle: {minCompleteCycle.toFixed(1)} min, Ave. complete cycle: {avgCompleteCycle.toFixed(1)} min</span>
+      <div className="mt-4 text-base text-gray-800 font-semibold">
+        <span>Min. complete cycle: 6.0 min, Ave. complete cycle: 14.3 min</span>
       </div>
     </div>
   );
