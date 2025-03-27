@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 
 export const useOperationalParameters = () => {
@@ -14,7 +13,7 @@ export const useOperationalParameters = () => {
   const [currentMotorKW, setCurrentMotorKW] = useState(50);
   const [scheuchMotorKW, setScheuchMotorKW] = useState(40);
   const [bagQuality, setBagQuality] = useState('needle-felt');
-  const [cleaningPressure, setCleaningPressure] = useState('6-bar');
+  const [cleaningPressure, setCleaningPressure] = useState('2-3-bar');
   const [minPulseInterval, setMinPulseInterval] = useState(3); // Updated default value
   const [avgPulseInterval, setAvgPulseInterval] = useState(8); // Updated default value
   
