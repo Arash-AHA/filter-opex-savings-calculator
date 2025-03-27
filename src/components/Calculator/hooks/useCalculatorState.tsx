@@ -32,12 +32,12 @@ export const useCalculatorState = () => {
     compressedAirSavings: 0
   });
   
-  // Filter bag replacement parameters
-  const [bagPrice, setBagPrice] = useState(0);
-  const [bagChangeTime, setBagChangeTime] = useState(0);
-  const [numPeople, setNumPeople] = useState(0);
-  const [hourlyRate, setHourlyRate] = useState(0);
-  const [siteDistance, setSiteDistance] = useState(0);
+  // Filter bag replacement parameters with default values from the image
+  const [bagPrice, setBagPrice] = useState(190); // Default from image
+  const [bagChangeTime, setBagChangeTime] = useState(15); // Default from image
+  const [numPeople, setNumPeople] = useState(4); // Default from image
+  const [hourlyRate, setHourlyRate] = useState(200); // Default from image
+  const [siteDistance, setSiteDistance] = useState(1700); // Default from image
   const [travelCost, setTravelCost] = useState(0);
   const [bagReplacementCost, setBagReplacementCost] = useState(0);
   

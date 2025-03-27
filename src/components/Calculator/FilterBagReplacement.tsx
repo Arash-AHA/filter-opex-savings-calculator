@@ -20,7 +20,6 @@ interface FilterBagReplacementProps {
   setBagReplacementCost: (value: number) => void;
   calculateTravelCost: () => void;
   formattedResults: any;
-  travelCost: number;
 }
 
 const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
