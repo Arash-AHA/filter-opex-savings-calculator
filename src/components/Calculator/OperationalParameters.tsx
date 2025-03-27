@@ -1,4 +1,3 @@
-
 import React from 'react';
 import InputField from './InputField';
 
@@ -63,36 +62,7 @@ const OperationalParameters: React.FC<OperationalParametersProps> = ({
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {/* Column 1 & 2: Labels & Inputs */}
       <div className="md:col-span-2">
-        <div className="space-y-4 mb-6">
-          <h3 className="text-sm font-medium text-gray-700 border-b pb-2">Bag Lifetime</h3>
-          
-          <InputField
-            label={
-              <div>
-                <div>Filter Bag Life time</div>
-                <div className="text-sm text-gray-500">Current Situation (Months):</div>
-              </div>
-            }
-            value={currentLifeTime}
-            onChange={(value) => setCurrentLifeTime(parseFloat(value) || 0)}
-            type="number"
-            min={1}
-          />
-          
-          <InputField
-            label={
-              <div>
-                <div>Filter Bag Life time</div>
-                <div className="text-sm text-gray-500">Scheuch EMC Technology (Months):</div>
-              </div>
-            }
-            value={scheuchLifeTime}
-            onChange={(value) => setScheuchLifeTime(parseFloat(value) || 0)}
-            type="number"
-            min={1}
-          />
-        </div>
-        
+        {/* Differential Pressure section */}
         <div className="space-y-4 mb-6">
           <h3 className="text-sm font-medium text-gray-700 border-b pb-2">Differential Pressure</h3>
           
@@ -107,12 +77,13 @@ const OperationalParameters: React.FC<OperationalParametersProps> = ({
             onChange={(value) => setCurrentDiffPressure(parseFloat(value) || 0)}
             type="number"
             min={0}
-            units="mbar"
             secondaryInput={{
               value: (currentDiffPressure * 0.4).toFixed(2),
               onChange: (value) => setCurrentDiffPressure(parseFloat(value) / 0.4 || 0),
               units: "Inches W.G.",
+              label: "Equivalent"
             }}
+            units="mbar"
           />
           
           <InputField
@@ -126,15 +97,17 @@ const OperationalParameters: React.FC<OperationalParametersProps> = ({
             onChange={(value) => setScheuchDiffPressure(parseFloat(value) || 0)}
             type="number"
             min={0}
-            units="mbar"
             secondaryInput={{
               value: (scheuchDiffPressure * 0.4).toFixed(2),
               onChange: (value) => setScheuchDiffPressure(parseFloat(value) / 0.4 || 0),
               units: "Inches W.G.",
+              label: "Equivalent"
             }}
+            units="mbar"
           />
         </div>
         
+        {/* Compressed Air Consumption section */}
         <div className="space-y-4 mb-6">
           <h3 className="text-sm font-medium text-gray-700 border-b pb-2">Compressed Air</h3>
           
@@ -149,12 +122,13 @@ const OperationalParameters: React.FC<OperationalParametersProps> = ({
             onChange={(value) => setCurrentAirConsumption(parseFloat(value) || 0)}
             type="number"
             min={0}
-            units="Nm³/h"
             secondaryInput={{
               value: (currentAirConsumption * 0.589).toFixed(1),
               onChange: (value) => setCurrentAirConsumption(parseFloat(value) / 0.589 || 0),
               units: "SCFM",
+              label: "Equivalent"
             }}
+            units="Nm³/h"
           />
           
           <InputField
@@ -168,15 +142,17 @@ const OperationalParameters: React.FC<OperationalParametersProps> = ({
             onChange={(value) => setScheuchAirConsumption(parseFloat(value) || 0)}
             type="number"
             min={0}
-            units="Nm³/h"
             secondaryInput={{
               value: (scheuchAirConsumption * 0.589).toFixed(1),
               onChange: (value) => setScheuchAirConsumption(parseFloat(value) / 0.589 || 0),
               units: "SCFM",
+              label: "Equivalent"
             }}
+            units="Nm³/h"
           />
         </div>
         
+        {/* Motor Power section */}
         <div className="space-y-4">
           <h3 className="text-sm font-medium text-gray-700 border-b pb-2">Motor Power</h3>
           
@@ -191,12 +167,13 @@ const OperationalParameters: React.FC<OperationalParametersProps> = ({
             onChange={(value) => setCurrentMotorKW(parseFloat(value) || 0)}
             type="number"
             min={0}
-            units="kW"
             secondaryInput={{
               value: (currentMotorKW * 1.34102).toFixed(1),
               onChange: (value) => setCurrentMotorKW(parseFloat(value) / 1.34102 || 0),
               units: "HP",
+              label: "Equivalent"
             }}
+            units="kW"
           />
           
           <InputField
@@ -210,12 +187,13 @@ const OperationalParameters: React.FC<OperationalParametersProps> = ({
             onChange={(value) => setScheuchMotorKW(parseFloat(value) || 0)}
             type="number"
             min={0}
-            units="kW"
             secondaryInput={{
               value: (scheuchMotorKW * 1.34102).toFixed(1),
               onChange: (value) => setScheuchMotorKW(parseFloat(value) / 1.34102 || 0),
               units: "HP",
+              label: "Equivalent"
             }}
+            units="kW"
           />
         </div>
       </div>
