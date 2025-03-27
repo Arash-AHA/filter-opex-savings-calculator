@@ -165,7 +165,8 @@ const CleaningCycleParameters: React.FC<CleaningCycleParametersProps> = ({
   setAvgPulseInterval,
   numEMCFlaps
 }) => {
-  const minCompleteCycle = numEMCFlaps * minPulseInterval / 60;
+  const minCompleteCycle = numEMCFlaps * (5 * minPulseInterval + 3) / 60;
+  const avgCompleteCycle = numEMCFlaps * (5 * avgPulseInterval + 3) / 60;
 
   return (
     <div className="mb-4">
@@ -197,7 +198,7 @@ const CleaningCycleParameters: React.FC<CleaningCycleParametersProps> = ({
       </div>
       
       <div className="mt-4 text-xs text-gray-600">
-        <span>Min. complete cycle: {minCompleteCycle.toFixed(1)} min</span>
+        <span>Min. complete cycle: {minCompleteCycle.toFixed(1)} min, Ave. complete cycle: {avgCompleteCycle.toFixed(1)} min</span>
       </div>
     </div>
   );
