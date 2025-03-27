@@ -1,3 +1,4 @@
+
 import React from 'react';
 import InputField from './InputField';
 import ResultCard from './ResultCard';
@@ -71,33 +72,33 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
           
           <div className="mb-6">
             <label className="block text-sm font-medium text-gray-700 mb-2">Working hours per year:</label>
-            <div className="flex items-center space-x-2">
-              <div className="flex items-center space-x-1">
-                <label className="text-xs text-gray-600">Days/Year:</label>
+            <div className="grid grid-cols-2 gap-3 mb-2">
+              <div>
+                <label className="block text-xs text-gray-600 mb-1">Days/Year:</label>
                 <InputField
                   value={daysPerYear}
                   onChange={(value) => setDaysPerYear(parseInt(value) || 0)}
                   type="number"
                   min={1}
-                  className="w-20"
+                  className="mb-0"
                   labelClassName="hidden"
                 />
               </div>
-              <div className="flex items-center space-x-1">
-                <label className="text-xs text-gray-600">Hours/Day:</label>
+              <div>
+                <label className="block text-xs text-gray-600 mb-1">Hours/Day:</label>
                 <InputField
                   value={hoursPerDay}
                   onChange={(value) => setHoursPerDay(parseInt(value) || 0)}
                   type="number"
                   min={1}
-                  className="w-20"
+                  className="mb-0"
                   labelClassName="hidden"
                 />
               </div>
-              <div className="flex items-center bg-gray-50 px-3 py-2 rounded-md border border-gray-200 text-sm">
-                <span className="font-medium mr-2">Total:</span>
-                <span>{workingHours} hours/year</span>
-              </div>
+            </div>
+            <div className="flex items-center bg-gray-50 px-3 py-2 rounded-md border border-gray-200 text-sm">
+              <span className="font-medium mr-2">Total:</span>
+              <span>{workingHours} hours/year</span>
             </div>
           </div>
           
