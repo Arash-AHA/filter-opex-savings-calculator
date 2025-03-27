@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import InputField from './InputField';
 import ResultCard from './ResultCard';
@@ -18,32 +17,6 @@ const FilterOpexCalculator = () => {
   const [numEMCFlaps, setNumEMCFlaps] = useState(20);
   const [bagsPerRow, setBagsPerRow] = useState(18);
   const [bagLength, setBagLength] = useState(10);
-  const [bagPrice, setBagPrice] = useState(190);
-  const [bagChangeTime, setBagChangeTime] = useState(15);
-  const [bagQuality, setBagQuality] = useState('needle-felt');
-  const [cleaningPressure, setCleaningPressure] = useState('6-bar');
-  const [cleaningCycle, setCleaningCycle] = useState('continuous');
-  const [minPulseInterval, setMinPulseInterval] = useState(5);
-  const [avgPulseInterval, setAvgPulseInterval] = useState(10);
-  const [minCycleTime, setMinCycleTime] = useState(100);
-  const [avgCycleTime, setAvgCycleTime] = useState(200);
-  const [numPeople, setNumPeople] = useState(4);
-  const [hourlyRate, setHourlyRate] = useState(200);
-  const [siteDistance, setSiteDistance] = useState(1700);
-  const [travelCost, setTravelCost] = useState(15000);
-  const [currentLifeTime, setCurrentLifeTime] = useState(24);
-  const [scheuchLifeTime, setScheuchLifeTime] = useState(48);
-  const [currentDiffPressure, setCurrentDiffPressure] = useState(15);
-  const [scheuchDiffPressure, setScheuchDiffPressure] = useState(10);
-  const [currentAirConsumption, setCurrentAirConsumption] = useState(75);
-  const [scheuchAirConsumption, setScheuchAirConsumption] = useState(40);
-  const [currentMotorKW, setCurrentMotorKW] = useState(22);
-  const [scheuchMotorKW, setScheuchMotorKW] = useState(15);
-  const [savingYears, setSavingYears] = useState(10);
-  const [workingHours, setWorkingHours] = useState(7920);
-  const [kwhCost, setKwhCost] = useState(0.25);
-  const [compressedAirCost, setCompressedAirCost] = useState('');
-  const [bagReplacementCost, setBagReplacementCost] = useState(75000);
   
   // State for calculated results
   const [results, setResults] = useState({
@@ -269,7 +242,7 @@ const FilterOpexCalculator = () => {
           <div className="mb-6">
             <div className="font-medium text-gray-700 mb-2">Filter Design Type:</div>
             <div className="flex gap-4 flex-wrap">
-              <label className="relative flex cursor-pointer rounded-lg border border-gray-200 p-4 shadow-sm focus:outline-none">
+              <label className="relative flex cursor-pointer items-center">
                 <input 
                   type="radio" 
                   name="designType" 
@@ -278,16 +251,13 @@ const FilterOpexCalculator = () => {
                   onChange={() => setDesignType('bolt-weld')}
                   className="peer sr-only"
                 />
-                <span className="absolute top-0 right-0 block h-3 w-3">
-                  <span className={`absolute inline-flex h-full w-full animate-pulse rounded-full ${designType === 'bolt-weld' ? 'bg-primary/70' : 'bg-transparent'} opacity-75`}></span>
+                <span className="flex h-5 w-5 items-center justify-center rounded-full border border-gray-300 bg-white">
+                  <span className={`h-3 w-3 rounded-full ${designType === 'bolt-weld' ? 'bg-primary' : 'bg-transparent'}`}></span>
                 </span>
-                <span className="flex h-full flex-col">
-                  <span className="block text-sm font-semibold">Bolt/Weld Design</span>
-                  <span className="mt-1 flex items-center text-xs text-gray-500">Standard industrial configuration</span>
-                </span>
+                <span className="ml-2 text-sm font-medium text-gray-800">Bolt/Weld Design</span>
               </label>
               
-              <label className="relative flex cursor-pointer rounded-lg border border-gray-200 p-4 shadow-sm focus:outline-none">
+              <label className="relative flex cursor-pointer items-center">
                 <input 
                   type="radio" 
                   name="designType" 
@@ -296,13 +266,10 @@ const FilterOpexCalculator = () => {
                   onChange={() => setDesignType('modular')}
                   className="peer sr-only"
                 />
-                <span className="absolute top-0 right-0 block h-3 w-3">
-                  <span className={`absolute inline-flex h-full w-full animate-pulse rounded-full ${designType === 'modular' ? 'bg-primary/70' : 'bg-transparent'} opacity-75`}></span>
+                <span className="flex h-5 w-5 items-center justify-center rounded-full border border-gray-300 bg-white">
+                  <span className={`h-3 w-3 rounded-full ${designType === 'modular' ? 'bg-primary' : 'bg-transparent'}`}></span>
                 </span>
-                <span className="flex h-full flex-col">
-                  <span className="block text-sm font-semibold">Modular Design</span>
-                  <span className="mt-1 flex items-center text-xs text-gray-500">Modern sectional design</span>
-                </span>
+                <span className="ml-2 text-sm font-medium text-gray-800">Modular Design</span>
               </label>
             </div>
           </div>
@@ -310,99 +277,131 @@ const FilterOpexCalculator = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Column 1 & 2: Labels & Inputs */}
             <div className="md:col-span-2 space-y-4">
-              <InputField
-                label="Air Volume:"
-                value={airVolumeM3h}
-                onChange={handleAirVolumeM3hChange}
-                type="number"
-                placeholder="Enter value"
-                units="m³/h"
-                secondaryInput={{
-                  value: airVolumeACFM,
-                  onChange: handleAirVolumeACFMChange,
-                  units: "ACFM",
-                  label: "ACFM"
-                }}
-              />
+              {/* Air Volume Input */}
+              <div className="flex items-center mb-4">
+                <div className="w-60 pr-4 calculator-field-label">
+                  <span>Air Volume:</span>
+                </div>
+                <div className="flex flex-1 space-x-2">
+                  <div className="w-1/2 relative">
+                    <input 
+                      type="text"
+                      value={airVolumeM3h}
+                      onChange={(e) => handleAirVolumeM3hChange(e.target.value)}
+                      placeholder="Enter value"
+                      className="calculator-input pr-12 w-full"
+                    />
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500">m³/h</span>
+                  </div>
+                  <div className="w-1/2 relative">
+                    <input 
+                      type="text"
+                      value={airVolumeACFM}
+                      onChange={(e) => handleAirVolumeACFMChange(e.target.value)}
+                      placeholder="Enter value"
+                      className="calculator-input pr-12 w-full"
+                    />
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500">ACFM</span>
+                  </div>
+                </div>
+              </div>
               
-              <InputField
-                label="TOTAL No. EMC Flaps:"
-                value={numEMCFlaps}
-                onChange={(value) => setNumEMCFlaps(parseInt(value) || 0)}
-                type="number"
-                min={1}
-              />
+              {/* EMC Flaps Input */}
+              <div className="flex items-center mb-4">
+                <div className="w-60 pr-4 calculator-field-label">
+                  <span>TOTAL No. EMC Flaps:</span>
+                </div>
+                <div className="flex-1">
+                  <input
+                    type="number"
+                    value={numEMCFlaps}
+                    onChange={(e) => setNumEMCFlaps(parseInt(e.target.value) || 0)}
+                    min={1}
+                    className="calculator-input w-full"
+                  />
+                </div>
+              </div>
               
-              <InputField
-                label="No. Bags in a Row:"
-                value={bagsPerRow}
-                onChange={(value) => setBagsPerRow(parseInt(value) || 0)}
-                type="select"
-                options={
-                  designType === 'bolt-weld'
-                    ? [
-                        { value: 15, label: '15' },
-                        { value: 18, label: '18' }
-                      ]
-                    : [
-                        { value: 15, label: '15' }
-                      ]
-                }
-              />
+              {/* Bags Per Row */}
+              <div className="flex items-center mb-4">
+                <div className="w-60 pr-4 calculator-field-label">
+                  <span>No. Bags in a Row:</span>
+                </div>
+                <div className="flex-1">
+                  <select
+                    value={bagsPerRow}
+                    onChange={(e) => setBagsPerRow(parseInt(e.target.value) || 0)}
+                    className="calculator-input w-full"
+                  >
+                    {designType === 'bolt-weld' ? (
+                      <>
+                        <option value={15}>15</option>
+                        <option value={18}>18</option>
+                      </>
+                    ) : (
+                      <option value={15}>15</option>
+                    )}
+                  </select>
+                </div>
+              </div>
               
-              <InputField
-                label="Bag Length:"
-                value={bagLength}
-                onChange={(value) => setBagLength(parseInt(value) || 0)}
-                type="select"
-                options={
-                  designType === 'bolt-weld'
-                    ? [
-                        { value: 8, label: '8 m' },
-                        { value: 9, label: '9 m' },
-                        { value: 10, label: '10 m' }
-                      ]
-                    : [
-                        { value: 16, label: '16 ft' },
-                        { value: 24, label: '24 ft' },
-                        { value: 28, label: '28 ft' }
-                      ]
-                }
-              />
+              {/* Bag Length */}
+              <div className="flex items-center mb-4">
+                <div className="w-60 pr-4 calculator-field-label">
+                  <span>Bag Length:</span>
+                </div>
+                <div className="flex-1">
+                  <select
+                    value={bagLength}
+                    onChange={(e) => setBagLength(parseInt(e.target.value) || 0)}
+                    className="calculator-input w-full"
+                  >
+                    {designType === 'bolt-weld' ? (
+                      <>
+                        <option value={8}>8 m</option>
+                        <option value={9}>9 m</option>
+                        <option value={10}>10 m</option>
+                      </>
+                    ) : (
+                      <>
+                        <option value={16}>16 ft</option>
+                        <option value={24}>24 ft</option>
+                        <option value={28}>28 ft</option>
+                      </>
+                    )}
+                  </select>
+                </div>
+              </div>
             </div>
             
             {/* Column 3: Results */}
-            <div className="bg-white rounded-xl shadow-soft p-5 border border-gray-100 md:mt-0 mt-4">
-              <h3 className="text-sm font-medium text-gray-700 mb-4 border-b pb-2">Design Parameters</h3>
+            <div className="bg-blue-50/80 rounded-xl shadow-sm p-5 border border-blue-100 md:mt-0 mt-4">
+              <h3 className="text-base font-medium text-center text-gray-700 mb-4 border-b pb-2">Design Parameters</h3>
               
-              <div className="space-y-4 animate-stagger">
-                <ResultCard
-                  label="Total Filtration Area"
-                  value={formattedResults.filterArea}
-                  subValue={`(${(results.filterArea * m2ToSqFtFactor).toFixed(2)} sq ft)`}
-                  delay={100}
-                />
+              <div className="space-y-3 text-right">
+                <div>
+                  <div className="text-sm text-gray-600">Total Filtration Area</div>
+                  <div className="text-lg font-semibold">{formattedResults.filterArea}</div>
+                  <div className="text-xs text-gray-500">({(results.filterArea * m2ToSqFtFactor).toFixed(2)} sq ft)</div>
+                </div>
                 
-                <ResultCard
-                  label="Net Area (EMC cleaning)"
-                  value={formattedResults.netFilterArea}
-                  subValue={`(${(results.netFilterArea * m2ToSqFtFactor).toFixed(2)} sq ft)`}
-                  delay={200}
-                />
+                <div>
+                  <div className="text-sm text-gray-600">Net Area (EMC cleaning)</div>
+                  <div className="text-lg font-semibold">{formattedResults.netFilterArea}</div>
+                  <div className="text-xs text-gray-500">({(results.netFilterArea * m2ToSqFtFactor).toFixed(2)} sq ft)</div>
+                </div>
                 
-                <ResultCard
-                  label="A/C Ratio Gross"
-                  value={formattedResults.acRatioGross}
-                  subValue={`(${(results.acRatioGross / m2ToSqFtFactor * conversionFactor).toFixed(2)} cfm/sq ft)`}
-                  delay={300}
-                />
+                <div>
+                  <div className="text-sm text-gray-600">A/C Ratio Gross</div>
+                  <div className="text-lg font-semibold">{formattedResults.acRatioGross}</div>
+                  <div className="text-xs text-gray-500">({(results.acRatioGross / m2ToSqFtFactor * conversionFactor).toFixed(2)} cfm/sq ft)</div>
+                </div>
                 
-                <ResultCard
-                  label="A/C Ratio Net"
-                  value={formattedResults.acRatioNet}
-                  subValue={`(${(results.acRatioNet / m2ToSqFtFactor * conversionFactor).toFixed(2)} cfm/sq ft)`}
-                  delay={400}
-                />
+                <div>
+                  <div className="text-sm text-gray-600">A/C Ratio Net</div>
+                  <div className="text-lg font-semibold">{formattedResults.acRatioNet}</div>
+                  <div className="text-xs text-gray-500">({(results.acRatioNet / m2ToSqFtFactor * conversionFactor).toFixed(2)} cfm/sq ft)</div>
+                </div>
               </div>
             </div>
           </div>
