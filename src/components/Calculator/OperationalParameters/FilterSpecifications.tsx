@@ -1,4 +1,3 @@
-
 import React from 'react';
 import InputField from '../InputField';
 
@@ -166,6 +165,8 @@ const CleaningCycleParameters: React.FC<CleaningCycleParametersProps> = ({
   setAvgPulseInterval,
   numEMCFlaps
 }) => {
+  const minCompleteCycle = numEMCFlaps * minPulseInterval / 60;
+
   return (
     <div className="mb-4">
       <div className="grid grid-cols-2 gap-3 mb-2">
@@ -196,7 +197,7 @@ const CleaningCycleParameters: React.FC<CleaningCycleParametersProps> = ({
       </div>
       
       <div className="mt-4 text-xs text-gray-600">
-        <span>Min. complete cycle: 5.0 min, Ave. complete cycle: 13.3 min</span>
+        <span>Min. complete cycle: {minCompleteCycle.toFixed(1)} min</span>
       </div>
     </div>
   );
