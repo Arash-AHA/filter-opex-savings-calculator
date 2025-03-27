@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 
 export const useOperationalParameters = () => {
@@ -12,7 +13,7 @@ export const useOperationalParameters = () => {
   const [scheuchAirConsumption, setScheuchAirConsumption] = useState(250);
   const [currentMotorKW, setCurrentMotorKW] = useState(50);
   const [scheuchMotorKW, setScheuchMotorKW] = useState(40);
-  const [bagQuality, setBagQuality] = useState('needle-felt');
+  const [bagQuality, setBagQuality] = useState('ptfe-membrane'); // Updated default to ptfe-membrane instead of needle-felt
   const [cleaningPressure, setCleaningPressure] = useState('2-3-bar'); // Updated default value
   const [minPulseInterval, setMinPulseInterval] = useState(3); // Updated default value
   const [avgPulseInterval, setAvgPulseInterval] = useState(8); // Updated default value
