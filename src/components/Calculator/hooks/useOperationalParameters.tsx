@@ -2,8 +2,8 @@ import { useState } from 'react';
 
 export const useOperationalParameters = () => {
   // Bag lifetimes with updated default values
-  const [currentLifeTime, setCurrentLifeTime] = useState(48); // Current Situation default
-  const [scheuchLifeTime, setScheuchLifeTime] = useState(48); // Scheuch EMC Technology default updated
+  const [currentLifeTime, setCurrentLifeTime] = useState(24); // Current Situation default updated to 24
+  const [scheuchLifeTime, setScheuchLifeTime] = useState(48); // Scheuch EMC Technology default
 
   // Operational parameters
   const [currentDiffPressure, setCurrentDiffPressure] = useState(20);
