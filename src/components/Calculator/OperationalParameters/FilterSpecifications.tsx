@@ -1,4 +1,3 @@
-
 import React from 'react';
 import InputField from '../InputField';
 
@@ -166,14 +165,10 @@ const CleaningCycleParameters: React.FC<CleaningCycleParametersProps> = ({
   setAvgPulseInterval,
   numEMCFlaps
 }) => {
-  // Use numEMCFlaps directly as the total number of EMC flaps
   const totalNumEMCFlaps = numEMCFlaps; // Total number of EMC flaps from input
   
-  // Calculate complete cycle time:
-  // Each valve takes (pulse interval + fixed time) seconds
-  // Total time = number of valves * time per valve, then convert to minutes
-  const minCompleteCycle = totalNumEMCFlaps * (minPulseInterval + 3) / 60;
-  const avgCompleteCycle = totalNumEMCFlaps * (avgPulseInterval + 3) / 60;
+  const minCompleteCycle = totalNumEMCFlaps * (5 * minPulseInterval + 3) / 60;
+  const avgCompleteCycle = totalNumEMCFlaps * (5 * avgPulseInterval + 3) / 60;
 
   return (
     <div className="mb-4">
@@ -232,12 +227,10 @@ const LifetimeDisplay: React.FC<LifetimeDisplayProps> = ({
   currentLifeTime,
   scheuchLifeTime
 }) => {
-  // Use numEMCFlaps directly as the total number of EMC flaps
   const totalNumEMCFlaps = numEMCFlaps; // Total number of EMC flaps from input
   
-  // Using the same formula as in CleaningCycleParameters
-  const minCompleteCycle = totalNumEMCFlaps * (minPulseInterval + 3) / 60;
-  const avgCompleteCycle = totalNumEMCFlaps * (avgPulseInterval + 3) / 60;
+  const minCompleteCycle = totalNumEMCFlaps * (5 * minPulseInterval + 3) / 60;
+  const avgCompleteCycle = totalNumEMCFlaps * (5 * avgPulseInterval + 3) / 60;
   
   const displayTitle = cleaningPressure === '2-3-bar' && bagQuality === 'ptfe-membrane' 
     ? "Filter Bag Life Time - EMC / PTFE-Membrane" 
