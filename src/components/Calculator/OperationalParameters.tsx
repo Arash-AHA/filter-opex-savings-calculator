@@ -1,3 +1,4 @@
+
 import React from 'react';
 import InputField from './InputField';
 
@@ -75,10 +76,10 @@ const OperationalParameters: React.FC<OperationalParametersProps> = ({
                   type="number"
                   value={currentDiffPressure}
                   onChange={(e) => setCurrentDiffPressure(parseFloat(e.target.value) || 0)}
-                  className="w-full rounded-l-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="w-full min-w-0 rounded-l-md border border-gray-200 px-2 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
                   min={0}
                 />
-                <span className="inline-flex items-center px-3 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md">
+                <span className="inline-flex items-center px-2 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md whitespace-nowrap">
                   mbar
                 </span>
               </div>
@@ -87,11 +88,11 @@ const OperationalParameters: React.FC<OperationalParametersProps> = ({
                   type="text"
                   value={(currentDiffPressure * 0.4).toFixed(2)}
                   onChange={(e) => setCurrentDiffPressure(parseFloat(e.target.value) / 0.4 || 0)}
-                  className="w-full rounded-l-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="w-full min-w-0 rounded-l-md border border-gray-200 px-2 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
                   min={0}
                 />
-                <span className="inline-flex items-center px-3 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md">
-                  Inches W.G.
+                <span className="inline-flex items-center px-2 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md whitespace-nowrap">
+                  Inches&nbsp;W.G.
                 </span>
               </div>
             </div>
@@ -106,10 +107,10 @@ const OperationalParameters: React.FC<OperationalParametersProps> = ({
                   type="number"
                   value={scheuchDiffPressure}
                   onChange={(e) => setScheuchDiffPressure(parseFloat(e.target.value) || 0)}
-                  className="w-full rounded-l-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="w-full min-w-0 rounded-l-md border border-gray-200 px-2 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
                   min={0}
                 />
-                <span className="inline-flex items-center px-3 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md">
+                <span className="inline-flex items-center px-2 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md whitespace-nowrap">
                   mbar
                 </span>
               </div>
@@ -118,11 +119,11 @@ const OperationalParameters: React.FC<OperationalParametersProps> = ({
                   type="text"
                   value={(scheuchDiffPressure * 0.4).toFixed(2)}
                   onChange={(e) => setScheuchDiffPressure(parseFloat(e.target.value) / 0.4 || 0)}
-                  className="w-full rounded-l-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="w-full min-w-0 rounded-l-md border border-gray-200 px-2 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
                   min={0}
                 />
-                <span className="inline-flex items-center px-3 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md">
-                  Inches W.G.
+                <span className="inline-flex items-center px-2 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md whitespace-nowrap">
+                  Inches&nbsp;W.G.
                 </span>
               </div>
             </div>
@@ -142,10 +143,10 @@ const OperationalParameters: React.FC<OperationalParametersProps> = ({
                   type="number"
                   value={currentAirConsumption}
                   onChange={(e) => setCurrentAirConsumption(parseFloat(e.target.value) || 0)}
-                  className="w-full rounded-l-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="w-full min-w-0 rounded-l-md border border-gray-200 px-2 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
                   min={0}
                 />
-                <span className="inline-flex items-center px-3 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md">
+                <span className="inline-flex items-center px-2 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md whitespace-nowrap">
                   Nm³/h
                 </span>
               </div>
@@ -154,10 +155,10 @@ const OperationalParameters: React.FC<OperationalParametersProps> = ({
                   type="text"
                   value={(currentAirConsumption * 0.589).toFixed(1)}
                   onChange={(e) => setCurrentAirConsumption(parseFloat(e.target.value) / 0.589 || 0)}
-                  className="w-full rounded-l-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="w-full min-w-0 rounded-l-md border border-gray-200 px-2 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
                   min={0}
                 />
-                <span className="inline-flex items-center px-3 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md">
+                <span className="inline-flex items-center px-2 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md whitespace-nowrap">
                   SCFM
                 </span>
               </div>
@@ -173,10 +174,10 @@ const OperationalParameters: React.FC<OperationalParametersProps> = ({
                   type="number"
                   value={scheuchAirConsumption}
                   onChange={(e) => setScheuchAirConsumption(parseFloat(e.target.value) || 0)}
-                  className="w-full rounded-l-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="w-full min-w-0 rounded-l-md border border-gray-200 px-2 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
                   min={0}
                 />
-                <span className="inline-flex items-center px-3 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md">
+                <span className="inline-flex items-center px-2 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md whitespace-nowrap">
                   Nm³/h
                 </span>
               </div>
@@ -185,10 +186,10 @@ const OperationalParameters: React.FC<OperationalParametersProps> = ({
                   type="text"
                   value={(scheuchAirConsumption * 0.589).toFixed(1)}
                   onChange={(e) => setScheuchAirConsumption(parseFloat(e.target.value) / 0.589 || 0)}
-                  className="w-full rounded-l-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="w-full min-w-0 rounded-l-md border border-gray-200 px-2 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
                   min={0}
                 />
-                <span className="inline-flex items-center px-3 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md">
+                <span className="inline-flex items-center px-2 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md whitespace-nowrap">
                   SCFM
                 </span>
               </div>
@@ -209,10 +210,10 @@ const OperationalParameters: React.FC<OperationalParametersProps> = ({
                   type="number"
                   value={currentMotorKW}
                   onChange={(e) => setCurrentMotorKW(parseFloat(e.target.value) || 0)}
-                  className="w-full rounded-l-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="w-full min-w-0 rounded-l-md border border-gray-200 px-2 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
                   min={0}
                 />
-                <span className="inline-flex items-center px-3 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md">
+                <span className="inline-flex items-center px-2 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md whitespace-nowrap">
                   kW
                 </span>
               </div>
@@ -221,10 +222,10 @@ const OperationalParameters: React.FC<OperationalParametersProps> = ({
                   type="text"
                   value={(currentMotorKW * 1.34102).toFixed(1)}
                   onChange={(e) => setCurrentMotorKW(parseFloat(e.target.value) / 1.34102 || 0)}
-                  className="w-full rounded-l-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="w-full min-w-0 rounded-l-md border border-gray-200 px-2 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
                   min={0}
                 />
-                <span className="inline-flex items-center px-3 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md">
+                <span className="inline-flex items-center px-2 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md whitespace-nowrap">
                   HP
                 </span>
               </div>
@@ -240,10 +241,10 @@ const OperationalParameters: React.FC<OperationalParametersProps> = ({
                   type="number"
                   value={scheuchMotorKW}
                   onChange={(e) => setScheuchMotorKW(parseFloat(e.target.value) || 0)}
-                  className="w-full rounded-l-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="w-full min-w-0 rounded-l-md border border-gray-200 px-2 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
                   min={0}
                 />
-                <span className="inline-flex items-center px-3 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md">
+                <span className="inline-flex items-center px-2 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md whitespace-nowrap">
                   kW
                 </span>
               </div>
@@ -252,10 +253,10 @@ const OperationalParameters: React.FC<OperationalParametersProps> = ({
                   type="text"
                   value={(scheuchMotorKW * 1.34102).toFixed(1)}
                   onChange={(e) => setScheuchMotorKW(parseFloat(e.target.value) / 1.34102 || 0)}
-                  className="w-full rounded-l-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="w-full min-w-0 rounded-l-md border border-gray-200 px-2 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
                   min={0}
                 />
-                <span className="inline-flex items-center px-3 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md">
+                <span className="inline-flex items-center px-2 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md whitespace-nowrap">
                   HP
                 </span>
               </div>
