@@ -1,3 +1,4 @@
+
 import React from 'react';
 import InputField from './InputField';
 
@@ -66,135 +67,237 @@ const OperationalParameters: React.FC<OperationalParametersProps> = ({
         <div className="space-y-4 mb-6">
           <h3 className="text-sm font-medium text-gray-700 border-b pb-2">Differential Pressure</h3>
           
-          <InputField
-            label={
-              <div>
-                <div>Filter Differential Pressure</div>
-                <div className="text-sm text-gray-500">Current Situation:</div>
+          <div className="space-y-1">
+            <div className="text-sm font-medium text-gray-700">Filter Differential Pressure</div>
+            <div className="text-sm text-gray-500">Current Situation:</div>
+            <div className="grid grid-cols-1 gap-1">
+              <div className="flex items-center">
+                <input
+                  type="number"
+                  value={currentDiffPressure}
+                  onChange={(e) => setCurrentDiffPressure(parseFloat(e.target.value) || 0)}
+                  className="flex-1 rounded-l-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                  min={0}
+                />
+                <span className="inline-flex items-center px-3 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md">
+                  mbar
+                </span>
               </div>
-            }
-            value={currentDiffPressure}
-            onChange={(value) => setCurrentDiffPressure(parseFloat(value) || 0)}
-            type="number"
-            min={0}
-            secondaryInput={{
-              value: (currentDiffPressure * 0.4).toFixed(2),
-              onChange: (value) => setCurrentDiffPressure(parseFloat(value) / 0.4 || 0),
-              units: "Inches W.G.",
-              label: "Equivalent"
-            }}
-            units="mbar"
-          />
+              
+              <div className="flex items-start ml-4">
+                <div className="text-sm text-gray-500 mt-1">Equivalent</div>
+                <div className="flex-1 ml-4">
+                  <div className="flex items-center">
+                    <input
+                      type="text"
+                      value={(currentDiffPressure * 0.4).toFixed(2)}
+                      onChange={(e) => setCurrentDiffPressure(parseFloat(e.target.value) / 0.4 || 0)}
+                      className="flex-1 rounded-l-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                      min={0}
+                    />
+                    <span className="inline-flex items-center px-3 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md">
+                      Inches W.G.
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           
-          <InputField
-            label={
-              <div>
-                <div>Filter Differential Pressure</div>
-                <div className="text-sm text-gray-500">Scheuch EMC Technology:</div>
+          <div className="space-y-1">
+            <div className="text-sm font-medium text-gray-700">Filter Differential Pressure</div>
+            <div className="text-sm text-gray-500">Scheuch EMC Technology:</div>
+            <div className="grid grid-cols-1 gap-1">
+              <div className="flex items-center">
+                <input
+                  type="number"
+                  value={scheuchDiffPressure}
+                  onChange={(e) => setScheuchDiffPressure(parseFloat(e.target.value) || 0)}
+                  className="flex-1 rounded-l-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                  min={0}
+                />
+                <span className="inline-flex items-center px-3 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md">
+                  mbar
+                </span>
               </div>
-            }
-            value={scheuchDiffPressure}
-            onChange={(value) => setScheuchDiffPressure(parseFloat(value) || 0)}
-            type="number"
-            min={0}
-            secondaryInput={{
-              value: (scheuchDiffPressure * 0.4).toFixed(2),
-              onChange: (value) => setScheuchDiffPressure(parseFloat(value) / 0.4 || 0),
-              units: "Inches W.G.",
-              label: "Equivalent"
-            }}
-            units="mbar"
-          />
+              
+              <div className="flex items-start ml-4">
+                <div className="text-sm text-gray-500 mt-1">Equivalent</div>
+                <div className="flex-1 ml-4">
+                  <div className="flex items-center">
+                    <input
+                      type="text"
+                      value={(scheuchDiffPressure * 0.4).toFixed(2)}
+                      onChange={(e) => setScheuchDiffPressure(parseFloat(e.target.value) / 0.4 || 0)}
+                      className="flex-1 rounded-l-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                      min={0}
+                    />
+                    <span className="inline-flex items-center px-3 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md">
+                      Inches W.G.
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         
         {/* Compressed Air Consumption section */}
         <div className="space-y-4 mb-6">
           <h3 className="text-sm font-medium text-gray-700 border-b pb-2">Compressed Air</h3>
           
-          <InputField
-            label={
-              <div>
-                <div>Compressed air Consumption</div>
-                <div className="text-sm text-gray-500">Current Situation:</div>
+          <div className="space-y-1">
+            <div className="text-sm font-medium text-gray-700">Compressed air Consumption</div>
+            <div className="text-sm text-gray-500">Current Situation:</div>
+            <div className="grid grid-cols-1 gap-1">
+              <div className="flex items-center">
+                <input
+                  type="number"
+                  value={currentAirConsumption}
+                  onChange={(e) => setCurrentAirConsumption(parseFloat(e.target.value) || 0)}
+                  className="flex-1 rounded-l-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                  min={0}
+                />
+                <span className="inline-flex items-center px-3 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md">
+                  Nm³/h
+                </span>
               </div>
-            }
-            value={currentAirConsumption}
-            onChange={(value) => setCurrentAirConsumption(parseFloat(value) || 0)}
-            type="number"
-            min={0}
-            secondaryInput={{
-              value: (currentAirConsumption * 0.589).toFixed(1),
-              onChange: (value) => setCurrentAirConsumption(parseFloat(value) / 0.589 || 0),
-              units: "SCFM",
-              label: "Equivalent"
-            }}
-            units="Nm³/h"
-          />
+              
+              <div className="flex items-start ml-4">
+                <div className="text-sm text-gray-500 mt-1">Equivalent</div>
+                <div className="flex-1 ml-4">
+                  <div className="flex items-center">
+                    <input
+                      type="text"
+                      value={(currentAirConsumption * 0.589).toFixed(1)}
+                      onChange={(e) => setCurrentAirConsumption(parseFloat(e.target.value) / 0.589 || 0)}
+                      className="flex-1 rounded-l-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                      min={0}
+                    />
+                    <span className="inline-flex items-center px-3 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md">
+                      SCFM
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           
-          <InputField
-            label={
-              <div>
-                <div>Compressed air Consumption</div>
-                <div className="text-sm text-gray-500">Scheuch EMC Technology:</div>
+          <div className="space-y-1">
+            <div className="text-sm font-medium text-gray-700">Compressed air Consumption</div>
+            <div className="text-sm text-gray-500">Scheuch EMC Technology:</div>
+            <div className="grid grid-cols-1 gap-1">
+              <div className="flex items-center">
+                <input
+                  type="number"
+                  value={scheuchAirConsumption}
+                  onChange={(e) => setScheuchAirConsumption(parseFloat(e.target.value) || 0)}
+                  className="flex-1 rounded-l-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                  min={0}
+                />
+                <span className="inline-flex items-center px-3 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md">
+                  Nm³/h
+                </span>
               </div>
-            }
-            value={scheuchAirConsumption}
-            onChange={(value) => setScheuchAirConsumption(parseFloat(value) || 0)}
-            type="number"
-            min={0}
-            secondaryInput={{
-              value: (scheuchAirConsumption * 0.589).toFixed(1),
-              onChange: (value) => setScheuchAirConsumption(parseFloat(value) / 0.589 || 0),
-              units: "SCFM",
-              label: "Equivalent"
-            }}
-            units="Nm³/h"
-          />
+              
+              <div className="flex items-start ml-4">
+                <div className="text-sm text-gray-500 mt-1">Equivalent</div>
+                <div className="flex-1 ml-4">
+                  <div className="flex items-center">
+                    <input
+                      type="text"
+                      value={(scheuchAirConsumption * 0.589).toFixed(1)}
+                      onChange={(e) => setScheuchAirConsumption(parseFloat(e.target.value) / 0.589 || 0)}
+                      className="flex-1 rounded-l-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                      min={0}
+                    />
+                    <span className="inline-flex items-center px-3 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md">
+                      SCFM
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         
         {/* Motor Power section */}
         <div className="space-y-4">
           <h3 className="text-sm font-medium text-gray-700 border-b pb-2">Motor Power</h3>
           
-          <InputField
-            label={
-              <div>
-                <div>Motor KW for standalone compressor</div>
-                <div className="text-sm text-gray-500">Current Situation:</div>
+          <div className="space-y-1">
+            <div className="text-sm font-medium text-gray-700">Motor KW for standalone compressor</div>
+            <div className="text-sm text-gray-500">Current Situation:</div>
+            <div className="grid grid-cols-1 gap-1">
+              <div className="flex items-center">
+                <input
+                  type="number"
+                  value={currentMotorKW}
+                  onChange={(e) => setCurrentMotorKW(parseFloat(e.target.value) || 0)}
+                  className="flex-1 rounded-l-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                  min={0}
+                />
+                <span className="inline-flex items-center px-3 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md">
+                  kW
+                </span>
               </div>
-            }
-            value={currentMotorKW}
-            onChange={(value) => setCurrentMotorKW(parseFloat(value) || 0)}
-            type="number"
-            min={0}
-            secondaryInput={{
-              value: (currentMotorKW * 1.34102).toFixed(1),
-              onChange: (value) => setCurrentMotorKW(parseFloat(value) / 1.34102 || 0),
-              units: "HP",
-              label: "Equivalent"
-            }}
-            units="kW"
-          />
+              
+              <div className="flex items-start ml-4">
+                <div className="text-sm text-gray-500 mt-1">Equivalent</div>
+                <div className="flex-1 ml-4">
+                  <div className="flex items-center">
+                    <input
+                      type="text"
+                      value={(currentMotorKW * 1.34102).toFixed(1)}
+                      onChange={(e) => setCurrentMotorKW(parseFloat(e.target.value) / 1.34102 || 0)}
+                      className="flex-1 rounded-l-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                      min={0}
+                    />
+                    <span className="inline-flex items-center px-3 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md">
+                      HP
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           
-          <InputField
-            label={
-              <div>
-                <div>Motor KW for standalone compressor</div>
-                <div className="text-sm text-gray-500">Scheuch EMC Technology:</div>
+          <div className="space-y-1">
+            <div className="text-sm font-medium text-gray-700">Motor KW for standalone compressor</div>
+            <div className="text-sm text-gray-500">Scheuch EMC Technology:</div>
+            <div className="grid grid-cols-1 gap-1">
+              <div className="flex items-center">
+                <input
+                  type="number"
+                  value={scheuchMotorKW}
+                  onChange={(e) => setScheuchMotorKW(parseFloat(e.target.value) || 0)}
+                  className="flex-1 rounded-l-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                  min={0}
+                />
+                <span className="inline-flex items-center px-3 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md">
+                  kW
+                </span>
               </div>
-            }
-            value={scheuchMotorKW}
-            onChange={(value) => setScheuchMotorKW(parseFloat(value) || 0)}
-            type="number"
-            min={0}
-            secondaryInput={{
-              value: (scheuchMotorKW * 1.34102).toFixed(1),
-              onChange: (value) => setScheuchMotorKW(parseFloat(value) / 1.34102 || 0),
-              units: "HP",
-              label: "Equivalent"
-            }}
-            units="kW"
-          />
+              
+              <div className="flex items-start ml-4">
+                <div className="text-sm text-gray-500 mt-1">Equivalent</div>
+                <div className="flex-1 ml-4">
+                  <div className="flex items-center">
+                    <input
+                      type="text"
+                      value={(scheuchMotorKW * 1.34102).toFixed(1)}
+                      onChange={(e) => setScheuchMotorKW(parseFloat(e.target.value) / 1.34102 || 0)}
+                      className="flex-1 rounded-l-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                      min={0}
+                    />
+                    <span className="inline-flex items-center px-3 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md">
+                      HP
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       
