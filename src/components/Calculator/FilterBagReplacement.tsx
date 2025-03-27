@@ -97,14 +97,6 @@ const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
             label: "Estimate"
           }}
         />
-        
-        <InputField
-          label="Bag replacement cost (USD):"
-          value={bagReplacementCost}
-          onChange={(value) => setBagReplacementCost(parseFloat(value) || 0)}
-          type="number"
-          min={0}
-        />
       </div>
       
       {/* Column 3: Results */}
