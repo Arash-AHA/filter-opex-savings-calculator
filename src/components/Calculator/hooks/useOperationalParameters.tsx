@@ -15,8 +15,8 @@ export const useOperationalParameters = () => {
   const [scheuchMotorKW, setScheuchMotorKW] = useState(40);
   const [bagQuality, setBagQuality] = useState('needle-felt');
   const [cleaningPressure, setCleaningPressure] = useState('6-bar');
-  const [minPulseInterval, setMinPulseInterval] = useState(0);
-  const [avgPulseInterval, setAvgPulseInterval] = useState(0);
+  const [minPulseInterval, setMinPulseInterval] = useState(3); // Updated default value
+  const [avgPulseInterval, setAvgPulseInterval] = useState(8); // Updated default value
   
   return {
     currentLifeTime,
