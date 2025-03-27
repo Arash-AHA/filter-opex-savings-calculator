@@ -71,31 +71,31 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
           
           <div className="mb-6">
             <label className="block text-sm font-medium text-gray-700 mb-2">Working hours per year:</label>
-            <div className="flex items-center space-x-2">
-              <div className="flex items-center space-x-1">
-                <label className="text-xs text-gray-600">Days/Year:</label>
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1">
+                <label className="text-xs text-gray-600 whitespace-nowrap">Days/Year:</label>
                 <InputField
                   value={daysPerYear}
                   onChange={(value) => setDaysPerYear(parseInt(value) || 0)}
                   type="number"
                   min={1}
-                  className="w-20"
+                  className="w-16"
                   labelClassName="hidden"
                 />
               </div>
-              <div className="flex items-center space-x-1">
-                <label className="text-xs text-gray-600">Hours/Day:</label>
+              <div className="flex items-center gap-1">
+                <label className="text-xs text-gray-600 whitespace-nowrap">Hours/Day:</label>
                 <InputField
                   value={hoursPerDay}
                   onChange={(value) => setHoursPerDay(parseInt(value) || 0)}
                   type="number"
                   min={1}
-                  className="w-20"
+                  className="w-16"
                   labelClassName="hidden"
                 />
               </div>
-              <div className="flex items-center bg-gray-50 px-3 py-2 rounded-md border border-gray-200 text-sm">
-                <span className="font-medium mr-2">Total:</span>
+              <div className="flex items-center bg-gray-50 px-2 py-1.5 rounded-md border border-gray-200 text-sm">
+                <span className="font-medium mr-1">Total:</span>
                 <span>{workingHours} hours/year</span>
               </div>
             </div>

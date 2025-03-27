@@ -124,6 +124,10 @@ const FilterOpexCalculator = () => {
           <SavingsResults 
             savingYears={calculatorState.savingYears}
             setSavingYears={calculatorState.setSavingYears}
+            daysPerYear={calculatorState.daysPerYear}
+            setDaysPerYear={calculatorState.setDaysPerYear}
+            hoursPerDay={calculatorState.hoursPerDay}
+            setHoursPerDay={calculatorState.setHoursPerDay}
             workingHours={calculatorState.workingHours}
             setWorkingHours={calculatorState.setWorkingHours}
             kwhCost={calculatorState.kwhCost}
