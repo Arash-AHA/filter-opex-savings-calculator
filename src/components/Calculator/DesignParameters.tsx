@@ -342,37 +342,11 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
                 <div className="w-1/2 relative">
                   <input 
                     type="text"
-                    value={(filterWidth / 1000).toFixed(2)}
-                    readOnly
-                    className="calculator-input pr-8 w-full bg-gray-50"
-                  />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">m</span>
-                </div>
-              </div>
-            </div>
-            
-            <div className="flex items-center mb-4 animate-fadeIn">
-              <div className="w-60 pr-4 calculator-field-label">
-                <span>Filter dimensions: Length</span>
-              </div>
-              <div className="flex flex-1 space-x-2">
-                <div className="w-1/2 relative">
-                  <input 
-                    type="text"
                     value={filterLength.toFixed(0)}
                     readOnly
                     className="calculator-input pr-8 w-full bg-gray-50"
                   />
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">mm</span>
-                </div>
-                <div className="w-1/2 relative">
-                  <input 
-                    type="text"
-                    value={(filterLength / 1000).toFixed(2)}
-                    readOnly
-                    className="calculator-input pr-8 w-full bg-gray-50"
-                  />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">m</span>
                 </div>
               </div>
             </div>
