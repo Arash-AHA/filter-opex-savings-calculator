@@ -1,4 +1,3 @@
-
 import { useState, useCallback, useEffect } from 'react';
 
 export const useDesignParameters = () => {
@@ -73,6 +72,7 @@ export const useDesignParameters = () => {
     setGasTempC(tempC);
     if (!isFUpdating && !isNaN(tempC)) {
       setIsCUpdating(true);
+      // Convert Celsius to Fahrenheit: (°C × 9/5) + 32 = °F
       setGasTempF(((tempC * 9/5) + 32).toFixed(0));
       setTimeout(() => setIsCUpdating(false), 100);
     }
@@ -83,6 +83,7 @@ export const useDesignParameters = () => {
     setGasTempF(tempF);
     if (!isCUpdating && !isNaN(tempF)) {
       setIsFUpdating(true);
+      // Convert Fahrenheit to Celsius: (°F - 32) × 5/9 = °C
       setGasTempC(((tempF - 32) * 5/9).toFixed(0));
       setTimeout(() => setIsFUpdating(false), 100);
     }
