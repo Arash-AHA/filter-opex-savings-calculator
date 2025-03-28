@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { cn } from '@/lib/utils';
 import ResultCard from './ResultCard';
@@ -53,12 +52,17 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
   m2ToSqFtFactor,
   conversionFactor
 }) => {
-  // Calculate gas velocity based on air volume and channel dimensions using the corrected formula
   const gasVelocityMS = showDimensions && channelWidth > 0 && channelHeight > 0 && airVolumeM3h ? 
     parseFloat(airVolumeM3h) * 1000000 / (3600 * channelWidth * channelHeight) : 0;
   
-  // Convert m/s to ft/min (1 m/s = 196.85 ft/min)
   const gasVelocityFPM = gasVelocityMS * 196.85;
+
+  const calculationExplanation = showDimensions && channelWidth > 0 && channelHeight > 0 && airVolumeM3h ? `
+    Calculation: 
+    Air Volume (375000 m³/h) * 1,000,000 / (3600 * Channel Width (${channelWidth.toFixed(3)} m) * Channel Height (${channelHeight.toFixed(3)} m))
+    = ${gasVelocityMS.toFixed(2)} m/s
+    = ${gasVelocityFPM.toFixed(0)} ft/min
+  ` : '';
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -261,6 +265,12 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
                 </div>
               </div>
             </div>
+            
+            {calculationExplanation && (
+              <div className="bg-blue-50 p-3 rounded-md text-xs text-gray-700 mt-2">
+                <pre className="whitespace-pre-wrap">{calculationExplanation}</pre>
+              </div>
+            )}
           </>
         )}
       </div>
