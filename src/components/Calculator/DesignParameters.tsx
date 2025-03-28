@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { cn } from '@/lib/utils';
 import ResultCard from './ResultCard';
@@ -57,15 +56,22 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
   const channelWidthM = channelWidthMm / 1000;
   const channelHeightM = channelHeightMm / 1000;
 
-  const gasVelocityMS = showDimensions && channelWidthM > 0 && channelHeightM > 0 && airVolumeM3h ? 
-    parseFloat(airVolumeM3h) * 1000000 / (3600 * channelWidthM * channelHeightM) : 0;
+  const gasVelocityMS = showDimensions && channelWidthMm > 0 && channelHeightMm > 0 && airVolumeM3h ? 
+    parseFloat(airVolumeM3h) * 1000000 / (3600 * channelWidthMm * channelHeightMm) : 0;
   
   const gasVelocityFPM = gasVelocityMS * 196.85;
 
-  // Updated calculation explanation to show mm to m conversion
-  const calculationExplanation = showDimensions && channelWidthM > 0 && channelHeightM > 0 && airVolumeM3h ? `
-    Calculation: 
-    Air Volume (375000 m³/h) * 1,000,000 / (3600 * Channel Width (${channelWidthMm} mm = ${channelWidthM.toFixed(3)} m) * Channel Height (${channelHeightMm} mm = ${channelHeightM.toFixed(3)} m))
+  // Detailed calculation explanation
+  const calculationExplanation = showDimensions && channelWidthMm > 0 && channelHeightMm > 0 && airVolumeM3h ? `
+    Calculation Steps:
+    1. Air Volume: ${airVolumeM3h} m³/h
+    2. Channel Width: ${channelWidthMm} mm
+    3. Channel Height: ${channelHeightMm} mm
+
+    Formula: Air Volume (m³/h) * 1,000,000 / (3600 * Width (mm) * Height (mm))
+    
+    Detailed Calculation:
+    ${airVolumeM3h} * 1,000,000 / (3600 * ${channelWidthMm} * ${channelHeightMm})
     = ${gasVelocityMS.toFixed(2)} m/s
     = ${gasVelocityFPM.toFixed(0)} ft/min
   ` : '';
