@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { cn } from '@/lib/utils';
 import ResultCard from './ResultCard';
@@ -62,30 +61,26 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
   conversionFactor
 }) => {
   const { toast } = useToast();
-  // Convert mm to m for the calculation (1 mm = 0.001 m)
   const channelWidthM = channelWidthMm / 1000;
   const channelHeightM = channelHeightMm / 1000;
 
-  // Calculate gas velocity based on filter row configuration
   const gasVelocityMS = showDimensions && channelWidthMm > 0 && channelHeightMm > 0 && airVolumeM3h ? 
     parseFloat(airVolumeM3h) * 1000000 / (3600 * channelWidthMm * channelHeightMm * (filterRowType === 'double' ? 2 : 1)) : 0;
   
   const gasVelocityFPM = gasVelocityMS * 196.85;
   
-  // Check if gas velocity exceeds 12 m/s
   const isVelocityTooHigh = gasVelocityMS > 12;
   
-  // Calculate filter dimensions based on bags per row
   const filterWidth = bagsPerRow === 18 ? (2 * 4500 + channelWidthMm) : (3750 * 2 + channelWidthMm);
   
-  // Warning message if velocity is too high
+  const filterLength = filterRowType === 'single' ? numEMCFlaps * 1200 : (numEMCFlaps / 2) * 1200;
+  
   const velocityWarning = isVelocityTooHigh ? (
     <div className="bg-red-50 p-3 rounded-md text-xs text-red-700 mt-2 font-medium">
       Warning: Inlet velocity ({gasVelocityMS.toFixed(2)} m/s) should be maximum 12 m/s
     </div>
   ) : null;
 
-  // Show warning toast if velocity exceeds limit
   React.useEffect(() => {
     if (isVelocityTooHigh && showDimensions && channelWidthMm > 0 && channelHeightMm > 0 && airVolumeM3h) {
       toast({
@@ -348,6 +343,32 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
                   <input 
                     type="text"
                     value={(filterWidth / 1000).toFixed(2)}
+                    readOnly
+                    className="calculator-input pr-8 w-full bg-gray-50"
+                  />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">m</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="flex items-center mb-4 animate-fadeIn">
+              <div className="w-60 pr-4 calculator-field-label">
+                <span>Filter dimensions: Length</span>
+              </div>
+              <div className="flex flex-1 space-x-2">
+                <div className="w-1/2 relative">
+                  <input 
+                    type="text"
+                    value={filterLength.toFixed(0)}
+                    readOnly
+                    className="calculator-input pr-8 w-full bg-gray-50"
+                  />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">mm</span>
+                </div>
+                <div className="w-1/2 relative">
+                  <input 
+                    type="text"
+                    value={(filterLength / 1000).toFixed(2)}
                     readOnly
                     className="calculator-input pr-8 w-full bg-gray-50"
                   />
