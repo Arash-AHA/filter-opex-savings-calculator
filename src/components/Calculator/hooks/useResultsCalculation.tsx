@@ -41,8 +41,14 @@ export const useResultsCalculation = (
   
   // Calculate net filter area (accounting for EMC cleaning)
   const calculateNetFilterArea = useCallback((totalArea) => {
-    return totalArea * emcCleaningFactor;
-  }, [emcCleaningFactor]);
+    if (designType === 'bolt-weld') {
+      // For bolt-weld design, use numEMCFlaps-1 in the calculation
+      return Math.PI * (165/1000) * bagLength * 5 * bagsPerRow * (numEMCFlaps - 1);
+    } else {
+      // For modular design, keep using the emcCleaningFactor
+      return totalArea * emcCleaningFactor;
+    }
+  }, [designType, bagLength, bagsPerRow, numEMCFlaps, emcCleaningFactor]);
   
   // Calculate results
   const results = useMemo(() => {
