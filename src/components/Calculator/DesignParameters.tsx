@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { cn } from '@/lib/utils';
 import ResultCard from './ResultCard';
@@ -69,7 +68,6 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
   const channelWidthM = channelWidthMm / 1000;
   const channelHeightM = channelHeightMm / 1000;
 
-  // Modified gas velocity calculation to not consider filterRowType
   const gasVelocityMS = showDimensions && channelWidthMm > 0 && channelHeightMm > 0 && airVolumeM3h ? 
     parseFloat(airVolumeM3h) * 1000000 / (3600 * channelWidthMm * channelHeightMm) : 0;
   
@@ -87,7 +85,6 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
     </div>
   ) : null;
 
-  // Calculate additional filter design parameters
   const totalFilterArea = results.filterArea;
   const netFilterArea = results.netFilterArea;
   const bagDiameterMm = 165;
@@ -234,7 +231,6 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
           </div>
         </div>
         
-        {/* Only show the buttons for Bolt/Weld design */}
         {designType === 'bolt-weld' && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div className="flex-1">
@@ -243,7 +239,7 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
                 className="w-full"
                 onClick={() => setShowDimensions(!showDimensions)}
               >
-                {showDimensions ? 'Hide Rough Dimensions' : 'Show Rough Dimensions of Filter'}
+                {showDimensions ? 'Hide Filter Dimensions / Footprint' : 'Show Filter Dimensions / Footprint'}
               </Button>
             </div>
             <div className="flex-1">

@@ -41,6 +41,8 @@ const FilterOpexCalculator = () => {
             setFilterRowType={calculatorState.setFilterRowType}
             showDimensions={calculatorState.showDimensions}
             setShowDimensions={calculatorState.setShowDimensions}
+            showOtherParams={calculatorState.showOtherParams}
+            setShowOtherParams={calculatorState.setShowOtherParams}
             channelWidthMm={calculatorState.channelWidthMm}
             setChannelWidthMm={calculatorState.setChannelWidthMm}
             channelHeightMm={calculatorState.channelHeightMm}
