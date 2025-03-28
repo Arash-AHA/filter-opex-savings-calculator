@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { cn } from '@/lib/utils';
 import ResultCard from './ResultCard';
@@ -55,7 +54,6 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
 }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {/* Column 1 & 2: Labels & Inputs */}
       <div className="md:col-span-2 space-y-4">
         <div className="mb-6">
           <div className="font-medium text-gray-700 mb-2">Filter Design Type:</div>
@@ -92,7 +90,6 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
           </div>
         </div>
         
-        {/* Air Volume Input */}
         <div className="flex items-center mb-4">
           <div className="w-60 pr-4 calculator-field-label">
             <span>Air Volume:</span>
@@ -121,7 +118,6 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
           </div>
         </div>
         
-        {/* EMC Flaps Input */}
         <div className="flex items-center mb-4">
           <div className="w-60 pr-4 calculator-field-label">
             <span>TOTAL No. EMC Flaps:</span>
@@ -137,7 +133,6 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
           </div>
         </div>
         
-        {/* Bags Per Row */}
         <div className="flex items-center mb-4">
           <div className="w-60 pr-4 calculator-field-label">
             <span>No. Bags in a Row:</span>
@@ -160,7 +155,6 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
           </div>
         </div>
         
-        {/* Bag Length */}
         <div className="flex items-center mb-4">
           <div className="w-60 pr-4 calculator-field-label">
             <span>Bag Length:</span>
@@ -188,7 +182,6 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
           </div>
         </div>
         
-        {/* Rough Dimensions Button */}
         <div className="flex items-center mb-4">
           <div className="w-60 pr-4">
           </div>
@@ -203,7 +196,6 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
           </div>
         </div>
         
-        {/* Clean Gas Channel Dimensions - Conditional */}
         {showDimensions && (
           <div className="flex items-center mb-4 animate-fadeIn">
             <div className="w-60 pr-4 calculator-field-label">
@@ -213,31 +205,30 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
               <div className="w-1/2 relative">
                 <input 
                   type="number"
-                  value={channelWidth}
-                  onChange={(e) => setChannelWidth(parseFloat(e.target.value) || 0)}
-                  step={0.1}
-                  min={0.1}
+                  value={channelWidth * 1000}
+                  onChange={(e) => setChannelWidth(parseFloat(e.target.value) / 1000 || 0)}
+                  step={10}
+                  min={10}
                   className="calculator-input pr-8 w-full"
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">m</span>
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">mm</span>
               </div>
               <div className="w-1/2 relative">
                 <input 
                   type="number"
-                  value={channelHeight}
-                  onChange={(e) => setChannelHeight(parseFloat(e.target.value) || 0)}
-                  step={0.1}
-                  min={0.1}
+                  value={channelHeight * 1000}
+                  onChange={(e) => setChannelHeight(parseFloat(e.target.value) / 1000 || 0)}
+                  step={10}
+                  min={10}
                   className="calculator-input pr-8 w-full"
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">m</span>
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">mm</span>
               </div>
             </div>
           </div>
         )}
       </div>
       
-      {/* Column 3: Results */}
       <div className="bg-blue-50/80 rounded-xl shadow-sm p-5 border border-blue-100 md:mt-0 mt-4">
         <h3 className="text-base font-medium text-center text-gray-700 mb-4 border-b pb-2">Design Parameters</h3>
         
