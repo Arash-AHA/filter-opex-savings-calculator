@@ -15,6 +15,11 @@ export const useDesignParameters = () => {
   const [bagsPerRow, setBagsPerRow] = useState(18);
   const [bagLength, setBagLength] = useState(10);
   
+  // New state for dimensions
+  const [showDimensions, setShowDimensions] = useState(false);
+  const [channelWidth, setChannelWidth] = useState(1.2);
+  const [channelHeight, setChannelHeight] = useState(1.5);
+  
   // Flags to prevent infinite loops in unit conversion
   const [isM3hUpdating, setIsM3hUpdating] = useState(false);
   const [isACFMUpdating, setIsACFMUpdating] = useState(false);
@@ -46,6 +51,12 @@ export const useDesignParameters = () => {
     numEMCFlaps,
     bagsPerRow,
     bagLength,
+    showDimensions,
+    setShowDimensions,
+    channelWidth,
+    setChannelWidth,
+    channelHeight,
+    setChannelHeight,
     handleAirVolumeM3hChange,
     handleAirVolumeACFMChange,
     setNumEMCFlaps,

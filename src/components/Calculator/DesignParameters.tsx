@@ -2,6 +2,7 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 import ResultCard from './ResultCard';
+import { Button } from '@/components/ui/button';
 
 interface DesignParametersProps {
   designType: string;
@@ -11,6 +12,12 @@ interface DesignParametersProps {
   numEMCFlaps: number;
   bagsPerRow: number;
   bagLength: number;
+  showDimensions: boolean;
+  setShowDimensions: (value: boolean) => void;
+  channelWidth: number;
+  setChannelWidth: (value: number) => void;
+  channelHeight: number;
+  setChannelHeight: (value: number) => void;
   handleAirVolumeM3hChange: (value: string) => void;
   handleAirVolumeACFMChange: (value: string) => void;
   setNumEMCFlaps: (value: number) => void;
@@ -30,6 +37,12 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
   numEMCFlaps,
   bagsPerRow,
   bagLength,
+  showDimensions,
+  setShowDimensions,
+  channelWidth,
+  setChannelWidth,
+  channelHeight,
+  setChannelHeight,
   handleAirVolumeM3hChange,
   handleAirVolumeACFMChange,
   setNumEMCFlaps,
@@ -174,6 +187,54 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
             </select>
           </div>
         </div>
+        
+        {/* Rough Dimensions Button */}
+        <div className="flex items-center mb-4">
+          <div className="w-60 pr-4">
+          </div>
+          <div className="flex-1">
+            <Button 
+              variant="outline" 
+              className="w-full"
+              onClick={() => setShowDimensions(!showDimensions)}
+            >
+              {showDimensions ? 'Hide Rough Dimensions' : 'Show Rough Dimensions of Filter'}
+            </Button>
+          </div>
+        </div>
+        
+        {/* Clean Gas Channel Dimensions - Conditional */}
+        {showDimensions && (
+          <div className="flex items-center mb-4 animate-fadeIn">
+            <div className="w-60 pr-4 calculator-field-label">
+              <span>Clean Gas Channel Width x Height:</span>
+            </div>
+            <div className="flex flex-1 space-x-2">
+              <div className="w-1/2 relative">
+                <input 
+                  type="number"
+                  value={channelWidth}
+                  onChange={(e) => setChannelWidth(parseFloat(e.target.value) || 0)}
+                  step={0.1}
+                  min={0.1}
+                  className="calculator-input pr-8 w-full"
+                />
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">m</span>
+              </div>
+              <div className="w-1/2 relative">
+                <input 
+                  type="number"
+                  value={channelHeight}
+                  onChange={(e) => setChannelHeight(parseFloat(e.target.value) || 0)}
+                  step={0.1}
+                  min={0.1}
+                  className="calculator-input pr-8 w-full"
+                />
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">m</span>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
       
       {/* Column 3: Results */}

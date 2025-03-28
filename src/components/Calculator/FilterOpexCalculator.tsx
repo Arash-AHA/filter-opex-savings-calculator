@@ -37,6 +37,12 @@ const FilterOpexCalculator = () => {
             numEMCFlaps={calculatorState.numEMCFlaps}
             bagsPerRow={calculatorState.bagsPerRow}
             bagLength={calculatorState.bagLength}
+            showDimensions={calculatorState.showDimensions}
+            setShowDimensions={calculatorState.setShowDimensions}
+            channelWidth={calculatorState.channelWidth}
+            setChannelWidth={calculatorState.setChannelWidth}
+            channelHeight={calculatorState.channelHeight}
+            setChannelHeight={calculatorState.setChannelHeight}
             handleAirVolumeM3hChange={calculatorState.handleAirVolumeM3hChange}
             handleAirVolumeACFMChange={calculatorState.handleAirVolumeACFMChange}
             setNumEMCFlaps={calculatorState.setNumEMCFlaps}
