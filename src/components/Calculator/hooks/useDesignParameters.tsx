@@ -1,4 +1,5 @@
-import { useState, useCallback } from 'react';
+
+import { useState, useCallback, useEffect } from 'react';
 
 export const useDesignParameters = () => {
   // Constants
@@ -23,6 +24,13 @@ export const useDesignParameters = () => {
   // Flags to prevent infinite loops in unit conversion
   const [isM3hUpdating, setIsM3hUpdating] = useState(false);
   const [isACFMUpdating, setIsACFMUpdating] = useState(false);
+
+  // Hide dimensions if modular design is selected
+  useEffect(() => {
+    if (designType === 'modular') {
+      setShowDimensions(false);
+    }
+  }, [designType]);
   
   // Handle air volume unit conversion
   const handleAirVolumeM3hChange = useCallback((value) => {

@@ -223,21 +223,24 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
           </div>
         </div>
         
-        <div className="flex items-center mb-4">
-          <div className="w-60 pr-4">
+        {/* Only show the rough dimensions button for Bolt/Weld design */}
+        {designType === 'bolt-weld' && (
+          <div className="flex items-center mb-4">
+            <div className="w-60 pr-4">
+            </div>
+            <div className="flex-1">
+              <Button 
+                variant="outline" 
+                className="w-full"
+                onClick={() => setShowDimensions(!showDimensions)}
+              >
+                {showDimensions ? 'Hide Rough Dimensions' : 'Show Rough Dimensions of Filter'}
+              </Button>
+            </div>
           </div>
-          <div className="flex-1">
-            <Button 
-              variant="outline" 
-              className="w-full"
-              onClick={() => setShowDimensions(!showDimensions)}
-            >
-              {showDimensions ? 'Hide Rough Dimensions' : 'Show Rough Dimensions of Filter'}
-            </Button>
-          </div>
-        </div>
+        )}
         
-        {showDimensions && (
+        {showDimensions && designType === 'bolt-weld' && (
           <>
             <div className="flex items-center mb-4 animate-fadeIn">
               <div className="w-60 pr-4 calculator-field-label">
