@@ -11,7 +11,7 @@ export const useDesignParameters = () => {
   const [designType, setDesignType] = useState('bolt-weld');
   const [airVolumeM3h, setAirVolumeM3h] = useState('');
   const [airVolumeACFM, setAirVolumeACFM] = useState('');
-  const [numEMCFlaps, setNumEMCFlaps] = useState(20);
+  const [numEMCFlaps, setNumEMCFlaps] = useState(14); // Changed default from 20 to 14
   const [bagsPerRow, setBagsPerRow] = useState(18);
   const [bagLength, setBagLength] = useState(10);
   
