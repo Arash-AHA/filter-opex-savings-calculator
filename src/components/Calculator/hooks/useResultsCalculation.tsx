@@ -103,12 +103,12 @@ export const useResultsCalculation = (
   // Formatted results
   const formattedResults = useMemo(() => {
     if (designType === 'bolt-weld') {
-      // Metric units
+      // Metric units - divide A/C ratios by 60 and change unit to m³/min/m²
       return {
         filterArea: `${results.filterArea.toFixed(2)} m²`,
         netFilterArea: `${results.netFilterArea.toFixed(2)} m²`,
-        acRatioGross: `${results.acRatioGross.toFixed(2)} m³/h/m²`,
-        acRatioNet: `${results.acRatioNet.toFixed(2)} m³/h/m²`,
+        acRatioGross: `${(results.acRatioGross / 60).toFixed(2)} m³/min/m²`,
+        acRatioNet: `${(results.acRatioNet / 60).toFixed(2)} m³/min/m²`,
         baselinePower: `${results.baselinePower.toFixed(2)} kW`,
         improvedPower: `${results.improvedPower.toFixed(2)} kW`,
         totalBags: results.totalBags,
