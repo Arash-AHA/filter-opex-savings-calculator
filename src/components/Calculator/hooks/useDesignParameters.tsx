@@ -1,3 +1,4 @@
+
 import { useState, useCallback, useEffect } from 'react';
 
 export const useDesignParameters = () => {
@@ -67,70 +68,76 @@ export const useDesignParameters = () => {
   }, [isM3hUpdating, conversionFactor]);
   
   // Handle temperature unit conversion
-  const handleGasTempCChange = useCallback((value) => {
+  const handleGasTempCChange = useCallback((value: string) => {
     const tempC = parseFloat(value);
-    setGasTempC(tempC);
+    setGasTempC(isNaN(tempC) ? 0 : tempC);
     if (!isFUpdating && !isNaN(tempC)) {
       setIsCUpdating(true);
       // Convert Celsius to Fahrenheit: (°C × 9/5) + 32 = °F
-      setGasTempF(((tempC * 9/5) + 32).toFixed(0));
+      const tempF = (tempC * 9/5) + 32;
+      setGasTempF(isNaN(tempF) ? 0 : tempF);
       setTimeout(() => setIsCUpdating(false), 100);
     }
   }, [isFUpdating]);
   
-  const handleGasTempFChange = useCallback((value) => {
+  const handleGasTempFChange = useCallback((value: string) => {
     const tempF = parseFloat(value);
-    setGasTempF(tempF);
+    setGasTempF(isNaN(tempF) ? 0 : tempF);
     if (!isCUpdating && !isNaN(tempF)) {
       setIsFUpdating(true);
       // Convert Fahrenheit to Celsius: (°F - 32) × 5/9 = °C
-      setGasTempC(((tempF - 32) * 5/9).toFixed(0));
+      const tempC = (tempF - 32) * 5/9;
+      setGasTempC(isNaN(tempC) ? 0 : tempC);
       setTimeout(() => setIsFUpdating(false), 100);
     }
   }, [isCUpdating]);
   
   // Handle dust concentration conversions
-  const handleDustConcGramAm3Change = useCallback((value) => {
+  const handleDustConcGramAm3Change = useCallback((value: string) => {
     const concGramAm3 = parseFloat(value);
-    setDustConcGramAm3(concGramAm3);
+    setDustConcGramAm3(isNaN(concGramAm3) ? 0 : concGramAm3);
     if (!isGrainACFUpdating && !isNaN(concGramAm3)) {
       setIsGramAm3Updating(true);
       // 1 g/Am³ = 0.437 grain/ACF
-      setDustConcGrainACF((concGramAm3 * 0.437).toFixed(2));
+      const grainACF = concGramAm3 * 0.437;
+      setDustConcGrainACF(isNaN(grainACF) ? 0 : grainACF);
       setTimeout(() => setIsGramAm3Updating(false), 100);
     }
   }, [isGrainACFUpdating]);
   
-  const handleDustConcGrainACFChange = useCallback((value) => {
+  const handleDustConcGrainACFChange = useCallback((value: string) => {
     const concGrainACF = parseFloat(value);
-    setDustConcGrainACF(concGrainACF);
+    setDustConcGrainACF(isNaN(concGrainACF) ? 0 : concGrainACF);
     if (!isGramAm3Updating && !isNaN(concGrainACF)) {
       setIsGrainACFUpdating(true);
       // 1 grain/ACF = 2.288 g/Am³
-      setDustConcGramAm3((concGrainACF / 0.437).toFixed(2));
+      const gramAm3 = concGrainACF / 0.437;
+      setDustConcGramAm3(isNaN(gramAm3) ? 0 : gramAm3);
       setTimeout(() => setIsGrainACFUpdating(false), 100);
     }
   }, [isGramAm3Updating]);
   
-  const handleDustConcGramNm3Change = useCallback((value) => {
+  const handleDustConcGramNm3Change = useCallback((value: string) => {
     const concGramNm3 = parseFloat(value);
-    setDustConcGramNm3(concGramNm3);
+    setDustConcGramNm3(isNaN(concGramNm3) ? 0 : concGramNm3);
     if (!isGrainSCFUpdating && !isNaN(concGramNm3)) {
       setIsGramNm3Updating(true);
       // 1 g/Nm³ = 0.437 grain/SCF
-      setDustConcGrainSCF((concGramNm3 * 0.437).toFixed(2));
+      const grainSCF = concGramNm3 * 0.437;
+      setDustConcGrainSCF(isNaN(grainSCF) ? 0 : grainSCF);
       setTimeout(() => setIsGramNm3Updating(false), 100);
     }
   }, [isGrainSCFUpdating]);
   
-  const handleDustConcGrainSCFChange = useCallback((value) => {
+  const handleDustConcGrainSCFChange = useCallback((value: string) => {
     const concGrainSCF = parseFloat(value);
-    setDustConcGrainSCF(concGrainSCF);
+    setDustConcGrainSCF(isNaN(concGrainSCF) ? 0 : concGrainSCF);
     if (!isGramNm3Updating && !isNaN(concGrainSCF)) {
       setIsGrainSCFUpdating(true);
       // 1 grain/SCF = 2.288 g/Nm³
-      setDustConcGramNm3((concGrainSCF / 0.437).toFixed(2));
-      setTimeout(() => setIsGrainSCFUpdating(false), 100);
+      const gramNm3 = concGrainSCF / 0.437;
+      setDustConcGramNm3(isNaN(gramNm3) ? 0 : gramNm3);
+      setTimeout(() => setIsGramNm3Updating(false), 100);
     }
   }, [isGramNm3Updating]);
   

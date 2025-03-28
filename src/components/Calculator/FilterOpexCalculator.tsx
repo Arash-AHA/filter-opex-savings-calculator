@@ -56,6 +56,18 @@ const FilterOpexCalculator = () => {
             results={calculatorState.results}
             m2ToSqFtFactor={calculatorState.m2ToSqFtFactor}
             conversionFactor={calculatorState.conversionFactor}
+            gasTempC={calculatorState.gasTempC}
+            gasTempF={calculatorState.gasTempF}
+            dustConcGramAm3={calculatorState.dustConcGramAm3}
+            dustConcGrainACF={calculatorState.dustConcGrainACF}
+            dustConcGramNm3={calculatorState.dustConcGramNm3}
+            dustConcGrainSCF={calculatorState.dustConcGrainSCF}
+            handleGasTempCChange={calculatorState.handleGasTempCChange}
+            handleGasTempFChange={calculatorState.handleGasTempFChange}
+            handleDustConcGramAm3Change={calculatorState.handleDustConcGramAm3Change}
+            handleDustConcGrainACFChange={calculatorState.handleDustConcGrainACFChange}
+            handleDustConcGramNm3Change={calculatorState.handleDustConcGramNm3Change}
+            handleDustConcGrainSCFChange={calculatorState.handleDustConcGrainSCFChange}
           />
         </CalculatorSection>
         
