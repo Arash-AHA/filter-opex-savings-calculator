@@ -1,4 +1,3 @@
-
 import { useState, useCallback } from 'react';
 
 export const useDesignParameters = () => {
@@ -9,9 +8,9 @@ export const useDesignParameters = () => {
   
   // State for input values
   const [designType, setDesignType] = useState('bolt-weld');
-  const [airVolumeM3h, setAirVolumeM3h] = useState('');
-  const [airVolumeACFM, setAirVolumeACFM] = useState('');
-  const [numEMCFlaps, setNumEMCFlaps] = useState(14); // Changed default from 20 to 14
+  const [airVolumeM3h, setAirVolumeM3h] = useState('375000'); // Updated default value
+  const [airVolumeACFM, setAirVolumeACFM] = useState((375000 * 0.588774).toFixed(0)); // Converted default value
+  const [numEMCFlaps, setNumEMCFlaps] = useState(14);
   const [bagsPerRow, setBagsPerRow] = useState(18);
   const [bagLength, setBagLength] = useState(10);
   
