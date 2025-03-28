@@ -1,4 +1,3 @@
-
 import { useState, useCallback } from 'react';
 
 export const useDesignParameters = () => {
@@ -17,8 +16,8 @@ export const useDesignParameters = () => {
   
   // New state for dimensions
   const [showDimensions, setShowDimensions] = useState(false);
-  const [channelWidth, setChannelWidth] = useState(1.2);
-  const [channelHeight, setChannelHeight] = useState(1.5);
+  const [channelWidth, setChannelWidth] = useState(3.150); // Convert mm to m (3150 mm = 3.150 m)
+  const [channelHeight, setChannelHeight] = useState(3.000); // Convert mm to m (3000 mm = 3.000 m)
   
   // Flags to prevent infinite loops in unit conversion
   const [isM3hUpdating, setIsM3hUpdating] = useState(false);
