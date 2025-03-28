@@ -1,3 +1,4 @@
+
 import React from 'react';
 import InputField from '../InputField';
 
@@ -31,8 +32,8 @@ const FilterSpecifications: React.FC<FilterSpecificationsProps> = ({
   scheuchLifeTime
 }) => {
   return (
-    <div className="bg-gradient-to-b from-amber-50 to-amber-100/40 rounded-xl p-5 border border-amber-200">
-      <h3 className="text-sm font-medium text-gray-700 mb-4 border-b border-amber-200 pb-2">Filter Specifications</h3>
+    <div className="rounded-lg">
+      <h3 className="text-sm font-medium text-gray-700 mb-4 border-b border-yellow-200 pb-2">Filter Specifications</h3>
       
       <div className="mb-6">
         <div className="font-medium text-gray-700 mb-3">Filter Bag:</div>
@@ -183,6 +184,7 @@ const CleaningCycleParameters: React.FC<CleaningCycleParametersProps> = ({
             min={0}
             step={1}
             className="mb-0"
+            inputClassName="py-1 h-8 text-sm"
           />
         </div>
         <div>
@@ -195,11 +197,12 @@ const CleaningCycleParameters: React.FC<CleaningCycleParametersProps> = ({
             min={0}
             step={1}
             className="mb-0"
+            inputClassName="py-1 h-8 text-sm"
           />
         </div>
       </div>
       
-      <div className="mt-4 text-base text-gray-800 font-semibold">
+      <div className="mt-3 text-base text-gray-800 font-semibold">
         <span>Min. complete cycle: {minCompleteCycle.toFixed(1)} min, Ave. complete cycle: {avgCompleteCycle.toFixed(1)} min</span>
       </div>
     </div>
@@ -254,7 +257,7 @@ const LifetimeDisplay: React.FC<LifetimeDisplayProps> = ({
       <div className="font-medium text-gray-700 mb-2">
         {displayTitle}
       </div>
-      <div className="bg-white p-4 rounded-lg shadow-sm border border-amber-200">
+      <div className="bg-white p-4 rounded-lg shadow-sm border border-yellow-200">
         <div className="mb-2">
           <span className="font-medium text-sm">Minimum: </span>
           <span className="text-sm">{minLifetime}</span>
