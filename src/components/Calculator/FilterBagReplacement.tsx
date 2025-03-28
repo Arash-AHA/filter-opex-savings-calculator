@@ -1,3 +1,4 @@
+
 import React from 'react';
 import InputField from './InputField';
 import ResultCard from './ResultCard';
@@ -100,7 +101,7 @@ const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
       
       {/* Column 3: Results */}
       <div className="bg-white rounded-xl shadow-soft p-5 border border-gray-100 md:mt-0 mt-4">
-        <h3 className="text-sm font-medium text-gray-700 mb-4 border-b pb-2">Replacement Parameters</h3>
+        <h3 className="text-sm font-medium text-gray-700 mb-4">Replacement Parameters</h3>
         
         <div className="space-y-4 animate-stagger">
           <ResultCard
