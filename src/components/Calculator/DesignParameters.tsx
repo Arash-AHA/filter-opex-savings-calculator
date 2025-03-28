@@ -40,6 +40,10 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
   m2ToSqFtFactor,
   conversionFactor
 }) => {
+  // Calculate m3/min/m2 for bolt/weld design
+  const acRatioGrossMinute = designType === 'bolt-weld' ? results.acRatioGross / 60 : 0;
+  const acRatioNetMinute = designType === 'bolt-weld' ? results.acRatioNet / 60 : 0;
+  
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {/* Column 1 & 2: Labels & Inputs */}
@@ -196,13 +200,23 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
           <div>
             <div className="text-sm text-gray-600">A/C Ratio Gross</div>
             <div className="text-lg font-semibold">{formattedResults.acRatioGross}</div>
-            <div className="text-xs text-gray-500">({(results.acRatioGross / m2ToSqFtFactor * conversionFactor).toFixed(2)} cfm/sq ft)</div>
+            {designType === 'bolt-weld' && (
+              <div className="text-xs text-gray-500">({acRatioGrossMinute.toFixed(2)} m³/min/m²)</div>
+            )}
+            {designType !== 'bolt-weld' && (
+              <div className="text-xs text-gray-500">({(results.acRatioGross / m2ToSqFtFactor * conversionFactor).toFixed(2)} cfm/sq ft)</div>
+            )}
           </div>
           
           <div>
             <div className="text-sm text-gray-600">A/C Ratio Net</div>
             <div className="text-lg font-semibold">{formattedResults.acRatioNet}</div>
-            <div className="text-xs text-gray-500">({(results.acRatioNet / m2ToSqFtFactor * conversionFactor).toFixed(2)} cfm/sq ft)</div>
+            {designType === 'bolt-weld' && (
+              <div className="text-xs text-gray-500">({acRatioNetMinute.toFixed(2)} m³/min/m²)</div>
+            )}
+            {designType !== 'bolt-weld' && (
+              <div className="text-xs text-gray-500">({(results.acRatioNet / m2ToSqFtFactor * conversionFactor).toFixed(2)} cfm/sq ft)</div>
+            )}
           </div>
         </div>
       </div>
