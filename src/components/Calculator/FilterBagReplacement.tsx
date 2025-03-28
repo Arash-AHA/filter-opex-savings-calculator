@@ -78,7 +78,7 @@ const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
         />
         
         <InputField
-          label="Site Distance in miles:"
+          label="Travel distance to site location in miles:"
           value={siteDistance}
           onChange={(value) => setSiteDistance(parseFloat(value) || 0)}
           type="number"
