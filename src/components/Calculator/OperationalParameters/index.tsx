@@ -1,4 +1,5 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import DifferentialPressureSection from './DifferentialPressureSection';
 import CompressedAirSection from './CompressedAirSection';
 import MotorPowerSection from './MotorPowerSection';
@@ -6,6 +7,7 @@ import FilterSpecifications from './FilterSpecifications';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 interface OperationalParametersProps {
   currentLifeTime: number;
@@ -37,6 +39,8 @@ interface OperationalParametersProps {
 }
 
 const OperationalParameters: React.FC<OperationalParametersProps> = (props) => {
+  const [showFilterSpecs, setShowFilterSpecs] = useState(false);
+
   return (
     <div className="space-y-6">
       {/* Main Grid Layout - 2 Columns */}
@@ -82,6 +86,17 @@ const OperationalParameters: React.FC<OperationalParametersProps> = (props) => {
                 </div>
               </div>
             </div>
+
+            <div className="mt-3">
+              <Button 
+                onClick={() => setShowFilterSpecs(!showFilterSpecs)} 
+                variant="outline"
+                size="sm"
+                className="w-full mt-2"
+              >
+                {showFilterSpecs ? 'Hide Estimate Details' : 'Estimate'}
+              </Button>
+            </div>
           </div>
 
           {/* Other Operational Parameters */}
@@ -110,22 +125,24 @@ const OperationalParameters: React.FC<OperationalParametersProps> = (props) => {
         </div>
         
         {/* Right Column - Filter Specifications with Yellow Background */}
-        <div className="bg-yellow-50 rounded-xl p-4 border border-yellow-200 h-fit">
-          <FilterSpecifications 
-            bagQuality={props.bagQuality}
-            setBagQuality={props.setBagQuality}
-            cleaningPressure={props.cleaningPressure}
-            setCleaningPressure={props.setCleaningPressure}
-            minPulseInterval={props.minPulseInterval}
-            setMinPulseInterval={props.setMinPulseInterval}
-            avgPulseInterval={props.avgPulseInterval}
-            setAvgPulseInterval={props.setAvgPulseInterval}
-            numEMCFlaps={props.numEMCFlaps}
-            workingHours={props.workingHours}
-            currentLifeTime={props.currentLifeTime}
-            scheuchLifeTime={props.scheuchLifeTime}
-          />
-        </div>
+        {showFilterSpecs && (
+          <div className="bg-yellow-50 rounded-xl p-4 border border-yellow-200 h-fit">
+            <FilterSpecifications 
+              bagQuality={props.bagQuality}
+              setBagQuality={props.setBagQuality}
+              cleaningPressure={props.cleaningPressure}
+              setCleaningPressure={props.setCleaningPressure}
+              minPulseInterval={props.minPulseInterval}
+              setMinPulseInterval={props.setMinPulseInterval}
+              avgPulseInterval={props.avgPulseInterval}
+              setAvgPulseInterval={props.setAvgPulseInterval}
+              numEMCFlaps={props.numEMCFlaps}
+              workingHours={props.workingHours}
+              currentLifeTime={props.currentLifeTime}
+              scheuchLifeTime={props.scheuchLifeTime}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

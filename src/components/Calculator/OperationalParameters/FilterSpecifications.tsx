@@ -1,4 +1,3 @@
-
 import React from 'react';
 import InputField from '../InputField';
 
@@ -32,7 +31,7 @@ const FilterSpecifications: React.FC<FilterSpecificationsProps> = ({
   scheuchLifeTime
 }) => {
   return (
-    <div className="rounded-lg">
+    <div>
       <h3 className="text-sm font-medium text-gray-700 mb-4 border-b border-yellow-200 pb-2">Filter Specifications</h3>
       
       <div className="mb-6">
