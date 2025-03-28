@@ -34,6 +34,19 @@ interface DesignParametersProps {
   results: any;
   m2ToSqFtFactor: number;
   conversionFactor: number;
+  // New parameters
+  gasTempC: number;
+  gasTempF: number;
+  dustConcGramAm3: number;
+  dustConcGrainACF: number;
+  dustConcGramNm3: number;
+  dustConcGrainSCF: number;
+  handleGasTempCChange: (value: string) => void;
+  handleGasTempFChange: (value: string) => void;
+  handleDustConcGramAm3Change: (value: string) => void;
+  handleDustConcGrainACFChange: (value: string) => void;
+  handleDustConcGramNm3Change: (value: string) => void;
+  handleDustConcGrainSCFChange: (value: string) => void;
 }
 
 const DesignParameters: React.FC<DesignParametersProps> = ({
@@ -62,7 +75,20 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
   formattedResults,
   results,
   m2ToSqFtFactor,
-  conversionFactor
+  conversionFactor,
+  // New parameters
+  gasTempC,
+  gasTempF,
+  dustConcGramAm3,
+  dustConcGrainACF,
+  dustConcGramNm3,
+  dustConcGrainSCF,
+  handleGasTempCChange,
+  handleGasTempFChange,
+  handleDustConcGramAm3Change,
+  handleDustConcGrainACFChange,
+  handleDustConcGramNm3Change,
+  handleDustConcGrainSCFChange
 }) => {
   const bagDiameterMm = 165;
   const emcSuppliedBags = numEMCFlaps * bagsPerRow * 5;
@@ -120,6 +146,18 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
             totalBagSurfaceArea={totalBagSurfaceArea}
             totalFilterArea={results.filterArea}
             netFilterArea={results.netFilterArea}
+            gasTempC={gasTempC}
+            gasTempF={gasTempF}
+            dustConcGramAm3={dustConcGramAm3}
+            dustConcGrainACF={dustConcGrainACF}
+            dustConcGramNm3={dustConcGramNm3}
+            dustConcGrainSCF={dustConcGrainSCF}
+            handleGasTempCChange={handleGasTempCChange}
+            handleGasTempFChange={handleGasTempFChange}
+            handleDustConcGramAm3Change={handleDustConcGramAm3Change}
+            handleDustConcGrainACFChange={handleDustConcGrainACFChange}
+            handleDustConcGramNm3Change={handleDustConcGramNm3Change}
+            handleDustConcGrainSCFChange={handleDustConcGrainSCFChange}
           />
         )}
         

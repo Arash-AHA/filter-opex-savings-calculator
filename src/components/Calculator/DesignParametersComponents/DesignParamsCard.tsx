@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Card } from '@/components/ui/card';
 
 interface DesignParamsCardProps {
   formattedResults: {
@@ -7,10 +8,28 @@ interface DesignParamsCardProps {
     netFilterArea: string;
     acRatioGross: string;
     acRatioNet: string;
+    baselinePower: string;
+    improvedPower: string;
+    totalBags: number;
+    daysToReplace: string;
+    bagMaterialCost: number;
+    tenYearSavings: string;
+    lifeExtension: string;
   };
   results: {
     filterArea: number;
     netFilterArea: number;
+    acRatioGross: number;
+    acRatioNet: number;
+    baselinePower: number;
+    improvedPower: number;
+    annualSavings: number;
+    totalBags: number;
+    daysToReplace: number;
+    totalReplacementCost: number;
+    tenYearSavings: number;
+    lifeExtension: number;
+    compressedAirSavings: number;
   };
   m2ToSqFtFactor: number;
   conversionFactor: number;
@@ -23,35 +42,43 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
   conversionFactor
 }) => {
   return (
-    <div className="bg-blue-50/80 rounded-xl shadow-sm p-5 border border-blue-100 md:mt-0 mt-4">
-      <h3 className="text-base font-medium text-center text-gray-700 mb-4 border-b pb-2">Design Parameters</h3>
+    <Card className="p-4 h-fit">
+      <h3 className="text-sm font-medium text-gray-700 mb-4">Design Parameters</h3>
       
-      <div className="space-y-3 text-right">
-        <div>
-          <div className="text-sm text-gray-600">Total Filtration Area</div>
-          <div className="text-lg font-semibold">{formattedResults.filterArea}</div>
-          <div className="text-xs text-gray-500">({(results.filterArea * m2ToSqFtFactor).toFixed(2)} sq ft)</div>
+      <div className="space-y-3">
+        <div className="flex justify-between border-b border-gray-100 pb-1">
+          <span className="text-gray-600 text-sm">Filter Area (Gross):</span>
+          <span className="font-medium text-sm">{formattedResults.filterArea}</span>
         </div>
         
-        <div>
-          <div className="text-sm text-gray-600">Net Area (EMC cleaning)</div>
-          <div className="text-lg font-semibold">{formattedResults.netFilterArea}</div>
-          <div className="text-xs text-gray-500">({(results.netFilterArea * m2ToSqFtFactor).toFixed(2)} sq ft)</div>
+        <div className="flex justify-between border-b border-gray-100 pb-1">
+          <span className="text-gray-600 text-sm">Net Filter Area:</span>
+          <span className="font-medium text-sm">{formattedResults.netFilterArea}</span>
         </div>
         
-        <div>
-          <div className="text-sm text-gray-600">A/C Ratio Gross</div>
-          <div className="text-lg font-semibold">{formattedResults.acRatioGross}</div>
-          <div className="text-xs text-gray-500">({(results.acRatioGross / m2ToSqFtFactor * conversionFactor).toFixed(2)} cfm/sq ft)</div>
+        <div className="flex justify-between border-b border-gray-100 pb-1">
+          <span className="text-gray-600 text-sm">Air-to-Cloth Ratio (Gross):</span>
+          <span className="font-medium text-sm">{formattedResults.acRatioGross}</span>
         </div>
         
-        <div>
-          <div className="text-sm text-gray-600">A/C Ratio Net</div>
-          <div className="text-lg font-semibold">{formattedResults.acRatioNet}</div>
-          <div className="text-xs text-gray-500">({(results.acRatioNet / m2ToSqFtFactor * conversionFactor).toFixed(2)} cfm/sq ft)</div>
+        <div className="flex justify-between border-b border-gray-100 pb-1">
+          <span className="text-gray-600 text-sm">Air-to-Cloth Ratio (Net):</span>
+          <span className="font-medium text-sm">{formattedResults.acRatioNet}</span>
+        </div>
+        
+        <div className="flex justify-between border-b border-gray-100 pb-1">
+          <span className="text-gray-600 text-sm">Number of Bags:</span>
+          <span className="font-medium text-sm">{formattedResults.totalBags}</span>
+        </div>
+        
+        <div className="mt-4 bg-blue-50 p-3 rounded-lg">
+          <div className="text-gray-700 font-medium mb-2">EMC Cleaning Advantage</div>
+          <p className="text-sm text-gray-600 mb-1">
+            The EMC (Exact Mechanical Cleaning) system allows the calculation of the filter area based on the net area available during the cleaning cycles, providing a more efficient and accurate design.
+          </p>
         </div>
       </div>
-    </div>
+    </Card>
   );
 };
 
