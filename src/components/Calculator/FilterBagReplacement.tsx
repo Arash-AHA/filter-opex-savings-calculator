@@ -1,4 +1,3 @@
-
 import React from 'react';
 import InputField from './InputField';
 import ResultCard from './ResultCard';
@@ -79,7 +78,7 @@ const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
         />
         
         <InputField
-          label="Site Distance from Auburn (miles):"
+          label="Site Distance in miles:"
           value={siteDistance}
           onChange={(value) => setSiteDistance(parseFloat(value) || 0)}
           type="number"
