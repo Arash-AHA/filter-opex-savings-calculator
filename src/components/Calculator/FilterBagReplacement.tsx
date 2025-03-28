@@ -1,4 +1,3 @@
-
 import React from 'react';
 import InputField from './InputField';
 import ResultCard from './ResultCard';
@@ -101,33 +100,28 @@ const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
       
       {/* Column 3: Results */}
       <div className="bg-white rounded-xl shadow-soft p-5 border border-gray-100 md:mt-0 mt-4">
-        <h3 className="text-sm font-medium text-gray-700 mb-4">Replacement Parameters</h3>
+        <h3 className="text-sm font-medium text-gray-700 mb-4 border-b pb-2">Replacement Parameters</h3>
         
-        <div className="space-y-4 animate-stagger">
-          <ResultCard
-            label="Total Number of Bags"
-            value={formattedResults.totalBags}
-            delay={100}
-          />
+        <div className="space-y-4">
+          <div className="grid grid-cols-2 items-center py-2 border-b border-gray-100">
+            <span className="text-sm text-gray-600">Total Number of Bags</span>
+            <span className="text-sm font-medium text-right">{formattedResults.totalBags}</span>
+          </div>
           
-          <ResultCard
-            label="Days to Replace Bags"
-            value={formattedResults.daysToReplace}
-            delay={200}
-          />
+          <div className="grid grid-cols-2 items-center py-2 border-b border-gray-100">
+            <span className="text-sm text-gray-600">Days to Replace Bags</span>
+            <span className="text-sm font-medium text-right">{formattedResults.daysToReplace}</span>
+          </div>
           
-          <ResultCard
-            label="Bag Material Cost (1 replacement)"
-            value={`$${(formattedResults.bagMaterialCost).toLocaleString()}`}
-            delay={300}
-          />
+          <div className="grid grid-cols-2 items-center py-2 border-b border-gray-100">
+            <span className="text-sm text-gray-600">Bag Material Cost</span>
+            <span className="text-sm font-medium text-right">${(formattedResults.bagMaterialCost).toLocaleString()}</span>
+          </div>
           
-          <ResultCard
-            label="Total Replacement Cost"
-            value={`$${(formattedResults.bagMaterialCost + travelCost).toLocaleString()}`}
-            highlight={true}
-            delay={400}
-          />
+          <div className="grid grid-cols-2 items-center py-2">
+            <span className="text-sm text-gray-600 font-semibold">Total Replacement Cost</span>
+            <span className="text-sm font-semibold text-right">${(formattedResults.bagMaterialCost + travelCost).toLocaleString()}</span>
+          </div>
         </div>
       </div>
     </div>
