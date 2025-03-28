@@ -3,7 +3,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import FilterDesignType from './DesignParametersComponents/FilterDesignType';
 import FilterInputs from './DesignParametersComponents/FilterInputs';
-import AdditionalParameters from './DesignParametersComponents/AdditionalParameters';
+import AdditionalParameters from './AdditionalParameters';
 import FilterDimensions from './DesignParametersComponents/FilterDimensions';
 import DesignParamsCard from './DesignParametersComponents/DesignParamsCard';
 
@@ -34,7 +34,7 @@ interface DesignParametersProps {
   results: any;
   m2ToSqFtFactor: number;
   conversionFactor: number;
-  // New parameters
+  // Additional parameters
   gasTempC: number;
   gasTempF: number;
   dustConcGramAm3: number;
@@ -76,7 +76,7 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
   results,
   m2ToSqFtFactor,
   conversionFactor,
-  // New parameters
+  // Additional parameters
   gasTempC,
   gasTempF,
   dustConcGramAm3,
@@ -90,10 +90,6 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
   handleDustConcGramNm3Change,
   handleDustConcGrainSCFChange
 }) => {
-  const bagDiameterMm = 165;
-  const emcSuppliedBags = numEMCFlaps * bagsPerRow * 5;
-  const totalBagSurfaceArea = Math.PI * (bagDiameterMm / 1000) * bagLength * emcSuppliedBags;
-  
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div className="md:col-span-2 space-y-4">
@@ -116,17 +112,17 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
           setBagLength={setBagLength}
         />
         
-        {designType === 'bolt-weld' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div className="flex-1">
-              <Button 
-                variant="outline" 
-                className="w-full"
-                onClick={() => setShowOtherParams(!showOtherParams)}
-              >
-                {showOtherParams ? 'Hide Other Parameters' : 'Show Other Filter Design Parameters'}
-              </Button>
-            </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div className="flex-1">
+            <Button 
+              variant="outline" 
+              className="w-full"
+              onClick={() => setShowOtherParams(!showOtherParams)}
+            >
+              {showOtherParams ? 'Hide Other Parameters' : 'Show Other Filter Design Parameters'}
+            </Button>
+          </div>
+          {designType === 'bolt-weld' && (
             <div className="flex-1">
               <Button 
                 variant="outline" 
@@ -136,16 +132,11 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
                 {showDimensions ? 'Hide Filter Dimensions / Footprint' : 'Show Filter Dimensions / Footprint'}
               </Button>
             </div>
-          </div>
-        )}
+          )}
+        </div>
         
-        {showOtherParams && designType === 'bolt-weld' && (
+        {showOtherParams && (
           <AdditionalParameters 
-            emcSuppliedBags={emcSuppliedBags}
-            bagDiameterMm={bagDiameterMm}
-            totalBagSurfaceArea={totalBagSurfaceArea}
-            totalFilterArea={results.filterArea}
-            netFilterArea={results.netFilterArea}
             gasTempC={gasTempC}
             gasTempF={gasTempF}
             dustConcGramAm3={dustConcGramAm3}

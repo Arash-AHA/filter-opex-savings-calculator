@@ -1,4 +1,3 @@
-
 import { useState, useCallback, useEffect } from 'react';
 
 export const useDesignParameters = () => {
@@ -40,11 +39,10 @@ export const useDesignParameters = () => {
   const [isGramNm3Updating, setIsGramNm3Updating] = useState(false);
   const [isGrainSCFUpdating, setIsGrainSCFUpdating] = useState(false);
 
-  // Hide dimensions if modular design is selected
+  // Only hide dimensions if modular design is selected
   useEffect(() => {
     if (designType === 'modular') {
       setShowDimensions(false);
-      setShowOtherParams(false);
     }
   }, [designType]);
   
