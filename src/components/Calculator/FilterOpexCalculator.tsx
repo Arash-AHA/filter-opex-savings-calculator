@@ -1,3 +1,4 @@
+
 import React from 'react';
 import CalculatorSection from './CalculatorSection';
 import Transition from '../UI/Transition';
@@ -36,6 +37,8 @@ const FilterOpexCalculator = () => {
             numEMCFlaps={calculatorState.numEMCFlaps}
             bagsPerRow={calculatorState.bagsPerRow}
             bagLength={calculatorState.bagLength}
+            filterRowType={calculatorState.filterRowType}
+            setFilterRowType={calculatorState.setFilterRowType}
             showDimensions={calculatorState.showDimensions}
             setShowDimensions={calculatorState.setShowDimensions}
             channelWidthMm={calculatorState.channelWidthMm}

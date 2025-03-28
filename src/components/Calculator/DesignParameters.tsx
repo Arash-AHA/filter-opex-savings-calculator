@@ -75,6 +75,9 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
   // Check if gas velocity exceeds 12 m/s
   const isVelocityTooHigh = gasVelocityMS > 12;
   
+  // Calculate filter dimensions based on bags per row
+  const filterWidth = bagsPerRow === 18 ? (2 * 4500 + channelWidthMm) : (3750 * 2 + channelWidthMm);
+  
   // Warning message if velocity is too high
   const velocityWarning = isVelocityTooHigh ? (
     <div className="bg-red-50 p-3 rounded-md text-xs text-red-700 mt-2 font-medium">
@@ -326,6 +329,32 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
             </div>
             
             {velocityWarning}
+            
+            <div className="flex items-center mb-4 animate-fadeIn">
+              <div className="w-60 pr-4 calculator-field-label">
+                <span>Filter dimensions: Width / Length</span>
+              </div>
+              <div className="flex flex-1 space-x-2">
+                <div className="w-1/2 relative">
+                  <input 
+                    type="text"
+                    value={filterWidth.toFixed(0)}
+                    readOnly
+                    className="calculator-input pr-8 w-full bg-gray-50"
+                  />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">mm</span>
+                </div>
+                <div className="w-1/2 relative">
+                  <input 
+                    type="text"
+                    value={(filterWidth / 1000).toFixed(2)}
+                    readOnly
+                    className="calculator-input pr-8 w-full bg-gray-50"
+                  />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">m</span>
+                </div>
+              </div>
+            </div>
           </>
         )}
       </div>
