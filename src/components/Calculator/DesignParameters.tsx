@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { cn } from '@/lib/utils';
 import ResultCard from './ResultCard';
@@ -64,8 +65,9 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
   const channelWidthM = channelWidthMm / 1000;
   const channelHeightM = channelHeightMm / 1000;
 
+  // Modified gas velocity calculation to not consider filterRowType
   const gasVelocityMS = showDimensions && channelWidthMm > 0 && channelHeightMm > 0 && airVolumeM3h ? 
-    parseFloat(airVolumeM3h) * 1000000 / (3600 * channelWidthMm * channelHeightMm * (filterRowType === 'double' ? 2 : 1)) : 0;
+    parseFloat(airVolumeM3h) * 1000000 / (3600 * channelWidthMm * channelHeightMm) : 0;
   
   const gasVelocityFPM = gasVelocityMS * 196.85;
   
