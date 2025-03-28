@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import DifferentialPressureSection from './DifferentialPressureSection';
 import CompressedAirSection from './CompressedAirSection';
@@ -94,12 +93,11 @@ const OperationalParameters: React.FC<OperationalParametersProps> = (props) => {
                 size="sm"
                 className="w-full mt-2"
               >
-                {showFilterSpecs ? 'Hide Estimate Details' : 'Estimate'}
+                {showFilterSpecs ? 'Hide Estimate Details' : 'Estimate bag life with EMC'}
               </Button>
             </div>
           </div>
 
-          {/* Other Operational Parameters */}
           <div className="pt-4">
             <DifferentialPressureSection 
               currentDiffPressure={props.currentDiffPressure}
@@ -124,7 +122,6 @@ const OperationalParameters: React.FC<OperationalParametersProps> = (props) => {
           </div>
         </div>
         
-        {/* Right Column - Filter Specifications with Yellow Background */}
         {showFilterSpecs && (
           <div className="bg-yellow-50 rounded-xl p-4 border border-yellow-200 h-fit">
             <FilterSpecifications 
