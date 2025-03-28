@@ -1,7 +1,9 @@
+
 import React from 'react';
 import { cn } from '@/lib/utils';
 import ResultCard from './ResultCard';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
 
 interface DesignParametersProps {
   designType: string;
@@ -52,6 +54,7 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
   m2ToSqFtFactor,
   conversionFactor
 }) => {
+  const { toast } = useToast();
   // Convert mm to m for the calculation (1 mm = 0.001 m)
   const channelWidthM = channelWidthMm / 1000;
   const channelHeightM = channelHeightMm / 1000;
@@ -60,21 +63,27 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
     parseFloat(airVolumeM3h) * 1000000 / (3600 * channelWidthMm * channelHeightMm) : 0;
   
   const gasVelocityFPM = gasVelocityMS * 196.85;
+  
+  // Check if gas velocity exceeds 12 m/s
+  const isVelocityTooHigh = gasVelocityMS > 12;
+  
+  // Warning message if velocity is too high
+  const velocityWarning = isVelocityTooHigh ? (
+    <div className="bg-red-50 p-3 rounded-md text-xs text-red-700 mt-2 font-medium">
+      Warning: Inlet velocity ({gasVelocityMS.toFixed(2)} m/s) should be maximum 12 m/s
+    </div>
+  ) : null;
 
-  // Detailed calculation explanation
-  const calculationExplanation = showDimensions && channelWidthMm > 0 && channelHeightMm > 0 && airVolumeM3h ? `
-    Calculation Steps:
-    1. Air Volume: ${airVolumeM3h} m³/h
-    2. Channel Width: ${channelWidthMm} mm
-    3. Channel Height: ${channelHeightMm} mm
-
-    Formula: Air Volume (m³/h) * 1,000,000 / (3600 * Width (mm) * Height (mm))
-    
-    Detailed Calculation:
-    ${airVolumeM3h} * 1,000,000 / (3600 * ${channelWidthMm} * ${channelHeightMm})
-    = ${gasVelocityMS.toFixed(2)} m/s
-    = ${gasVelocityFPM.toFixed(0)} ft/min
-  ` : '';
+  // Show warning toast if velocity exceeds limit
+  React.useEffect(() => {
+    if (isVelocityTooHigh && showDimensions && channelWidthMm > 0 && channelHeightMm > 0 && airVolumeM3h) {
+      toast({
+        title: "High Gas Velocity Warning",
+        description: `The inlet velocity (${gasVelocityMS.toFixed(2)} m/s) exceeds recommended maximum of 12 m/s`,
+        variant: "destructive",
+      });
+    }
+  }, [isVelocityTooHigh, showDimensions, channelWidthMm, channelHeightMm, airVolumeM3h, gasVelocityMS, toast]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -262,7 +271,8 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
                     type="text"
                     value={gasVelocityMS.toFixed(2)}
                     readOnly
-                    className="calculator-input pr-12 w-full bg-gray-50"
+                    className={cn("calculator-input pr-12 w-full bg-gray-50", 
+                      isVelocityTooHigh ? "border-red-300 text-red-700" : "")}
                   />
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500">m/s</span>
                 </div>
@@ -271,18 +281,15 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
                     type="text"
                     value={gasVelocityFPM.toFixed(0)}
                     readOnly
-                    className="calculator-input pr-16 w-full bg-gray-50"
+                    className={cn("calculator-input pr-16 w-full bg-gray-50", 
+                      isVelocityTooHigh ? "border-red-300 text-red-700" : "")}
                   />
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">ft/min</span>
                 </div>
               </div>
             </div>
             
-            {calculationExplanation && (
-              <div className="bg-blue-50 p-3 rounded-md text-xs text-gray-700 mt-2">
-                <pre className="whitespace-pre-wrap">{calculationExplanation}</pre>
-              </div>
-            )}
+            {velocityWarning}
           </>
         )}
       </div>
