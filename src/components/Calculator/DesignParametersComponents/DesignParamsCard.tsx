@@ -70,13 +70,6 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
           <span className="text-gray-600 text-sm">Number of Bags:</span>
           <span className="font-medium text-sm">{formattedResults.totalBags}</span>
         </div>
-        
-        <div className="mt-4 bg-blue-50 p-3 rounded-lg">
-          <div className="text-gray-700 font-medium mb-2">EMC Cleaning Advantage</div>
-          <p className="text-sm text-gray-600 mb-1">
-            The EMC (Exact Mechanical Cleaning) system allows the calculation of the filter area based on the net area available during the cleaning cycles, providing a more efficient and accurate design.
-          </p>
-        </div>
       </div>
     </Card>
   );
