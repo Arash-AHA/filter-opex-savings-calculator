@@ -65,8 +65,8 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
         <div className="w-60 pr-4 calculator-field-label text-sm">
           <span>Inlet Dust Concentration (Actual):</span>
         </div>
-        <div className="flex flex-1 space-x-2">
-          <div className="w-1/2 relative">
+        <div className="flex flex-1">
+          <div className="w-full relative">
             <Input 
               type="text"
               value={dustConcGramAm3.toFixed(2)}
@@ -74,15 +74,6 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
               className="pr-12 w-full bg-white text-sm"
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">g/Am³</span>
-          </div>
-          <div className="w-1/2 relative">
-            <Input 
-              type="text"
-              value={dustConcGrainACF.toFixed(2)}
-              onChange={(e) => handleDustConcGrainACFChange(e.target.value)}
-              className="pr-12 w-full bg-white text-sm"
-            />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">grain/ACF</span>
           </div>
         </div>
       </div>
