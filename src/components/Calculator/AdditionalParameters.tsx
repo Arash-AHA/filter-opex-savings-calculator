@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Input } from '@/components/ui/input';
 
@@ -7,10 +6,14 @@ interface AdditionalParametersProps {
   gasTempF: number;
   dustConcGramAm3: number;
   dustConcGrainACF: number;
+  dustConcGramNm3?: number;
+  dustConcGrainSCF?: number;
   handleGasTempCChange: (value: string) => void;
   handleGasTempFChange: (value: string) => void;
   handleDustConcGramAm3Change: (value: string) => void;
   handleDustConcGrainACFChange: (value: string) => void;
+  handleDustConcGramNm3Change?: (value: string) => void;
+  handleDustConcGrainSCFChange?: (value: string) => void;
 }
 
 const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
@@ -18,10 +21,14 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
   gasTempF,
   dustConcGramAm3,
   dustConcGrainACF,
+  dustConcGramNm3,
+  dustConcGrainSCF,
   handleGasTempCChange,
   handleGasTempFChange,
   handleDustConcGramAm3Change,
-  handleDustConcGrainACFChange
+  handleDustConcGrainACFChange,
+  handleDustConcGramNm3Change,
+  handleDustConcGrainSCFChange
 }) => {
   return (
     <div className="space-y-4 p-4 border border-blue-100 rounded-xl bg-blue-50/50 animate-fadeIn">
