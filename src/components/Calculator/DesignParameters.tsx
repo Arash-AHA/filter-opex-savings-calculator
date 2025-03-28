@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { cn } from '@/lib/utils';
 import ResultCard from './ResultCard';
@@ -52,6 +53,13 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
   m2ToSqFtFactor,
   conversionFactor
 }) => {
+  // Calculate gas velocity based on air volume and channel dimensions
+  const gasVelocityMS = showDimensions && channelWidth > 0 && channelHeight > 0 && airVolumeM3h ? 
+    parseFloat(airVolumeM3h) / (channelWidth * channelHeight) / 60 : 0;
+  
+  // Convert m/s to ft/min (1 m/s = 196.85 ft/min)
+  const gasVelocityFPM = gasVelocityMS * 196.85;
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div className="md:col-span-2 space-y-4">
@@ -197,35 +205,63 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
         </div>
         
         {showDimensions && (
-          <div className="flex items-center mb-4 animate-fadeIn">
-            <div className="w-60 pr-4 calculator-field-label">
-              <span>Clean Gas Channel Width x Height:</span>
-            </div>
-            <div className="flex flex-1 space-x-2">
-              <div className="w-1/2 relative">
-                <input 
-                  type="number"
-                  value={channelWidth * 1000}
-                  onChange={(e) => setChannelWidth(parseFloat(e.target.value) / 1000 || 0)}
-                  step={10}
-                  min={10}
-                  className="calculator-input pr-8 w-full"
-                />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">mm</span>
+          <>
+            <div className="flex items-center mb-4 animate-fadeIn">
+              <div className="w-60 pr-4 calculator-field-label">
+                <span>Clean Gas Channel Width x Height:</span>
               </div>
-              <div className="w-1/2 relative">
-                <input 
-                  type="number"
-                  value={channelHeight * 1000}
-                  onChange={(e) => setChannelHeight(parseFloat(e.target.value) / 1000 || 0)}
-                  step={10}
-                  min={10}
-                  className="calculator-input pr-8 w-full"
-                />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">mm</span>
+              <div className="flex flex-1 space-x-2">
+                <div className="w-1/2 relative">
+                  <input 
+                    type="number"
+                    value={channelWidth * 1000}
+                    onChange={(e) => setChannelWidth(parseFloat(e.target.value) / 1000 || 0)}
+                    step={10}
+                    min={10}
+                    className="calculator-input pr-8 w-full"
+                  />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">mm</span>
+                </div>
+                <div className="w-1/2 relative">
+                  <input 
+                    type="number"
+                    value={channelHeight * 1000}
+                    onChange={(e) => setChannelHeight(parseFloat(e.target.value) / 1000 || 0)}
+                    step={10}
+                    min={10}
+                    className="calculator-input pr-8 w-full"
+                  />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">mm</span>
+                </div>
               </div>
             </div>
-          </div>
+            
+            <div className="flex items-center mb-4 animate-fadeIn">
+              <div className="w-60 pr-4 calculator-field-label">
+                <span>Gas velocity at filter inlet flange:</span>
+              </div>
+              <div className="flex flex-1 space-x-2">
+                <div className="w-1/2 relative">
+                  <input 
+                    type="text"
+                    value={gasVelocityMS.toFixed(2)}
+                    readOnly
+                    className="calculator-input pr-12 w-full bg-gray-50"
+                  />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500">m/s</span>
+                </div>
+                <div className="w-1/2 relative">
+                  <input 
+                    type="text"
+                    value={gasVelocityFPM.toFixed(0)}
+                    readOnly
+                    className="calculator-input pr-16 w-full bg-gray-50"
+                  />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">ft/min</span>
+                </div>
+              </div>
+            </div>
+          </>
         )}
       </div>
       
