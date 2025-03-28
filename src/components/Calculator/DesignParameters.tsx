@@ -4,6 +4,9 @@ import { cn } from '@/lib/utils';
 import ResultCard from './ResultCard';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
+import { Columns2, Columns3 } from 'lucide-react';
 
 interface DesignParametersProps {
   designType: string;
@@ -13,6 +16,8 @@ interface DesignParametersProps {
   numEMCFlaps: number;
   bagsPerRow: number;
   bagLength: number;
+  filterRowType: string;
+  setFilterRowType: (value: string) => void;
   showDimensions: boolean;
   setShowDimensions: (value: boolean) => void;
   channelWidthMm: number;
@@ -38,6 +43,8 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
   numEMCFlaps,
   bagsPerRow,
   bagLength,
+  filterRowType,
+  setFilterRowType,
   showDimensions,
   setShowDimensions,
   channelWidthMm,
@@ -59,8 +66,9 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
   const channelWidthM = channelWidthMm / 1000;
   const channelHeightM = channelHeightMm / 1000;
 
+  // Calculate gas velocity based on filter row configuration
   const gasVelocityMS = showDimensions && channelWidthMm > 0 && channelHeightMm > 0 && airVolumeM3h ? 
-    parseFloat(airVolumeM3h) * 1000000 / (3600 * channelWidthMm * channelHeightMm) : 0;
+    parseFloat(airVolumeM3h) * 1000000 / (3600 * channelWidthMm * channelHeightMm * (filterRowType === 'double' ? 2 : 1)) : 0;
   
   const gasVelocityFPM = gasVelocityMS * 196.85;
   
@@ -231,6 +239,34 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
         
         {showDimensions && (
           <>
+            <div className="flex items-center mb-4 animate-fadeIn">
+              <div className="w-60 pr-4 calculator-field-label">
+                <span>Filter Row Configuration:</span>
+              </div>
+              <div className="flex-1">
+                <RadioGroup 
+                  value={filterRowType}
+                  onValueChange={setFilterRowType}
+                  className="flex gap-4"
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="single" id="single-row" />
+                    <Label htmlFor="single-row" className="flex items-center cursor-pointer">
+                      <Columns2 className="h-4 w-4 mr-1" />
+                      <span>Single Row</span>
+                    </Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="double" id="double-row" />
+                    <Label htmlFor="double-row" className="flex items-center cursor-pointer">
+                      <Columns3 className="h-4 w-4 mr-1" />
+                      <span>Double Row</span>
+                    </Label>
+                  </div>
+                </RadioGroup>
+              </div>
+            </div>
+            
             <div className="flex items-center mb-4 animate-fadeIn">
               <div className="w-60 pr-4 calculator-field-label">
                 <span>Clean Gas Channel Width x Height:</span>

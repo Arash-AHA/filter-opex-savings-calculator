@@ -1,3 +1,4 @@
+
 import { useState, useCallback } from 'react';
 
 export const useDesignParameters = () => {
@@ -13,6 +14,7 @@ export const useDesignParameters = () => {
   const [numEMCFlaps, setNumEMCFlaps] = useState(14);
   const [bagsPerRow, setBagsPerRow] = useState(18);
   const [bagLength, setBagLength] = useState(10);
+  const [filterRowType, setFilterRowType] = useState('single'); // New state for filter row configuration
   
   // New state for dimensions - storing in mm directly now
   const [showDimensions, setShowDimensions] = useState(false);
@@ -50,6 +52,8 @@ export const useDesignParameters = () => {
     numEMCFlaps,
     bagsPerRow,
     bagLength,
+    filterRowType,
+    setFilterRowType,
     showDimensions,
     setShowDimensions,
     channelWidthMm,
