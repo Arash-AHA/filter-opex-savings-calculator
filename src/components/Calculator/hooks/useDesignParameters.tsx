@@ -18,6 +18,7 @@ export const useDesignParameters = () => {
   
   // New state for dimensions - storing in mm directly now
   const [showDimensions, setShowDimensions] = useState(false);
+  const [showOtherParams, setShowOtherParams] = useState(false);
   const [channelWidthMm, setChannelWidthMm] = useState(3150); // width in mm
   const [channelHeightMm, setChannelHeightMm] = useState(3000); // height in mm
   
@@ -29,6 +30,7 @@ export const useDesignParameters = () => {
   useEffect(() => {
     if (designType === 'modular') {
       setShowDimensions(false);
+      setShowOtherParams(false);
     }
   }, [designType]);
   
@@ -63,6 +65,8 @@ export const useDesignParameters = () => {
     setFilterRowType,
     showDimensions,
     setShowDimensions,
+    showOtherParams,
+    setShowOtherParams,
     channelWidthMm,
     setChannelWidthMm,
     channelHeightMm,

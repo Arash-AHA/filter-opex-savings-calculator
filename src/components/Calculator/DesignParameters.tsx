@@ -20,6 +20,8 @@ interface DesignParametersProps {
   setFilterRowType: (value: string) => void;
   showDimensions: boolean;
   setShowDimensions: (value: boolean) => void;
+  showOtherParams: boolean;
+  setShowOtherParams: (value: boolean) => void;
   channelWidthMm: number;
   setChannelWidthMm: (value: number) => void;
   channelHeightMm: number;
@@ -47,6 +49,8 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
   setFilterRowType,
   showDimensions,
   setShowDimensions,
+  showOtherParams,
+  setShowOtherParams,
   channelWidthMm,
   setChannelWidthMm,
   channelHeightMm,
@@ -82,6 +86,13 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
       Warning: Inlet velocity ({gasVelocityMS.toFixed(2)} m/s) should be maximum 12 m/s
     </div>
   ) : null;
+
+  // Calculate additional filter design parameters
+  const totalFilterArea = results.filterArea;
+  const netFilterArea = results.netFilterArea;
+  const bagDiameterMm = 165;
+  const emcSuppliedBags = numEMCFlaps * bagsPerRow * 5;
+  const totalBagSurfaceArea = Math.PI * (bagDiameterMm / 1000) * bagLength * emcSuppliedBags;
 
   React.useEffect(() => {
     if (isVelocityTooHigh && showDimensions && channelWidthMm > 0 && channelHeightMm > 0 && airVolumeM3h) {
@@ -223,11 +234,9 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
           </div>
         </div>
         
-        {/* Only show the rough dimensions button for Bolt/Weld design */}
+        {/* Only show the buttons for Bolt/Weld design */}
         {designType === 'bolt-weld' && (
-          <div className="flex items-center mb-4">
-            <div className="w-60 pr-4">
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div className="flex-1">
               <Button 
                 variant="outline" 
@@ -235,6 +244,15 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
                 onClick={() => setShowDimensions(!showDimensions)}
               >
                 {showDimensions ? 'Hide Rough Dimensions' : 'Show Rough Dimensions of Filter'}
+              </Button>
+            </div>
+            <div className="flex-1">
+              <Button 
+                variant="outline" 
+                className="w-full"
+                onClick={() => setShowOtherParams(!showOtherParams)}
+              >
+                {showOtherParams ? 'Hide Other Parameters' : 'Show Other Filter Design Parameters'}
               </Button>
             </div>
           </div>
@@ -356,6 +374,86 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
               </div>
             </div>
           </>
+        )}
+
+        {showOtherParams && designType === 'bolt-weld' && (
+          <div className="space-y-4 p-4 border border-blue-100 rounded-xl bg-blue-50/50 animate-fadeIn">
+            <h3 className="font-medium text-gray-700 mb-2">Additional Filter Design Parameters</h3>
+            
+            <div className="flex items-center mb-2">
+              <div className="w-60 pr-4 calculator-field-label text-sm">
+                <span>Total Number of Filter Bags:</span>
+              </div>
+              <div className="flex-1">
+                <input 
+                  type="text"
+                  value={emcSuppliedBags}
+                  readOnly
+                  className="calculator-input w-full bg-gray-50 text-sm"
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center mb-2">
+              <div className="w-60 pr-4 calculator-field-label text-sm">
+                <span>Bag Diameter:</span>
+              </div>
+              <div className="flex-1 relative">
+                <input 
+                  type="text"
+                  value={bagDiameterMm}
+                  readOnly
+                  className="calculator-input pr-8 w-full bg-gray-50 text-sm"
+                />
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">mm</span>
+              </div>
+            </div>
+
+            <div className="flex items-center mb-2">
+              <div className="w-60 pr-4 calculator-field-label text-sm">
+                <span>Total Bag Surface Area:</span>
+              </div>
+              <div className="flex-1 relative">
+                <input 
+                  type="text"
+                  value={totalBagSurfaceArea.toFixed(2)}
+                  readOnly
+                  className="calculator-input pr-8 w-full bg-gray-50 text-sm"
+                />
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">m²</span>
+              </div>
+            </div>
+
+            <div className="flex items-center mb-2">
+              <div className="w-60 pr-4 calculator-field-label text-sm">
+                <span>Gross Filter Area:</span>
+              </div>
+              <div className="flex-1 relative">
+                <input 
+                  type="text"
+                  value={totalFilterArea.toFixed(2)}
+                  readOnly
+                  className="calculator-input pr-8 w-full bg-gray-50 text-sm"
+                />
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">m²</span>
+              </div>
+            </div>
+
+            <div className="flex items-center">
+              <div className="w-60 pr-4 calculator-field-label text-sm">
+                <span>Net Filter Area (EMC cleaning):</span>
+              </div>
+              <div className="flex-1 relative">
+                <input 
+                  type="text"
+                  value={netFilterArea.toFixed(2)}
+                  readOnly
+                  className="calculator-input pr-8 w-full bg-gray-50 text-sm"
+                />
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">m²</span>
+              </div>
+            </div>
+          </div>
         )}
       </div>
       
