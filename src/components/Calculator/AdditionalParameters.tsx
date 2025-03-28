@@ -63,7 +63,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
       
       <div className="flex items-center mb-4">
         <div className="w-60 pr-4 calculator-field-label text-sm">
-          <span>Inlet Dust Concentration:</span>
+          <span>Inlet Dust Concentration (Actual):</span>
         </div>
         <div className="flex flex-1 space-x-2">
           <div className="w-1/2 relative">
@@ -89,7 +89,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
       
       <div className="flex items-center mb-4">
         <div className="w-60 pr-4 calculator-field-label text-sm">
-          <span></span>
+          <span>Inlet Dust Concentration (Normal):</span>
         </div>
         <div className="flex flex-1 space-x-2">
           <div className="w-1/2 relative">
