@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { cn } from '@/lib/utils';
 import ResultCard from './ResultCard';
@@ -13,10 +14,10 @@ interface DesignParametersProps {
   bagLength: number;
   showDimensions: boolean;
   setShowDimensions: (value: boolean) => void;
-  channelWidth: number;
-  setChannelWidth: (value: number) => void;
-  channelHeight: number;
-  setChannelHeight: (value: number) => void;
+  channelWidthMm: number;
+  setChannelWidthMm: (value: number) => void;
+  channelHeightMm: number;
+  setChannelHeightMm: (value: number) => void;
   handleAirVolumeM3hChange: (value: string) => void;
   handleAirVolumeACFMChange: (value: string) => void;
   setNumEMCFlaps: (value: number) => void;
@@ -38,10 +39,10 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
   bagLength,
   showDimensions,
   setShowDimensions,
-  channelWidth,
-  setChannelWidth,
-  channelHeight,
-  setChannelHeight,
+  channelWidthMm,
+  setChannelWidthMm,
+  channelHeightMm,
+  setChannelHeightMm,
   handleAirVolumeM3hChange,
   handleAirVolumeACFMChange,
   setNumEMCFlaps,
@@ -52,14 +53,19 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
   m2ToSqFtFactor,
   conversionFactor
 }) => {
-  const gasVelocityMS = showDimensions && channelWidth > 0 && channelHeight > 0 && airVolumeM3h ? 
-    parseFloat(airVolumeM3h) * 1000000 / (3600 * channelWidth * channelHeight) : 0;
+  // Convert mm to m for the calculation (1 mm = 0.001 m)
+  const channelWidthM = channelWidthMm / 1000;
+  const channelHeightM = channelHeightMm / 1000;
+
+  const gasVelocityMS = showDimensions && channelWidthM > 0 && channelHeightM > 0 && airVolumeM3h ? 
+    parseFloat(airVolumeM3h) * 1000000 / (3600 * channelWidthM * channelHeightM) : 0;
   
   const gasVelocityFPM = gasVelocityMS * 196.85;
 
-  const calculationExplanation = showDimensions && channelWidth > 0 && channelHeight > 0 && airVolumeM3h ? `
+  // Updated calculation explanation to show mm to m conversion
+  const calculationExplanation = showDimensions && channelWidthM > 0 && channelHeightM > 0 && airVolumeM3h ? `
     Calculation: 
-    Air Volume (375000 m³/h) * 1,000,000 / (3600 * Channel Width (${channelWidth.toFixed(3)} m) * Channel Height (${channelHeight.toFixed(3)} m))
+    Air Volume (375000 m³/h) * 1,000,000 / (3600 * Channel Width (${channelWidthMm} mm = ${channelWidthM.toFixed(3)} m) * Channel Height (${channelHeightMm} mm = ${channelHeightM.toFixed(3)} m))
     = ${gasVelocityMS.toFixed(2)} m/s
     = ${gasVelocityFPM.toFixed(0)} ft/min
   ` : '';
@@ -218,8 +224,8 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
                 <div className="w-1/2 relative">
                   <input 
                     type="number"
-                    value={channelWidth * 1000}
-                    onChange={(e) => setChannelWidth(parseFloat(e.target.value) / 1000 || 0)}
+                    value={channelWidthMm}
+                    onChange={(e) => setChannelWidthMm(parseInt(e.target.value) || 0)}
                     step={10}
                     min={10}
                     className="calculator-input pr-8 w-full"
@@ -229,8 +235,8 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
                 <div className="w-1/2 relative">
                   <input 
                     type="number"
-                    value={channelHeight * 1000}
-                    onChange={(e) => setChannelHeight(parseFloat(e.target.value) / 1000 || 0)}
+                    value={channelHeightMm}
+                    onChange={(e) => setChannelHeightMm(parseInt(e.target.value) || 0)}
                     step={10}
                     min={10}
                     className="calculator-input pr-8 w-full"

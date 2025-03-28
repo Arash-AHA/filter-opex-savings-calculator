@@ -1,3 +1,4 @@
+
 import { useState, useCallback } from 'react';
 
 export const useDesignParameters = () => {
@@ -14,10 +15,10 @@ export const useDesignParameters = () => {
   const [bagsPerRow, setBagsPerRow] = useState(18);
   const [bagLength, setBagLength] = useState(10);
   
-  // New state for dimensions
+  // New state for dimensions - storing in mm directly now
   const [showDimensions, setShowDimensions] = useState(false);
-  const [channelWidth, setChannelWidth] = useState(3.150); // Convert mm to m (3150 mm = 3.150 m)
-  const [channelHeight, setChannelHeight] = useState(3.000); // Convert mm to m (3000 mm = 3.000 m)
+  const [channelWidthMm, setChannelWidthMm] = useState(3150); // width in mm
+  const [channelHeightMm, setChannelHeightMm] = useState(3000); // height in mm
   
   // Flags to prevent infinite loops in unit conversion
   const [isM3hUpdating, setIsM3hUpdating] = useState(false);
@@ -52,10 +53,10 @@ export const useDesignParameters = () => {
     bagLength,
     showDimensions,
     setShowDimensions,
-    channelWidth,
-    setChannelWidth,
-    channelHeight,
-    setChannelHeight,
+    channelWidthMm,
+    setChannelWidthMm,
+    channelHeightMm,
+    setChannelHeightMm,
     handleAirVolumeM3hChange,
     handleAirVolumeACFMChange,
     setNumEMCFlaps,
