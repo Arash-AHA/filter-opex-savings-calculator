@@ -22,14 +22,10 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
   gasTempF,
   dustConcGramAm3,
   dustConcGrainACF,
-  dustConcGramNm3,
-  dustConcGrainSCF,
   handleGasTempCChange,
   handleGasTempFChange,
   handleDustConcGramAm3Change,
-  handleDustConcGrainACFChange,
-  handleDustConcGramNm3Change,
-  handleDustConcGrainSCFChange
+  handleDustConcGrainACFChange
 }) => {
   return (
     <div className="space-y-4 p-4 border border-blue-100 rounded-xl bg-blue-50/50 animate-fadeIn">
