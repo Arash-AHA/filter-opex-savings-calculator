@@ -7,14 +7,10 @@ interface AdditionalParametersProps {
   gasTempF: number;
   dustConcGramAm3: number;
   dustConcGrainACF: number;
-  dustConcGramNm3: number;
-  dustConcGrainSCF: number;
   handleGasTempCChange: (value: string) => void;
   handleGasTempFChange: (value: string) => void;
   handleDustConcGramAm3Change: (value: string) => void;
   handleDustConcGrainACFChange: (value: string) => void;
-  handleDustConcGramNm3Change: (value: string) => void;
-  handleDustConcGrainSCFChange: (value: string) => void;
 }
 
 const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
@@ -39,7 +35,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
           <div className="w-1/2 relative">
             <Input 
               type="text"
-              value={gasTempC.toFixed(0)}
+              value={gasTempC.toString()}
               onChange={(e) => handleGasTempCChange(e.target.value)}
               className="pr-8 w-full bg-white text-sm"
             />
@@ -48,7 +44,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
           <div className="w-1/2 relative">
             <Input 
               type="text"
-              value={gasTempF.toFixed(0)}
+              value={gasTempF.toString()}
               onChange={(e) => handleGasTempFChange(e.target.value)}
               className="pr-8 w-full bg-white text-sm"
             />
@@ -65,7 +61,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
           <div className="w-1/2 relative">
             <Input 
               type="text"
-              value={dustConcGramAm3.toFixed(2)}
+              value={dustConcGramAm3.toString()}
               onChange={(e) => handleDustConcGramAm3Change(e.target.value)}
               className="pr-12 w-full bg-white text-sm"
             />
@@ -74,7 +70,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
           <div className="w-1/2 relative">
             <Input 
               type="text"
-              value={dustConcGrainACF.toFixed(2)}
+              value={dustConcGrainACF.toString()}
               onChange={(e) => handleDustConcGrainACFChange(e.target.value)}
               className="pr-12 w-full bg-white text-sm"
             />
