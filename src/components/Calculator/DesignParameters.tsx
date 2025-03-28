@@ -55,7 +55,7 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
 }) => {
   // Calculate gas velocity based on air volume and channel dimensions
   const gasVelocityMS = showDimensions && channelWidth > 0 && channelHeight > 0 && airVolumeM3h ? 
-    parseFloat(airVolumeM3h) / (channelWidth * channelHeight) / 60 : 0;
+    parseFloat(airVolumeM3h) / (channelWidth * channelHeight) * 1000000 / 3600 : 0;
   
   // Convert m/s to ft/min (1 m/s = 196.85 ft/min)
   const gasVelocityFPM = gasVelocityMS * 196.85;
