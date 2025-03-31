@@ -104,9 +104,8 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
             <Input 
               type="text"
               value={dustConcGramNm3 ?? ''}
-              onChange={(e) => handleDustConcGramNm3?.(e.target.value)}
+              onChange={(e) => handleDustConcGramNm3Change?.(e.target.value)}
               className="pr-12 w-full bg-white text-sm"
-              placeholder="Enter g/Nm³"
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">g/Nm³</span>
           </div>
@@ -116,7 +115,6 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
               value={dustConcGrainSCF ?? ''}
               onChange={(e) => handleDustConcGrainSCFChange?.(e.target.value)}
               className="pr-12 w-full bg-white text-sm"
-              placeholder="Enter grain/SCF"
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">grain/SCF</span>
           </div>
@@ -134,7 +132,6 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
               value={totalDustKgH ?? ''}
               onChange={(e) => handleTotalDustKgHChange?.(e.target.value)}
               className="pr-12 w-full bg-white text-sm"
-              placeholder="Enter kg/h"
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">kg/h</span>
           </div>
@@ -144,7 +141,6 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
               value={totalDustLbH ?? ''}
               onChange={(e) => handleTotalDustLbHChange?.(e.target.value)}
               className="pr-12 w-full bg-white text-sm"
-              placeholder="Enter lb/h"
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">lb/h</span>
           </div>
