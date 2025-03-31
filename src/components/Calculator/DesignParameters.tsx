@@ -43,10 +43,14 @@ interface DesignParametersProps {
   handleGasTempFChange: (value: string) => void;
   handleDustConcGramAm3Change: (value: string) => void;
   handleDustConcGrainACFChange: (value: string) => void;
-  dustConcGramNm3?: number;  // Made optional with ?
-  dustConcGrainSCF?: number; // Made optional with ?
+  dustConcGramNm3?: number;  
+  dustConcGrainSCF?: number;
   handleDustConcGramNm3Change?: (value: string) => void;
   handleDustConcGrainSCFChange?: (value: string) => void;
+  totalDustKgH?: number;
+  totalDustLbH?: number;
+  handleTotalDustKgHChange?: (value: string) => void;
+  handleTotalDustLbHChange?: (value: string) => void;
 }
 
 const DesignParameters: React.FC<DesignParametersProps> = ({
@@ -88,7 +92,11 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
   handleDustConcGramAm3Change,
   handleDustConcGrainACFChange,
   handleDustConcGramNm3Change,
-  handleDustConcGrainSCFChange
+  handleDustConcGrainSCFChange,
+  totalDustKgH,
+  totalDustLbH,
+  handleTotalDustKgHChange,
+  handleTotalDustLbHChange
 }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -143,12 +151,16 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
             dustConcGrainACF={dustConcGrainACF}
             dustConcGramNm3={dustConcGramNm3}
             dustConcGrainSCF={dustConcGrainSCF}
+            totalDustKgH={totalDustKgH}
+            totalDustLbH={totalDustLbH}
             handleGasTempCChange={handleGasTempCChange}
             handleGasTempFChange={handleGasTempFChange}
             handleDustConcGramAm3Change={handleDustConcGramAm3Change}
             handleDustConcGrainACFChange={handleDustConcGrainACFChange}
             handleDustConcGramNm3Change={handleDustConcGramNm3Change}
             handleDustConcGrainSCFChange={handleDustConcGrainSCFChange}
+            handleTotalDustKgHChange={handleTotalDustKgHChange}
+            handleTotalDustLbHChange={handleTotalDustLbHChange}
           />
         )}
         

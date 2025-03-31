@@ -1,3 +1,4 @@
+
 import { useState, useCallback, useEffect } from 'react';
 
 export const useDesignParameters = () => {
@@ -29,6 +30,10 @@ export const useDesignParameters = () => {
   const [dustConcGramNm3, setDustConcGramNm3] = useState(20);
   const [dustConcGrainSCF, setDustConcGrainSCF] = useState(8.74); // Conversion factor
   
+  // New state for total dust discharge
+  const [totalDustKgH, setTotalDustKgH] = useState<number | null>(null);
+  const [totalDustLbH, setTotalDustLbH] = useState<number | null>(null);
+  
   // Flags to prevent infinite loops in unit conversion
   const [isM3hUpdating, setIsM3hUpdating] = useState(false);
   const [isACFMUpdating, setIsACFMUpdating] = useState(false);
@@ -38,6 +43,8 @@ export const useDesignParameters = () => {
   const [isGrainACFUpdating, setIsGrainACFUpdating] = useState(false);
   const [isGramNm3Updating, setIsGramNm3Updating] = useState(false);
   const [isGrainSCFUpdating, setIsGrainSCFUpdating] = useState(false);
+  const [isKgHUpdating, setIsKgHUpdating] = useState(false);
+  const [isLbHUpdating, setIsLbHUpdating] = useState(false);
 
   // Only hide dimensions if modular design is selected
   useEffect(() => {
@@ -139,6 +146,31 @@ export const useDesignParameters = () => {
     }
   }, [isGramNm3Updating]);
   
+  // Add handlers for total dust discharge
+  const handleTotalDustKgHChange = useCallback((value: string) => {
+    const dustKgH = parseFloat(value);
+    setTotalDustKgH(isNaN(dustKgH) ? null : dustKgH);
+    if (!isLbHUpdating && !isNaN(dustKgH)) {
+      setIsKgHUpdating(true);
+      // 1 kg = 2.20462 lb
+      const dustLbH = dustKgH * 2.20462;
+      setTotalDustLbH(isNaN(dustLbH) ? null : dustLbH);
+      setTimeout(() => setIsKgHUpdating(false), 100);
+    }
+  }, [isLbHUpdating]);
+  
+  const handleTotalDustLbHChange = useCallback((value: string) => {
+    const dustLbH = parseFloat(value);
+    setTotalDustLbH(isNaN(dustLbH) ? null : dustLbH);
+    if (!isKgHUpdating && !isNaN(dustLbH)) {
+      setIsLbHUpdating(true);
+      // 1 lb = 0.453592 kg
+      const dustKgH = dustLbH * 0.453592;
+      setTotalDustKgH(isNaN(dustKgH) ? null : dustKgH);
+      setTimeout(() => setIsLbHUpdating(false), 100);
+    }
+  }, [isKgHUpdating]);
+  
   return {
     designType,
     setDesignType,
@@ -163,6 +195,8 @@ export const useDesignParameters = () => {
     dustConcGrainACF,
     dustConcGramNm3,
     dustConcGrainSCF,
+    totalDustKgH,
+    totalDustLbH,
     handleAirVolumeM3hChange,
     handleAirVolumeACFMChange,
     handleGasTempCChange,
@@ -171,6 +205,8 @@ export const useDesignParameters = () => {
     handleDustConcGrainACFChange,
     handleDustConcGramNm3Change,
     handleDustConcGrainSCFChange,
+    handleTotalDustKgHChange,
+    handleTotalDustLbHChange,
     setNumEMCFlaps,
     setBagsPerRow,
     setBagLength,
