@@ -104,7 +104,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
             <Input 
               type="text"
               value={dustConcGramNm3 ?? ''}
-              onChange={(e) => handleDustConcGramNm3Change?.(e.target.value)}
+              onChange={(e) => handleDustConcGramNm3?.(e.target.value)}
               className="pr-12 w-full bg-white text-sm"
               placeholder="Enter g/Nm³"
             />
