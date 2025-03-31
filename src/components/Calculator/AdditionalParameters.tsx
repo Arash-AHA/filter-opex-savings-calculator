@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Input } from '@/components/ui/input';
 
@@ -7,8 +6,8 @@ interface AdditionalParametersProps {
   gasTempF: number;
   dustConcGramAm3: number;
   dustConcGrainACF: number;
-  dustConcGramNm3?: number;
-  dustConcGrainSCF?: number;
+  dustConcGramNm3?: number | null;
+  dustConcGrainSCF?: number | null;
   handleGasTempCChange: (value: string) => void;
   handleGasTempFChange: (value: string) => void;
   handleDustConcGramAm3Change: (value: string) => void;
@@ -87,7 +86,6 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
         </div>
       </div>
       
-      {/* Added new row for Inlet Dust Concentration (Normal) */}
       <div className="flex items-center mb-4">
         <div className="w-60 pr-4 calculator-field-label text-sm">
           <span>Inlet Dust Concentration (Normal):</span>
@@ -96,18 +94,20 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
           <div className="w-1/2 relative">
             <Input 
               type="text"
-              value={dustConcGramNm3?.toString() || '0'}
-              onChange={(e) => handleDustConcGramNm3?.(e.target.value)}
+              value={dustConcGramNm3 ?? ''}
+              onChange={(e) => handleDustConcGramNm3Change?.(e.target.value)}
               className="pr-12 w-full bg-white text-sm"
+              placeholder="Enter g/Nm³"
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">g/Nm³</span>
           </div>
           <div className="w-1/2 relative">
             <Input 
               type="text"
-              value={dustConcGrainSCF?.toString() || '0'}
+              value={dustConcGrainSCF ?? ''}
               onChange={(e) => handleDustConcGrainSCFChange?.(e.target.value)}
               className="pr-12 w-full bg-white text-sm"
+              placeholder="Enter grain/SCF"
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">grain/SCF</span>
           </div>
