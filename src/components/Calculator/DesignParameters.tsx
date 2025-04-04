@@ -45,8 +45,6 @@ interface DesignParametersProps {
   handleDustConcGrainACFChange: (value: string) => void;
   handleDustConcGramNm3Change?: (value: string) => void;
   handleDustConcGrainSCFChange?: (value: string) => void;
-  totalDustKgH?: number;
-  totalDustLbH?: number;
   handleTotalDustKgHChange?: (value: string) => void;
   handleTotalDustLbHChange?: (value: string) => void;
 }
@@ -90,8 +88,6 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
   handleDustConcGrainACFChange,
   handleDustConcGramNm3Change,
   handleDustConcGrainSCFChange,
-  totalDustKgH,
-  totalDustLbH,
   handleTotalDustKgHChange,
   handleTotalDustLbHChange
 }) => {
@@ -148,8 +144,6 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
             dustConcGrainACF={dustConcGrainACF}
             dustConcGramNm3={dustConcGramNm3}
             dustConcGrainSCF={dustConcGrainSCF}
-            totalDustKgH={totalDustKgH}
-            totalDustLbH={totalDustLbH}
             handleGasTempCChange={handleGasTempCChange}
             handleGasTempFChange={handleGasTempFChange}
             handleDustConcGramAm3Change={handleDustConcGramAm3Change}
