@@ -1,4 +1,3 @@
-
 import React from 'react';
 import CalculatorSection from './CalculatorSection';
 import Transition from '../UI/Transition';
@@ -62,12 +61,16 @@ const FilterOpexCalculator = () => {
             dustConcGrainACF={calculatorState.dustConcGrainACF}
             dustConcGramNm3={calculatorState.dustConcGramNm3}
             dustConcGrainSCF={calculatorState.dustConcGrainSCF}
+            totalDustKgH={calculatorState.totalDustKgH}
+            totalDustLbH={calculatorState.totalDustLbH}
             handleGasTempCChange={calculatorState.handleGasTempCChange}
             handleGasTempFChange={calculatorState.handleGasTempFChange}
             handleDustConcGramAm3Change={calculatorState.handleDustConcGramAm3Change}
             handleDustConcGrainACFChange={calculatorState.handleDustConcGrainACFChange}
             handleDustConcGramNm3Change={calculatorState.handleDustConcGramNm3Change}
             handleDustConcGrainSCFChange={calculatorState.handleDustConcGrainSCFChange}
+            handleTotalDustKgHChange={calculatorState.handleTotalDustKgHChange}
+            handleTotalDustLbHChange={calculatorState.handleTotalDustLbHChange}
           />
         </CalculatorSection>
         
@@ -101,7 +104,7 @@ const FilterOpexCalculator = () => {
           />
         </CalculatorSection>
         
-        {/* Operational Parameters Section - Title Updated */}
+        {/* Operational Parameters Section */}
         <CalculatorSection 
           title="Operational Parameters" 
           delay={500}

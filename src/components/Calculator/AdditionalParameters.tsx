@@ -129,7 +129,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
           <div className="w-1/2 relative">
             <Input 
               type="text"
-              value={totalDustKgH ?? ''}
+              value={totalDustKgH?.toString() ?? ''}
               onChange={(e) => handleTotalDustKgHChange?.(e.target.value)}
               className="pr-12 w-full bg-white text-sm"
             />
@@ -138,7 +138,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
           <div className="w-1/2 relative">
             <Input 
               type="text"
-              value={totalDustLbH ?? ''}
+              value={totalDustLbH?.toString() ?? ''}
               onChange={(e) => handleTotalDustLbHChange?.(e.target.value)}
               className="pr-12 w-full bg-white text-sm"
             />

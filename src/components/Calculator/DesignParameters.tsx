@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import FilterDesignType from './DesignParametersComponents/FilterDesignType';
@@ -34,17 +33,16 @@ interface DesignParametersProps {
   results: any;
   m2ToSqFtFactor: number;
   conversionFactor: number;
-  // Additional parameters
   gasTempC: number;
   gasTempF: number;
   dustConcGramAm3: number;
   dustConcGrainACF: number;
+  dustConcGramNm3?: number;  
+  dustConcGrainSCF?: number;
   handleGasTempCChange: (value: string) => void;
   handleGasTempFChange: (value: string) => void;
   handleDustConcGramAm3Change: (value: string) => void;
   handleDustConcGrainACFChange: (value: string) => void;
-  dustConcGramNm3?: number;  
-  dustConcGrainSCF?: number;
   handleDustConcGramNm3Change?: (value: string) => void;
   handleDustConcGrainSCFChange?: (value: string) => void;
   totalDustKgH?: number;
@@ -80,7 +78,6 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
   results,
   m2ToSqFtFactor,
   conversionFactor,
-  // Additional parameters
   gasTempC,
   gasTempF,
   dustConcGramAm3,
