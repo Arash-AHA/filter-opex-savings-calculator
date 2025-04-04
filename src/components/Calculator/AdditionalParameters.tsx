@@ -7,14 +7,14 @@ interface AdditionalParametersProps {
   gasTempF: number;
   dustConcGramAm3: number;
   dustConcGrainACF: number;
-  dustConcGramNm3?: number | null;
-  dustConcGrainSCF?: number | null;
+  dustConcGramNm3: number | null;
+  dustConcGrainSCF: number | null;
   handleGasTempCChange: (value: string) => void;
   handleGasTempFChange: (value: string) => void;
   handleDustConcGramAm3Change: (value: string) => void;
   handleDustConcGrainACFChange: (value: string) => void;
-  handleDustConcGramNm3Change?: (value: string) => void;
-  handleDustConcGrainSCFChange?: (value: string) => void;
+  handleDustConcGramNm3Change: (value: string) => void;
+  handleDustConcGrainSCFChange: (value: string) => void;
 }
 
 const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
@@ -95,8 +95,8 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
           <div className="w-1/2 relative">
             <Input 
               type="text"
-              value={dustConcGramNm3 ?? ''}
-              onChange={(e) => handleDustConcGramNm3Change?.(e.target.value)}
+              value={dustConcGramNm3 !== null ? dustConcGramNm3.toString() : ''}
+              onChange={(e) => handleDustConcGramNm3Change(e.target.value)}
               className="pr-12 w-full bg-white text-sm"
               placeholder="Enter g/Nm³"
             />
@@ -105,8 +105,8 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
           <div className="w-1/2 relative">
             <Input 
               type="text"
-              value={dustConcGrainSCF ?? ''}
-              onChange={(e) => handleDustConcGrainSCFChange?.(e.target.value)}
+              value={dustConcGrainSCF !== null ? dustConcGrainSCF.toString() : ''}
+              onChange={(e) => handleDustConcGrainSCFChange(e.target.value)}
               className="pr-12 w-full bg-white text-sm"
               placeholder="Enter grain/SCF"
             />

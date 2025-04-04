@@ -1,3 +1,4 @@
+
 import { useState, useCallback, useEffect } from 'react';
 
 export const useDesignParameters = () => {
@@ -117,25 +118,25 @@ export const useDesignParameters = () => {
   
   const handleDustConcGramNm3Change = useCallback((value: string) => {
     const concGramNm3 = parseFloat(value);
-    setDustConcGramNm3(isNaN(concGramNm3) ? 0 : concGramNm3);
+    setDustConcGramNm3(isNaN(concGramNm3) ? null : concGramNm3);
     if (!isGrainSCFUpdating && !isNaN(concGramNm3)) {
       setIsGramNm3Updating(true);
       // 1 g/Nm³ = 0.437 grain/SCF
       const grainSCF = concGramNm3 * 0.437;
-      setDustConcGrainSCF(isNaN(grainSCF) ? 0 : grainSCF);
+      setDustConcGrainSCF(isNaN(grainSCF) ? null : grainSCF);
       setTimeout(() => setIsGramNm3Updating(false), 100);
     }
   }, [isGrainSCFUpdating]);
   
   const handleDustConcGrainSCFChange = useCallback((value: string) => {
     const concGrainSCF = parseFloat(value);
-    setDustConcGrainSCF(isNaN(concGrainSCF) ? 0 : concGrainSCF);
+    setDustConcGrainSCF(isNaN(concGrainSCF) ? null : concGrainSCF);
     if (!isGramNm3Updating && !isNaN(concGrainSCF)) {
       setIsGrainSCFUpdating(true);
       // 1 grain/SCF = 2.288 g/Nm³
       const gramNm3 = concGrainSCF / 0.437;
-      setDustConcGramNm3(isNaN(gramNm3) ? 0 : gramNm3);
-      setTimeout(() => setIsGramNm3Updating(false), 100);
+      setDustConcGramNm3(isNaN(gramNm3) ? null : gramNm3);
+      setTimeout(() => setIsGrainSCFUpdating(false), 100);
     }
   }, [isGramNm3Updating]);
   

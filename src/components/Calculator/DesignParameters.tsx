@@ -43,10 +43,10 @@ interface DesignParametersProps {
   handleGasTempFChange: (value: string) => void;
   handleDustConcGramAm3Change: (value: string) => void;
   handleDustConcGrainACFChange: (value: string) => void;
-  dustConcGramNm3?: number;  // Made optional with ?
-  dustConcGrainSCF?: number; // Made optional with ?
-  handleDustConcGramNm3Change?: (value: string) => void;
-  handleDustConcGrainSCFChange?: (value: string) => void;
+  dustConcGramNm3: number | null;
+  dustConcGrainSCF: number | null;
+  handleDustConcGramNm3Change: (value: string) => void;
+  handleDustConcGrainSCFChange: (value: string) => void;
 }
 
 const DesignParameters: React.FC<DesignParametersProps> = ({
