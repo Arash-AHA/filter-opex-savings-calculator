@@ -8,6 +8,12 @@ interface AdditionalParametersProps {
   dustConcGrainACF: number;
   dustConcGramNm3?: number | null;
   dustConcGrainSCF?: number | null;
+  handleGasTempCChange: (value: string) => void;
+  handleGasTempFChange: (value: string) => void;
+  handleDustConcGramAm3Change: (value: string) => void;
+  handleDustConcGrainACFChange: (value: string) => void;
+  handleDustConcGramNm3Change?: (value: string) => void;
+  handleDustConcGrainSCFChange?: (value: string) => void;
 }
 
 const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
@@ -16,7 +22,13 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
   dustConcGramAm3,
   dustConcGrainACF,
   dustConcGramNm3,
-  dustConcGrainSCF
+  dustConcGrainSCF,
+  handleGasTempCChange,
+  handleGasTempFChange,
+  handleDustConcGramAm3Change,
+  handleDustConcGrainACFChange,
+  handleDustConcGramNm3Change,
+  handleDustConcGrainSCFChange
 }) => {
   return (
     <div className="space-y-4 p-4 border border-blue-100 rounded-xl bg-blue-50/50 animate-fadeIn">
@@ -85,6 +97,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
               value={dustConcGramNm3 ?? ''}
               onChange={(e) => handleDustConcGramNm3Change?.(e.target.value)}
               className="pr-12 w-full bg-white text-sm"
+              placeholder="Enter g/Nm³"
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">g/Nm³</span>
           </div>
@@ -94,6 +107,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
               value={dustConcGrainSCF ?? ''}
               onChange={(e) => handleDustConcGrainSCFChange?.(e.target.value)}
               className="pr-12 w-full bg-white text-sm"
+              placeholder="Enter grain/SCF"
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">grain/SCF</span>
           </div>

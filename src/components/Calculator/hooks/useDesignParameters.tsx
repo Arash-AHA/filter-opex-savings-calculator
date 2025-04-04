@@ -38,8 +38,6 @@ export const useDesignParameters = () => {
   const [isGrainACFUpdating, setIsGrainACFUpdating] = useState(false);
   const [isGramNm3Updating, setIsGramNm3Updating] = useState(false);
   const [isGrainSCFUpdating, setIsGrainSCFUpdating] = useState(false);
-  const [isKgHUpdating, setIsKgHUpdating] = useState(false);
-  const [isLbHUpdating, setIsLbHUpdating] = useState(false);
 
   // Only hide dimensions if modular design is selected
   useEffect(() => {

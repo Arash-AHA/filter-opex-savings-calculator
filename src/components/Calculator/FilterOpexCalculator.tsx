@@ -1,17 +1,18 @@
+
 import React from 'react';
 import CalculatorSection from './CalculatorSection';
 import Transition from '../UI/Transition';
-import { useCalculatorState } from './hooks/useCalculatorState';
 import DesignParameters from './DesignParameters';
 import FilterBagReplacement from './FilterBagReplacement';
 import OperationalParameters from './OperationalParameters';
 import SavingsResults from './SavingsResults';
+import { useCalculatorState } from './hooks/useCalculatorState';
 
-const FilterOpexCalculator: React.FC = () => {
+const FilterOpexCalculator = () => {
   const calculatorState = useCalculatorState();
   
   return (
-    <div className="w-full max-w-7xl mx-auto">
+    <div className="max-w-5xl mx-auto">
       <div className="text-center mb-8">
         <Transition animation="slide-in-left" delay={100}>
           <h1 className="text-3xl font-medium text-gray-900 mb-2">Filter OPEX Savings Calculator</h1>
@@ -22,6 +23,7 @@ const FilterOpexCalculator: React.FC = () => {
       </div>
       
       <div className="grid grid-cols-1 gap-8">
+        {/* Design Type Selection */}
         <CalculatorSection 
           title="Filter Design Configuration" 
           delay={100}
@@ -66,11 +68,10 @@ const FilterOpexCalculator: React.FC = () => {
             handleDustConcGrainACFChange={calculatorState.handleDustConcGrainACFChange}
             handleDustConcGramNm3Change={calculatorState.handleDustConcGramNm3Change}
             handleDustConcGrainSCFChange={calculatorState.handleDustConcGrainSCFChange}
-            handleTotalDustKgHChange={calculatorState.handleTotalDustKgHChange}
-            handleTotalDustLbHChange={calculatorState.handleTotalDustLbHChange}
           />
         </CalculatorSection>
         
+        {/* Filter Bag Replacement Section */}
         <CalculatorSection 
           title="Filter Bag Replacement" 
           delay={300}
@@ -100,6 +101,7 @@ const FilterOpexCalculator: React.FC = () => {
           />
         </CalculatorSection>
         
+        {/* Operational Parameters Section - Title Updated */}
         <CalculatorSection 
           title="Operational Parameters" 
           delay={500}
@@ -135,6 +137,7 @@ const FilterOpexCalculator: React.FC = () => {
           />
         </CalculatorSection>
         
+        {/* Results Section */}
         <CalculatorSection 
           title="OPEX Savings Analysis" 
           delay={700}

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import FilterDesignType from './DesignParametersComponents/FilterDesignType';
@@ -33,20 +34,19 @@ interface DesignParametersProps {
   results: any;
   m2ToSqFtFactor: number;
   conversionFactor: number;
+  // Additional parameters
   gasTempC: number;
   gasTempF: number;
   dustConcGramAm3: number;
   dustConcGrainACF: number;
-  dustConcGramNm3?: number;  
-  dustConcGrainSCF?: number;
   handleGasTempCChange: (value: string) => void;
   handleGasTempFChange: (value: string) => void;
   handleDustConcGramAm3Change: (value: string) => void;
   handleDustConcGrainACFChange: (value: string) => void;
+  dustConcGramNm3?: number;  // Made optional with ?
+  dustConcGrainSCF?: number; // Made optional with ?
   handleDustConcGramNm3Change?: (value: string) => void;
   handleDustConcGrainSCFChange?: (value: string) => void;
-  handleTotalDustKgHChange?: (value: string) => void;
-  handleTotalDustLbHChange?: (value: string) => void;
 }
 
 const DesignParameters: React.FC<DesignParametersProps> = ({
@@ -76,6 +76,7 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
   results,
   m2ToSqFtFactor,
   conversionFactor,
+  // Additional parameters
   gasTempC,
   gasTempF,
   dustConcGramAm3,
@@ -87,9 +88,7 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
   handleDustConcGramAm3Change,
   handleDustConcGrainACFChange,
   handleDustConcGramNm3Change,
-  handleDustConcGrainSCFChange,
-  handleTotalDustKgHChange,
-  handleTotalDustLbHChange
+  handleDustConcGrainSCFChange
 }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -150,8 +149,6 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
             handleDustConcGrainACFChange={handleDustConcGrainACFChange}
             handleDustConcGramNm3Change={handleDustConcGramNm3Change}
             handleDustConcGrainSCFChange={handleDustConcGrainSCFChange}
-            handleTotalDustKgHChange={handleTotalDustKgHChange}
-            handleTotalDustLbHChange={handleTotalDustLbHChange}
           />
         )}
         
