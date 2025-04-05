@@ -12,6 +12,8 @@ interface AdditionalParametersProps {
   dustConcGrainSCF: number | null;
   outletDustKgH: number | null;
   outletDustLbH: number | null;
+  targetEmissionMgNm3: number | null;
+  targetEmissionGrainDscf: number | null;
   handleGasTempCChange: (value: string) => void;
   handleGasTempFChange: (value: string) => void;
   handleDustConcGramAm3Change: (value: string) => void;
@@ -20,6 +22,8 @@ interface AdditionalParametersProps {
   handleDustConcGrainSCFChange: (value: string) => void;
   handleOutletDustKgHChange: (value: string) => void;
   handleOutletDustLbHChange: (value: string) => void;
+  handleTargetEmissionMgNm3Change: (value: string) => void;
+  handleTargetEmissionGrainDscfChange: (value: string) => void;
   estimateOutletDust: () => void;
 }
 
@@ -32,6 +36,8 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
   dustConcGrainSCF,
   outletDustKgH,
   outletDustLbH,
+  targetEmissionMgNm3,
+  targetEmissionGrainDscf,
   handleGasTempCChange,
   handleGasTempFChange,
   handleDustConcGramAm3Change,
@@ -40,6 +46,8 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
   handleDustConcGrainSCFChange,
   handleOutletDustKgHChange,
   handleOutletDustLbHChange,
+  handleTargetEmissionMgNm3Change,
+  handleTargetEmissionGrainDscfChange,
   estimateOutletDust
 }) => {
   return (
@@ -159,6 +167,34 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
           >
             Estimate
           </Button>
+        </div>
+      </div>
+      
+      <div className="flex items-center mb-4">
+        <div className="w-60 pr-4 calculator-field-label text-sm">
+          <span>Target Emission:</span>
+        </div>
+        <div className="flex flex-1 space-x-2">
+          <div className="w-1/2 relative">
+            <Input 
+              type="text"
+              value={targetEmissionMgNm3 !== null ? targetEmissionMgNm3.toString() : ''}
+              onChange={(e) => handleTargetEmissionMgNm3Change(e.target.value)}
+              className="pr-12 w-full bg-white text-sm"
+              placeholder="Enter mg/Nm³"
+            />
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">mg/Nm³ (dry)</span>
+          </div>
+          <div className="w-1/2 relative">
+            <Input 
+              type="text"
+              value={targetEmissionGrainDscf !== null ? targetEmissionGrainDscf.toString() : ''}
+              onChange={(e) => handleTargetEmissionGrainDscfChange(e.target.value)}
+              className="pr-12 w-full bg-white text-sm"
+              placeholder="Enter grain/dscf"
+            />
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">grain/dscf (dry)</span>
+          </div>
         </div>
       </div>
     </div>

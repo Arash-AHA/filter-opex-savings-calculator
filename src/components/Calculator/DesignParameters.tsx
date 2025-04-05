@@ -53,6 +53,11 @@ interface DesignParametersProps {
   handleOutletDustKgHChange: (value: string) => void;
   handleOutletDustLbHChange: (value: string) => void;
   estimateOutletDust: () => void;
+  // Target emission parameters
+  targetEmissionMgNm3: number | null;
+  targetEmissionGrainDscf: number | null;
+  handleTargetEmissionMgNm3Change: (value: string) => void;
+  handleTargetEmissionGrainDscfChange: (value: string) => void;
 }
 
 const DesignParameters: React.FC<DesignParametersProps> = ({
@@ -100,7 +105,12 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
   outletDustLbH,
   handleOutletDustKgHChange,
   handleOutletDustLbHChange,
-  estimateOutletDust
+  estimateOutletDust,
+  // Target emission parameters
+  targetEmissionMgNm3,
+  targetEmissionGrainDscf,
+  handleTargetEmissionMgNm3Change,
+  handleTargetEmissionGrainDscfChange
 }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -157,6 +167,8 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
             dustConcGrainSCF={dustConcGrainSCF}
             outletDustKgH={outletDustKgH}
             outletDustLbH={outletDustLbH}
+            targetEmissionMgNm3={targetEmissionMgNm3}
+            targetEmissionGrainDscf={targetEmissionGrainDscf}
             handleGasTempCChange={handleGasTempCChange}
             handleGasTempFChange={handleGasTempFChange}
             handleDustConcGramAm3Change={handleDustConcGramAm3Change}
@@ -165,6 +177,8 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
             handleDustConcGrainSCFChange={handleDustConcGrainSCFChange}
             handleOutletDustKgHChange={handleOutletDustKgHChange}
             handleOutletDustLbHChange={handleOutletDustLbHChange}
+            handleTargetEmissionMgNm3Change={handleTargetEmissionMgNm3Change}
+            handleTargetEmissionGrainDscfChange={handleTargetEmissionGrainDscfChange}
             estimateOutletDust={estimateOutletDust}
           />
         )}

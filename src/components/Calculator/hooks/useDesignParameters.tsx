@@ -1,3 +1,4 @@
+
 import { useState, useCallback, useEffect } from 'react';
 
 export const useDesignParameters = () => {
@@ -33,6 +34,10 @@ export const useDesignParameters = () => {
   const [outletDustKgH, setOutletDustKgH] = useState<number | null>(1.2);
   const [outletDustLbH, setOutletDustLbH] = useState<number | null>(2.65); // 1.2 kg/h ≈ 2.65 lb/h
   
+  // New state for target emission values
+  const [targetEmissionMgNm3, setTargetEmissionMgNm3] = useState<number | null>(5);
+  const [targetEmissionGrainDscf, setTargetEmissionGrainDscf] = useState<number | null>(0.0022); // 5 mg/Nm³ ≈ 0.0022 grain/dscf
+  
   // Flags to prevent infinite loops in unit conversion
   const [isM3hUpdating, setIsM3hUpdating] = useState(false);
   const [isACFMUpdating, setIsACFMUpdating] = useState(false);
@@ -44,6 +49,8 @@ export const useDesignParameters = () => {
   const [isGrainSCFUpdating, setIsGrainSCFUpdating] = useState(false);
   const [isKgHUpdating, setIsKgHUpdating] = useState(false);
   const [isLbHUpdating, setIsLbHUpdating] = useState(false);
+  const [isMgNm3Updating, setIsMgNm3Updating] = useState(false);
+  const [isGrainDscfUpdating, setIsGrainDscfUpdating] = useState(false);
 
   // Only hide dimensions if modular design is selected
   useEffect(() => {
@@ -170,6 +177,31 @@ export const useDesignParameters = () => {
     }
   }, [isKgHUpdating]);
   
+  // Handle target emission conversions
+  const handleTargetEmissionMgNm3Change = useCallback((value: string) => {
+    const emissionMgNm3 = parseFloat(value);
+    setTargetEmissionMgNm3(isNaN(emissionMgNm3) ? null : emissionMgNm3);
+    if (!isGrainDscfUpdating && !isNaN(emissionMgNm3)) {
+      setIsMgNm3Updating(true);
+      // 1 mg/Nm³ ≈ 0.00044 grain/dscf
+      const grainDscf = emissionMgNm3 * 0.00044;
+      setTargetEmissionGrainDscf(isNaN(grainDscf) ? null : grainDscf);
+      setTimeout(() => setIsMgNm3Updating(false), 100);
+    }
+  }, [isGrainDscfUpdating]);
+  
+  const handleTargetEmissionGrainDscfChange = useCallback((value: string) => {
+    const emissionGrainDscf = parseFloat(value);
+    setTargetEmissionGrainDscf(isNaN(emissionGrainDscf) ? null : emissionGrainDscf);
+    if (!isMgNm3Updating && !isNaN(emissionGrainDscf)) {
+      setIsGrainDscfUpdating(true);
+      // 1 grain/dscf ≈ 2290 mg/Nm³
+      const mgNm3 = emissionGrainDscf / 0.00044;
+      setTargetEmissionMgNm3(isNaN(mgNm3) ? null : mgNm3);
+      setTimeout(() => setIsGrainDscfUpdating(false), 100);
+    }
+  }, [isMgNm3Updating]);
+  
   // Update the estimateOutletDust function
   const estimateOutletDust = useCallback(() => {
     if (dustConcGramAm3 && airVolumeM3h) {
@@ -207,6 +239,8 @@ export const useDesignParameters = () => {
     dustConcGrainSCF,
     outletDustKgH,
     outletDustLbH,
+    targetEmissionMgNm3,
+    targetEmissionGrainDscf,
     handleAirVolumeM3hChange,
     handleAirVolumeACFMChange,
     handleGasTempCChange,
@@ -217,6 +251,8 @@ export const useDesignParameters = () => {
     handleDustConcGrainSCFChange,
     handleOutletDustKgHChange,
     handleOutletDustLbHChange,
+    handleTargetEmissionMgNm3Change,
+    handleTargetEmissionGrainDscfChange,
     estimateOutletDust,
     setNumEMCFlaps,
     setBagsPerRow,
