@@ -1,4 +1,3 @@
-
 import { useState, useCallback, useEffect } from 'react';
 
 export const useDesignParameters = () => {
@@ -171,14 +170,13 @@ export const useDesignParameters = () => {
     }
   }, [isKgHUpdating]);
   
-  // Estimate outlet dust based on inlet concentration and air volume
+  // Update the estimateOutletDust function
   const estimateOutletDust = useCallback(() => {
     if (dustConcGramAm3 && airVolumeM3h) {
-      // Assuming 99.99% efficiency for typical baghouse
-      const efficiency = 0.9999;
-      const inletDustLoadKgH = (dustConcGramAm3 * parseFloat(airVolumeM3h)) / 1000; // g/h to kg/h
-      const estimatedOutletKgH = inletDustLoadKgH * (1 - efficiency);
+      // Calculate outlet dust by multiplying inlet dust concentration by air volume
+      const estimatedOutletKgH = (dustConcGramAm3 / 1000) * parseFloat(airVolumeM3h);
       
+      // Update both kg/h and lb/h values
       handleOutletDustKgHChange(estimatedOutletKgH.toFixed(3));
     }
   }, [dustConcGramAm3, airVolumeM3h, handleOutletDustKgHChange]);
