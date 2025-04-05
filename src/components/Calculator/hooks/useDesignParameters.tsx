@@ -27,8 +27,8 @@ export const useDesignParameters = () => {
   const [gasTempF, setGasTempF] = useState(302); // 150°C = 302°F
   const [dustConcGramAm3, setDustConcGramAm3] = useState(10);
   const [dustConcGrainACF, setDustConcGrainACF] = useState(4.37); // Conversion factor
-  const [dustConcGramNm3, setDustConcGramNm3] = useState(20);
-  const [dustConcGrainSCF, setDustConcGrainSCF] = useState(8.74); // Conversion factor
+  const [dustConcGramNm3, setDustConcGramNm3] = useState<number | null>(20);
+  const [dustConcGrainSCF, setDustConcGrainSCF] = useState<number | null>(8.74); // Conversion factor
   
   // Flags to prevent infinite loops in unit conversion
   const [isM3hUpdating, setIsM3hUpdating] = useState(false);
