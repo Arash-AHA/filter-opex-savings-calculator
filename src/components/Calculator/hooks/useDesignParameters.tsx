@@ -30,6 +30,10 @@ export const useDesignParameters = () => {
   const [dustConcGramNm3, setDustConcGramNm3] = useState<number | null>(20);
   const [dustConcGrainSCF, setDustConcGrainSCF] = useState<number | null>(8.74); // Conversion factor
   
+  // New state for outlet dust concentration (emissions)
+  const [outletDustKgH, setOutletDustKgH] = useState<number | null>(1.2);
+  const [outletDustLbH, setOutletDustLbH] = useState<number | null>(2.65); // 1.2 kg/h ≈ 2.65 lb/h
+  
   // Flags to prevent infinite loops in unit conversion
   const [isM3hUpdating, setIsM3hUpdating] = useState(false);
   const [isACFMUpdating, setIsACFMUpdating] = useState(false);
@@ -39,6 +43,8 @@ export const useDesignParameters = () => {
   const [isGrainACFUpdating, setIsGrainACFUpdating] = useState(false);
   const [isGramNm3Updating, setIsGramNm3Updating] = useState(false);
   const [isGrainSCFUpdating, setIsGrainSCFUpdating] = useState(false);
+  const [isKgHUpdating, setIsKgHUpdating] = useState(false);
+  const [isLbHUpdating, setIsLbHUpdating] = useState(false);
 
   // Only hide dimensions if modular design is selected
   useEffect(() => {
@@ -140,6 +146,43 @@ export const useDesignParameters = () => {
     }
   }, [isGramNm3Updating]);
   
+  // Handle outlet dust concentration conversions
+  const handleOutletDustKgHChange = useCallback((value: string) => {
+    const dustKgH = parseFloat(value);
+    setOutletDustKgH(isNaN(dustKgH) ? null : dustKgH);
+    if (!isLbHUpdating && !isNaN(dustKgH)) {
+      setIsKgHUpdating(true);
+      // 1 kg ≈ 2.20462 lb
+      const dustLbH = dustKgH * 2.20462;
+      setOutletDustLbH(isNaN(dustLbH) ? null : dustLbH);
+      setTimeout(() => setIsKgHUpdating(false), 100);
+    }
+  }, [isLbHUpdating]);
+  
+  const handleOutletDustLbHChange = useCallback((value: string) => {
+    const dustLbH = parseFloat(value);
+    setOutletDustLbH(isNaN(dustLbH) ? null : dustLbH);
+    if (!isKgHUpdating && !isNaN(dustLbH)) {
+      setIsLbHUpdating(true);
+      // 1 lb ≈ 0.453592 kg
+      const dustKgH = dustLbH * 0.453592;
+      setOutletDustKgH(isNaN(dustKgH) ? null : dustKgH);
+      setTimeout(() => setIsLbHUpdating(false), 100);
+    }
+  }, [isKgHUpdating]);
+  
+  // Estimate outlet dust based on inlet concentration and air volume
+  const estimateOutletDust = useCallback(() => {
+    if (dustConcGramAm3 && airVolumeM3h) {
+      // Assuming 99.99% efficiency for typical baghouse
+      const efficiency = 0.9999;
+      const inletDustLoadKgH = (dustConcGramAm3 * parseFloat(airVolumeM3h)) / 1000; // g/h to kg/h
+      const estimatedOutletKgH = inletDustLoadKgH * (1 - efficiency);
+      
+      handleOutletDustKgHChange(estimatedOutletKgH.toFixed(3));
+    }
+  }, [dustConcGramAm3, airVolumeM3h, handleOutletDustKgHChange]);
+  
   return {
     designType,
     setDesignType,
@@ -164,6 +207,8 @@ export const useDesignParameters = () => {
     dustConcGrainACF,
     dustConcGramNm3,
     dustConcGrainSCF,
+    outletDustKgH,
+    outletDustLbH,
     handleAirVolumeM3hChange,
     handleAirVolumeACFMChange,
     handleGasTempCChange,
@@ -172,6 +217,9 @@ export const useDesignParameters = () => {
     handleDustConcGrainACFChange,
     handleDustConcGramNm3Change,
     handleDustConcGrainSCFChange,
+    handleOutletDustKgHChange,
+    handleOutletDustLbHChange,
+    estimateOutletDust,
     setNumEMCFlaps,
     setBagsPerRow,
     setBagLength,

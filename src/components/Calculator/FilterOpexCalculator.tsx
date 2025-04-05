@@ -68,6 +68,11 @@ const FilterOpexCalculator = () => {
             handleDustConcGrainACFChange={calculatorState.handleDustConcGrainACFChange}
             handleDustConcGramNm3Change={calculatorState.handleDustConcGramNm3Change}
             handleDustConcGrainSCFChange={calculatorState.handleDustConcGrainSCFChange}
+            outletDustKgH={calculatorState.outletDustKgH}
+            outletDustLbH={calculatorState.outletDustLbH}
+            handleOutletDustKgHChange={calculatorState.handleOutletDustKgHChange}
+            handleOutletDustLbHChange={calculatorState.handleOutletDustLbHChange}
+            estimateOutletDust={calculatorState.estimateOutletDust}
           />
         </CalculatorSection>
         

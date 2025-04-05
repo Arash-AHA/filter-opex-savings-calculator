@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 interface AdditionalParametersProps {
   gasTempC: number;
@@ -9,12 +10,17 @@ interface AdditionalParametersProps {
   dustConcGrainACF: number;
   dustConcGramNm3: number | null;
   dustConcGrainSCF: number | null;
+  outletDustKgH: number | null;
+  outletDustLbH: number | null;
   handleGasTempCChange: (value: string) => void;
   handleGasTempFChange: (value: string) => void;
   handleDustConcGramAm3Change: (value: string) => void;
   handleDustConcGrainACFChange: (value: string) => void;
   handleDustConcGramNm3Change: (value: string) => void;
   handleDustConcGrainSCFChange: (value: string) => void;
+  handleOutletDustKgHChange: (value: string) => void;
+  handleOutletDustLbHChange: (value: string) => void;
+  estimateOutletDust: () => void;
 }
 
 const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
@@ -24,12 +30,17 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
   dustConcGrainACF,
   dustConcGramNm3,
   dustConcGrainSCF,
+  outletDustKgH,
+  outletDustLbH,
   handleGasTempCChange,
   handleGasTempFChange,
   handleDustConcGramAm3Change,
   handleDustConcGrainACFChange,
   handleDustConcGramNm3Change,
-  handleDustConcGrainSCFChange
+  handleDustConcGrainSCFChange,
+  handleOutletDustKgHChange,
+  handleOutletDustLbHChange,
+  estimateOutletDust
 }) => {
   return (
     <div className="space-y-4 p-4 border border-blue-100 rounded-xl bg-blue-50/50 animate-fadeIn">
@@ -112,6 +123,42 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">grain/SCF</span>
           </div>
+        </div>
+      </div>
+      
+      <div className="flex items-center mb-4">
+        <div className="w-60 pr-4 calculator-field-label text-sm">
+          <span>Outlet Dust Concentration:</span>
+        </div>
+        <div className="flex flex-1 items-center space-x-2">
+          <div className="w-1/2 relative">
+            <Input 
+              type="text"
+              value={outletDustKgH !== null ? outletDustKgH.toString() : ''}
+              onChange={(e) => handleOutletDustKgHChange(e.target.value)}
+              className="pr-12 w-full bg-white text-sm"
+              placeholder="Enter kg/h"
+            />
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">kg/h</span>
+          </div>
+          <div className="w-1/2 relative">
+            <Input 
+              type="text"
+              value={outletDustLbH !== null ? outletDustLbH.toString() : ''}
+              onChange={(e) => handleOutletDustLbHChange(e.target.value)}
+              className="pr-12 w-full bg-white text-sm"
+              placeholder="Enter lb/h"
+            />
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">lb/h</span>
+          </div>
+          <Button
+            type="button"
+            onClick={estimateOutletDust}
+            variant="outline"
+            className="ml-2 shrink-0 h-10"
+          >
+            Estimate
+          </Button>
         </div>
       </div>
     </div>
