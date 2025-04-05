@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -24,10 +25,6 @@ interface AdditionalParametersProps {
   handleTargetEmissionMgNm3Change: (value: string) => void;
   handleTargetEmissionGrainDscfChange: (value: string) => void;
   estimateOutletDust: () => void;
-  negativePressureMbar: number | null;
-  negativePressureInchesWG: number | null;
-  handleNegativePressureMbarChange: (value: string) => void;
-  handleNegativePressureInchesWGChange: (value: string) => void;
 }
 
 const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
@@ -51,11 +48,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
   handleOutletDustLbHChange,
   handleTargetEmissionMgNm3Change,
   handleTargetEmissionGrainDscfChange,
-  estimateOutletDust,
-  negativePressureMbar,
-  negativePressureInchesWG,
-  handleNegativePressureMbarChange,
-  handleNegativePressureInchesWGChange
+  estimateOutletDust
 }) => {
   return (
     <div className="space-y-4 p-4 border border-blue-100 rounded-xl bg-blue-50/50 animate-fadeIn">
@@ -201,34 +194,6 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
               placeholder="Enter grain/dscf"
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">grain/dscf (dry)</span>
-          </div>
-        </div>
-      </div>
-      
-      <div className="flex items-center mb-4">
-        <div className="w-60 pr-4 calculator-field-label text-sm">
-          <span>Negative Pressure at Filter Inlet:</span>
-        </div>
-        <div className="flex flex-1 space-x-2">
-          <div className="w-1/2 relative">
-            <Input 
-              type="text"
-              value={negativePressureMbar !== null ? negativePressureMbar.toString() : ''}
-              onChange={(e) => handleNegativePressureMbarChange(e.target.value)}
-              className="pr-12 w-full bg-white text-sm"
-              placeholder="Enter mbar"
-            />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">mbar</span>
-          </div>
-          <div className="w-1/2 relative">
-            <Input 
-              type="text"
-              value={negativePressureInchesWG !== null ? negativePressureInchesWG.toString() : ''}
-              onChange={(e) => handleNegativePressureInchesWGChange(e.target.value)}
-              className="pr-12 w-full bg-white text-sm"
-              placeholder="Enter Inches W.G."
-            />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">Inches W.G.</span>
           </div>
         </div>
       </div>

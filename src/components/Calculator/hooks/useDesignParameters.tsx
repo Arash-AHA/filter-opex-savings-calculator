@@ -1,3 +1,4 @@
+
 import { useState, useCallback, useEffect } from 'react';
 
 export const useDesignParameters = () => {
@@ -36,10 +37,6 @@ export const useDesignParameters = () => {
   // New state for target emission values
   const [targetEmissionMgNm3, setTargetEmissionMgNm3] = useState<number | null>(5);
   const [targetEmissionGrainDscf, setTargetEmissionGrainDscf] = useState<number | null>(0.0022); // 5 mg/Nm³ ≈ 0.0022 grain/dscf
-
-  // New state for Negative Pressure
-  const [negativePressureMbar, setNegativePressureMbar] = useState<number | null>(50);
-  const [negativePressureInchesWG, setNegativePressureInchesWG] = useState<number | null>(2);
   
   // Flags to prevent infinite loops in unit conversion
   const [isM3hUpdating, setIsM3hUpdating] = useState(false);
@@ -54,8 +51,6 @@ export const useDesignParameters = () => {
   const [isLbHUpdating, setIsLbHUpdating] = useState(false);
   const [isMgNm3Updating, setIsMgNm3Updating] = useState(false);
   const [isGrainDscfUpdating, setIsGrainDscfUpdating] = useState(false);
-  const [isNegativePressureMbarUpdating, setIsNegativePressureMbarUpdating] = useState(false);
-  const [isNegativePressureInchesWGUpdating, setIsNegativePressureInchesWGUpdating] = useState(false);
 
   // Only hide dimensions if modular design is selected
   useEffect(() => {
@@ -206,31 +201,6 @@ export const useDesignParameters = () => {
       setTimeout(() => setIsGrainDscfUpdating(false), 100);
     }
   }, [isMgNm3Updating]);
-
-  // Conversion handlers for Negative Pressure
-  const handleNegativePressureMbarChange = useCallback((value: string) => {
-    const pressureMbar = parseFloat(value);
-    setNegativePressureMbar(isNaN(pressureMbar) ? null : pressureMbar);
-    if (!isNegativePressureInchesWGUpdating && !isNaN(pressureMbar)) {
-      setIsNegativePressureMbarUpdating(true);
-      // 1 mbar = 0.4 Inches W.G.
-      const pressureInchesWG = pressureMbar * 0.4;
-      setNegativePressureInchesWG(isNaN(pressureInchesWG) ? null : pressureInchesWG);
-      setTimeout(() => setIsNegativePressureMbarUpdating(false), 100);
-    }
-  }, [isNegativePressureInchesWGUpdating]);
-
-  const handleNegativePressureInchesWGChange = useCallback((value: string) => {
-    const pressureInchesWG = parseFloat(value);
-    setNegativePressureInchesWG(isNaN(pressureInchesWG) ? null : pressureInchesWG);
-    if (!isNegativePressureMbarUpdating && !isNaN(pressureInchesWG)) {
-      setIsNegativePressureInchesWGUpdating(true);
-      // 1 Inch W.G. = 2.5 mbar
-      const pressureMbar = pressureInchesWG * 2.5;
-      setNegativePressureMbar(isNaN(pressureMbar) ? null : pressureMbar);
-      setTimeout(() => setIsNegativePressureInchesWGUpdating(false), 100);
-    }
-  }, [isNegativePressureMbarUpdating]);
   
   // Update the estimateOutletDust function
   const estimateOutletDust = useCallback(() => {
@@ -289,10 +259,6 @@ export const useDesignParameters = () => {
     setBagLength,
     m2ToSqFtFactor,
     conversionFactor,
-    emcCleaningFactor,
-    negativePressureMbar,
-    negativePressureInchesWG,
-    handleNegativePressureMbarChange,
-    handleNegativePressureInchesWGChange,
+    emcCleaningFactor
   };
 };
