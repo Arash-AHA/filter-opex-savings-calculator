@@ -14,6 +14,8 @@ interface AdditionalParametersProps {
   outletDustLbH: number | null;
   targetEmissionMgNm3: number | null;
   targetEmissionGrainDscf: number | null;
+  negativePressureMbar: number | null;
+  negativePressureInchWG: number | null;
   handleGasTempCChange: (value: string) => void;
   handleGasTempFChange: (value: string) => void;
   handleDustConcGramAm3Change: (value: string) => void;
@@ -24,6 +26,8 @@ interface AdditionalParametersProps {
   handleOutletDustLbHChange: (value: string) => void;
   handleTargetEmissionMgNm3Change: (value: string) => void;
   handleTargetEmissionGrainDscfChange: (value: string) => void;
+  handleNegativePressureMbarChange: (value: string) => void;
+  handleNegativePressureInchWGChange: (value: string) => void;
   estimateOutletDust: () => void;
 }
 
@@ -38,6 +42,8 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
   outletDustLbH,
   targetEmissionMgNm3,
   targetEmissionGrainDscf,
+  negativePressureMbar,
+  negativePressureInchWG,
   handleGasTempCChange,
   handleGasTempFChange,
   handleDustConcGramAm3Change,
@@ -48,6 +54,8 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
   handleOutletDustLbHChange,
   handleTargetEmissionMgNm3Change,
   handleTargetEmissionGrainDscfChange,
+  handleNegativePressureMbarChange,
+  handleNegativePressureInchWGChange,
   estimateOutletDust
 }) => {
   return (
@@ -194,6 +202,34 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
               placeholder="Enter grain/dscf"
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">grain/dscf (dry)</span>
+          </div>
+        </div>
+      </div>
+      
+      <div className="flex items-center mb-4">
+        <div className="w-60 pr-4 calculator-field-label text-sm">
+          <span>Negative Pressure at Filter Inlet:</span>
+        </div>
+        <div className="flex flex-1 space-x-2">
+          <div className="w-1/2 relative">
+            <Input 
+              type="text"
+              value={negativePressureMbar !== null ? negativePressureMbar.toString() : ''}
+              onChange={(e) => handleNegativePressureMbarChange(e.target.value)}
+              className="pr-12 w-full bg-white text-sm"
+              placeholder="Enter mbar"
+            />
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">mbar</span>
+          </div>
+          <div className="w-1/2 relative">
+            <Input 
+              type="text"
+              value={negativePressureInchWG !== null ? negativePressureInchWG.toString() : ''}
+              onChange={(e) => handleNegativePressureInchWGChange(e.target.value)}
+              className="pr-12 w-full bg-white text-sm"
+              placeholder="Enter inchWG"
+            />
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">Inches W.G.</span>
           </div>
         </div>
       </div>

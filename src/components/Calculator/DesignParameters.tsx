@@ -58,6 +58,11 @@ interface DesignParametersProps {
   targetEmissionGrainDscf: number | null;
   handleTargetEmissionMgNm3Change: (value: string) => void;
   handleTargetEmissionGrainDscfChange: (value: string) => void;
+  // Negative pressure parameters
+  negativePressureMbar: number | null;
+  negativePressureInchWG: number | null;
+  handleNegativePressureMbarChange: (value: string) => void;
+  handleNegativePressureInchWGChange: (value: string) => void;
 }
 
 const DesignParameters: React.FC<DesignParametersProps> = ({
@@ -110,7 +115,12 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
   targetEmissionMgNm3,
   targetEmissionGrainDscf,
   handleTargetEmissionMgNm3Change,
-  handleTargetEmissionGrainDscfChange
+  handleTargetEmissionGrainDscfChange,
+  // Negative pressure parameters
+  negativePressureMbar,
+  negativePressureInchWG,
+  handleNegativePressureMbarChange,
+  handleNegativePressureInchWGChange
 }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -169,6 +179,8 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
             outletDustLbH={outletDustLbH}
             targetEmissionMgNm3={targetEmissionMgNm3}
             targetEmissionGrainDscf={targetEmissionGrainDscf}
+            negativePressureMbar={negativePressureMbar}
+            negativePressureInchWG={negativePressureInchWG}
             handleGasTempCChange={handleGasTempCChange}
             handleGasTempFChange={handleGasTempFChange}
             handleDustConcGramAm3Change={handleDustConcGramAm3Change}
@@ -179,6 +191,8 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
             handleOutletDustLbHChange={handleOutletDustLbHChange}
             handleTargetEmissionMgNm3Change={handleTargetEmissionMgNm3Change}
             handleTargetEmissionGrainDscfChange={handleTargetEmissionGrainDscfChange}
+            handleNegativePressureMbarChange={handleNegativePressureMbarChange}
+            handleNegativePressureInchWGChange={handleNegativePressureInchWGChange}
             estimateOutletDust={estimateOutletDust}
           />
         )}

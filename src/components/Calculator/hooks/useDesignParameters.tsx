@@ -1,4 +1,3 @@
-
 import { useState, useCallback, useEffect } from 'react';
 
 export const useDesignParameters = () => {
@@ -38,6 +37,10 @@ export const useDesignParameters = () => {
   const [targetEmissionMgNm3, setTargetEmissionMgNm3] = useState<number | null>(5);
   const [targetEmissionGrainDscf, setTargetEmissionGrainDscf] = useState<number | null>(0.0022); // 5 mg/Nm³ ≈ 0.0022 grain/dscf
   
+  // New state for negative pressure at filter inlet
+  const [negativePressureMbar, setNegativePressureMbar] = useState<number | null>(30); // Default 30 mbar
+  const [negativePressureInchWG, setNegativePressureInchWG] = useState<number | null>(12); // Default 12 Inches W.G.
+  
   // Flags to prevent infinite loops in unit conversion
   const [isM3hUpdating, setIsM3hUpdating] = useState(false);
   const [isACFMUpdating, setIsACFMUpdating] = useState(false);
@@ -51,6 +54,8 @@ export const useDesignParameters = () => {
   const [isLbHUpdating, setIsLbHUpdating] = useState(false);
   const [isMgNm3Updating, setIsMgNm3Updating] = useState(false);
   const [isGrainDscfUpdating, setIsGrainDscfUpdating] = useState(false);
+  const [isMbarUpdating, setIsMbarUpdating] = useState(false);
+  const [isInchWGUpdating, setIsInchWGUpdating] = useState(false);
 
   // Only hide dimensions if modular design is selected
   useEffect(() => {
@@ -202,6 +207,31 @@ export const useDesignParameters = () => {
     }
   }, [isMgNm3Updating]);
   
+  // Handle negative pressure at filter inlet conversions
+  const handleNegativePressureMbarChange = useCallback((value: string) => {
+    const pressureMbar = parseFloat(value);
+    setNegativePressureMbar(isNaN(pressureMbar) ? null : pressureMbar);
+    if (!isInchWGUpdating && !isNaN(pressureMbar)) {
+      setIsMbarUpdating(true);
+      // 1 mbar ≈ 0.4 inches W.G.
+      const inchWG = pressureMbar * 0.4;
+      setNegativePressureInchWG(isNaN(inchWG) ? null : inchWG);
+      setTimeout(() => setIsMbarUpdating(false), 100);
+    }
+  }, [isInchWGUpdating]);
+  
+  const handleNegativePressureInchWGChange = useCallback((value: string) => {
+    const pressureInchWG = parseFloat(value);
+    setNegativePressureInchWG(isNaN(pressureInchWG) ? null : pressureInchWG);
+    if (!isMbarUpdating && !isNaN(pressureInchWG)) {
+      setIsInchWGUpdating(true);
+      // 1 inch W.G. ≈ 2.5 mbar
+      const mbar = pressureInchWG * 2.5;
+      setNegativePressureMbar(isNaN(mbar) ? null : mbar);
+      setTimeout(() => setIsInchWGUpdating(false), 100);
+    }
+  }, [isMbarUpdating]);
+  
   // Update the estimateOutletDust function
   const estimateOutletDust = useCallback(() => {
     if (dustConcGramAm3 && airVolumeM3h) {
@@ -241,6 +271,8 @@ export const useDesignParameters = () => {
     outletDustLbH,
     targetEmissionMgNm3,
     targetEmissionGrainDscf,
+    negativePressureMbar,
+    negativePressureInchWG,
     handleAirVolumeM3hChange,
     handleAirVolumeACFMChange,
     handleGasTempCChange,
@@ -253,6 +285,8 @@ export const useDesignParameters = () => {
     handleOutletDustLbHChange,
     handleTargetEmissionMgNm3Change,
     handleTargetEmissionGrainDscfChange,
+    handleNegativePressureMbarChange,
+    handleNegativePressureInchWGChange,
     estimateOutletDust,
     setNumEMCFlaps,
     setBagsPerRow,
