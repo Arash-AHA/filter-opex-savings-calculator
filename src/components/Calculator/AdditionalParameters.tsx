@@ -58,6 +58,11 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
   handleNegativePressureInchWGChange,
   estimateOutletDust
 }) => {
+  // Helper function to safely convert potentially null values to string
+  const safeToString = (value: number | null | undefined): string => {
+    return value !== null && value !== undefined ? value.toString() : '';
+  };
+
   return (
     <div className="space-y-4 p-4 border border-blue-100 rounded-xl bg-blue-50/50 animate-fadeIn">
       <h3 className="font-medium text-gray-700 mb-2">Additional Filter Design Parameters</h3>
@@ -70,7 +75,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
           <div className="w-1/2 relative">
             <Input 
               type="text"
-              value={gasTempC.toString()}
+              value={safeToString(gasTempC)}
               onChange={(e) => handleGasTempCChange(e.target.value)}
               className="pr-8 w-full bg-white text-sm"
             />
@@ -79,7 +84,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
           <div className="w-1/2 relative">
             <Input 
               type="text"
-              value={gasTempF.toString()}
+              value={safeToString(gasTempF)}
               onChange={(e) => handleGasTempFChange(e.target.value)}
               className="pr-8 w-full bg-white text-sm"
             />
@@ -96,7 +101,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
           <div className="w-1/2 relative">
             <Input 
               type="text"
-              value={dustConcGramAm3.toString()}
+              value={safeToString(dustConcGramAm3)}
               onChange={(e) => handleDustConcGramAm3Change(e.target.value)}
               className="pr-12 w-full bg-white text-sm"
             />
@@ -105,7 +110,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
           <div className="w-1/2 relative">
             <Input 
               type="text"
-              value={dustConcGrainACF.toString()}
+              value={safeToString(dustConcGrainACF)}
               onChange={(e) => handleDustConcGrainACFChange(e.target.value)}
               className="pr-12 w-full bg-white text-sm"
             />
@@ -122,7 +127,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
           <div className="w-1/2 relative">
             <Input 
               type="text"
-              value={dustConcGramNm3 !== null ? dustConcGramNm3.toString() : ''}
+              value={safeToString(dustConcGramNm3)}
               onChange={(e) => handleDustConcGramNm3Change(e.target.value)}
               className="pr-12 w-full bg-white text-sm"
               placeholder="Enter g/Nm³"
@@ -132,7 +137,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
           <div className="w-1/2 relative">
             <Input 
               type="text"
-              value={dustConcGrainSCF !== null ? dustConcGrainSCF.toString() : ''}
+              value={safeToString(dustConcGrainSCF)}
               onChange={(e) => handleDustConcGrainSCFChange(e.target.value)}
               className="pr-12 w-full bg-white text-sm"
               placeholder="Enter grain/SCF"
@@ -150,7 +155,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
           <div className="w-1/2 relative">
             <Input 
               type="text"
-              value={outletDustKgH !== null ? outletDustKgH.toString() : ''}
+              value={safeToString(outletDustKgH)}
               onChange={(e) => handleOutletDustKgHChange(e.target.value)}
               className="pr-12 w-full bg-white text-sm"
               placeholder="Enter kg/h"
@@ -160,7 +165,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
           <div className="w-1/2 relative">
             <Input 
               type="text"
-              value={outletDustLbH !== null ? outletDustLbH.toString() : ''}
+              value={safeToString(outletDustLbH)}
               onChange={(e) => handleOutletDustLbHChange(e.target.value)}
               className="pr-12 w-full bg-white text-sm"
               placeholder="Enter lb/h"
@@ -186,7 +191,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
           <div className="w-1/2 relative">
             <Input 
               type="text"
-              value={targetEmissionMgNm3 !== null ? targetEmissionMgNm3.toString() : ''}
+              value={safeToString(targetEmissionMgNm3)}
               onChange={(e) => handleTargetEmissionMgNm3Change(e.target.value)}
               className="pr-12 w-full bg-white text-sm"
               placeholder="Enter mg/Nm³"
@@ -196,7 +201,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
           <div className="w-1/2 relative">
             <Input 
               type="text"
-              value={targetEmissionGrainDscf !== null ? targetEmissionGrainDscf.toString() : ''}
+              value={safeToString(targetEmissionGrainDscf)}
               onChange={(e) => handleTargetEmissionGrainDscfChange(e.target.value)}
               className="pr-12 w-full bg-white text-sm"
               placeholder="Enter grain/dscf"
@@ -214,7 +219,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
           <div className="w-1/2 relative">
             <Input 
               type="text"
-              value={negativePressureMbar !== null ? negativePressureMbar.toString() : ''}
+              value={safeToString(negativePressureMbar)}
               onChange={(e) => handleNegativePressureMbarChange(e.target.value)}
               className="pr-12 w-full bg-white text-sm"
               placeholder="Enter mbar"
@@ -224,7 +229,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
           <div className="w-1/2 relative">
             <Input 
               type="text"
-              value={negativePressureInchWG !== null ? negativePressureInchWG.toString() : ''}
+              value={safeToString(negativePressureInchWG)}
               onChange={(e) => handleNegativePressureInchWGChange(e.target.value)}
               className="pr-12 w-full bg-white text-sm"
               placeholder="Enter inchWG"

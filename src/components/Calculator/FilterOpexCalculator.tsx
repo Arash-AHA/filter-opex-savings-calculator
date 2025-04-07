@@ -77,6 +77,10 @@ const FilterOpexCalculator = () => {
             targetEmissionGrainDscf={calculatorState.targetEmissionGrainDscf}
             handleTargetEmissionMgNm3Change={calculatorState.handleTargetEmissionMgNm3Change}
             handleTargetEmissionGrainDscfChange={calculatorState.handleTargetEmissionGrainDscfChange}
+            negativePressureMbar={calculatorState.negativePressureMbar}
+            negativePressureInchWG={calculatorState.negativePressureInchWG}
+            handleNegativePressureMbarChange={calculatorState.handleNegativePressureMbarChange}
+            handleNegativePressureInchWGChange={calculatorState.handleNegativePressureInchWGChange}
           />
         </CalculatorSection>
         
