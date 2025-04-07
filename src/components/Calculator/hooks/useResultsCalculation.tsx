@@ -1,4 +1,3 @@
-
 import { useCallback, useMemo } from 'react';
 
 export const useResultsCalculation = (
@@ -194,7 +193,17 @@ export const useResultsCalculation = (
                             (3600 * 1000 * 0.8)) * kwhCost * workingHours * savingYears);
       
       // Compressed Air Consumption
-      const airSavings = currentAirConsumption - scheuchAirConsumption;
+      let airSavings = 0;
+      const airConsumptionDiff = currentAirConsumption - scheuchAirConsumption;
+      
+      // If USD/Nm³ has a value, use it for calculation
+      if (compressedAirCost && compressedAirCost.trim() !== '') {
+        airSavings = airConsumptionDiff * parseFloat(compressedAirCost) * workingHours * savingYears;
+      } 
+      // Otherwise, use the motor KW difference
+      else {
+        airSavings = (currentMotorKW - scheuchMotorKW) * kwhCost * workingHours * savingYears;
+      }
       
       return {
         bagSavings,
@@ -216,7 +225,8 @@ export const useResultsCalculation = (
     savingYears, currentLifeTime, scheuchLifeTime, results.totalBags, 
     bagPrice, travelCost, airVolumeM3h, currentDiffPressure, 
     scheuchDiffPressure, kwhCost, workingHours,
-    currentAirConsumption, scheuchAirConsumption
+    currentAirConsumption, scheuchAirConsumption,
+    compressedAirCost, currentMotorKW, scheuchMotorKW
   ]);
 
   return {
