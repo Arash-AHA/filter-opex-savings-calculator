@@ -134,7 +134,7 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
                 />
                 
                 <ResultCard
-                  label="Savings in Fan Power Consumption"
+                  label="Savings $ in Fan Power Consumption"
                   value={`$${totalSavings.fanPowerSavings.toLocaleString(undefined, {maximumFractionDigits: 0})}`}
                   className="bg-transparent shadow-none border-0 p-0"
                 />
