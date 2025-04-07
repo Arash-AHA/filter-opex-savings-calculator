@@ -15,7 +15,7 @@ interface DesignParamsCardProps {
     bagMaterialCost: number;
     tenYearSavings: string;
     lifeExtension: string;
-  };
+  } | null;  // Make formattedResults nullable
   results: {
     filterArea: number;
     netFilterArea: number;
@@ -30,7 +30,7 @@ interface DesignParamsCardProps {
     tenYearSavings: number;
     lifeExtension: number;
     compressedAirSavings: number;
-  };
+  } | null;  // Make results nullable
   m2ToSqFtFactor: number;
   conversionFactor: number;
 }
@@ -41,6 +41,16 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
   m2ToSqFtFactor,
   conversionFactor
 }) => {
+  // Check if formattedResults is null or undefined
+  // Provide default values to prevent null reference errors
+  const safeResults = formattedResults || {
+    filterArea: '-',
+    netFilterArea: '-',
+    acRatioGross: '-',
+    acRatioNet: '-',
+    totalBags: 0,
+  };
+
   return (
     <Card className="p-4 h-fit">
       <h3 className="text-sm font-medium text-gray-700 mb-4">Design Parameters</h3>
@@ -48,27 +58,27 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
       <div className="space-y-3">
         <div className="flex justify-between border-b border-gray-100 pb-1">
           <span className="text-gray-600 text-sm">Filter Area (Gross):</span>
-          <span className="font-medium text-sm">{formattedResults.filterArea}</span>
+          <span className="font-medium text-sm">{safeResults.filterArea}</span>
         </div>
         
         <div className="flex justify-between border-b border-gray-100 pb-1">
           <span className="text-gray-600 text-sm">Net Filter Area:</span>
-          <span className="font-medium text-sm">{formattedResults.netFilterArea}</span>
+          <span className="font-medium text-sm">{safeResults.netFilterArea}</span>
         </div>
         
         <div className="flex justify-between border-b border-gray-100 pb-1">
           <span className="text-gray-600 text-sm">Air-to-Cloth Ratio (Gross):</span>
-          <span className="font-medium text-sm">{formattedResults.acRatioGross}</span>
+          <span className="font-medium text-sm">{safeResults.acRatioGross}</span>
         </div>
         
         <div className="flex justify-between border-b border-gray-100 pb-1">
           <span className="text-gray-600 text-sm">Air-to-Cloth Ratio (Net):</span>
-          <span className="font-medium text-sm">{formattedResults.acRatioNet}</span>
+          <span className="font-medium text-sm">{safeResults.acRatioNet}</span>
         </div>
         
         <div className="flex justify-between border-b border-gray-100 pb-1">
           <span className="text-gray-600 text-sm">Number of Bags:</span>
-          <span className="font-medium text-sm">{formattedResults.totalBags}</span>
+          <span className="font-medium text-sm">{safeResults.totalBags}</span>
         </div>
       </div>
     </Card>
