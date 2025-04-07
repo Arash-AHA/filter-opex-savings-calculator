@@ -1,4 +1,3 @@
-
 import React from 'react';
 import InputField from './InputField';
 import ResultCard from './ResultCard';
@@ -141,7 +140,7 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
                 />
                 
                 <ResultCard
-                  label="Savings in Compressed Air"
+                  label="Savings $ in Compressed Air"
                   value={`$${totalSavings.airSavings.toLocaleString(undefined, {maximumFractionDigits: 0})}`}
                   className="bg-transparent shadow-none border-0 p-0"
                 />
