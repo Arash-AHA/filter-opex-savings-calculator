@@ -1,8 +1,9 @@
+
 import { useState, useEffect } from 'react';
 import { useDesignParameters } from './useDesignParameters';
 import { useBagReplacement } from './useBagReplacement';
 import { useOperationalParameters } from './useOperationalParameters';
-import { useCalculateSavings } from './useSavingsCalculation';
+import { useSavingsCalculation } from './useSavingsCalculation';
 import { useResultsCalculation } from './useResultsCalculation';
 
 export const useCalculatorState = () => {
@@ -10,7 +11,7 @@ export const useCalculatorState = () => {
   const designParams = useDesignParameters();
   const bagReplacement = useBagReplacement();
   const operationalParams = useOperationalParameters();
-  const savingsCalc = useCalculateSavings;
+  const savingsCalc = useSavingsCalculation();
 
   // State for calculated results
   const [results, setResults] = useState({
@@ -80,8 +81,15 @@ export const useCalculatorState = () => {
     // Operational parameters
     ...operationalParams,
     
-    // Results
-    ...savingsCalc,
+    // Savings calculation parameters
+    savingYears: savingsCalc.savingYears,
+    setSavingYears: savingsCalc.setSavingYears,
+    workingHours: savingsCalc.workingHours,
+    setWorkingHours: savingsCalc.setWorkingHours,
+    kwhCost: savingsCalc.kwhCost,
+    setKwhCost: savingsCalc.setKwhCost,
+    compressedAirCost: savingsCalc.compressedAirCost,
+    setCompressedAirCost: savingsCalc.setCompressedAirCost,
     
     // Calculated results
     results,

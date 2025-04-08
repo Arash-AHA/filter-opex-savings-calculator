@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useState, useMemo } from 'react';
 
 export interface BagSavingsParams {
   savingYears: number;
@@ -29,13 +29,19 @@ export interface AirSavingsParams {
   savingYears: number;
 }
 
-export const useCalculateSavings = (
-  bagParams: BagSavingsParams,
-  powerParams: PowerSavingsParams,
-  airParams: AirSavingsParams
-) => {
-  // Calculate total savings
-  const totalSavings = useMemo(() => {
+export const useSavingsCalculation = () => {
+  // Default values for savings parameters
+  const [savingYears, setSavingYears] = useState(10);
+  const [workingHours, setWorkingHours] = useState(8760);
+  const [kwhCost, setKwhCost] = useState(0.12);
+  const [compressedAirCost, setCompressedAirCost] = useState('');
+
+  // The calculation function
+  const calculateSavings = (
+    bagParams: BagSavingsParams,
+    powerParams: PowerSavingsParams,
+    airParams: AirSavingsParams
+  ) => {
     try {
       // Bag Material and Labor
       const bagSavings = ((((bagParams.savingYears * 12) / bagParams.currentLifeTime) * 
@@ -80,15 +86,17 @@ export const useCalculateSavings = (
         total: 0
       };
     }
-  }, [
-    bagParams.savingYears, bagParams.currentLifeTime, bagParams.scheuchLifeTime, 
-    bagParams.totalBags, bagParams.bagPrice, bagParams.travelCost,
-    powerParams.airVolumeM3h, powerParams.currentDiffPressure, powerParams.scheuchDiffPressure,
-    powerParams.kwhCost, powerParams.workingHours, powerParams.savingYears,
-    airParams.currentAirConsumption, airParams.scheuchAirConsumption, airParams.compressedAirCost,
-    airParams.currentMotorKW, airParams.scheuchMotorKW, airParams.kwhCost,
-    airParams.workingHours, airParams.savingYears
-  ]);
+  };
 
-  return totalSavings;
+  return {
+    savingYears,
+    setSavingYears,
+    workingHours,
+    setWorkingHours,
+    kwhCost,
+    setKwhCost,
+    compressedAirCost,
+    setCompressedAirCost,
+    calculateSavings
+  };
 };

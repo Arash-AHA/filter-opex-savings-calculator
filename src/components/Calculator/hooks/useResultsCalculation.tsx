@@ -1,8 +1,6 @@
-
 import { useMemo } from 'react';
 import { useFilterAreaCalculation } from './useFilterAreaCalculation';
 import { useBagReplacementCalculation } from './useBagReplacementCalculation';
-import { useCalculateSavings } from './useSavingsCalculation';
 import { useFormattedResults } from './useFormattedResults';
 
 export const useResultsCalculation = (
@@ -87,25 +85,30 @@ export const useResultsCalculation = (
     conversionFactor
   );
   
-  // Use the savings calculation hook
-  const totalSavings = useCalculateSavings(
-    {
+  // Calculate total savings
+  const totalSavings = useMemo(() => {
+    // Bag savings parameters
+    const bagParams = {
       savingYears,
       currentLifeTime,
       scheuchLifeTime,
       totalBags: bagResults.totalBags,
       bagPrice,
       travelCost
-    },
-    {
+    };
+
+    // Power savings parameters
+    const powerParams = {
       airVolumeM3h,
       currentDiffPressure,
       scheuchDiffPressure,
       kwhCost,
       workingHours,
       savingYears
-    },
-    {
+    };
+
+    // Air savings parameters
+    const airParams = {
       currentAirConsumption,
       scheuchAirConsumption,
       compressedAirCost,
@@ -114,8 +117,61 @@ export const useResultsCalculation = (
       kwhCost,
       workingHours,
       savingYears
+    };
+
+    // Calculate savings directly
+    try {
+      // Bag Material and Labor
+      const bagSavings = ((((savingYears * 12) / currentLifeTime) * 
+                          ((bagResults.totalBags * bagPrice) + travelCost)) - 
+                         (((savingYears * 12) / scheuchLifeTime) * 
+                          ((bagResults.totalBags * bagPrice) + travelCost)));
+      
+      // Fan Power Consumption
+      const fanPowerSavings = (((parseFloat(airVolumeM3h) * 
+                               (currentDiffPressure - scheuchDiffPressure) * 100) / 
+                               (3600 * 1000 * 0.8)) * kwhCost * 
+                               workingHours * savingYears);
+      
+      // Compressed Air Consumption
+      let airSavings = 0;
+      const airConsumptionDiff = currentAirConsumption - scheuchAirConsumption;
+      
+      // If USD/Nm³ has a value, use it for calculation
+      if (compressedAirCost && compressedAirCost.trim() !== '') {
+        airSavings = airConsumptionDiff * parseFloat(compressedAirCost) * 
+                    workingHours * savingYears;
+      } 
+      // Otherwise, use the motor KW difference
+      else {
+        airSavings = (currentMotorKW - scheuchMotorKW) * 
+                     kwhCost * workingHours * savingYears;
+      }
+      
+      return {
+        bagSavings,
+        fanPowerSavings,
+        airSavings,
+        total: bagSavings + fanPowerSavings + airSavings
+      };
+    } catch (error) {
+      console.error("Error calculating total savings:", error);
+      // Return default values if calculation fails
+      return {
+        bagSavings: 0,
+        fanPowerSavings: 0,
+        airSavings: 0,
+        total: 0
+      };
     }
-  );
+  }, [
+    savingYears, currentLifeTime, scheuchLifeTime, 
+    bagResults.totalBags, bagPrice, travelCost,
+    airVolumeM3h, currentDiffPressure, scheuchDiffPressure,
+    kwhCost, workingHours,
+    currentAirConsumption, scheuchAirConsumption, compressedAirCost,
+    currentMotorKW, scheuchMotorKW
+  ]);
 
   return {
     results,
