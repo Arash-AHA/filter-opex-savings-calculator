@@ -1,4 +1,3 @@
-
 import React from 'react';
 import CalculatorSection from './CalculatorSection';
 import Transition from '../UI/Transition';
@@ -84,7 +83,7 @@ const FilterOpexCalculator = () => {
           />
         </CalculatorSection>
         
-        {/* Filter Bag Replacement Section */}
+        {/* Filter Bag Replacement Section - Make always visible */}
         <CalculatorSection 
           title="Filter Bag Replacement" 
           delay={300}
@@ -114,7 +113,7 @@ const FilterOpexCalculator = () => {
           />
         </CalculatorSection>
         
-        {/* Operational Parameters Section - Title Updated */}
+        {/* Operational Parameters Section */}
         <CalculatorSection 
           title="Operational Parameters" 
           delay={500}

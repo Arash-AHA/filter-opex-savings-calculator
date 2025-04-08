@@ -1,9 +1,8 @@
-
 import { useState, useEffect } from 'react';
 import { useDesignParameters } from './useDesignParameters';
 import { useBagReplacement } from './useBagReplacement';
 import { useOperationalParameters } from './useOperationalParameters';
-import { useSavingsCalculation as useSavingsParams } from './useSavingsCalculation';
+import { useCalculateSavings } from './useSavingsCalculation';
 import { useResultsCalculation } from './useResultsCalculation';
 
 export const useCalculatorState = () => {
@@ -11,7 +10,7 @@ export const useCalculatorState = () => {
   const designParams = useDesignParameters();
   const bagReplacement = useBagReplacement();
   const operationalParams = useOperationalParameters();
-  const savingsCalc = useSavingsParams();
+  const savingsCalc = useCalculateSavings;
 
   // State for calculated results
   const [results, setResults] = useState({
