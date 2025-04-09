@@ -71,6 +71,7 @@ export const suggestEMCFlaps = (
   }
   
   // Calculate required number of flaps to meet target A/C ratio
+  // Required area = airVolume / targetACRatio to ensure A/C ratio is less than the target
   const requiredArea = airVolume / targetACRatio;
   let suggestedFlaps = Math.ceil(requiredArea / areaPerFlap);
   
