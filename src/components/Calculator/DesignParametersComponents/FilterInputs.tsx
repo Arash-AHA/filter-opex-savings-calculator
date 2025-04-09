@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { suggestEMCFlaps } from '../hooks/utils/calculationUtils';
 import { Button } from '@/components/ui/button';
@@ -103,8 +104,8 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
             </Tooltip>
           </TooltipProvider>
         </div>
-        <div className="flex-1 flex space-x-2">
-          <div className="flex-1 relative">
+        <div className="flex-1">
+          <div>
             <input
               type="number"
               value={numEMCFlaps}
@@ -113,12 +114,12 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
               className="calculator-input w-full"
             />
             {suggestedFlaps && suggestedFlaps !== numEMCFlaps && (
-              <div className="absolute right-0 top-full mt-1 text-xs text-blue-600 flex items-center">
+              <div className="mt-1 text-xs text-blue-600 flex items-center justify-between">
                 <span>Suggested: {suggestedFlaps} flaps</span>
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  className="h-6 px-2 py-0 ml-1 text-xs"
+                  className="h-6 px-2 py-0 text-xs"
                   onClick={applySuggestion}
                 >
                   Apply
