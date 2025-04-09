@@ -1,3 +1,4 @@
+
 /**
  * Utility functions for OPEX calculator calculations
  */
@@ -39,6 +40,44 @@ export const calculateNetFilterArea = (
     // For modular design, keep using the emcCleaningFactor
     return totalArea * emcCleaningFactor;
   }
+};
+
+/**
+ * Calculate suggested number of EMC flaps based on air volume and target A/C ratio
+ */
+export const suggestEMCFlaps = (
+  designType: string,
+  bagLength: number,
+  bagsPerRow: number,
+  airVolumeM3h: string
+): number => {
+  // Convert airVolumeM3h to number and handle empty string
+  const airVolume = parseFloat(airVolumeM3h) || 0;
+  
+  // Define target A/C ratio based on design type
+  const targetACRatio = designType === 'bolt-weld' ? 1.0 : 3.2;
+  
+  if (airVolume <= 0) {
+    return designType === 'bolt-weld' ? 14 : 6; // Default values
+  }
+  
+  // Calculate area per flap
+  let areaPerFlap = 0;
+  if (designType === 'bolt-weld') {
+    areaPerFlap = Math.PI * (165/1000) * bagLength * 5 * bagsPerRow;
+  } else {
+    const surfaceAreaPerFoot = 4 * 0.292 * 0.3048; // Surface area per foot
+    areaPerFlap = bagsPerRow * bagLength * surfaceAreaPerFoot;
+  }
+  
+  // Calculate required number of flaps to meet target A/C ratio
+  const requiredArea = airVolume / targetACRatio;
+  let suggestedFlaps = Math.ceil(requiredArea / areaPerFlap);
+  
+  // Ensure minimum number of flaps
+  suggestedFlaps = Math.max(suggestedFlaps, designType === 'bolt-weld' ? 6 : 4);
+  
+  return suggestedFlaps;
 };
 
 /**

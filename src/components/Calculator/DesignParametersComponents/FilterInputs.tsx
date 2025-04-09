@@ -1,5 +1,9 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { suggestEMCFlaps } from '../hooks/utils/calculationUtils';
+import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Info } from 'lucide-react';
 
 interface FilterInputsProps {
   airVolumeM3h: string;
@@ -28,6 +32,28 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
   setBagsPerRow,
   setBagLength
 }) => {
+  const [suggestedFlaps, setSuggestedFlaps] = useState<number | null>(null);
+  
+  // Calculate suggested number of EMC flaps
+  useEffect(() => {
+    const suggested = suggestEMCFlaps(
+      designType,
+      bagLength,
+      bagsPerRow,
+      airVolumeM3h
+    );
+    setSuggestedFlaps(suggested);
+  }, [designType, bagLength, bagsPerRow, airVolumeM3h]);
+  
+  // Apply the suggested number of flaps
+  const applySuggestion = () => {
+    if (suggestedFlaps) {
+      setNumEMCFlaps(suggestedFlaps);
+    }
+  };
+  
+  const targetACRatio = designType === 'bolt-weld' ? '< 1.0' : '< 3.2';
+  
   return (
     <>
       <div className="flex items-center mb-4">
@@ -62,14 +88,46 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
         <div className="w-60 pr-4 calculator-field-label">
           <span>TOTAL No. EMC Flaps:</span>
         </div>
-        <div className="flex-1">
-          <input
-            type="number"
-            value={numEMCFlaps}
-            onChange={(e) => setNumEMCFlaps(parseInt(e.target.value) || 0)}
-            min={1}
-            className="calculator-input w-full"
-          />
+        <div className="flex-1 flex space-x-2">
+          <div className="flex-1 relative">
+            <input
+              type="number"
+              value={numEMCFlaps}
+              onChange={(e) => setNumEMCFlaps(parseInt(e.target.value) || 0)}
+              min={1}
+              className="calculator-input w-full"
+            />
+            {suggestedFlaps && suggestedFlaps !== numEMCFlaps && (
+              <div className="absolute right-0 top-full mt-1 text-xs text-blue-600">
+                Suggested: {suggestedFlaps} flaps for {targetACRatio} A/C ratio
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="h-6 px-2 py-0 ml-1 text-xs"
+                  onClick={applySuggestion}
+                >
+                  Apply
+                </Button>
+              </div>
+            )}
+          </div>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="ghost" size="sm" className="px-2 h-9">
+                  <Info size={16} className="text-gray-500" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="max-w-xs">
+                <p>Recommended A/C Ratio: {targetACRatio}</p>
+                <p className="text-xs mt-1">
+                  {designType === 'bolt-weld' 
+                    ? 'For Bolt/Weld design, aim for a Gross A/C Ratio less than 1.0' 
+                    : 'For Modular design, aim for a Gross A/C Ratio less than 3.2'}
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       </div>
       
