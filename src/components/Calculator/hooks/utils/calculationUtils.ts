@@ -44,6 +44,9 @@ export const calculateNetFilterArea = (
 
 /**
  * Calculate suggested number of EMC flaps based on air volume and target A/C ratio
+ * 
+ * This function suggests the number of EMC flaps needed to maintain the A/C ratio below
+ * the target value (1.0 for bolt-weld, 3.2 for modular design)
  */
 export const suggestEMCFlaps = (
   designType: string,
@@ -58,25 +61,34 @@ export const suggestEMCFlaps = (
   const targetACRatio = designType === 'bolt-weld' ? 1.0 : 3.2;
   
   if (airVolume <= 0) {
-    return designType === 'bolt-weld' ? 14 : 6; // Default values
+    return designType === 'bolt-weld' ? 14 : 6; // Default values when no air volume specified
   }
   
-  // Calculate area per flap
+  // Calculate area per flap based on design type
   let areaPerFlap = 0;
   if (designType === 'bolt-weld') {
+    // PI()*165/1000*Bag length*5*No. bags in a row
     areaPerFlap = Math.PI * (165/1000) * bagLength * 5 * bagsPerRow;
   } else {
+    // For modular design
     const surfaceAreaPerFoot = 4 * 0.292 * 0.3048; // Surface area per foot
     areaPerFlap = bagsPerRow * bagLength * surfaceAreaPerFoot;
   }
   
-  // Calculate required number of flaps to meet target A/C ratio
-  // Required area = airVolume / targetACRatio to ensure A/C ratio is less than the target
+  // Calculate required total area needed to achieve the target A/C ratio
+  // A/C ratio = Air Volume / Filter Area
+  // To ensure A/C ratio < targetACRatio, we need Filter Area > Air Volume / targetACRatio
   const requiredArea = airVolume / targetACRatio;
+  
+  // Calculate required number of flaps
+  // requiredArea = numFlaps * areaPerFlap
+  // Therefore: numFlaps = requiredArea / areaPerFlap
+  // We use Math.ceil to round up and ensure the A/C ratio stays below target
   let suggestedFlaps = Math.ceil(requiredArea / areaPerFlap);
   
-  // Ensure minimum number of flaps
-  suggestedFlaps = Math.max(suggestedFlaps, designType === 'bolt-weld' ? 6 : 4);
+  // Apply minimum constraints
+  const minFlaps = designType === 'bolt-weld' ? 6 : 4;
+  suggestedFlaps = Math.max(suggestedFlaps, minFlaps);
   
   return suggestedFlaps;
 };
