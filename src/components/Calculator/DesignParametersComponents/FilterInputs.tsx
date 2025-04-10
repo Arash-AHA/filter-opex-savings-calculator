@@ -33,7 +33,6 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
 }) => {
   const [suggestedFlaps, setSuggestedFlaps] = useState<number | null>(null);
   
-  // Recalculate suggested flaps whenever relevant inputs change
   useEffect(() => {
     const suggested = suggestEMCFlaps(
       designType,
@@ -43,8 +42,6 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
     );
     setSuggestedFlaps(suggested);
   }, [designType, bagLength, bagsPerRow, airVolumeM3h]);
-  
-  const targetACRatio = designType === 'bolt-weld' ? '< 1.0' : '< 3.2';
   
   return (
     <>
@@ -88,12 +85,6 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
                 />
               </TooltipTrigger>
               <TooltipContent side="right" className="max-w-xs">
-                <p>Recommended A/C Ratio: {targetACRatio}</p>
-                <p className="text-xs mt-1">
-                  {designType === 'bolt-weld' 
-                    ? 'For Bolt/Weld design, aim for a Gross A/C Ratio less than 1.0' 
-                    : 'For Modular design, aim for a Gross A/C Ratio less than 3.2'}
-                </p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
