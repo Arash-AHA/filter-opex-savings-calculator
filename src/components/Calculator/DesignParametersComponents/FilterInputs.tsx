@@ -101,9 +101,6 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
                     ? 'For Bolt/Weld design, aim for a Gross A/C Ratio less than 1.0' 
                     : 'For Modular design, aim for a Gross A/C Ratio less than 3.2'}
                 </p>
-                <p className="text-xs mt-1">
-                  Suggested flaps: {suggestedFlaps} (calculated based on Air Volume and Bag parameters)
-                </p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -119,7 +116,7 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
             />
             {suggestedFlaps && suggestedFlaps !== numEMCFlaps && (
               <div className="mt-1 text-xs text-blue-600 flex items-center justify-between">
-                <span>Suggested: {suggestedFlaps} flaps for {targetACRatio} A/C ratio</span>
+                <span>Suggested optimal number of flaps</span>
                 <Button 
                   variant="ghost" 
                   size="sm" 
