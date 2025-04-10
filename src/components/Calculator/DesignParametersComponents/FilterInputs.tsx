@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { suggestEMCFlaps } from '../hooks/utils/calculationUtils';
 import { Button } from '@/components/ui/button';
@@ -44,12 +43,6 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
     );
     setSuggestedFlaps(suggested);
   }, [designType, bagLength, bagsPerRow, airVolumeM3h]);
-  
-  const applySuggestion = () => {
-    if (suggestedFlaps) {
-      setNumEMCFlaps(suggestedFlaps);
-    }
-  };
   
   const targetACRatio = designType === 'bolt-weld' ? '< 1.0' : '< 3.2';
   
@@ -114,19 +107,6 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
               min={1}
               className="calculator-input w-full"
             />
-            {suggestedFlaps && suggestedFlaps !== numEMCFlaps && (
-              <div className="mt-1 text-xs text-blue-600 flex items-center justify-between">
-                <span>Suggested optimal number of flaps</span>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  className="h-6 px-2 py-0 text-xs"
-                  onClick={applySuggestion}
-                >
-                  Apply
-                </Button>
-              </div>
-            )}
           </div>
         </div>
       </div>
