@@ -1,3 +1,4 @@
+
 import { useMemo } from 'react';
 import { useFilterAreaCalculation } from './useFilterAreaCalculation';
 import { useBagReplacementCalculation } from './useBagReplacementCalculation';
@@ -28,16 +29,18 @@ export const useResultsCalculation = (
   kwhCost: number,
   compressedAirCost: string,
   m2ToSqFtFactor: number,
-  conversionFactor: number
+  conversionFactor: number,
+  airVolumeACFM?: string
 ) => {
-  // Use the filter area calculation hook
+  // Use the filter area calculation hook with the additional airVolumeACFM parameter
   const filterResults = useFilterAreaCalculation(
     designType,
     bagLength,
     bagsPerRow,
     numEMCFlaps,
     emcCleaningFactor,
-    airVolumeM3h
+    airVolumeM3h,
+    airVolumeACFM
   );
   
   // Use the bag replacement calculation hook

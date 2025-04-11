@@ -61,7 +61,8 @@ export const useCalculatorState = () => {
     savingsCalc.kwhCost,
     savingsCalc.compressedAirCost,
     designParams.m2ToSqFtFactor,
-    designParams.conversionFactor
+    designParams.conversionFactor,
+    designParams.airVolumeACFM
   );
 
   // Update results whenever calculated values change

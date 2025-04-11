@@ -8,7 +8,8 @@ export const useFilterAreaCalculation = (
   bagsPerRow: number, 
   numEMCFlaps: number,
   emcCleaningFactor: number,
-  airVolumeM3h: string
+  airVolumeM3h: string,
+  airVolumeACFM?: string
 ) => {
   // Calculate filter area
   const calculateTotalFilterArea = useCallback(() => {
@@ -28,7 +29,15 @@ export const useFilterAreaCalculation = (
       const netFilterArea = calculateTotalNetFilterArea(totalFilterArea);
       
       // Calculate OPEX metrics - check for valid inputs to prevent NaN
-      const parsedAirVolume = parseFloat(airVolumeM3h) || 0;
+      let parsedAirVolume: number;
+      
+      // For modular design, use ACFM value
+      if (designType === 'modular' && airVolumeACFM) {
+        parsedAirVolume = parseFloat(airVolumeACFM) || 0;
+      } else {
+        parsedAirVolume = parseFloat(airVolumeM3h) || 0;
+      }
+      
       const acRatioGross = parsedAirVolume / totalFilterArea || 0;
       const acRatioNet = parsedAirVolume / netFilterArea || 0;
       const baselinePowerConsumption = parsedAirVolume * 0.0002 || 0; // 0.0002 kW per m³/h
@@ -54,7 +63,7 @@ export const useFilterAreaCalculation = (
         improvedPower: 0
       };
     }
-  }, [calculateTotalFilterArea, calculateTotalNetFilterArea, airVolumeM3h]);
+  }, [calculateTotalFilterArea, calculateTotalNetFilterArea, airVolumeM3h, airVolumeACFM, designType]);
 
   return filterResults;
 };

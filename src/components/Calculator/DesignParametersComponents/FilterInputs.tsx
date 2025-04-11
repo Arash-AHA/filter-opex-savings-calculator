@@ -40,10 +40,11 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
       designType,
       bagLength,
       bagsPerRow,
-      airVolumeM3h
+      airVolumeM3h,
+      airVolumeACFM
     );
     setSuggestedFlaps(suggested);
-  }, [designType, bagLength, bagsPerRow, airVolumeM3h]);
+  }, [designType, bagLength, bagsPerRow, airVolumeM3h, airVolumeACFM]);
   
   const applySuggestedFlaps = () => {
     if (suggestedFlaps) {
@@ -64,12 +65,24 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
       // Convert from m³/h to m³/min by dividing by 60
       return totalArea > 0 ? (airVolume / 60) / totalArea : 0;
     } else {
-      // For modular design, different calculation
-      return 0;
+      // For modular design, A/C ratio is in cfm/sq ft
+      const surfaceAreaPerFoot = 4 * 0.292 * 0.3048; // Surface area per foot in m²
+      const areaPerFlap = bagsPerRow * bagLength * surfaceAreaPerFoot;
+      const totalArea = areaPerFlap * (typeof numEMCFlaps === 'string' ? 
+                                      (numEMCFlaps === '' ? 0 : parseInt(numEMCFlaps)) : 
+                                      numEMCFlaps);
+      
+      // Convert to square feet
+      const totalAreaSqFt = totalArea * 10.7639; // 1 m² = 10.7639 sq ft
+      
+      // Calculate A/C ratio in cfm/sq ft
+      const airVolume = parseFloat(airVolumeACFM) || 0;
+      return totalAreaSqFt > 0 ? airVolume / totalAreaSqFt : 0;
     }
   };
   
   const currentAcRatio = calculateAcRatio();
+  const targetACRatio = designType === 'bolt-weld' ? 1.0 : 3.2;
   
   return (
     <>
@@ -115,11 +128,17 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
               <TooltipContent side="right" className="max-w-xs p-4">
                 <div className="space-y-2">
                   <p><strong>Suggested value: {suggestedFlaps}</strong></p>
-                  {designType === 'bolt-weld' && (
+                  {designType === 'bolt-weld' ? (
                     <>
                       <p className="text-sm">Based on your current configuration (Air Volume: {airVolumeM3h} m³/h, {bagsPerRow} bags per row, {bagLength}m bag length), we suggest using {suggestedFlaps} EMC flaps to maintain an A/C ratio below 1.0.</p>
                       <p className="text-sm">Current A/C ratio: {currentAcRatio.toFixed(2)} m³/min/m²</p>
                       <p className="text-sm">{currentAcRatio <= 1.0 ? '✅ A/C ratio is good (below 1.0)' : '⚠️ A/C ratio is too high (above 1.0)'}</p>
+                    </>
+                  ) : (
+                    <>
+                      <p className="text-sm">Based on your current configuration (Air Volume: {airVolumeACFM} ACFM, {bagsPerRow} bags per row, {bagLength}ft bag length), we suggest using {suggestedFlaps} EMC flaps to maintain an A/C ratio below 3.2.</p>
+                      <p className="text-sm">Current A/C ratio: {currentAcRatio.toFixed(2)} cfm/sq ft</p>
+                      <p className="text-sm">{currentAcRatio <= 3.2 ? '✅ A/C ratio is good (below 3.2)' : '⚠️ A/C ratio is too high (above 3.2)'}</p>
                     </>
                   )}
                   <Button 
