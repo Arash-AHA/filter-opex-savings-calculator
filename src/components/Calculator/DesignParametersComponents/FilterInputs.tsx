@@ -66,18 +66,15 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
       return totalArea > 0 ? (airVolume / 60) / totalArea : 0;
     } else {
       // For modular design, A/C ratio is in cfm/sq ft
-      const surfaceAreaPerFoot = 4 * 0.292 * 0.3048; // Surface area per foot in m²
-      const areaPerFlap = bagsPerRow * bagLength * surfaceAreaPerFoot;
+      // Each bag is 4' perimeter x length
+      const areaPerFlap = 4 * bagLength * bagsPerRow;
       const totalArea = areaPerFlap * (typeof numEMCFlaps === 'string' ? 
                                       (numEMCFlaps === '' ? 0 : parseInt(numEMCFlaps)) : 
                                       numEMCFlaps);
       
-      // Convert to square feet
-      const totalAreaSqFt = totalArea * 10.7639; // 1 m² = 10.7639 sq ft
-      
       // Calculate A/C ratio in cfm/sq ft
       const airVolume = parseFloat(airVolumeACFM) || 0;
-      return totalAreaSqFt > 0 ? airVolume / totalAreaSqFt : 0;
+      return totalArea > 0 ? airVolume / totalArea : 0;
     }
   };
   
