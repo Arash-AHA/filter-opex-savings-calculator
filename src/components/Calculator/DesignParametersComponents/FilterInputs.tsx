@@ -34,6 +34,7 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
 }) => {
   const [suggestedFlaps, setSuggestedFlaps] = useState<number | null>(null);
   
+  // Calculate the suggested number of EMC flaps based on input parameters
   useEffect(() => {
     const suggested = suggestEMCFlaps(
       designType,
@@ -49,6 +50,26 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
       setNumEMCFlaps(suggestedFlaps);
     }
   };
+  
+  // Calculate AC ratio for the tooltip based on current parameters
+  const calculateAcRatio = () => {
+    if (designType === 'bolt-weld') {
+      const areaPerFlap = Math.PI * (165/1000) * bagLength * 5 * bagsPerRow;
+      const totalArea = areaPerFlap * (typeof numEMCFlaps === 'string' ? 
+                                       (numEMCFlaps === '' ? 0 : parseInt(numEMCFlaps)) : 
+                                       numEMCFlaps);
+      
+      // For bolt-weld, A/C ratio is in m³/min/m²
+      const airVolume = parseFloat(airVolumeM3h) || 0;
+      // Convert from m³/h to m³/min by dividing by 60
+      return totalArea > 0 ? (airVolume / 60) / totalArea : 0;
+    } else {
+      // For modular design, different calculation
+      return 0;
+    }
+  };
+  
+  const currentAcRatio = calculateAcRatio();
   
   return (
     <>
@@ -95,7 +116,11 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
                 <div className="space-y-2">
                   <p><strong>Suggested value: {suggestedFlaps}</strong></p>
                   {designType === 'bolt-weld' && (
-                    <p className="text-sm">Based on your current configuration (Air Volume: {airVolumeM3h} m³/h, {bagsPerRow} bags per row, {bagLength}m bag length), we suggest using {suggestedFlaps} EMC flaps to maintain an A/C ratio below 1.0.</p>
+                    <>
+                      <p className="text-sm">Based on your current configuration (Air Volume: {airVolumeM3h} m³/h, {bagsPerRow} bags per row, {bagLength}m bag length), we suggest using {suggestedFlaps} EMC flaps to maintain an A/C ratio below 1.0.</p>
+                      <p className="text-sm">Current A/C ratio: {currentAcRatio.toFixed(2)} m³/min/m²</p>
+                      <p className="text-sm">{currentAcRatio <= 1.0 ? '✅ A/C ratio is good (below 1.0)' : '⚠️ A/C ratio is too high (above 1.0)'}</p>
+                    </>
                   )}
                   <Button 
                     size="sm" 
@@ -112,17 +137,19 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
         <div className="flex-1">
           <div>
             <input
-              type="number"
+              type="text"
               value={numEMCFlaps}
               onChange={(e) => {
                 const value = e.target.value;
                 if (value === '') {
                   setNumEMCFlaps('');
                 } else {
-                  setNumEMCFlaps(parseInt(value) || 0);
+                  const parsedValue = parseInt(value);
+                  if (!isNaN(parsedValue)) {
+                    setNumEMCFlaps(parsedValue);
+                  }
                 }
               }}
-              min={1}
               className="calculator-input w-full"
               placeholder="Enter value"
             />
