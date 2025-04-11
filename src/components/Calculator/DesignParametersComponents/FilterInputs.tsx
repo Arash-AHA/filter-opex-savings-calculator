@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { suggestEMCFlaps } from '../hooks/utils/calculationUtils';
 import { Button } from '@/components/ui/button';
@@ -7,13 +8,13 @@ import { HelpCircle } from 'lucide-react';
 interface FilterInputsProps {
   airVolumeM3h: string;
   airVolumeACFM: string;
-  numEMCFlaps: number;
+  numEMCFlaps: number | string;
   bagsPerRow: number;
   bagLength: number;
   designType: string;
   handleAirVolumeM3hChange: (value: string) => void;
   handleAirVolumeACFMChange: (value: string) => void;
-  setNumEMCFlaps: (value: number) => void;
+  setNumEMCFlaps: (value: number | string) => void;
   setBagsPerRow: (value: number) => void;
   setBagLength: (value: number) => void;
 }
@@ -42,6 +43,12 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
     );
     setSuggestedFlaps(suggested);
   }, [designType, bagLength, bagsPerRow, airVolumeM3h]);
+  
+  const applySuggestedFlaps = () => {
+    if (suggestedFlaps) {
+      setNumEMCFlaps(suggestedFlaps);
+    }
+  };
   
   return (
     <>
@@ -84,7 +91,20 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
                   className="ml-2 text-gray-500 cursor-pointer" 
                 />
               </TooltipTrigger>
-              <TooltipContent side="right" className="max-w-xs">
+              <TooltipContent side="right" className="max-w-xs p-4">
+                <div className="space-y-2">
+                  <p><strong>Suggested value: {suggestedFlaps}</strong></p>
+                  {designType === 'bolt-weld' && (
+                    <p className="text-sm">Based on your current configuration (Air Volume: {airVolumeM3h} m³/h, {bagsPerRow} bags per row, {bagLength}m bag length), we suggest using {suggestedFlaps} EMC flaps to maintain an A/C ratio below 1.0.</p>
+                  )}
+                  <Button 
+                    size="sm" 
+                    onClick={applySuggestedFlaps} 
+                    className="w-full mt-2"
+                  >
+                    Apply suggestion
+                  </Button>
+                </div>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -94,9 +114,17 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
             <input
               type="number"
               value={numEMCFlaps}
-              onChange={(e) => setNumEMCFlaps(parseInt(e.target.value) || 0)}
+              onChange={(e) => {
+                const value = e.target.value;
+                if (value === '') {
+                  setNumEMCFlaps('');
+                } else {
+                  setNumEMCFlaps(parseInt(value) || 0);
+                }
+              }}
               min={1}
               className="calculator-input w-full"
+              placeholder="Enter value"
             />
           </div>
         </div>

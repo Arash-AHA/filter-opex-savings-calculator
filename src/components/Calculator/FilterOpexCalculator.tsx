@@ -144,7 +144,9 @@ const FilterOpexCalculator = () => {
             setMinPulseInterval={calculatorState.setMinPulseInterval}
             avgPulseInterval={calculatorState.avgPulseInterval}
             setAvgPulseInterval={calculatorState.setAvgPulseInterval}
-            numEMCFlaps={calculatorState.numEMCFlaps}
+            numEMCFlaps={typeof calculatorState.numEMCFlaps === 'string' ? 
+              (calculatorState.numEMCFlaps === '' ? 0 : parseInt(calculatorState.numEMCFlaps)) : 
+              calculatorState.numEMCFlaps}
             workingHours={calculatorState.workingHours}
           />
         </CalculatorSection>

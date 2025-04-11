@@ -12,7 +12,7 @@ interface DesignParametersProps {
   setDesignType: (value: string) => void;
   airVolumeM3h: string;
   airVolumeACFM: string;
-  numEMCFlaps: number;
+  numEMCFlaps: number | string;
   bagsPerRow: number;
   bagLength: number;
   filterRowType: string;
@@ -27,7 +27,7 @@ interface DesignParametersProps {
   setChannelHeightMm: (value: number) => void;
   handleAirVolumeM3hChange: (value: string) => void;
   handleAirVolumeACFMChange: (value: string) => void;
-  setNumEMCFlaps: (value: number) => void;
+  setNumEMCFlaps: (value: number | string) => void;
   setBagsPerRow: (value: number) => void;
   setBagLength: (value: number) => void;
   formattedResults: any;

@@ -30,12 +30,17 @@ export const useCalculatorState = () => {
     compressedAirSavings: 0
   });
 
+  // Parse numEMCFlaps for calculations
+  const parsedNumEMCFlaps = typeof designParams.numEMCFlaps === 'string' 
+    ? (designParams.numEMCFlaps === '' ? 0 : parseInt(designParams.numEMCFlaps))
+    : designParams.numEMCFlaps;
+
   // Calculate all values when inputs change  
   const { results: calculatedResults, formattedResults, totalSavings } = useResultsCalculation(
     designParams.designType,
     designParams.bagLength,
     designParams.bagsPerRow,
-    designParams.numEMCFlaps,
+    parsedNumEMCFlaps,
     designParams.airVolumeM3h,
     designParams.emcCleaningFactor,
     bagReplacement.bagPrice,
