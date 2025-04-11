@@ -122,6 +122,11 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
   handleNegativePressureMbarChange,
   handleNegativePressureInchWGChange
 }) => {
+  // Parse numEMCFlaps to a number when needed for functions expecting a number
+  const parsedNumEMCFlaps = typeof numEMCFlaps === 'string' 
+    ? (numEMCFlaps === '' ? 0 : parseInt(numEMCFlaps))
+    : numEMCFlaps;
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div className="md:col-span-2 space-y-4">
@@ -206,7 +211,7 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
             channelHeightMm={channelHeightMm}
             setChannelHeightMm={setChannelHeightMm}
             airVolumeM3h={airVolumeM3h}
-            numEMCFlaps={numEMCFlaps}
+            numEMCFlaps={parsedNumEMCFlaps} // Fixed: Use the parsed value here
             bagsPerRow={bagsPerRow}
           />
         )}

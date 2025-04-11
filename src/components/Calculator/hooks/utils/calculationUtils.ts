@@ -1,3 +1,4 @@
+
 /**
  * Utility functions for OPEX calculator calculations
  */
@@ -15,9 +16,9 @@ export const calculateFilterArea = (
     // PI()*165/1000*Bag length*5*No. bags in a row*No. EMC flaps
     return Math.PI * (165/1000) * bagLength * 5 * bagsPerRow * numEMCFlaps;
   } else {
-    // For Modular design - directly calculate in sq ft for easier A/C ratio calculation
-    // Each bag is 4' perimeter x length
-    return numEMCFlaps * bagsPerRow * bagLength * 4;
+    // For Modular design - the result is directly in sq.ft
+    // Bag Length * No. Bags in a Row * TOTAL No. EMC Flaps * 5 * 1.6
+    return bagLength * bagsPerRow * numEMCFlaps * 5 * 1.6;
   }
 };
 
@@ -115,9 +116,9 @@ export const suggestEMCFlaps = (
       return 4; // Default value when no air volume specified for modular design
     }
     
-    // Calculate area per flap for modular design - directly in sq ft
-    // Each bag is 4' perimeter x length x number of bags per row
-    const areaPerFlapSqFt = 4 * bagLength * bagsPerRow;
+    // Calculate area per flap for modular design
+    // Bag Length * No. Bags in a Row * 5 * 1.6
+    const areaPerFlapSqFt = bagLength * bagsPerRow * 5 * 1.6;
     
     // For modular design, A/C ratio is in cfm/sq ft
     // A/C ratio (cfm/sq ft) = Air Volume (ACFM) / Filter Area (sq ft)

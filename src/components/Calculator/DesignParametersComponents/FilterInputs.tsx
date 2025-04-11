@@ -66,11 +66,11 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
       return totalArea > 0 ? (airVolume / 60) / totalArea : 0;
     } else {
       // For modular design, A/C ratio is in cfm/sq ft
-      // Each bag is 4' perimeter x length
-      const areaPerFlap = 4 * bagLength * bagsPerRow;
-      const totalArea = areaPerFlap * (typeof numEMCFlaps === 'string' ? 
-                                      (numEMCFlaps === '' ? 0 : parseInt(numEMCFlaps)) : 
-                                      numEMCFlaps);
+      // Bag Length * No. Bags in a Row * TOTAL No. EMC Flaps * 5 * 1.6
+      const numEMCFlapsValue = typeof numEMCFlaps === 'string' ? 
+                               (numEMCFlaps === '' ? 0 : parseInt(numEMCFlaps)) : 
+                               numEMCFlaps;
+      const totalArea = bagLength * bagsPerRow * numEMCFlapsValue * 5 * 1.6;
       
       // Calculate A/C ratio in cfm/sq ft
       const airVolume = parseFloat(airVolumeACFM) || 0;
