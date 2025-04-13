@@ -1,4 +1,3 @@
-
 import { useState, useCallback, useEffect } from 'react';
 
 export const useDesignParameters = () => {
@@ -11,7 +10,7 @@ export const useDesignParameters = () => {
   const [designType, setDesignType] = useState('bolt-weld');
   const [airVolumeM3h, setAirVolumeM3h] = useState('375000');
   const [airVolumeACFM, setAirVolumeACFM] = useState((375000 * 0.588774).toFixed(0));
-  const [numEMCFlaps, setNumEMCFlaps] = useState<number | string>('');
+  const [numEMCFlaps, setNumEMCFlaps] = useState<number | string>(14);
   const [bagsPerRow, setBagsPerRow] = useState(18);
   const [bagLength, setBagLength] = useState(10);
   const [filterRowType, setFilterRowType] = useState('single'); // This won't affect gas velocity calculation now
