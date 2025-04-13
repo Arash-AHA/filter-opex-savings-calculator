@@ -1,3 +1,4 @@
+
 import React from 'react';
 import CalculatorSection from './CalculatorSection';
 import Transition from '../UI/Transition';
@@ -17,7 +18,7 @@ const FilterOpexCalculator = () => {
           <h1 className="text-3xl font-medium text-gray-900 mb-2">Filter OPEX Savings Calculator</h1>
         </Transition>
         <Transition animation="slide-in-right" delay={300}>
-          <p className="text-gray-600 max-w-xl mx-auto">Calculate potential operational savings by implementing EMC cleaning technology in your filtration systems.</p>
+          <p className="text-gray-600 max-w-xl mx-auto"></p>
         </Transition>
       </div>
       
@@ -183,3 +184,4 @@ const FilterOpexCalculator = () => {
 };
 
 export default FilterOpexCalculator;
+
