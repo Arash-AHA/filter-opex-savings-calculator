@@ -7,6 +7,7 @@ import FilterBagReplacement from './FilterBagReplacement';
 import OperationalParameters from './OperationalParameters';
 import SavingsResults from './SavingsResults';
 import { useCalculatorState } from './hooks/useCalculatorState';
+import { Image } from 'lucide-react';
 
 const FilterOpexCalculator = () => {
   const calculatorState = useCalculatorState();
@@ -15,10 +16,16 @@ const FilterOpexCalculator = () => {
     <div className="max-w-5xl mx-auto">
       <div className="text-center mb-8">
         <Transition animation="slide-in-left" delay={100}>
-          <h1 className="text-3xl font-medium text-gray-900 mb-2">Filter OPEX Savings Calculator</h1>
+          <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-2">
+            <div className="flex-shrink-0 bg-blue-50 p-2 rounded-lg shadow-sm">
+              <Image className="w-10 h-10 text-blue-500" />
+            </div>
+            <h1 className="text-3xl font-medium text-gray-900">Filter OPEX Savings Calculator</h1>
+          </div>
         </Transition>
         <Transition animation="slide-in-right" delay={300}>
           <p className="text-gray-600 max-w-xl mx-auto"></p>
+          <p className="text-sm text-gray-500 italic mt-2">By Arash Haghi</p>
         </Transition>
       </div>
       
@@ -184,4 +191,3 @@ const FilterOpexCalculator = () => {
 };
 
 export default FilterOpexCalculator;
-
