@@ -1,4 +1,3 @@
-
 import React from 'react';
 import CalculatorSection from './CalculatorSection';
 import Transition from '../UI/Transition';
@@ -17,13 +16,6 @@ const FilterOpexCalculator = () => {
       <div className="text-center mb-8">
         <Transition animation="slide-in-left" delay={100}>
           <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-2">
-            <div className="flex-shrink-0 bg-blue-50 p-2 rounded-lg shadow-sm">
-              <img 
-                src="/lovable-uploads/582834bc-9f7f-412b-87dd-a75d55234987.png" 
-                alt="Scheuch Logo" 
-                className="w-24 h-10 object-contain"
-              />
-            </div>
             <h1 className="text-3xl font-medium text-gray-900">Filter OPEX Savings Calculator</h1>
           </div>
         </Transition>
