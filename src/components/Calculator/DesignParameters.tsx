@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import FilterDesignType from './DesignParametersComponents/FilterDesignType';
@@ -200,6 +199,7 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
             handleNegativePressureInchWGChange={handleNegativePressureInchWGChange}
             estimateOutletDust={estimateOutletDust}
             airVolumeM3h={airVolumeM3h}
+            designType={designType}
           />
         )}
         
@@ -212,7 +212,7 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
             channelHeightMm={channelHeightMm}
             setChannelHeightMm={setChannelHeightMm}
             airVolumeM3h={airVolumeM3h}
-            numEMCFlaps={parsedNumEMCFlaps} // Fixed: Use the parsed value here
+            numEMCFlaps={parsedNumEMCFlaps}
             bagsPerRow={bagsPerRow}
           />
         )}

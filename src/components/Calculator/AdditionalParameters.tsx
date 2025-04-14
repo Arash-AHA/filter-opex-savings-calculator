@@ -29,6 +29,7 @@ interface AdditionalParametersProps {
   handleNegativePressureInchWGChange: (value: string) => void;
   estimateOutletDust: () => void;
   airVolumeM3h: string;
+  designType: string;
 }
 
 const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
@@ -57,7 +58,8 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
   handleNegativePressureMbarChange,
   handleNegativePressureInchWGChange,
   estimateOutletDust,
-  airVolumeM3h
+  airVolumeM3h,
+  designType
 }) => {
   const [ductVelocity, setDuctVelocity] = useState<string>('');
   const [ductSize, setDuctSize] = useState<string>('');
@@ -67,20 +69,40 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
       const airFlowM3h = parseFloat(airVolumeM3h);
       const airFlowM3s = airFlowM3h / 3600; // Convert m³/h to m³/s
       
-      if (ductSize && !ductVelocity) {
-        const diameter = parseFloat(ductSize) / 1000; // Convert mm to m
-        const area = Math.PI * Math.pow(diameter, 2) / 4; // A = π * D² / 4
-        const calculatedVelocity = airFlowM3s / area;
-        setDuctVelocity(calculatedVelocity.toFixed(2));
-      } 
-      else if (ductVelocity && !ductSize) {
-        const velocity = parseFloat(ductVelocity);
-        const requiredArea = airFlowM3s / velocity; // A = Q/v
-        const diameter = Math.sqrt((4 * requiredArea) / Math.PI); // D = sqrt(4A/π)
-        setDuctSize((diameter * 1000).toFixed(0)); // Convert m to mm
+      if (designType === 'modular') {
+        // For modular design: velocity in ft/min, duct size in inches
+        if (ductSize && !ductVelocity) {
+          const diameter = parseFloat(ductSize) * 0.0254; // Convert inches to meters
+          const area = Math.PI * Math.pow(diameter, 2) / 4; // A = π * D² / 4
+          const velocityMS = airFlowM3s / area;
+          const velocityFtMin = velocityMS * 196.85; // Convert m/s to ft/min
+          setDuctVelocity(velocityFtMin.toFixed(0));
+        } 
+        else if (ductVelocity && !ductSize) {
+          const velocityFtMin = parseFloat(ductVelocity);
+          const velocityMS = velocityFtMin / 196.85; // Convert ft/min to m/s
+          const requiredArea = airFlowM3s / velocityMS;
+          const diameterM = Math.sqrt((4 * requiredArea) / Math.PI);
+          const diameterInch = diameterM * 39.3701; // Convert m to inches
+          setDuctSize(diameterInch.toFixed(1));
+        }
+      } else {
+        // For bolt-weld design: velocity in m/s, duct size in mm
+        if (ductSize && !ductVelocity) {
+          const diameter = parseFloat(ductSize) / 1000; // Convert mm to m
+          const area = Math.PI * Math.pow(diameter, 2) / 4;
+          const calculatedVelocity = airFlowM3s / area;
+          setDuctVelocity(calculatedVelocity.toFixed(2));
+        } 
+        else if (ductVelocity && !ductSize) {
+          const velocity = parseFloat(ductVelocity);
+          const requiredArea = airFlowM3s / velocity;
+          const diameter = Math.sqrt((4 * requiredArea) / Math.PI);
+          setDuctSize((diameter * 1000).toFixed(0));
+        }
       }
     }
-  }, [ductSize, ductVelocity, airVolumeM3h]);
+  }, [ductSize, ductVelocity, airVolumeM3h, designType]);
 
   const safeToString = (value: number | null | undefined): string => {
     return value !== null && value !== undefined ? value.toString() : '';
@@ -273,12 +295,14 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
               value={ductVelocity}
               onChange={(e) => {
                 setDuctVelocity(e.target.value);
-                setDuctSize(''); // Clear duct size when velocity changes
+                setDuctSize('');
               }}
-              className="pr-8 w-full bg-white text-sm"
-              placeholder="Enter velocity"
+              className="pr-12 w-full bg-white text-sm"
+              placeholder={designType === 'modular' ? 'Enter velocity' : 'Enter velocity'}
             />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">m/s</span>
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">
+              {designType === 'modular' ? 'ft/min' : 'm/s'}
+            </span>
           </div>
           <div className="w-1/2 relative">
             <Input 
@@ -286,12 +310,14 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
               value={ductSize}
               onChange={(e) => {
                 setDuctSize(e.target.value);
-                setDuctVelocity(''); // Clear velocity when duct size changes
+                setDuctVelocity('');
               }}
-              className="pr-8 w-full bg-white text-sm"
-              placeholder="Enter duct size"
+              className="pr-12 w-full bg-white text-sm"
+              placeholder={designType === 'modular' ? 'Enter duct size' : 'Enter duct size'}
             />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">mm</span>
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">
+              {designType === 'modular' ? 'inches' : 'mm'}
+            </span>
           </div>
         </div>
       </div>
