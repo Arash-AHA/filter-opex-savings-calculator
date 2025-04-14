@@ -158,17 +158,15 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
               {showOtherParams ? 'Hide Other Parameters' : 'Show Other Filter Design Parameters'}
             </Button>
           </div>
-          {designType === 'bolt-weld' && (
-            <div className="flex-1">
-              <Button 
-                variant="outline" 
-                className="w-full"
-                onClick={() => setShowDimensions(!showDimensions)}
-              >
-                {showDimensions ? 'Hide Filter Dimensions / Footprint' : 'Show Filter Dimensions / Footprint'}
-              </Button>
-            </div>
-          )}
+          <div className="flex-1">
+            <Button 
+              variant="outline" 
+              className="w-full"
+              onClick={() => setShowDimensions(!showDimensions)}
+            >
+              {showDimensions ? 'Hide Filter Dimensions / Footprint' : 'Show Filter Dimensions / Footprint'}
+            </Button>
+          </div>
         </div>
         
         {showOtherParams && (
@@ -203,7 +201,7 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
           />
         )}
         
-        {showDimensions && designType === 'bolt-weld' && (
+        {showDimensions && (
           <FilterDimensions
             filterRowType={filterRowType}
             setFilterRowType={setFilterRowType}
@@ -214,6 +212,7 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
             airVolumeM3h={airVolumeM3h}
             numEMCFlaps={parsedNumEMCFlaps}
             bagsPerRow={bagsPerRow}
+            designType={designType}
           />
         )}
       </div>
