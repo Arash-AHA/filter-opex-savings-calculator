@@ -59,34 +59,29 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
   estimateOutletDust,
   airVolumeM3h
 }) => {
-  // Add new state for duct calculations
   const [ductVelocity, setDuctVelocity] = useState<string>('');
   const [ductSize, setDuctSize] = useState<string>('');
   
-  // Calculate values when either duct size or velocity changes
   useEffect(() => {
     if (airVolumeM3h) {
-      const airFlow = parseFloat(airVolumeM3h);
+      const airFlowM3h = parseFloat(airVolumeM3h);
+      const airFlowM3s = airFlowM3h / 3600; // Convert m³/h to m³/s
       
       if (ductSize && !ductVelocity) {
-        // Calculate velocity if duct size is provided
         const diameter = parseFloat(ductSize) / 1000; // Convert mm to m
-        const area = Math.PI * Math.pow(diameter/2, 2);
-        const velocity = (airFlow / 3600) / area; // m³/h to m³/s
-        setDuctVelocity(velocity.toFixed(2));
+        const area = Math.PI * Math.pow(diameter, 2) / 4; // A = π * D² / 4
+        const calculatedVelocity = airFlowM3s / area;
+        setDuctVelocity(calculatedVelocity.toFixed(2));
       } 
       else if (ductVelocity && !ductSize) {
-        // Calculate duct size if velocity is provided
         const velocity = parseFloat(ductVelocity);
-        const flowRate = airFlow / 3600; // m³/h to m³/s
-        const area = flowRate / velocity;
-        const diameter = Math.sqrt((4 * area) / Math.PI) * 1000; // Convert m to mm
-        setDuctSize(diameter.toFixed(0));
+        const requiredArea = airFlowM3s / velocity; // A = Q/v
+        const diameter = Math.sqrt((4 * requiredArea) / Math.PI); // D = sqrt(4A/π)
+        setDuctSize((diameter * 1000).toFixed(0)); // Convert m to mm
       }
     }
   }, [ductSize, ductVelocity, airVolumeM3h]);
 
-  // Helper function to safely convert potentially null values to string
   const safeToString = (value: number | null | undefined): string => {
     return value !== null && value !== undefined ? value.toString() : '';
   };

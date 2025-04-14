@@ -199,6 +199,7 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
             handleNegativePressureMbarChange={handleNegativePressureMbarChange}
             handleNegativePressureInchWGChange={handleNegativePressureInchWGChange}
             estimateOutletDust={estimateOutletDust}
+            airVolumeM3h={airVolumeM3h}
           />
         )}
         
