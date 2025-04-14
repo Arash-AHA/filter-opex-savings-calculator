@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
@@ -29,6 +28,7 @@ interface AdditionalParametersProps {
   handleNegativePressureMbarChange: (value: string) => void;
   handleNegativePressureInchWGChange: (value: string) => void;
   estimateOutletDust: () => void;
+  airVolumeM3h: string;
 }
 
 const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
@@ -56,8 +56,36 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
   handleTargetEmissionGrainDscfChange,
   handleNegativePressureMbarChange,
   handleNegativePressureInchWGChange,
-  estimateOutletDust
+  estimateOutletDust,
+  airVolumeM3h
 }) => {
+  // Add new state for duct calculations
+  const [ductVelocity, setDuctVelocity] = useState<string>('');
+  const [ductSize, setDuctSize] = useState<string>('');
+  
+  // Calculate values when either duct size or velocity changes
+  useEffect(() => {
+    if (airVolumeM3h) {
+      const airFlow = parseFloat(airVolumeM3h);
+      
+      if (ductSize && !ductVelocity) {
+        // Calculate velocity if duct size is provided
+        const diameter = parseFloat(ductSize) / 1000; // Convert mm to m
+        const area = Math.PI * Math.pow(diameter/2, 2);
+        const velocity = (airFlow / 3600) / area; // m³/h to m³/s
+        setDuctVelocity(velocity.toFixed(2));
+      } 
+      else if (ductVelocity && !ductSize) {
+        // Calculate duct size if velocity is provided
+        const velocity = parseFloat(ductVelocity);
+        const flowRate = airFlow / 3600; // m³/h to m³/s
+        const area = flowRate / velocity;
+        const diameter = Math.sqrt((4 * area) / Math.PI) * 1000; // Convert m to mm
+        setDuctSize(diameter.toFixed(0));
+      }
+    }
+  }, [ductSize, ductVelocity, airVolumeM3h]);
+
   // Helper function to safely convert potentially null values to string
   const safeToString = (value: number | null | undefined): string => {
     return value !== null && value !== undefined ? value.toString() : '';
@@ -235,6 +263,40 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
               placeholder="Enter inchWG"
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">Inches W.G.</span>
+          </div>
+        </div>
+      </div>
+      
+      <div className="flex items-center mb-4">
+        <div className="w-60 pr-4 calculator-field-label text-sm">
+          <span>Duct Size / Velocity:</span>
+        </div>
+        <div className="flex flex-1 space-x-2">
+          <div className="w-1/2 relative">
+            <Input 
+              type="text"
+              value={ductVelocity}
+              onChange={(e) => {
+                setDuctVelocity(e.target.value);
+                setDuctSize(''); // Clear duct size when velocity changes
+              }}
+              className="pr-8 w-full bg-white text-sm"
+              placeholder="Enter velocity"
+            />
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">m/s</span>
+          </div>
+          <div className="w-1/2 relative">
+            <Input 
+              type="text"
+              value={ductSize}
+              onChange={(e) => {
+                setDuctSize(e.target.value);
+                setDuctVelocity(''); // Clear velocity when duct size changes
+              }}
+              className="pr-8 w-full bg-white text-sm"
+              placeholder="Enter duct size"
+            />
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">mm</span>
           </div>
         </div>
       </div>
