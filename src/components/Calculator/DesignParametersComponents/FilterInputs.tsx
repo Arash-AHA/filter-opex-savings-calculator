@@ -36,24 +36,36 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
   const { toast } = useToast();
   
   useEffect(() => {
-    const suggested = suggestEMCFlaps(
+    let suggested = suggestEMCFlaps(
       designType,
       bagLength,
       bagsPerRow,
       airVolumeM3h,
       airVolumeACFM
     );
+
+    if (designType === 'modular' && suggested) {
+      const remainder = suggested % 3;
+      if (remainder !== 0) {
+        suggested = suggested + (3 - remainder);
+      }
+      
+      const areaPerFlap = bagLength * bagsPerRow * 5 * 1.6;
+      const totalArea = areaPerFlap * suggested;
+      const airVolume = parseFloat(airVolumeACFM) || 0;
+      const acRatio = totalArea > 0 ? airVolume / totalArea : 0;
+      
+      if (acRatio > 3.2) {
+        suggested += 3;
+      }
+    }
+    
     setSuggestedFlaps(suggested);
   }, [designType, bagLength, bagsPerRow, airVolumeM3h, airVolumeACFM]);
   
   const applySuggestedFlaps = () => {
     if (suggestedFlaps) {
-      if (designType === 'modular') {
-        const roundedFlaps = Math.round(suggestedFlaps / 3) * 3;
-        setNumEMCFlaps(roundedFlaps);
-      } else {
-        setNumEMCFlaps(suggestedFlaps);
-      }
+      setNumEMCFlaps(suggestedFlaps);
     }
   };
   
@@ -93,6 +105,19 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
             variant: "destructive",
           });
           return;
+        }
+        
+        const areaPerFlap = bagLength * bagsPerRow * 5 * 1.6;
+        const totalArea = areaPerFlap * parsedValue;
+        const airVolume = parseFloat(airVolumeACFM) || 0;
+        const acRatio = totalArea > 0 ? airVolume / totalArea : 0;
+        
+        if (acRatio > 3.2) {
+          toast({
+            title: "Warning: High A/C Ratio",
+            description: "The selected number of EMC flaps results in an A/C ratio above 3.2. Consider increasing the number of flaps.",
+            variant: "destructive",
+          });
         }
       }
       setNumEMCFlaps(parsedValue);
