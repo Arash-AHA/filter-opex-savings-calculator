@@ -1,10 +1,9 @@
 
 import React, { useEffect, useState } from 'react';
 import { suggestEMCFlaps } from '../hooks/utils/calculationUtils';
-import { Button } from '@/components/ui/button';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { HelpCircle } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import AirVolumeInputs from './AirVolumeInputs';
+import EMCFlapsInput from './EMCFlapsInput';
+import BagsConfig from './BagsConfig';
 
 interface FilterInputsProps {
   airVolumeM3h: string;
@@ -34,12 +33,6 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
   setBagLength
 }) => {
   const [suggestedFlaps, setSuggestedFlaps] = useState<number | null>(null);
-  const [inputValue, setInputValue] = useState<string>(numEMCFlaps.toString());
-  const { toast } = useToast();
-  
-  useEffect(() => {
-    setInputValue(numEMCFlaps.toString());
-  }, [numEMCFlaps]);
   
   useEffect(() => {
     let suggested = suggestEMCFlaps(
@@ -69,12 +62,6 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
     setSuggestedFlaps(suggested);
   }, [designType, bagLength, bagsPerRow, airVolumeM3h, airVolumeACFM]);
   
-  const applySuggestedFlaps = () => {
-    if (suggestedFlaps) {
-      setNumEMCFlaps(suggestedFlaps);
-    }
-  };
-  
   const calculateAcRatio = () => {
     if (designType === 'bolt-weld') {
       const areaPerFlap = Math.PI * (165/1000) * bagLength * 5 * bagsPerRow;
@@ -94,185 +81,37 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
       return totalArea > 0 ? airVolume / totalArea : 0;
     }
   };
-  
-  const handleEMCFlapsInputChange = (value: string) => {
-    setInputValue(value);
-  };
-
-  const handleEMCFlapsBlur = () => {
-    if (inputValue === '') {
-      setNumEMCFlaps('');
-      return;
-    }
-
-    const parsedValue = parseInt(inputValue);
-    if (!isNaN(parsedValue)) {
-      if (designType === 'modular') {
-        if (parsedValue % 3 !== 0) {
-          toast({
-            title: "Invalid EMC Flaps Number",
-            description: "For modular design, the number of EMC flaps must be a multiple of 3 (each Module has 3 EMC dampers)",
-            variant: "destructive",
-          });
-          // Reset input to the previous valid value
-          setInputValue(numEMCFlaps.toString());
-          return;
-        }
-        
-        const areaPerFlap = bagLength * bagsPerRow * 5 * 1.6;
-        const totalArea = areaPerFlap * parsedValue;
-        const airVolume = parseFloat(airVolumeACFM) || 0;
-        const acRatio = totalArea > 0 ? airVolume / totalArea : 0;
-        
-        if (acRatio > 3.2) {
-          toast({
-            title: "Warning: High A/C Ratio",
-            description: "The selected number of EMC flaps results in an A/C ratio above 3.2. Consider increasing the number of flaps.",
-            variant: "destructive",
-          });
-        }
-      }
-      setNumEMCFlaps(parsedValue);
-    } else {
-      // Reset to previous valid value
-      setInputValue(numEMCFlaps.toString());
-    }
-  };
 
   const currentAcRatio = calculateAcRatio();
-  const targetACRatio = designType === 'bolt-weld' ? 1.0 : 3.2;
   
   return (
     <>
-      <div className="flex items-center mb-4">
-        <div className="w-60 pr-4 calculator-field-label">
-          <span>Air Volume:</span>
-        </div>
-        <div className="flex flex-1 space-x-2">
-          <div className="w-1/2 relative">
-            <input 
-              type="text"
-              value={airVolumeM3h}
-              onChange={(e) => handleAirVolumeM3hChange(e.target.value)}
-              placeholder="Enter value"
-              className="calculator-input pr-12 w-full"
-            />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500">m³/h</span>
-          </div>
-          <div className="w-1/2 relative">
-            <input 
-              type="text"
-              value={airVolumeACFM}
-              onChange={(e) => handleAirVolumeACFMChange(e.target.value)}
-              placeholder="Enter value"
-              className="calculator-input pr-12 w-full"
-            />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500">ACFM</span>
-          </div>
-        </div>
-      </div>
+      <AirVolumeInputs
+        airVolumeM3h={airVolumeM3h}
+        airVolumeACFM={airVolumeACFM}
+        handleAirVolumeM3hChange={handleAirVolumeM3hChange}
+        handleAirVolumeACFMChange={handleAirVolumeACFMChange}
+      />
       
-      <div className="flex items-center mb-4">
-        <div className="w-60 pr-4 calculator-field-label flex items-center">
-          <span>TOTAL No. EMC Flaps:</span>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <HelpCircle size={16} className="ml-2 text-gray-500 cursor-pointer" />
-              </TooltipTrigger>
-              <TooltipContent side="right" className="max-w-xs p-4">
-                <div className="space-y-2">
-                  <p><strong>Suggested value: {suggestedFlaps}</strong></p>
-                  {designType === 'modular' && (
-                    <p className="text-sm text-yellow-600">Note: For modular design, the number of EMC flaps must be a multiple of 3 (each Module has 3 EMC dampers)</p>
-                  )}
-                  {designType === 'bolt-weld' ? (
-                    <>
-                      <p className="text-sm">Based on your current configuration (Air Volume: {airVolumeM3h} m³/h, {bagsPerRow} bags per row, {bagLength}m bag length), we suggest using {suggestedFlaps} EMC flaps to maintain an A/C ratio below 1.0.</p>
-                      <p className="text-sm">Current A/C ratio: {currentAcRatio.toFixed(2)} m³/min/m²</p>
-                      <p className="text-sm">{currentAcRatio <= 1.0 ? '✅ A/C ratio is good (below 1.0)' : '⚠️ A/C ratio is too high (above 1.0)'}</p>
-                    </>
-                  ) : (
-                    <>
-                      <p className="text-sm">Based on your current configuration (Air Volume: {airVolumeACFM} ACFM, {bagsPerRow} bags per row, {bagLength}ft bag length), we suggest using {suggestedFlaps} EMC flaps to maintain an A/C ratio below 3.2.</p>
-                      <p className="text-sm">Current A/C ratio: {currentAcRatio.toFixed(2)} cfm/sq ft</p>
-                      <p className="text-sm">{currentAcRatio <= 3.2 ? '✅ A/C ratio is good (below 3.2)' : '⚠️ A/C ratio is too high (above 3.2)'}</p>
-                    </>
-                  )}
-                  <Button 
-                    size="sm" 
-                    onClick={applySuggestedFlaps} 
-                    className="w-full mt-2"
-                  >
-                    Apply suggestion
-                  </Button>
-                </div>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
-        <div className="flex-1">
-          <div>
-            <input
-              type="text"
-              value={inputValue}
-              onChange={(e) => handleEMCFlapsInputChange(e.target.value)}
-              onBlur={handleEMCFlapsBlur}
-              className="calculator-input w-full"
-              placeholder="Enter value"
-            />
-          </div>
-        </div>
-      </div>
+      <EMCFlapsInput
+        numEMCFlaps={numEMCFlaps}
+        setNumEMCFlaps={setNumEMCFlaps}
+        suggestedFlaps={suggestedFlaps}
+        designType={designType}
+        airVolumeM3h={airVolumeM3h}
+        airVolumeACFM={airVolumeACFM}
+        bagsPerRow={bagsPerRow}
+        bagLength={bagLength}
+        currentAcRatio={currentAcRatio}
+      />
       
-      <div className="flex items-center mb-4">
-        <div className="w-60 pr-4 calculator-field-label">
-          <span>No. Bags in a Row:</span>
-        </div>
-        <div className="flex-1">
-          <select
-            value={bagsPerRow}
-            onChange={(e) => setBagsPerRow(parseInt(e.target.value) || 0)}
-            className="calculator-input w-full"
-          >
-            {designType === 'bolt-weld' ? (
-              <>
-                <option value={15}>15</option>
-                <option value={18}>18</option>
-              </>
-            ) : (
-              <option value={15}>15</option>
-            )}
-          </select>
-        </div>
-      </div>
-      
-      <div className="flex items-center mb-4">
-        <div className="w-60 pr-4 calculator-field-label">
-          <span>Bag Length:</span>
-        </div>
-        <div className="flex-1">
-          <select
-            value={bagLength}
-            onChange={(e) => setBagLength(parseInt(e.target.value) || 0)}
-            className="calculator-input w-full"
-          >
-            {designType === 'bolt-weld' ? (
-              <>
-                <option value={8}>8 m</option>
-                <option value={9}>9 m</option>
-                <option value={10}>10 m</option>
-              </>
-            ) : (
-              <>
-                <option value={16}>16 ft</option>
-                <option value={24}>24 ft</option>
-                <option value={28}>28 ft</option>
-              </>
-            )}
-          </select>
-        </div>
-      </div>
+      <BagsConfig
+        bagsPerRow={bagsPerRow}
+        bagLength={bagLength}
+        designType={designType}
+        setBagsPerRow={setBagsPerRow}
+        setBagLength={setBagLength}
+      />
     </>
   );
 };
