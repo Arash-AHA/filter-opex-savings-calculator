@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { suggestEMCFlaps } from '../hooks/utils/calculationUtils';
 import { Button } from '@/components/ui/button';
@@ -33,7 +34,12 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
   setBagLength
 }) => {
   const [suggestedFlaps, setSuggestedFlaps] = useState<number | null>(null);
+  const [inputValue, setInputValue] = useState<string>(numEMCFlaps.toString());
   const { toast } = useToast();
+  
+  useEffect(() => {
+    setInputValue(numEMCFlaps.toString());
+  }, [numEMCFlaps]);
   
   useEffect(() => {
     let suggested = suggestEMCFlaps(
@@ -89,13 +95,17 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
     }
   };
   
-  const handleEMCFlapsChange = (value: string) => {
-    if (value === '') {
+  const handleEMCFlapsInputChange = (value: string) => {
+    setInputValue(value);
+  };
+
+  const handleEMCFlapsBlur = () => {
+    if (inputValue === '') {
       setNumEMCFlaps('');
       return;
     }
 
-    const parsedValue = parseInt(value);
+    const parsedValue = parseInt(inputValue);
     if (!isNaN(parsedValue)) {
       if (designType === 'modular') {
         if (parsedValue % 3 !== 0) {
@@ -104,6 +114,8 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
             description: "For modular design, the number of EMC flaps must be a multiple of 3 (each Module has 3 EMC dampers)",
             variant: "destructive",
           });
+          // Reset input to the previous valid value
+          setInputValue(numEMCFlaps.toString());
           return;
         }
         
@@ -121,6 +133,9 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
         }
       }
       setNumEMCFlaps(parsedValue);
+    } else {
+      // Reset to previous valid value
+      setInputValue(numEMCFlaps.toString());
     }
   };
 
@@ -200,8 +215,9 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
           <div>
             <input
               type="text"
-              value={numEMCFlaps}
-              onChange={(e) => handleEMCFlapsChange(e.target.value)}
+              value={inputValue}
+              onChange={(e) => handleEMCFlapsInputChange(e.target.value)}
+              onBlur={handleEMCFlapsBlur}
               className="calculator-input w-full"
               placeholder="Enter value"
             />
