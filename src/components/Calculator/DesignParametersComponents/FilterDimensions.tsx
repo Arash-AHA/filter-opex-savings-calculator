@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
@@ -51,12 +50,36 @@ const FilterDimensions: React.FC<FilterDimensionsProps> = ({
   
   const isVelocityTooHigh = gasVelocityMS > 12;
   
-  // Calculate filter dimensions based on design type
-  const filterWidth = bagsPerRow === 18 ? (2 * 4500 + channelWidthMm) : (3750 * 2 + channelWidthMm);
-  const filterLength = filterRowType === 'single' ? numEMCFlaps * 1200 : (numEMCFlaps / 2) * 1200;
-  
-  const filterWidthDisplay = isModular ? (filterWidth / 25.4).toFixed(1) : filterWidth.toFixed(0);
-  const filterLengthDisplay = isModular ? (filterLength / 25.4).toFixed(1) : filterLength.toFixed(0);
+  // Calculate filter dimensions based on design type and row configuration
+  const calculateFilterDimensions = () => {
+    if (isModular) {
+      // For modular design
+      const widthInches = 166 + (channelWidthMm / 25.4); // 166 + Clean Gas Channel Width in inches
+      let lengthInches = 0;
+      
+      if (filterRowType === 'single') {
+        lengthInches = (numEMCFlaps / 3) * 141; // Single row calculation
+      } else {
+        lengthInches = (numEMCFlaps / 6) * 141; // Double row calculation
+      }
+      
+      return {
+        width: widthInches.toFixed(1),
+        length: lengthInches.toFixed(1)
+      };
+    } else {
+      // For bolt-weld design (keep existing calculation)
+      const filterWidth = bagsPerRow === 18 ? (2 * 4500 + channelWidthMm) : (3750 * 2 + channelWidthMm);
+      const filterLength = filterRowType === 'single' ? numEMCFlaps * 1200 : (numEMCFlaps / 2) * 1200;
+      
+      return {
+        width: filterWidth.toFixed(0),
+        length: filterLength.toFixed(0)
+      };
+    }
+  };
+
+  const dimensions = calculateFilterDimensions();
   
   // Handle input changes with unit conversion
   const handleWidthChange = (value: string) => {
@@ -179,7 +202,7 @@ const FilterDimensions: React.FC<FilterDimensionsProps> = ({
           <div className="w-1/2 relative">
             <input 
               type="text"
-              value={filterWidthDisplay}
+              value={dimensions.width}
               readOnly
               className="calculator-input pr-8 w-full bg-gray-50"
             />
@@ -188,7 +211,7 @@ const FilterDimensions: React.FC<FilterDimensionsProps> = ({
           <div className="w-1/2 relative">
             <input 
               type="text"
-              value={filterLengthDisplay}
+              value={dimensions.length}
               readOnly
               className="calculator-input pr-8 w-full bg-gray-50"
             />
