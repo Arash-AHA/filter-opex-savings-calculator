@@ -1,9 +1,9 @@
-
 import React, { useEffect, useState } from 'react';
 import { suggestEMCFlaps } from '../hooks/utils/calculationUtils';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { HelpCircle } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 interface FilterInputsProps {
   airVolumeM3h: string;
@@ -33,8 +33,8 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
   setBagLength
 }) => {
   const [suggestedFlaps, setSuggestedFlaps] = useState<number | null>(null);
+  const { toast } = useToast();
   
-  // Calculate the suggested number of EMC flaps based on input parameters
   useEffect(() => {
     const suggested = suggestEMCFlaps(
       designType,
@@ -48,11 +48,15 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
   
   const applySuggestedFlaps = () => {
     if (suggestedFlaps) {
-      setNumEMCFlaps(suggestedFlaps);
+      if (designType === 'modular') {
+        const roundedFlaps = Math.round(suggestedFlaps / 3) * 3;
+        setNumEMCFlaps(roundedFlaps);
+      } else {
+        setNumEMCFlaps(suggestedFlaps);
+      }
     }
   };
   
-  // Calculate AC ratio for the tooltip based on current parameters
   const calculateAcRatio = () => {
     if (designType === 'bolt-weld') {
       const areaPerFlap = Math.PI * (165/1000) * bagLength * 5 * bagsPerRow;
@@ -60,24 +64,41 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
                                        (numEMCFlaps === '' ? 0 : parseInt(numEMCFlaps)) : 
                                        numEMCFlaps);
       
-      // For bolt-weld, A/C ratio is in m³/min/m²
       const airVolume = parseFloat(airVolumeM3h) || 0;
-      // Convert from m³/h to m³/min by dividing by 60
       return totalArea > 0 ? (airVolume / 60) / totalArea : 0;
     } else {
-      // For modular design, A/C ratio is in cfm/sq ft
-      // Bag Length * No. Bags in a Row * TOTAL No. EMC Flaps * 5 * 1.6
       const numEMCFlapsValue = typeof numEMCFlaps === 'string' ? 
                                (numEMCFlaps === '' ? 0 : parseInt(numEMCFlaps)) : 
                                numEMCFlaps;
       const totalArea = bagLength * bagsPerRow * numEMCFlapsValue * 5 * 1.6;
       
-      // Calculate A/C ratio in cfm/sq ft
       const airVolume = parseFloat(airVolumeACFM) || 0;
       return totalArea > 0 ? airVolume / totalArea : 0;
     }
   };
   
+  const handleEMCFlapsChange = (value: string) => {
+    if (value === '') {
+      setNumEMCFlaps('');
+      return;
+    }
+
+    const parsedValue = parseInt(value);
+    if (!isNaN(parsedValue)) {
+      if (designType === 'modular') {
+        if (parsedValue % 3 !== 0) {
+          toast({
+            title: "Invalid EMC Flaps Number",
+            description: "For modular design, the number of EMC flaps must be a multiple of 3 (each Module has 3 EMC dampers)",
+            variant: "destructive",
+          });
+          return;
+        }
+      }
+      setNumEMCFlaps(parsedValue);
+    }
+  };
+
   const currentAcRatio = calculateAcRatio();
   const targetACRatio = designType === 'bolt-weld' ? 1.0 : 3.2;
   
@@ -117,14 +138,14 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <HelpCircle 
-                  size={16} 
-                  className="ml-2 text-gray-500 cursor-pointer" 
-                />
+                <HelpCircle size={16} className="ml-2 text-gray-500 cursor-pointer" />
               </TooltipTrigger>
               <TooltipContent side="right" className="max-w-xs p-4">
                 <div className="space-y-2">
                   <p><strong>Suggested value: {suggestedFlaps}</strong></p>
+                  {designType === 'modular' && (
+                    <p className="text-sm text-yellow-600">Note: For modular design, the number of EMC flaps must be a multiple of 3 (each Module has 3 EMC dampers)</p>
+                  )}
                   {designType === 'bolt-weld' ? (
                     <>
                       <p className="text-sm">Based on your current configuration (Air Volume: {airVolumeM3h} m³/h, {bagsPerRow} bags per row, {bagLength}m bag length), we suggest using {suggestedFlaps} EMC flaps to maintain an A/C ratio below 1.0.</p>
@@ -155,17 +176,7 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
             <input
               type="text"
               value={numEMCFlaps}
-              onChange={(e) => {
-                const value = e.target.value;
-                if (value === '') {
-                  setNumEMCFlaps('');
-                } else {
-                  const parsedValue = parseInt(value);
-                  if (!isNaN(parsedValue)) {
-                    setNumEMCFlaps(parsedValue);
-                  }
-                }
-              }}
+              onChange={(e) => handleEMCFlapsChange(e.target.value)}
               className="calculator-input w-full"
               placeholder="Enter value"
             />
