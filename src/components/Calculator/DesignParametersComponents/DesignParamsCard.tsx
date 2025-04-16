@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card } from '@/components/ui/card';
 
@@ -14,7 +15,7 @@ interface DesignParamsCardProps {
     bagMaterialCost: number;
     tenYearSavings: string;
     lifeExtension: string;
-  } | null;  // Make formattedResults nullable
+  } | null;
   results: {
     filterArea: number;
     netFilterArea: number;
@@ -29,18 +30,23 @@ interface DesignParamsCardProps {
     tenYearSavings: number;
     lifeExtension: number;
     compressedAirSavings: number;
-  } | null;  // Make results nullable
+  } | null;
   m2ToSqFtFactor: number;
   conversionFactor: number;
+  designType?: string;
+  numEMCFlaps?: number | string;
+  bagsPerRow?: number;
 }
 
 const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
   formattedResults,
   results,
   m2ToSqFtFactor,
-  conversionFactor
+  conversionFactor,
+  designType = 'bolt-weld',
+  numEMCFlaps = 0,
+  bagsPerRow = 0
 }) => {
-  // Check if formattedResults is null or undefined
   // Provide default values to prevent null reference errors
   const safeResults = formattedResults || {
     filterArea: '-',
@@ -49,6 +55,20 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
     acRatioNet: '-',
     totalBags: 0,
   };
+
+  // Calculate total bags based on design type
+  const calculateTotalBags = () => {
+    const parsedEMCFlaps = typeof numEMCFlaps === 'string' ? 
+      (numEMCFlaps === '' ? 0 : parseInt(numEMCFlaps)) : 
+      numEMCFlaps;
+
+    if (designType === 'modular') {
+      return parsedEMCFlaps * bagsPerRow * 5;
+    }
+    return safeResults.totalBags;
+  };
+
+  const totalBags = calculateTotalBags();
 
   return (
     <Card className="p-4 h-fit">
@@ -77,7 +97,7 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
         
         <div className="flex justify-between border-b border-gray-100 pb-1">
           <span className="text-gray-600 text-sm">Total Number of Bags:</span>
-          <span className="font-medium text-sm">{safeResults.totalBags}</span>
+          <span className="font-medium text-sm">{totalBags}</span>
         </div>
       </div>
     </Card>
