@@ -76,7 +76,7 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
         </div>
         
         <div className="flex justify-between border-b border-gray-100 pb-1">
-          <span className="text-gray-600 text-sm">Total Number of Bags (EMC Flaps * Bags per Row * 5):</span>
+          <span className="text-gray-600 text-sm">Total Number of Bags:</span>
           <span className="font-medium text-sm">{safeResults.totalBags}</span>
         </div>
       </div>
