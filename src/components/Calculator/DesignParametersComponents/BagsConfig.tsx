@@ -20,7 +20,7 @@ const BagsConfig: React.FC<BagsConfigProps> = ({
     <>
       <div className="flex items-center mb-4">
         <div className="w-60 pr-4 calculator-field-label">
-          <span>No. Bags in a Row:</span>
+          <span>Total Number of Bags:</span>
         </div>
         <div className="flex-1">
           <select
