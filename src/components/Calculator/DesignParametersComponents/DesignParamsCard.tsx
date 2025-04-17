@@ -70,8 +70,8 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
     // Calculate total bags based on design type
     let totalBags = 0;
     if (designType === 'modular') {
-      // For modular design, calculate total bags as EMC flaps * bags per row * 5
-      totalBags = parsedEMCFlaps * bagsPerRow * 5;
+      // For modular design, total bags is fixed at 15
+      totalBags = 15;
     } else {
       // For bolt-weld design, calculate total bags using formula
       totalBags = parsedEMCFlaps * bagsPerRow * 5;
