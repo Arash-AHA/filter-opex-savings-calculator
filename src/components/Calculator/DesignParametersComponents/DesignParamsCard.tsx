@@ -140,14 +140,9 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
   // Get calculated values based on the current design type and parameters
   const calculatedValues = getCalculatedValues();
 
-  // Determine the card title based on design type
-  const cardTitle = designType === 'modular' 
-    ? 'Design Parameters (Modular Design)' 
-    : 'Design Parameters (Bolt/Weld)';
-
   return (
     <Card className="p-4 h-fit">
-      <h3 className="text-sm font-medium text-gray-700 mb-4">{cardTitle}</h3>
+      <h3 className="text-sm font-medium text-gray-700 mb-4">Design Parameters</h3>
       
       <div className="space-y-3">
         <div className="flex justify-between border-b border-gray-100 pb-1">
