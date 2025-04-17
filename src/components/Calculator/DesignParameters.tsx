@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import FilterDesignType from './DesignParametersComponents/FilterDesignType';
@@ -222,6 +223,12 @@ const DesignParameters: React.FC<DesignParametersProps> = ({
         results={results}
         m2ToSqFtFactor={m2ToSqFtFactor}
         conversionFactor={conversionFactor}
+        designType={designType}
+        numEMCFlaps={numEMCFlaps}
+        bagsPerRow={bagsPerRow}
+        bagLength={bagLength}
+        airVolumeM3h={airVolumeM3h}
+        airVolumeACFM={airVolumeACFM}
       />
     </div>
   );
