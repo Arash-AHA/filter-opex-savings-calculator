@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card } from '@/components/ui/card';
 
@@ -64,12 +65,8 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
     const parsedEMCFlaps = typeof numEMCFlaps === 'string' ? 
       (numEMCFlaps === '' ? 0 : parseInt(numEMCFlaps)) : numEMCFlaps;
     
-    let totalBags = 0;
-    if (designType === 'modular') {
-      totalBags = parsedEMCFlaps * bagsPerRow * 5;
-    } else {
-      totalBags = parsedEMCFlaps * bagsPerRow * 5;
-    }
+    // Calculate total bags - both designs use the same formula: EMC flaps * bags per row * 5
+    const totalBags = parsedEMCFlaps * bagsPerRow * 5;
     
     let filterArea: number = 0;
     let netFilterArea: number = 0;
