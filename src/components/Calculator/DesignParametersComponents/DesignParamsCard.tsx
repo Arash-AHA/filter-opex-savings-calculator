@@ -142,7 +142,11 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
 
   return (
     <Card className="p-4 h-fit">
-      <h3 className="text-sm font-medium text-gray-700 mb-4">Design Parameters</h3>
+      <h3 className="text-sm font-medium text-gray-700 mb-4">
+        {designType === 'bolt-weld' 
+          ? 'Design Parameters (Bolt/Weld)' 
+          : 'Design Parameters (Modular Design)'}
+      </h3>
       
       <div className="space-y-3">
         <div className="flex justify-between border-b border-gray-100 pb-1">
