@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 
@@ -53,7 +52,6 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
   airVolumeM3h = '',
   airVolumeACFM = ''
 }) => {
-  // Provide default values to prevent null reference errors
   const safeResults = formattedResults || {
     filterArea: '-',
     netFilterArea: '-',
@@ -62,40 +60,31 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
     totalBags: 0,
   };
 
-  // Calculate filter areas, A/C ratios and bags count directly based on design type and input parameters
   const getCalculatedValues = () => {
     const parsedEMCFlaps = typeof numEMCFlaps === 'string' ? 
       (numEMCFlaps === '' ? 0 : parseInt(numEMCFlaps)) : numEMCFlaps;
     
-    // Calculate total bags based on design type
     let totalBags = 0;
     if (designType === 'modular') {
-      // For modular design, multiply EMC flaps by bagsPerRow and 5
       totalBags = parsedEMCFlaps * bagsPerRow * 5;
     } else {
-      // For bolt-weld design, calculate total bags using formula
       totalBags = parsedEMCFlaps * bagsPerRow * 5;
     }
     
-    // Calculate filter areas based on design type and parameters
     let filterArea: number = 0;
     let netFilterArea: number = 0;
     
     if (designType === 'bolt-weld') {
-      // Bolt-weld filter area calculation
       filterArea = Math.PI * (165/1000) * bagLength * 5 * bagsPerRow * parsedEMCFlaps;
       netFilterArea = Math.PI * (165/1000) * bagLength * 5 * bagsPerRow * (parsedEMCFlaps - 1);
     } else {
-      // Modular filter area calculation
       filterArea = bagLength * bagsPerRow * parsedEMCFlaps * 5 * 1.6;
-      netFilterArea = filterArea * 0.85; // Using 85% as the EMC cleaning factor
+      netFilterArea = filterArea * 0.85;
     }
     
-    // Calculate A/C ratios
     let acRatioGross = 0;
     let acRatioNet = 0;
     
-    // Get appropriate air volume based on design type
     const airVolume = designType === 'modular' 
       ? (parseFloat(airVolumeACFM) || 0)
       : (parseFloat(airVolumeM3h) || 0);
@@ -108,20 +97,17 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
       acRatioNet = airVolume / netFilterArea;
     }
     
-    // Format values according to design type
     let formattedFilterArea: string;
     let formattedNetFilterArea: string;
     let formattedAcRatioGross: string;
     let formattedAcRatioNet: string;
     
     if (designType === 'modular') {
-      // Imperial units for modular design
       formattedFilterArea = `${filterArea.toFixed(2)} sq ft`;
       formattedNetFilterArea = `${netFilterArea.toFixed(2)} sq ft`;
       formattedAcRatioGross = `${acRatioGross.toFixed(2)} cfm/sq ft`;
       formattedAcRatioNet = `${acRatioNet.toFixed(2)} cfm/sq ft`;
     } else {
-      // Metric units for bolt-weld design
       formattedFilterArea = `${filterArea.toFixed(2)} m²`;
       formattedNetFilterArea = `${netFilterArea.toFixed(2)} m²`;
       formattedAcRatioGross = `${(acRatioGross / 60).toFixed(2)} m³/min/m²`;
@@ -137,7 +123,6 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
     };
   };
 
-  // Get calculated values based on the current design type and parameters
   const calculatedValues = getCalculatedValues();
 
   return (
