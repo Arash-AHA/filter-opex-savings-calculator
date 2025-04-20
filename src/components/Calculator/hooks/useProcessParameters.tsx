@@ -63,7 +63,105 @@ export const useProcessParameters = () => {
     }
   }, [isGrainACFUpdating]);
 
-  // ... Add all other handlers for dust concentration, pressure, etc.
+  // Adding the missing handlers
+  const handleDustConcGrainACFChange = useCallback((value: string) => {
+    const concGrainACF = parseFloat(value);
+    setDustConcGrainACF(isNaN(concGrainACF) ? 0 : concGrainACF);
+    if (!isGramAm3Updating && !isNaN(concGrainACF)) {
+      setIsGrainACFUpdating(true);
+      const gramAm3 = concGrainACF / 0.437;
+      setDustConcGramAm3(isNaN(gramAm3) ? 0 : gramAm3);
+      setTimeout(() => setIsGrainACFUpdating(false), 100);
+    }
+  }, [isGramAm3Updating]);
+
+  const handleDustConcGramNm3Change = useCallback((value: string) => {
+    const concGramNm3 = parseFloat(value);
+    setDustConcGramNm3(isNaN(concGramNm3) ? null : concGramNm3);
+    if (!isGrainSCFUpdating && !isNaN(concGramNm3)) {
+      setIsGramNm3Updating(true);
+      const grainSCF = concGramNm3 * 0.437;
+      setDustConcGrainSCF(isNaN(grainSCF) ? null : grainSCF);
+      setTimeout(() => setIsGramNm3Updating(false), 100);
+    }
+  }, [isGrainSCFUpdating]);
+
+  const handleDustConcGrainSCFChange = useCallback((value: string) => {
+    const concGrainSCF = parseFloat(value);
+    setDustConcGrainSCF(isNaN(concGrainSCF) ? null : concGrainSCF);
+    if (!isGramNm3Updating && !isNaN(concGrainSCF)) {
+      setIsGrainSCFUpdating(true);
+      const gramNm3 = concGrainSCF / 0.437;
+      setDustConcGramNm3(isNaN(gramNm3) ? null : gramNm3);
+      setTimeout(() => setIsGrainSCFUpdating(false), 100);
+    }
+  }, [isGramNm3Updating]);
+
+  const handleOutletDustKgHChange = useCallback((value: string) => {
+    const kgH = parseFloat(value);
+    setOutletDustKgH(isNaN(kgH) ? null : kgH);
+    if (!isLbHUpdating && !isNaN(kgH)) {
+      setIsKgHUpdating(true);
+      const lbH = kgH * 2.20462;
+      setOutletDustLbH(isNaN(lbH) ? null : lbH);
+      setTimeout(() => setIsKgHUpdating(false), 100);
+    }
+  }, [isLbHUpdating]);
+
+  const handleOutletDustLbHChange = useCallback((value: string) => {
+    const lbH = parseFloat(value);
+    setOutletDustLbH(isNaN(lbH) ? null : lbH);
+    if (!isKgHUpdating && !isNaN(lbH)) {
+      setIsLbHUpdating(true);
+      const kgH = lbH / 2.20462;
+      setOutletDustKgH(isNaN(kgH) ? null : kgH);
+      setTimeout(() => setIsLbHUpdating(false), 100);
+    }
+  }, [isKgHUpdating]);
+
+  const handleTargetEmissionMgNm3Change = useCallback((value: string) => {
+    const mgNm3 = parseFloat(value);
+    setTargetEmissionMgNm3(isNaN(mgNm3) ? null : mgNm3);
+    if (!isGrainDscfUpdating && !isNaN(mgNm3)) {
+      setIsMgNm3Updating(true);
+      const grainDscf = mgNm3 * 0.00043707;
+      setTargetEmissionGrainDscf(isNaN(grainDscf) ? null : grainDscf);
+      setTimeout(() => setIsMgNm3Updating(false), 100);
+    }
+  }, [isGrainDscfUpdating]);
+
+  const handleTargetEmissionGrainDscfChange = useCallback((value: string) => {
+    const grainDscf = parseFloat(value);
+    setTargetEmissionGrainDscf(isNaN(grainDscf) ? null : grainDscf);
+    if (!isMgNm3Updating && !isNaN(grainDscf)) {
+      setIsGrainDscfUpdating(true);
+      const mgNm3 = grainDscf / 0.00043707;
+      setTargetEmissionMgNm3(isNaN(mgNm3) ? null : mgNm3);
+      setTimeout(() => setIsGrainDscfUpdating(false), 100);
+    }
+  }, [isMgNm3Updating]);
+
+  const handleNegativePressureMbarChange = useCallback((value: string) => {
+    const mbar = parseFloat(value);
+    setNegativePressureMbar(isNaN(mbar) ? null : mbar);
+    if (!isInchWGUpdating && !isNaN(mbar)) {
+      setIsMbarUpdating(true);
+      const inchWG = mbar * 0.4;
+      setNegativePressureInchWG(isNaN(inchWG) ? null : inchWG);
+      setTimeout(() => setIsMbarUpdating(false), 100);
+    }
+  }, [isInchWGUpdating]);
+
+  const handleNegativePressureInchWGChange = useCallback((value: string) => {
+    const inchWG = parseFloat(value);
+    setNegativePressureInchWG(isNaN(inchWG) ? null : inchWG);
+    if (!isMbarUpdating && !isNaN(inchWG)) {
+      setIsInchWGUpdating(true);
+      const mbar = inchWG / 0.4;
+      setNegativePressureMbar(isNaN(mbar) ? null : mbar);
+      setTimeout(() => setIsInchWGUpdating(false), 100);
+    }
+  }, [isMbarUpdating]);
 
   return {
     gasTempC,
@@ -81,6 +179,14 @@ export const useProcessParameters = () => {
     handleGasTempCChange,
     handleGasTempFChange,
     handleDustConcGramAm3Change,
-    // ... Export all other handlers
+    handleDustConcGrainACFChange,
+    handleDustConcGramNm3Change,
+    handleDustConcGrainSCFChange,
+    handleOutletDustKgHChange,
+    handleOutletDustLbHChange,
+    handleTargetEmissionMgNm3Change,
+    handleTargetEmissionGrainDscfChange,
+    handleNegativePressureMbarChange,
+    handleNegativePressureInchWGChange,
   };
 };
