@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 
@@ -67,22 +66,17 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
     
     // Calculate total bags differently based on design type
     let totalBags = 0;
-    
-    if (designType === 'bolt-weld') {
-      // For bolt-weld design
-      totalBags = parsedEMCFlaps * bagsPerRow * 5;
-    } else {
-      // For modular design
-      totalBags = parsedEMCFlaps * bagsPerRow * 5;
-    }
-    
     let filterArea: number = 0;
     let netFilterArea: number = 0;
     
     if (designType === 'bolt-weld') {
+      // For bolt-weld design
+      totalBags = parsedEMCFlaps * bagsPerRow * 5;
       filterArea = Math.PI * (165/1000) * bagLength * 5 * bagsPerRow * parsedEMCFlaps;
       netFilterArea = Math.PI * (165/1000) * bagLength * 5 * bagsPerRow * (parsedEMCFlaps - 1);
     } else {
+      // For modular design
+      totalBags = parsedEMCFlaps * bagsPerRow * 5;
       filterArea = bagLength * bagsPerRow * parsedEMCFlaps * 5 * 1.6;
       netFilterArea = filterArea * 0.85;
     }

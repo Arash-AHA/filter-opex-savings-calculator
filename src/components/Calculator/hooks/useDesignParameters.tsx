@@ -2,18 +2,31 @@ import { useState, useCallback, useEffect } from 'react';
 
 export const useDesignParameters = () => {
   // Constants
-  const conversionFactor = 0.588774; // 1 m³/h = 0.588774 ACFM
-  const emcCleaningFactor = 0.85; // 85% of total area is available for filtration during EMC cleaning
-  const m2ToSqFtFactor = 10.7639; // 1 m² = 10.7639 sq ft
+  const conversionFactor = 0.588774;
+  const emcCleaningFactor = 0.85;
+  const m2ToSqFtFactor = 10.7639;
   
-  // State for input values
+  // Design type state
   const [designType, setDesignType] = useState('bolt-weld');
-  const [airVolumeM3h, setAirVolumeM3h] = useState('375000');
-  const [airVolumeACFM, setAirVolumeACFM] = useState((375000 * 0.588774).toFixed(0));
-  const [numEMCFlaps, setNumEMCFlaps] = useState<number | string>(14);
-  const [bagsPerRow, setBagsPerRow] = useState(18);
-  const [bagLength, setBagLength] = useState(10);
-  const [filterRowType, setFilterRowType] = useState('single'); // This won't affect gas velocity calculation now
+  
+  // Bolt-weld specific parameters
+  const [boltWeldAirVolume, setBoltWeldAirVolume] = useState('375000');
+  const [boltWeldNumEMCFlaps, setBoltWeldNumEMCFlaps] = useState<number | string>(14);
+  const [boltWeldBagsPerRow, setBoltWeldBagsPerRow] = useState(18);
+  const [boltWeldBagLength, setBoltWeldBagLength] = useState(10);
+  
+  // Modular specific parameters
+  const [modularAirVolume, setModularAirVolume] = useState('221000');
+  const [modularNumEMCFlaps, setModularNumEMCFlaps] = useState<number | string>(6);
+  const [modularBagsPerRow, setModularBagsPerRow] = useState(15);
+  const [modularBagLength, setModularBagLength] = useState(24);
+  
+  // Computed current values based on design type
+  const [airVolumeM3h, setAirVolumeM3h] = useState(boltWeldAirVolume);
+  const [airVolumeACFM, setAirVolumeACFM] = useState((parseFloat(boltWeldAirVolume) * conversionFactor).toFixed(0));
+  const [numEMCFlaps, setNumEMCFlaps] = useState<number | string>(boltWeldNumEMCFlaps);
+  const [bagsPerRow, setBagsPerRow] = useState(boltWeldBagsPerRow);
+  const [bagLength, setBagLength] = useState(boltWeldBagLength);
   
   // New state for dimensions - storing in mm directly now
   const [showDimensions, setShowDimensions] = useState(false);
@@ -64,24 +77,42 @@ export const useDesignParameters = () => {
     }
   }, [designType]);
   
-  // Handle air volume unit conversion
-  const handleAirVolumeM3hChange = useCallback((value) => {
+  // Update current values when design type changes
+  useEffect(() => {
+    if (designType === 'bolt-weld') {
+      setAirVolumeM3h(boltWeldAirVolume);
+      setAirVolumeACFM((parseFloat(boltWeldAirVolume) * conversionFactor).toFixed(0));
+      setNumEMCFlaps(boltWeldNumEMCFlaps);
+      setBagsPerRow(boltWeldBagsPerRow);
+      setBagLength(boltWeldBagLength);
+    } else {
+      setAirVolumeM3h(modularAirVolume);
+      setAirVolumeACFM((parseFloat(modularAirVolume) * conversionFactor).toFixed(0));
+      setNumEMCFlaps(modularNumEMCFlaps);
+      setBagsPerRow(modularBagsPerRow);
+      setBagLength(modularBagLength);
+    }
+  }, [designType, boltWeldAirVolume, modularAirVolume, boltWeldNumEMCFlaps, modularNumEMCFlaps, 
+      boltWeldBagsPerRow, modularBagsPerRow, boltWeldBagLength, modularBagLength, conversionFactor]);
+  
+  // Update design-specific values when parameters change
+  const handleAirVolumeM3hChange = useCallback((value: string) => {
     setAirVolumeM3h(value);
     if (!isACFMUpdating && value) {
       setIsM3hUpdating(true);
-      setAirVolumeACFM((parseFloat(value) * conversionFactor).toFixed(0));
+      const acfmValue = (parseFloat(value) * conversionFactor).toFixed(0);
+      setAirVolumeACFM(acfmValue);
+      
+      // Update design-specific state
+      if (designType === 'bolt-weld') {
+        setBoltWeldAirVolume(value);
+      } else {
+        setModularAirVolume(value);
+      }
+      
       setTimeout(() => setIsM3hUpdating(false), 100);
     }
-  }, [isACFMUpdating, conversionFactor]);
-  
-  const handleAirVolumeACFMChange = useCallback((value) => {
-    setAirVolumeACFM(value);
-    if (!isM3hUpdating && value) {
-      setIsACFMUpdating(true);
-      setAirVolumeM3h((parseFloat(value) / conversionFactor).toFixed(0));
-      setTimeout(() => setIsACFMUpdating(false), 100);
-    }
-  }, [isM3hUpdating, conversionFactor]);
+  }, [isACFMUpdating, designType, conversionFactor]);
   
   // Handle temperature unit conversion
   const handleGasTempCChange = useCallback((value: string) => {
@@ -243,7 +274,38 @@ export const useDesignParameters = () => {
     }
   }, [dustConcGramAm3, airVolumeM3h, handleOutletDustKgHChange]);
   
+  // Handle EMC Flaps changes
+  const setDesignSpecificNumEMCFlaps = useCallback((value: number | string) => {
+    setNumEMCFlaps(value);
+    if (designType === 'bolt-weld') {
+      setBoltWeldNumEMCFlaps(value);
+    } else {
+      setModularNumEMCFlaps(value);
+    }
+  }, [designType]);
+  
+  // Handle Bags Per Row changes
+  const setDesignSpecificBagsPerRow = useCallback((value: number) => {
+    setBagsPerRow(value);
+    if (designType === 'bolt-weld') {
+      setBoltWeldBagsPerRow(value);
+    } else {
+      setModularBagsPerRow(value);
+    }
+  }, [designType]);
+  
+  // Handle Bag Length changes
+  const setDesignSpecificBagLength = useCallback((value: number) => {
+    setBagLength(value);
+    if (designType === 'bolt-weld') {
+      setBoltWeldBagLength(value);
+    } else {
+      setModularBagLength(value);
+    }
+  }, [designType]);
+
   return {
+    // Design parameters
     designType,
     setDesignType,
     airVolumeM3h,
@@ -251,8 +313,8 @@ export const useDesignParameters = () => {
     numEMCFlaps,
     bagsPerRow,
     bagLength,
-    filterRowType,
-    setFilterRowType,
+    filterRowType: filterRowType,
+    setFilterRowType: setFilterRowType,
     showDimensions,
     setShowDimensions,
     showOtherParams,
@@ -288,9 +350,9 @@ export const useDesignParameters = () => {
     handleNegativePressureMbarChange,
     handleNegativePressureInchWGChange,
     estimateOutletDust,
-    setNumEMCFlaps,
-    setBagsPerRow,
-    setBagLength,
+    setNumEMCFlaps: setDesignSpecificNumEMCFlaps,
+    setBagsPerRow: setDesignSpecificBagsPerRow,
+    setBagLength: setDesignSpecificBagLength,
     m2ToSqFtFactor,
     conversionFactor,
     emcCleaningFactor
