@@ -1,360 +1,104 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
+import { useDesignType } from './useDesignType';
+import { useAirVolumeParameters } from './useAirVolumeParameters';
+import { useProcessParameters } from './useProcessParameters';
 
 export const useDesignParameters = () => {
   // Constants
   const conversionFactor = 0.588774;
   const emcCleaningFactor = 0.85;
   const m2ToSqFtFactor = 10.7639;
-  
-  // Design type state
-  const [designType, setDesignType] = useState('bolt-weld');
-  
-  // Bolt-weld specific parameters
-  const [boltWeldAirVolume, setBoltWeldAirVolume] = useState('375000');
-  const [boltWeldNumEMCFlaps, setBoltWeldNumEMCFlaps] = useState<number | string>(14);
-  const [boltWeldBagsPerRow, setBoltWeldBagsPerRow] = useState(18);
-  const [boltWeldBagLength, setBoltWeldBagLength] = useState(10);
-  
-  // Modular specific parameters
-  const [modularAirVolume, setModularAirVolume] = useState('221000');
-  const [modularNumEMCFlaps, setModularNumEMCFlaps] = useState<number | string>(6);
-  const [modularBagsPerRow, setModularBagsPerRow] = useState(15);
-  const [modularBagLength, setModularBagLength] = useState(24);
-  
-  // Computed current values based on design type
-  const [airVolumeM3h, setAirVolumeM3h] = useState(boltWeldAirVolume);
-  const [airVolumeACFM, setAirVolumeACFM] = useState((parseFloat(boltWeldAirVolume) * conversionFactor).toFixed(0));
-  const [numEMCFlaps, setNumEMCFlaps] = useState<number | string>(boltWeldNumEMCFlaps);
-  const [bagsPerRow, setBagsPerRow] = useState(boltWeldBagsPerRow);
-  const [bagLength, setBagLength] = useState(boltWeldBagLength);
-  
-  // New state for dimensions - storing in mm directly now
-  const [showDimensions, setShowDimensions] = useState(false);
-  const [showOtherParams, setShowOtherParams] = useState(false);
-  const [channelWidthMm, setChannelWidthMm] = useState(3150); // width in mm
-  const [channelHeightMm, setChannelHeightMm] = useState(3000); // height in mm
-  
-  // New state for gas temperature and dust concentration
-  const [gasTempC, setGasTempC] = useState(150);
-  const [gasTempF, setGasTempF] = useState(302); // 150°C = 302°F
-  const [dustConcGramAm3, setDustConcGramAm3] = useState(10);
-  const [dustConcGrainACF, setDustConcGrainACF] = useState(4.37); // Conversion factor
-  const [dustConcGramNm3, setDustConcGramNm3] = useState<number | null>(20);
-  const [dustConcGrainSCF, setDustConcGrainSCF] = useState<number | null>(8.74); // Conversion factor
-  
-  // New state for outlet dust concentration (emissions)
-  const [outletDustKgH, setOutletDustKgH] = useState<number | null>(1.2);
-  const [outletDustLbH, setOutletDustLbH] = useState<number | null>(2.65); // 1.2 kg/h ≈ 2.65 lb/h
-  
-  // New state for target emission values
-  const [targetEmissionMgNm3, setTargetEmissionMgNm3] = useState<number | null>(5);
-  const [targetEmissionGrainDscf, setTargetEmissionGrainDscf] = useState<number | null>(0.0022); // 5 mg/Nm³ ≈ 0.0022 grain/dscf
-  
-  // New state for negative pressure at filter inlet
-  const [negativePressureMbar, setNegativePressureMbar] = useState<number | null>(30); // Default 30 mbar
-  const [negativePressureInchWG, setNegativePressureInchWG] = useState<number | null>(12); // Default 12 Inches W.G.
-  
-  // Flags to prevent infinite loops in unit conversion
-  const [isM3hUpdating, setIsM3hUpdating] = useState(false);
-  const [isACFMUpdating, setIsACFMUpdating] = useState(false);
-  const [isCUpdating, setIsCUpdating] = useState(false);
-  const [isFUpdating, setIsFUpdating] = useState(false);
-  const [isGramAm3Updating, setIsGramAm3Updating] = useState(false);
-  const [isGrainACFUpdating, setIsGrainACFUpdating] = useState(false);
-  const [isGramNm3Updating, setIsGramNm3Updating] = useState(false);
-  const [isGrainSCFUpdating, setIsGrainSCFUpdating] = useState(false);
-  const [isKgHUpdating, setIsKgHUpdating] = useState(false);
-  const [isLbHUpdating, setIsLbHUpdating] = useState(false);
-  const [isMgNm3Updating, setIsMgNm3Updating] = useState(false);
-  const [isGrainDscfUpdating, setIsGrainDscfUpdating] = useState(false);
-  const [isMbarUpdating, setIsMbarUpdating] = useState(false);
-  const [isInchWGUpdating, setIsInchWGUpdating] = useState(false);
 
-  // Only hide dimensions if modular design is selected
-  useEffect(() => {
-    if (designType === 'modular') {
-      setShowDimensions(false);
-    }
-  }, [designType]);
-  
+  // Use the split hooks
+  const designTypeState = useDesignType();
+  const airVolumeState = useAirVolumeParameters(conversionFactor);
+  const processState = useProcessParameters();
+
   // Update current values when design type changes
   useEffect(() => {
-    if (designType === 'bolt-weld') {
-      setAirVolumeM3h(boltWeldAirVolume);
-      setAirVolumeACFM((parseFloat(boltWeldAirVolume) * conversionFactor).toFixed(0));
-      setNumEMCFlaps(boltWeldNumEMCFlaps);
-      setBagsPerRow(boltWeldBagsPerRow);
-      setBagLength(boltWeldBagLength);
+    if (designTypeState.designType === 'bolt-weld') {
+      airVolumeState.setAirVolumeM3h(airVolumeState.boltWeldAirVolume);
+      airVolumeState.setAirVolumeACFM((parseFloat(airVolumeState.boltWeldAirVolume) * conversionFactor).toFixed(0));
+      airVolumeState.setNumEMCFlaps(airVolumeState.boltWeldNumEMCFlaps);
+      airVolumeState.setBagsPerRow(airVolumeState.boltWeldBagsPerRow);
+      airVolumeState.setBagLength(airVolumeState.boltWeldBagLength);
     } else {
-      setAirVolumeM3h(modularAirVolume);
-      setAirVolumeACFM((parseFloat(modularAirVolume) * conversionFactor).toFixed(0));
-      setNumEMCFlaps(modularNumEMCFlaps);
-      setBagsPerRow(modularBagsPerRow);
-      setBagLength(modularBagLength);
+      airVolumeState.setAirVolumeM3h(airVolumeState.modularAirVolume);
+      airVolumeState.setAirVolumeACFM((parseFloat(airVolumeState.modularAirVolume) * conversionFactor).toFixed(0));
+      airVolumeState.setNumEMCFlaps(airVolumeState.modularNumEMCFlaps);
+      airVolumeState.setBagsPerRow(airVolumeState.modularBagsPerRow);
+      airVolumeState.setBagLength(airVolumeState.modularBagLength);
     }
-  }, [designType, boltWeldAirVolume, modularAirVolume, boltWeldNumEMCFlaps, modularNumEMCFlaps, 
-      boltWeldBagsPerRow, modularBagsPerRow, boltWeldBagLength, modularBagLength, conversionFactor]);
-  
-  // Update design-specific values when parameters change
-  const handleAirVolumeM3hChange = useCallback((value: string) => {
-    setAirVolumeM3h(value);
-    if (!isACFMUpdating && value) {
-      setIsM3hUpdating(true);
-      const acfmValue = (parseFloat(value) * conversionFactor).toFixed(0);
-      setAirVolumeACFM(acfmValue);
-      
-      // Update design-specific state
-      if (designType === 'bolt-weld') {
-        setBoltWeldAirVolume(value);
-      } else {
-        setModularAirVolume(value);
-      }
-      
-      setTimeout(() => setIsM3hUpdating(false), 100);
-    }
-  }, [isACFMUpdating, designType, conversionFactor]);
-  
-  // Handle temperature unit conversion
-  const handleGasTempCChange = useCallback((value: string) => {
-    const tempC = parseFloat(value);
-    setGasTempC(isNaN(tempC) ? 0 : tempC);
-    if (!isFUpdating && !isNaN(tempC)) {
-      setIsCUpdating(true);
-      // Convert Celsius to Fahrenheit: (°C × 9/5) + 32 = °F
-      const tempF = (tempC * 9/5) + 32;
-      setGasTempF(isNaN(tempF) ? 0 : tempF);
-      setTimeout(() => setIsCUpdating(false), 100);
-    }
-  }, [isFUpdating]);
-  
-  const handleGasTempFChange = useCallback((value: string) => {
-    const tempF = parseFloat(value);
-    setGasTempF(isNaN(tempF) ? 0 : tempF);
-    if (!isCUpdating && !isNaN(tempF)) {
-      setIsFUpdating(true);
-      // Convert Fahrenheit to Celsius: (°F - 32) × 5/9 = °C
-      const tempC = (tempF - 32) * 5/9;
-      setGasTempC(isNaN(tempC) ? 0 : tempC);
-      setTimeout(() => setIsFUpdating(false), 100);
-    }
-  }, [isCUpdating]);
-  
-  // Handle dust concentration conversions
-  const handleDustConcGramAm3Change = useCallback((value: string) => {
-    const concGramAm3 = parseFloat(value);
-    setDustConcGramAm3(isNaN(concGramAm3) ? 0 : concGramAm3);
-    if (!isGrainACFUpdating && !isNaN(concGramAm3)) {
-      setIsGramAm3Updating(true);
-      // 1 g/Am³ = 0.437 grain/ACF
-      const grainACF = concGramAm3 * 0.437;
-      setDustConcGrainACF(isNaN(grainACF) ? 0 : grainACF);
-      setTimeout(() => setIsGramAm3Updating(false), 100);
-    }
-  }, [isGrainACFUpdating]);
-  
-  const handleDustConcGrainACFChange = useCallback((value: string) => {
-    const concGrainACF = parseFloat(value);
-    setDustConcGrainACF(isNaN(concGrainACF) ? 0 : concGrainACF);
-    if (!isGramAm3Updating && !isNaN(concGrainACF)) {
-      setIsGrainACFUpdating(true);
-      // 1 grain/ACF = 2.288 g/Am³
-      const gramAm3 = concGrainACF / 0.437;
-      setDustConcGramAm3(isNaN(gramAm3) ? 0 : gramAm3);
-      setTimeout(() => setIsGrainACFUpdating(false), 100);
-    }
-  }, [isGramAm3Updating]);
-  
-  const handleDustConcGramNm3Change = useCallback((value: string) => {
-    const concGramNm3 = parseFloat(value);
-    setDustConcGramNm3(isNaN(concGramNm3) ? null : concGramNm3);
-    if (!isGrainSCFUpdating && !isNaN(concGramNm3)) {
-      setIsGramNm3Updating(true);
-      // 1 g/Nm³ = 0.437 grain/SCF
-      const grainSCF = concGramNm3 * 0.437;
-      setDustConcGrainSCF(isNaN(grainSCF) ? null : grainSCF);
-      setTimeout(() => setIsGramNm3Updating(false), 100);
-    }
-  }, [isGrainSCFUpdating]);
-  
-  const handleDustConcGrainSCFChange = useCallback((value: string) => {
-    const concGrainSCF = parseFloat(value);
-    setDustConcGrainSCF(isNaN(concGrainSCF) ? null : concGrainSCF);
-    if (!isGramNm3Updating && !isNaN(concGrainSCF)) {
-      setIsGrainSCFUpdating(true);
-      // 1 grain/SCF = 2.288 g/Nm³
-      const gramNm3 = concGrainSCF / 0.437;
-      setDustConcGramNm3(isNaN(gramNm3) ? null : gramNm3);
-      setTimeout(() => setIsGrainSCFUpdating(false), 100);
-    }
-  }, [isGramNm3Updating]);
-  
-  // Handle outlet dust concentration conversions
-  const handleOutletDustKgHChange = useCallback((value: string) => {
-    const dustKgH = parseFloat(value);
-    setOutletDustKgH(isNaN(dustKgH) ? null : dustKgH);
-    if (!isLbHUpdating && !isNaN(dustKgH)) {
-      setIsKgHUpdating(true);
-      // 1 kg ≈ 2.20462 lb
-      const dustLbH = dustKgH * 2.20462;
-      setOutletDustLbH(isNaN(dustLbH) ? null : dustLbH);
-      setTimeout(() => setIsKgHUpdating(false), 100);
-    }
-  }, [isLbHUpdating]);
-  
-  const handleOutletDustLbHChange = useCallback((value: string) => {
-    const dustLbH = parseFloat(value);
-    setOutletDustLbH(isNaN(dustLbH) ? null : dustLbH);
-    if (!isKgHUpdating && !isNaN(dustLbH)) {
-      setIsLbHUpdating(true);
-      // 1 lb ≈ 0.453592 kg
-      const dustKgH = dustLbH * 0.453592;
-      setOutletDustKgH(isNaN(dustKgH) ? null : dustKgH);
-      setTimeout(() => setIsLbHUpdating(false), 100);
-    }
-  }, [isKgHUpdating]);
-  
-  // Handle target emission conversions
-  const handleTargetEmissionMgNm3Change = useCallback((value: string) => {
-    const emissionMgNm3 = parseFloat(value);
-    setTargetEmissionMgNm3(isNaN(emissionMgNm3) ? null : emissionMgNm3);
-    if (!isGrainDscfUpdating && !isNaN(emissionMgNm3)) {
-      setIsMgNm3Updating(true);
-      // 1 mg/Nm³ ≈ 0.00044 grain/dscf
-      const grainDscf = emissionMgNm3 * 0.00044;
-      setTargetEmissionGrainDscf(isNaN(grainDscf) ? null : grainDscf);
-      setTimeout(() => setIsMgNm3Updating(false), 100);
-    }
-  }, [isGrainDscfUpdating]);
-  
-  const handleTargetEmissionGrainDscfChange = useCallback((value: string) => {
-    const emissionGrainDscf = parseFloat(value);
-    setTargetEmissionGrainDscf(isNaN(emissionGrainDscf) ? null : emissionGrainDscf);
-    if (!isMgNm3Updating && !isNaN(emissionGrainDscf)) {
-      setIsGrainDscfUpdating(true);
-      // 1 grain/dscf ≈ 2290 mg/Nm³
-      const mgNm3 = emissionGrainDscf / 0.00044;
-      setTargetEmissionMgNm3(isNaN(mgNm3) ? null : mgNm3);
-      setTimeout(() => setIsGrainDscfUpdating(false), 100);
-    }
-  }, [isMgNm3Updating]);
-  
-  // Handle negative pressure at filter inlet conversions
-  const handleNegativePressureMbarChange = useCallback((value: string) => {
-    const pressureMbar = parseFloat(value);
-    setNegativePressureMbar(isNaN(pressureMbar) ? null : pressureMbar);
-    if (!isInchWGUpdating && !isNaN(pressureMbar)) {
-      setIsMbarUpdating(true);
-      // 1 mbar ≈ 0.4 inches W.G.
-      const inchWG = pressureMbar * 0.4;
-      setNegativePressureInchWG(isNaN(inchWG) ? null : inchWG);
-      setTimeout(() => setIsMbarUpdating(false), 100);
-    }
-  }, [isInchWGUpdating]);
-  
-  const handleNegativePressureInchWGChange = useCallback((value: string) => {
-    const pressureInchWG = parseFloat(value);
-    setNegativePressureInchWG(isNaN(pressureInchWG) ? null : pressureInchWG);
-    if (!isMbarUpdating && !isNaN(pressureInchWG)) {
-      setIsInchWGUpdating(true);
-      // 1 inch W.G. ≈ 2.5 mbar
-      const mbar = pressureInchWG * 2.5;
-      setNegativePressureMbar(isNaN(mbar) ? null : mbar);
-      setTimeout(() => setIsInchWGUpdating(false), 100);
-    }
-  }, [isMbarUpdating]);
-  
-  // Update the estimateOutletDust function
+  }, [
+    designTypeState.designType,
+    airVolumeState.boltWeldAirVolume,
+    airVolumeState.modularAirVolume,
+    airVolumeState.boltWeldNumEMCFlaps,
+    airVolumeState.modularNumEMCFlaps,
+    airVolumeState.boltWeldBagsPerRow,
+    airVolumeState.modularBagsPerRow,
+    airVolumeState.boltWeldBagLength,
+    airVolumeState.modularBagLength,
+    conversionFactor
+  ]);
+
+  // Estimate outlet dust calculation
   const estimateOutletDust = useCallback(() => {
-    if (dustConcGramAm3 && airVolumeM3h) {
-      // Calculate outlet dust by multiplying inlet dust concentration by air volume
-      const estimatedOutletKgH = (dustConcGramAm3 / 1000) * parseFloat(airVolumeM3h);
-      
-      // Update both kg/h and lb/h values
-      handleOutletDustKgHChange(estimatedOutletKgH.toFixed(3));
+    if (processState.dustConcGramAm3 && airVolumeState.airVolumeM3h) {
+      const estimatedOutletKgH = (processState.dustConcGramAm3 / 1000) * parseFloat(airVolumeState.airVolumeM3h);
+      processState.handleOutletDustKgHChange(estimatedOutletKgH.toFixed(3));
     }
-  }, [dustConcGramAm3, airVolumeM3h, handleOutletDustKgHChange]);
-  
+  }, [processState.dustConcGramAm3, airVolumeState.airVolumeM3h, processState.handleOutletDustKgHChange]);
+
   // Handle EMC Flaps changes
   const setDesignSpecificNumEMCFlaps = useCallback((value: number | string) => {
-    setNumEMCFlaps(value);
-    if (designType === 'bolt-weld') {
-      setBoltWeldNumEMCFlaps(value);
+    airVolumeState.setNumEMCFlaps(value);
+    if (designTypeState.designType === 'bolt-weld') {
+      airVolumeState.setBoltWeldNumEMCFlaps(value);
     } else {
-      setModularNumEMCFlaps(value);
+      airVolumeState.setModularNumEMCFlaps(value);
     }
-  }, [designType]);
+  }, [designTypeState.designType, airVolumeState]);
   
   // Handle Bags Per Row changes
   const setDesignSpecificBagsPerRow = useCallback((value: number) => {
-    setBagsPerRow(value);
-    if (designType === 'bolt-weld') {
-      setBoltWeldBagsPerRow(value);
+    airVolumeState.setBagsPerRow(value);
+    if (designTypeState.designType === 'bolt-weld') {
+      airVolumeState.setBoltWeldBagsPerRow(value);
     } else {
-      setModularBagsPerRow(value);
+      airVolumeState.setModularBagsPerRow(value);
     }
-  }, [designType]);
+  }, [designTypeState.designType, airVolumeState]);
   
   // Handle Bag Length changes
   const setDesignSpecificBagLength = useCallback((value: number) => {
-    setBagLength(value);
-    if (designType === 'bolt-weld') {
-      setBoltWeldBagLength(value);
+    airVolumeState.setBagLength(value);
+    if (designTypeState.designType === 'bolt-weld') {
+      airVolumeState.setBoltWeldBagLength(value);
     } else {
-      setModularBagLength(value);
+      airVolumeState.setModularBagLength(value);
     }
-  }, [designType]);
+  }, [designTypeState.designType, airVolumeState]);
 
   return {
-    // Design parameters
-    designType,
-    setDesignType,
-    airVolumeM3h,
-    airVolumeACFM,
-    numEMCFlaps,
-    bagsPerRow,
-    bagLength,
-    filterRowType: filterRowType,
-    setFilterRowType: setFilterRowType,
-    showDimensions,
-    setShowDimensions,
-    showOtherParams,
-    setShowOtherParams,
-    channelWidthMm,
-    setChannelWidthMm,
-    channelHeightMm,
-    setChannelHeightMm,
-    gasTempC,
-    gasTempF,
-    dustConcGramAm3,
-    dustConcGrainACF,
-    dustConcGramNm3,
-    dustConcGrainSCF,
-    outletDustKgH,
-    outletDustLbH,
-    targetEmissionMgNm3,
-    targetEmissionGrainDscf,
-    negativePressureMbar,
-    negativePressureInchWG,
-    handleAirVolumeM3hChange,
-    handleAirVolumeACFMChange,
-    handleGasTempCChange,
-    handleGasTempFChange,
-    handleDustConcGramAm3Change,
-    handleDustConcGrainACFChange,
-    handleDustConcGramNm3Change,
-    handleDustConcGrainSCFChange,
-    handleOutletDustKgHChange,
-    handleOutletDustLbHChange,
-    handleTargetEmissionMgNm3Change,
-    handleTargetEmissionGrainDscfChange,
-    handleNegativePressureMbarChange,
-    handleNegativePressureInchWGChange,
+    // Constants
+    conversionFactor,
+    emcCleaningFactor,
+    m2ToSqFtFactor,
+    
+    // Design type state
+    ...designTypeState,
+    
+    // Air volume and EMC parameters
+    ...airVolumeState,
+    
+    // Process parameters
+    ...processState,
+    
+    // Functions
     estimateOutletDust,
     setNumEMCFlaps: setDesignSpecificNumEMCFlaps,
     setBagsPerRow: setDesignSpecificBagsPerRow,
     setBagLength: setDesignSpecificBagLength,
-    m2ToSqFtFactor,
-    conversionFactor,
-    emcCleaningFactor
   };
 };
