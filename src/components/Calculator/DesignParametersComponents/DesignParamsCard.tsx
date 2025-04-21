@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 
@@ -76,10 +75,10 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
       filterArea = Math.PI * (165/1000) * bagLength * 5 * bagsPerRow * parsedEMCFlaps;
       netFilterArea = Math.PI * (165/1000) * bagLength * 5 * bagsPerRow * (parsedEMCFlaps - 1);
     } else {
-      // For modular design
+      // For modular design (updated as per new formula)
       totalBags = parsedEMCFlaps * bagsPerRow * 5;
       filterArea = bagLength * bagsPerRow * parsedEMCFlaps * 5 * 1.6;
-      netFilterArea = bagLength * bagsPerRow * (parsedEMCFlaps - 3) * 5 * 1.6;
+      netFilterArea = bagLength * bagsPerRow * (parsedEMCFlaps - 1) * 5 * 1.6; // <--- UPDATED FORMULA
     }
     
     let acRatioGross = 0;
@@ -169,4 +168,3 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
 };
 
 export default DesignParamsCard;
-
