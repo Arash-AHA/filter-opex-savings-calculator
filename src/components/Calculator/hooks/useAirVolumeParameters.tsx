@@ -9,8 +9,10 @@ export const useAirVolumeParameters = (conversionFactor: number) => {
   const [boltWeldBagLength, setBoltWeldBagLength] = useState(10);
   
   // Modular specific parameters
-  const [modularAirVolume, setModularAirVolume] = useState('221000');
-  const [modularNumEMCFlaps, setModularNumEMCFlaps] = useState<number | string>(6);
+  // Set modularAirVolume internally in m³/h so that airVolumeACFM = 221000 at conversion factor 0.588774
+  const [modularAirVolume, setModularAirVolume] = useState('375000');
+  // Set modularNumEMCFlaps to 24 as requested
+  const [modularNumEMCFlaps, setModularNumEMCFlaps] = useState<number | string>(24);
   const [modularBagsPerRow, setModularBagsPerRow] = useState(15);
   const [modularBagLength, setModularBagLength] = useState(24);
 
@@ -75,3 +77,4 @@ export const useAirVolumeParameters = (conversionFactor: number) => {
     handleAirVolumeACFMChange
   };
 };
+
