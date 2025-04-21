@@ -128,12 +128,6 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
 
   const calculatedValues = getCalculatedValues();
 
-  // Build modular formula string when modular is selected
-  let netFilterFormulaString: string | null = null;
-  if (designType === 'modular') {
-    netFilterFormulaString = `${bagLength} × ${bagsPerRow} × (${calculatedValues.parsedEMCFlaps} - 3) × 5 × 1.6 = ${calculatedValues.netFilterArea.toFixed(2)} sq ft`;
-  }
-
   return (
     <Card className="p-4 h-fit">
       <h3 className="text-sm font-medium text-gray-700 mb-4">
@@ -152,12 +146,6 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
           <span className="text-gray-600 text-sm">Net Filter Area:</span>
           <span className="font-medium text-sm flex flex-col items-end">
             {calculatedValues.formattedNetFilterArea}
-            {/* Show modular formula if modular */}
-            {designType === 'modular' && (
-              <span className="text-xs text-gray-500 mt-1 text-right">
-                {netFilterFormulaString}
-              </span>
-            )}
           </span>
         </div>
         
