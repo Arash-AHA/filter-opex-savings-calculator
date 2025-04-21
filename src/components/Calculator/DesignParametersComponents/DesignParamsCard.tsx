@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card } from '@/components/ui/card';
 
@@ -78,7 +79,7 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
       // For modular design
       totalBags = parsedEMCFlaps * bagsPerRow * 5;
       filterArea = bagLength * bagsPerRow * parsedEMCFlaps * 5 * 1.6;
-      netFilterArea = filterArea * 0.85;
+      netFilterArea = bagLength * bagsPerRow * (parsedEMCFlaps - 3) * 5 * 1.6;
     }
     
     let acRatioGross = 0;
@@ -115,14 +116,23 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
     
     return {
       totalBags,
-      filterArea: formattedFilterArea,
-      netFilterArea: formattedNetFilterArea,
-      acRatioGross: formattedAcRatioGross,
-      acRatioNet: formattedAcRatioNet
+      filterArea,
+      netFilterArea,
+      formattedFilterArea,
+      formattedNetFilterArea,
+      formattedAcRatioGross,
+      formattedAcRatioNet,
+      parsedEMCFlaps
     };
   };
 
   const calculatedValues = getCalculatedValues();
+
+  // Build modular formula string when modular is selected
+  let netFilterFormulaString: string | null = null;
+  if (designType === 'modular') {
+    netFilterFormulaString = `${bagLength} × ${bagsPerRow} × (${calculatedValues.parsedEMCFlaps} - 3) × 5 × 1.6 = ${calculatedValues.netFilterArea.toFixed(2)} sq ft`;
+  }
 
   return (
     <Card className="p-4 h-fit">
@@ -135,22 +145,30 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
       <div className="space-y-3">
         <div className="flex justify-between border-b border-gray-100 pb-1">
           <span className="text-gray-600 text-sm">Filter Area (Gross):</span>
-          <span className="font-medium text-sm">{calculatedValues.filterArea}</span>
+          <span className="font-medium text-sm">{calculatedValues.formattedFilterArea}</span>
         </div>
         
-        <div className="flex justify-between border-b border-gray-100 pb-1">
+        <div className="flex justify-between border-b border-gray-100 pb-1 items-start">
           <span className="text-gray-600 text-sm">Net Filter Area:</span>
-          <span className="font-medium text-sm">{calculatedValues.netFilterArea}</span>
+          <span className="font-medium text-sm flex flex-col items-end">
+            {calculatedValues.formattedNetFilterArea}
+            {/* Show modular formula if modular */}
+            {designType === 'modular' && (
+              <span className="text-xs text-gray-500 mt-1 text-right">
+                {netFilterFormulaString}
+              </span>
+            )}
+          </span>
         </div>
         
         <div className="flex justify-between border-b border-gray-100 pb-1">
           <span className="text-gray-600 text-sm">Air-to-Cloth Ratio (Gross):</span>
-          <span className="font-medium text-sm">{calculatedValues.acRatioGross}</span>
+          <span className="font-medium text-sm">{calculatedValues.formattedAcRatioGross}</span>
         </div>
         
         <div className="flex justify-between border-b border-gray-100 pb-1">
           <span className="text-gray-600 text-sm">Air-to-Cloth Ratio (Net):</span>
-          <span className="font-medium text-sm">{calculatedValues.acRatioNet}</span>
+          <span className="font-medium text-sm">{calculatedValues.formattedAcRatioNet}</span>
         </div>
         
         <div className="flex justify-between border-b border-gray-100 pb-1">
@@ -163,3 +181,4 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
 };
 
 export default DesignParamsCard;
+
