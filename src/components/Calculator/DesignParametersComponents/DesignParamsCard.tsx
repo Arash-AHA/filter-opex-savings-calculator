@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card } from '@/components/ui/card';
 
@@ -142,7 +143,11 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
         </div>
         
         <div className="flex justify-between border-b border-gray-100 pb-1 items-start">
-          <span className="text-gray-600 text-sm">Net Filter Area:</span>
+          <span className="text-gray-600 text-sm">
+            {designType === 'modular' 
+              ? 'Net Filter Area:(Cleaning)' 
+              : 'Net Filter Area:'}
+          </span>
           <span className="font-medium text-sm flex flex-col items-end">
             {calculatedValues.formattedNetFilterArea}
           </span>
@@ -168,3 +173,4 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
 };
 
 export default DesignParamsCard;
+
