@@ -1,4 +1,3 @@
-
 import React, { useRef, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
@@ -186,9 +185,7 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
 
           <div className="flex justify-between border-b border-gray-100 pb-1 items-start">
             <span className="text-gray-600 text-sm">
-              {designType === 'modular'
-                ? 'Net Filter Area:(Cleaning)'
-                : 'Net Filter Area:'}
+              Net Filter Area:(Cleaning)
             </span>
             <span className="font-medium text-sm flex flex-col items-end">
               {calculatedValues.formattedNetFilterArea}
