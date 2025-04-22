@@ -1,3 +1,4 @@
+
 import React from 'react';
 import CalculatorSection from './CalculatorSection';
 import Transition from '../UI/Transition';
@@ -6,7 +7,6 @@ import FilterBagReplacement from './FilterBagReplacement';
 import OperationalParameters from './OperationalParameters';
 import SavingsResults from './SavingsResults';
 import { useCalculatorState } from './hooks/useCalculatorState';
-import { Image } from 'lucide-react';
 
 const FilterOpexCalculator = () => {
   const calculatorState = useCalculatorState();
@@ -20,7 +20,9 @@ const FilterOpexCalculator = () => {
           </div>
         </Transition>
         <Transition animation="slide-in-right" delay={300}>
-          <p className="text-sm text-gray-500 italic mt-2">By Arash Haghi</p>
+          <p className="text-sm text-gray-500 italic mt-2">
+            By Arash Haghi, Scheuch North America
+          </p>
         </Transition>
       </div>
       
