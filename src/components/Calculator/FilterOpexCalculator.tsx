@@ -180,6 +180,12 @@ const FilterOpexCalculator = () => {
             scheuchAirConsumption={calculatorState.scheuchAirConsumption}
             currentMotorKW={calculatorState.currentMotorKW}
             scheuchMotorKW={calculatorState.scheuchMotorKW}
+            designType={calculatorState.designType}
+            airVolumeM3h={calculatorState.airVolumeM3h}
+            airVolumeACFM={calculatorState.airVolumeACFM}
+            numEMCFlaps={calculatorState.numEMCFlaps}
+            bagLength={calculatorState.bagLength}
+            formattedResults={calculatorState.formattedResults}
           />
         </CalculatorSection>
       </div>

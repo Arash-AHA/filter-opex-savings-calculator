@@ -31,6 +31,11 @@ export const useFormattedResults = (
   // Formatted results
   const formattedResults = useMemo(() => {
     try {
+      if (!filterResults || !bagResults) {
+        // Return default values if input results are not available
+        return null;
+      }
+      
       if (designType === 'bolt-weld') {
         // Metric units - divide A/C ratios by 60 and change unit to m³/min/m²
         return {
@@ -69,20 +74,8 @@ export const useFormattedResults = (
       }
     } catch (error) {
       console.error("Error formatting results:", error);
-      // Return default values if formatting fails
-      return {
-        filterArea: "0.00 m²",
-        netFilterArea: "0.00 m²",
-        acRatioGross: "0.00 m³/min/m²",
-        acRatioNet: "0.00 m³/min/m²",
-        baselinePower: "0.00 kW",
-        improvedPower: "0.00 kW",
-        totalBags: 0,
-        daysToReplace: "0.00",
-        bagMaterialCost: 0,
-        tenYearSavings: "0.00",
-        lifeExtension: "0 months"
-      };
+      // Return null if formatting fails
+      return null;
     }
   }, [
     designType, filterResults, bagResults, lifeExtension, 

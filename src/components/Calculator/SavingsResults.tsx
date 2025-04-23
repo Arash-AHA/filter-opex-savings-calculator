@@ -1,3 +1,4 @@
+
 import React, { useRef, useState } from 'react';
 import InputField from './InputField';
 import ResultCard from './ResultCard';
@@ -30,17 +31,17 @@ interface SavingsResultsProps {
   currentMotorKW: number;
   scheuchMotorKW: number;
   designType: string;
-  airVolumeM3h: number;
-  airVolumeACFM: number;
-  numEMCFlaps: number;
+  airVolumeM3h: string;
+  airVolumeACFM: string;
+  numEMCFlaps: number | string;
   bagLength: number;
   formattedResults: {
-    filterArea: number;
-    netFilterArea: number;
-    acRatioGross: number;
-    acRatioNet: number;
+    filterArea: string;
+    netFilterArea: string;
+    acRatioGross: string;
+    acRatioNet: string;
     totalBags: number;
-  };
+  } | null;
 }
 
 const SavingsResults: React.FC<SavingsResultsProps> = ({
@@ -70,6 +71,15 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
 }) => {
   const [showPrintDialog, setShowPrintDialog] = useState(false);
   const printContentRef = useRef<HTMLDivElement>(null);
+  
+  // Safely access formattedResults with default fallback values
+  const safeFormattedResults = formattedResults || {
+    filterArea: "0",
+    netFilterArea: "0",
+    acRatioGross: "0",
+    acRatioNet: "0",
+    totalBags: 0
+  };
 
   const handlePrint = () => {
     if (printContentRef.current) {
@@ -242,11 +252,11 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
               airVolume={designType === 'modular' ? airVolumeACFM : airVolumeM3h}
               numEMCFlaps={numEMCFlaps}
               bagLength={bagLength}
-              filterArea={formattedResults.filterArea}
-              netFilterArea={formattedResults.netFilterArea}
-              acRatioGross={formattedResults.acRatioGross}
-              acRatioNet={formattedResults.acRatioNet}
-              totalBags={formattedResults.totalBags}
+              filterArea={safeFormattedResults.filterArea}
+              netFilterArea={safeFormattedResults.netFilterArea}
+              acRatioGross={safeFormattedResults.acRatioGross}
+              acRatioNet={safeFormattedResults.acRatioNet}
+              totalBags={safeFormattedResults.totalBags}
               savingYears={savingYears}
               bagSavings={totalSavings.bagSavings}
               fanPowerSavings={totalSavings.fanPowerSavings}
