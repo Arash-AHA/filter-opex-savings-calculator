@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface PrintableResultsProps {
@@ -48,11 +47,13 @@ const PrintableResults: React.FC<PrintableResultsProps> = ({
           <div>Filter Design Type:</div>
           <div>{designType === 'bolt-weld' ? 'Bolt/Weld' : 'Modular Design'}</div>
           <div>Air Volume:</div>
-          <div>{airVolume}</div>
+          <div>
+            {airVolume} {designType === 'modular' ? 'ACFM' : 'm³/h'}
+          </div>
           <div>Total No. EMC Flaps:</div>
           <div>{numEMCFlaps}</div>
           <div>Bag Length:</div>
-          <div>{bagLength}</div>
+          <div>{bagLength} mm</div>
         </div>
       </section>
 
@@ -61,13 +62,13 @@ const PrintableResults: React.FC<PrintableResultsProps> = ({
         <h2 className="text-xl font-semibold mb-4">Filter Parameters</h2>
         <div className="grid grid-cols-2 gap-4">
           <div>Filter Area (Gross):</div>
-          <div>{filterArea}</div>
-          <div>Net Filter Area:(Cleaning)</div>
-          <div>{netFilterArea}</div>
+          <div>{filterArea} m²</div>
+          <div>Net Filter Area (Cleaning):</div>
+          <div>{netFilterArea} m²</div>
           <div>Air-to-Cloth Ratio (Gross):</div>
-          <div>{acRatioGross}</div>
+          <div>{acRatioGross} m³/m²/min</div>
           <div>Air-to-Cloth Ratio (Net):</div>
-          <div>{acRatioNet}</div>
+          <div>{acRatioNet} m³/m²/min</div>
           <div>Total Number of Bags:</div>
           <div>{totalBags}</div>
         </div>
