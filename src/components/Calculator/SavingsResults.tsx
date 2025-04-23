@@ -296,6 +296,7 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
           </div>
         </DialogContent>
       </Dialog>
+    </>
   );
 };
 
