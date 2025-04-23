@@ -3,8 +3,9 @@ import React, { useRef, useState } from 'react';
 import InputField from './InputField';
 import ResultCard from './ResultCard';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Printer } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Printer, ScrollText } from 'lucide-react';
 import PrintableResults from './PrintableResults';
 
 interface SavingsResultsProps {
@@ -84,7 +85,7 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
   const handlePrint = () => {
     if (printContentRef.current) {
       const printContents = printContentRef.current.innerHTML;
-      const win = window.open('', '', 'height=650,width=900,top=100,left=150');
+      const win = window.open('', '', 'height=800,width=1000,top=100,left=100');
       if (win) {
         win.document.write(`
           <html>
@@ -93,8 +94,14 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
               <style>
                 body { font-family: 'Inter', Arial, sans-serif; margin: 0; padding: 24px; }
                 .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-                section { margin-bottom: 2rem; }
+                section { margin-bottom: 2rem; page-break-inside: avoid; }
                 h2 { color: #374151; margin-bottom: 1rem; }
+                table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
+                td, th { padding: 8px; border-bottom: 1px solid #e5e7eb; }
+                @media print {
+                  body { padding: 20px; }
+                  section { page-break-inside: avoid; }
+                }
               </style>
             </head>
             <body>${printContents}</body>
@@ -245,36 +252,50 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
       </div>
 
       <Dialog open={showPrintDialog} onOpenChange={setShowPrintDialog}>
-        <DialogContent className="max-w-3xl">
-          <div ref={printContentRef}>
-            <PrintableResults
-              designType={designType}
-              airVolume={designType === 'modular' ? airVolumeACFM : airVolumeM3h}
-              numEMCFlaps={numEMCFlaps}
-              bagLength={bagLength}
-              filterArea={safeFormattedResults.filterArea}
-              netFilterArea={safeFormattedResults.netFilterArea}
-              acRatioGross={safeFormattedResults.acRatioGross}
-              acRatioNet={safeFormattedResults.acRatioNet}
-              totalBags={safeFormattedResults.totalBags}
-              savingYears={savingYears}
-              bagSavings={totalSavings.bagSavings}
-              fanPowerSavings={totalSavings.fanPowerSavings}
-              airSavings={totalSavings.airSavings}
-              totalSavings={totalSavings.total}
-            />
+        <DialogContent className="max-w-4xl max-h-[90vh] p-0">
+          <DialogHeader className="p-6 pb-0">
+            <DialogTitle className="flex items-center gap-2">
+              <ScrollText className="h-5 w-5" />
+              Print Results
+            </DialogTitle>
+            <DialogDescription>
+              Scroll through the results and click "Export as PDF" to save or print.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <ScrollArea className="h-[calc(90vh-180px)] p-6">
+            <div ref={printContentRef}>
+              <PrintableResults
+                designType={designType}
+                airVolume={designType === 'modular' ? airVolumeACFM : airVolumeM3h}
+                numEMCFlaps={numEMCFlaps}
+                bagLength={bagLength}
+                filterArea={safeFormattedResults.filterArea}
+                netFilterArea={safeFormattedResults.netFilterArea}
+                acRatioGross={safeFormattedResults.acRatioGross}
+                acRatioNet={safeFormattedResults.acRatioNet}
+                totalBags={safeFormattedResults.totalBags}
+                savingYears={savingYears}
+                bagSavings={totalSavings.bagSavings}
+                fanPowerSavings={totalSavings.fanPowerSavings}
+                airSavings={totalSavings.airSavings}
+                totalSavings={totalSavings.total}
+              />
+            </div>
+          </ScrollArea>
+          
+          <div className="p-6 pt-0 border-t mt-6">
+            <Button
+              variant="default"
+              onClick={handlePrint}
+              className="w-full flex items-center justify-center gap-2"
+            >
+              <Printer className="h-4 w-4" />
+              Export as PDF
+            </Button>
           </div>
-          <Button
-            variant="default"
-            onClick={handlePrint}
-            className="mt-4 w-full flex items-center justify-center gap-2"
-          >
-            <Printer className="h-4 w-4" />
-            Print as PDF
-          </Button>
         </DialogContent>
       </Dialog>
-    </>
   );
 };
 
