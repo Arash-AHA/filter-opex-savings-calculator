@@ -38,6 +38,11 @@ const PrintableResults: React.FC<PrintableResultsProps> = ({
   airSavings,
   totalSavings
 }) => {
+  // Determine bag length unit and convert if necessary
+  const bagLengthDisplay = designType === 'bolt-weld' 
+    ? `${bagLength} m` 
+    : `${(bagLength * 3.28084).toFixed(0)} ft`;
+
   return (
     <div className="p-6 print:p-0 space-y-8">
       {/* Filter Design Configuration */}
@@ -53,7 +58,7 @@ const PrintableResults: React.FC<PrintableResultsProps> = ({
           <div>Total No. EMC Flaps:</div>
           <div>{numEMCFlaps}</div>
           <div>Bag Length:</div>
-          <div>{bagLength} mm</div>
+          <div>{bagLengthDisplay}</div>
         </div>
       </section>
 
