@@ -29,6 +29,18 @@ interface SavingsResultsProps {
   scheuchAirConsumption: number;
   currentMotorKW: number;
   scheuchMotorKW: number;
+  designType: string;
+  airVolumeM3h: number;
+  airVolumeACFM: number;
+  numEMCFlaps: number;
+  bagLength: number;
+  formattedResults: {
+    filterArea: number;
+    netFilterArea: number;
+    acRatioGross: number;
+    acRatioNet: number;
+    totalBags: number;
+  };
 }
 
 const SavingsResults: React.FC<SavingsResultsProps> = ({
@@ -48,7 +60,13 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
   currentAirConsumption,
   scheuchAirConsumption,
   currentMotorKW,
-  scheuchMotorKW
+  scheuchMotorKW,
+  designType,
+  airVolumeM3h,
+  airVolumeACFM,
+  numEMCFlaps,
+  bagLength,
+  formattedResults
 }) => {
   const [showPrintDialog, setShowPrintDialog] = useState(false);
   const printContentRef = useRef<HTMLDivElement>(null);

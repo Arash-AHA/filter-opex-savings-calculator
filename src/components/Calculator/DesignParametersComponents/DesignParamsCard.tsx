@@ -1,8 +1,10 @@
+
 import React, { useRef, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Printer } from "lucide-react";
+import CardHeader from './CardHeader';
+import ParameterRow from './ParameterRow';
+import PrintButton from './PrintButton';
 import PrintableDesignParams from './PrintableDesignParams';
 
 interface DesignParamsCardProps {
@@ -11,13 +13,7 @@ interface DesignParamsCardProps {
     netFilterArea: string;
     acRatioGross: string;
     acRatioNet: string;
-    baselinePower: string;
-    improvedPower: string;
     totalBags: number;
-    daysToReplace: string;
-    bagMaterialCost: number;
-    tenYearSavings: string;
-    lifeExtension: string;
   } | null;
   results: {
     filterArea: number;
@@ -47,8 +43,6 @@ interface DesignParamsCardProps {
 const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
   formattedResults,
   results,
-  m2ToSqFtFactor,
-  conversionFactor,
   designType = 'bolt-weld',
   numEMCFlaps = 0,
   bagsPerRow = 0,
@@ -56,6 +50,9 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
   airVolumeM3h = '',
   airVolumeACFM = ''
 }) => {
+  const [open, setOpen] = useState(false);
+  const printContentRef = useRef<HTMLDivElement>(null);
+
   const safeResults = formattedResults || {
     filterArea: '-',
     netFilterArea: '-',
@@ -64,80 +61,6 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
     totalBags: 0,
   };
 
-  // State for Dialog open/close
-  const [open, setOpen] = useState(false);
-  // Ref for printable section
-  const printContentRef = useRef<HTMLDivElement>(null);
-
-  const getCalculatedValues = () => {
-    const parsedEMCFlaps = typeof numEMCFlaps === 'string'
-      ? (numEMCFlaps === '' ? 0 : parseInt(numEMCFlaps))
-      : numEMCFlaps;
-
-    // Calculate total bags differently based on design type
-    let totalBags = 0;
-    let filterArea: number = 0;
-    let netFilterArea: number = 0;
-
-    if (designType === 'bolt-weld') {
-      // For bolt-weld design
-      totalBags = parsedEMCFlaps * bagsPerRow * 5;
-      filterArea = Math.PI * (165/1000) * bagLength * 5 * bagsPerRow * parsedEMCFlaps;
-      netFilterArea = Math.PI * (165/1000) * bagLength * 5 * bagsPerRow * (parsedEMCFlaps - 1);
-    } else {
-      // For modular design (updated as per new formula)
-      totalBags = parsedEMCFlaps * bagsPerRow * 5;
-      filterArea = bagLength * bagsPerRow * parsedEMCFlaps * 5 * 1.6;
-      netFilterArea = bagLength * bagsPerRow * (parsedEMCFlaps - 1) * 5 * 1.6;
-    }
-
-    let acRatioGross = 0;
-    let acRatioNet = 0;
-
-    const airVolume = designType === 'modular'
-      ? (parseFloat(airVolumeACFM) || 0)
-      : (parseFloat(airVolumeM3h) || 0);
-
-    if (filterArea > 0) {
-      acRatioGross = airVolume / filterArea;
-    }
-
-    if (netFilterArea > 0) {
-      acRatioNet = airVolume / netFilterArea;
-    }
-
-    let formattedFilterArea: string;
-    let formattedNetFilterArea: string;
-    let formattedAcRatioGross: string;
-    let formattedAcRatioNet: string;
-
-    if (designType === 'modular') {
-      formattedFilterArea = `${filterArea.toFixed(2)} sq ft`;
-      formattedNetFilterArea = `${netFilterArea.toFixed(2)} sq ft`;
-      formattedAcRatioGross = `${acRatioGross.toFixed(2)} cfm/sq ft`;
-      formattedAcRatioNet = `${acRatioNet.toFixed(2)} cfm/sq ft`;
-    } else {
-      formattedFilterArea = `${filterArea.toFixed(2)} m²`;
-      formattedNetFilterArea = `${netFilterArea.toFixed(2)} m²`;
-      formattedAcRatioGross = `${(acRatioGross / 60).toFixed(2)} m³/min/m²`;
-      formattedAcRatioNet = `${(acRatioNet / 60).toFixed(2)} m³/min/m²`;
-    }
-
-    return {
-      totalBags,
-      filterArea,
-      netFilterArea,
-      formattedFilterArea,
-      formattedNetFilterArea,
-      formattedAcRatioGross,
-      formattedAcRatioNet,
-      parsedEMCFlaps
-    };
-  };
-
-  const calculatedValues = getCalculatedValues();
-
-  // Handler to print only the modal content
   const handlePrint = () => {
     if (printContentRef.current) {
       const printContents = printContentRef.current.innerHTML;
@@ -171,50 +94,15 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
   return (
     <>
       <Card className="p-4 h-fit">
-        <h3 className="text-sm font-medium text-gray-700 mb-4">
-          {designType === 'bolt-weld'
-            ? 'Design Parameters (Bolt/Weld)'
-            : 'Design Parameters (Modular Design)'}
-        </h3>
-
+        <CardHeader designType={designType} />
         <div className="space-y-3">
-          <div className="flex justify-between border-b border-gray-100 pb-1">
-            <span className="text-gray-600 text-sm">Filter Area (Gross):</span>
-            <span className="font-medium text-sm">{calculatedValues.formattedFilterArea}</span>
-          </div>
-
-          <div className="flex justify-between border-b border-gray-100 pb-1 items-start">
-            <span className="text-gray-600 text-sm">
-              Net Filter Area:(Cleaning)
-            </span>
-            <span className="font-medium text-sm flex flex-col items-end">
-              {calculatedValues.formattedNetFilterArea}
-            </span>
-          </div>
-
-          <div className="flex justify-between border-b border-gray-100 pb-1">
-            <span className="text-gray-600 text-sm">Air-to-Cloth Ratio (Gross):</span>
-            <span className="font-medium text-sm">{calculatedValues.formattedAcRatioGross}</span>
-          </div>
-
-          <div className="flex justify-between border-b border-gray-100 pb-1">
-            <span className="text-gray-600 text-sm">Air-to-Cloth Ratio (Net):</span>
-            <span className="font-medium text-sm">{calculatedValues.formattedAcRatioNet}</span>
-          </div>
-
-          <div className="flex justify-between border-b border-gray-100 pb-1">
-            <span className="text-gray-600 text-sm">Total Number of Bags:</span>
-            <span className="font-medium text-sm">{calculatedValues.totalBags}</span>
-          </div>
+          <ParameterRow label="Filter Area (Gross):" value={safeResults.filterArea} />
+          <ParameterRow label="Net Filter Area:(Cleaning)" value={safeResults.netFilterArea} />
+          <ParameterRow label="Air-to-Cloth Ratio (Gross):" value={safeResults.acRatioGross} />
+          <ParameterRow label="Air-to-Cloth Ratio (Net):" value={safeResults.acRatioNet} />
+          <ParameterRow label="Total Number of Bags:" value={safeResults.totalBags} />
         </div>
-        <Button
-          variant="outline"
-          className="w-full mt-6 flex items-center justify-center gap-2"
-          onClick={() => setOpen(true)}
-        >
-          <Printer size={18} className="mr-1" />
-          Print
-        </Button>
+        <PrintButton onClick={() => setOpen(true)} />
       </Card>
 
       <Dialog open={open} onOpenChange={setOpen}>
@@ -222,7 +110,7 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
           <DialogHeader>
             <DialogTitle>Printable Filter Design Information</DialogTitle>
             <DialogDescription>
-              Print or save as PDF by using your browser’s print options.
+              Print or save as PDF by using your browser's print options.
             </DialogDescription>
           </DialogHeader>
           <div ref={printContentRef} className="max-h-[70vh] overflow-auto bg-white p-0 rounded-md">
@@ -236,13 +124,7 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
               formattedResults={formattedResults}
             />
           </div>
-          <Button
-            variant="default"
-            onClick={handlePrint}
-            className="mt-4 w-full"
-          >
-            <Printer className="mr-2" size={16} /> Print as PDF
-          </Button>
+          <PrintButton onClick={handlePrint} />
         </DialogContent>
       </Dialog>
     </>
