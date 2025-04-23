@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import InputField from './InputField';
 import ResultCard from './ResultCard';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Printer } from 'lucide-react';
+import PrintableResults from './PrintableResults';
 
 interface SavingsResultsProps {
   savingYears: number;
@@ -46,6 +50,38 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
   currentMotorKW,
   scheuchMotorKW
 }) => {
+  const [showPrintDialog, setShowPrintDialog] = useState(false);
+  const printContentRef = useRef<HTMLDivElement>(null);
+
+  const handlePrint = () => {
+    if (printContentRef.current) {
+      const printContents = printContentRef.current.innerHTML;
+      const win = window.open('', '', 'height=650,width=900,top=100,left=150');
+      if (win) {
+        win.document.write(`
+          <html>
+            <head>
+              <title>OPEX Savings Analysis</title>
+              <style>
+                body { font-family: 'Inter', Arial, sans-serif; margin: 0; padding: 24px; }
+                .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+                section { margin-bottom: 2rem; }
+                h2 { color: #374151; margin-bottom: 1rem; }
+              </style>
+            </head>
+            <body>${printContents}</body>
+          </html>
+        `);
+        win.document.close();
+        win.focus();
+        setTimeout(() => {
+          win.print();
+          win.close();
+        }, 400);
+      }
+    }
+  };
+
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -167,7 +203,49 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
             <div className="text-sm text-green-600">Over {savingYears} years of operation with EMC technology</div>
           </div>
         </div>
+        
+        <div className="flex justify-center mt-6">
+          <Button
+            variant="outline"
+            className="flex items-center gap-2"
+            onClick={() => setShowPrintDialog(true)}
+          >
+            <Printer className="h-4 w-4" />
+            Print Results
+          </Button>
+        </div>
       </div>
+
+      <Dialog open={showPrintDialog} onOpenChange={setShowPrintDialog}>
+        <DialogContent className="max-w-3xl">
+          <div ref={printContentRef}>
+            <PrintableResults
+              designType={designType}
+              airVolume={designType === 'modular' ? airVolumeACFM : airVolumeM3h}
+              numEMCFlaps={numEMCFlaps}
+              bagLength={bagLength}
+              filterArea={formattedResults.filterArea}
+              netFilterArea={formattedResults.netFilterArea}
+              acRatioGross={formattedResults.acRatioGross}
+              acRatioNet={formattedResults.acRatioNet}
+              totalBags={formattedResults.totalBags}
+              savingYears={savingYears}
+              bagSavings={totalSavings.bagSavings}
+              fanPowerSavings={totalSavings.fanPowerSavings}
+              airSavings={totalSavings.airSavings}
+              totalSavings={totalSavings.total}
+            />
+          </div>
+          <Button
+            variant="default"
+            onClick={handlePrint}
+            className="mt-4 w-full flex items-center justify-center gap-2"
+          >
+            <Printer className="h-4 w-4" />
+            Print as PDF
+          </Button>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
