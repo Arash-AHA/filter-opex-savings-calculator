@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Info } from "lucide-react";
 
 interface PrintableResultsProps {
   // Design Configuration
@@ -65,6 +68,25 @@ const PrintableResults: React.FC<PrintableResultsProps> = ({
       : `${airVolume} m³/h`
   };
 
+  // Calculation explanations
+  const calculationExplanations = {
+    bagSavings: {
+      title: "Bag Material and Labor Savings",
+      formula: "((Years × 12 / Current Life) × (Total Bags × Bag Price + Travel Cost)) - ((Years × 12 / Scheuch Life) × (Total Bags × Bag Price + Travel Cost))",
+      explanation: "Calculates the difference in costs between current and Scheuch system based on bag replacement frequency, material costs, and labor."
+    },
+    fanPower: {
+      title: "Fan Power Consumption Savings",
+      formula: "(Air Volume × (Current ΔP - Scheuch ΔP) × 100) / (3600 × 1000 × 0.8) × kWh Cost × Working Hours × Years",
+      explanation: "Determines energy savings from reduced differential pressure, considering system efficiency and operational hours."
+    },
+    compressedAir: {
+      title: "Compressed Air Savings",
+      formula: "If USD/Nm³ available: (Current - Scheuch Air Consumption) × Cost × Working Hours × Years\nOtherwise: (Current - Scheuch Motor kW) × kWh Cost × Working Hours × Years",
+      explanation: "Calculates savings in compressed air usage based on either direct air costs or associated motor power consumption."
+    }
+  };
+
   return (
     <div className="p-6 print:p-0 space-y-8">
       <div className="print:hidden mb-4">
@@ -117,11 +139,85 @@ const PrintableResults: React.FC<PrintableResultsProps> = ({
         <div className="text-lg mb-4">Savings in {savingYears} years:</div>
         <div className="grid grid-cols-2 gap-4">
           <div>Bag Material and Labor:</div>
-          <div>${bagSavings.toLocaleString(undefined, {maximumFractionDigits: 0})}</div>
+          <div className="flex items-center gap-2">
+            ${bagSavings.toLocaleString(undefined, {maximumFractionDigits: 0})}
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="ghost" size="icon" className="h-6 w-6">
+                  <Info className="h-4 w-4" />
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>{calculationExplanations.bagSavings.title}</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4 py-4">
+                  <div>
+                    <h4 className="font-medium mb-2">Formula:</h4>
+                    <pre className="bg-slate-100 p-3 rounded-md text-sm">{calculationExplanations.bagSavings.formula}</pre>
+                  </div>
+                  <div>
+                    <h4 className="font-medium mb-2">Explanation:</h4>
+                    <p className="text-sm text-slate-600">{calculationExplanations.bagSavings.explanation}</p>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
+          </div>
+
           <div>Savings $ in Fan Power Consumption:</div>
-          <div>${fanPowerSavings.toLocaleString(undefined, {maximumFractionDigits: 0})}</div>
+          <div className="flex items-center gap-2">
+            ${fanPowerSavings.toLocaleString(undefined, {maximumFractionDigits: 0})}
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="ghost" size="icon" className="h-6 w-6">
+                  <Info className="h-4 w-4" />
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>{calculationExplanations.fanPower.title}</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4 py-4">
+                  <div>
+                    <h4 className="font-medium mb-2">Formula:</h4>
+                    <pre className="bg-slate-100 p-3 rounded-md text-sm">{calculationExplanations.fanPower.formula}</pre>
+                  </div>
+                  <div>
+                    <h4 className="font-medium mb-2">Explanation:</h4>
+                    <p className="text-sm text-slate-600">{calculationExplanations.fanPower.explanation}</p>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
+          </div>
+
           <div>Savings $ in Compressed Air:</div>
-          <div>${airSavings.toLocaleString(undefined, {maximumFractionDigits: 0})}</div>
+          <div className="flex items-center gap-2">
+            ${airSavings.toLocaleString(undefined, {maximumFractionDigits: 0})}
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="ghost" size="icon" className="h-6 w-6">
+                  <Info className="h-4 w-4" />
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>{calculationExplanations.compressedAir.title}</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4 py-4">
+                  <div>
+                    <h4 className="font-medium mb-2">Formula:</h4>
+                    <pre className="bg-slate-100 p-3 rounded-md text-sm whitespace-pre-wrap">{calculationExplanations.compressedAir.formula}</pre>
+                  </div>
+                  <div>
+                    <h4 className="font-medium mb-2">Explanation:</h4>
+                    <p className="text-sm text-slate-600">{calculationExplanations.compressedAir.explanation}</p>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
+          </div>
         </div>
       </section>
 
