@@ -48,27 +48,37 @@ const EMCFlapsInput: React.FC<EMCFlapsInputProps> = ({
     const parsedValue = parseInt(inputValue);
     if (!isNaN(parsedValue)) {
       if (designType === 'modular') {
+        // Check if the value is a multiple of 3
         if (parsedValue % 3 !== 0) {
+          // Round up to the next multiple of 3
+          const adjustedValue = Math.ceil(parsedValue / 3) * 3;
           toast({
-            title: "Invalid EMC Flaps Number",
-            description: "For modular design, the number of EMC flaps must be a multiple of 3 (each Module has 3 EMC dampers)",
-            variant: "destructive",
+            title: "Adjusted EMC Flaps Number",
+            description: `For modular design, the number of EMC flaps must be a multiple of 3. Value adjusted to ${adjustedValue}.`,
+            variant: "default",
           });
-          setInputValue(numEMCFlaps.toString());
+          setInputValue(adjustedValue.toString());
+          setNumEMCFlaps(adjustedValue);
           return;
         }
         
+        // Check A/C ratio even if multiple of 3 is valid
         const areaPerFlap = bagLength * bagsPerRow * 5 * 1.6;
         const totalArea = areaPerFlap * parsedValue;
         const airVolume = parseFloat(airVolumeACFM) || 0;
         const acRatio = totalArea > 0 ? airVolume / totalArea : 0;
         
         if (acRatio > 3.2) {
+          // Round up to the next multiple of 3
+          const adjustedValue = parsedValue + 3;
           toast({
             title: "Warning: High A/C Ratio",
-            description: "The selected number of EMC flaps results in an A/C ratio above 3.2. Consider increasing the number of flaps.",
+            description: `Increasing EMC flaps to ${adjustedValue} to maintain A/C ratio below 3.2.`,
             variant: "destructive",
           });
+          setInputValue(adjustedValue.toString());
+          setNumEMCFlaps(adjustedValue);
+          return;
         }
       }
       setNumEMCFlaps(parsedValue);
@@ -79,7 +89,13 @@ const EMCFlapsInput: React.FC<EMCFlapsInputProps> = ({
 
   const applySuggestedFlaps = () => {
     if (suggestedFlaps) {
-      setNumEMCFlaps(suggestedFlaps);
+      if (designType === 'modular') {
+        // Ensure suggested value is also a multiple of 3
+        const adjustedSuggested = Math.ceil(suggestedFlaps / 3) * 3;
+        setNumEMCFlaps(adjustedSuggested);
+      } else {
+        setNumEMCFlaps(suggestedFlaps);
+      }
     }
   };
 

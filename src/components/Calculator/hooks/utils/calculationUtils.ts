@@ -108,32 +108,30 @@ export const suggestEMCFlaps = (
   } else {
     // For modular design - specific example case
     if (airVolume === 221000 && bagLength === 24 && bagsPerRow === 15) {
-      return 6; // Specific suggested flaps for the given example
+      return 6; // Specific suggested flaps for the given example (already a multiple of 3)
     }
     
     if (airVolume <= 0) {
-      return 4; // Default value when no air volume specified for modular design
+      return 6; // Default value when no air volume specified for modular design (changed to 6 from 4)
     }
     
     // Calculate area per flap for modular design
-    // Bag Length * No. Bags in a Row * 5 * 1.6
     const areaPerFlapSqFt = bagLength * bagsPerRow * 5 * 1.6;
     
-    // For modular design, A/C ratio is in cfm/sq ft
-    // A/C ratio (cfm/sq ft) = Air Volume (ACFM) / Filter Area (sq ft)
-    
     // Calculate required total area needed to achieve the target A/C ratio
-    // To ensure A/C ratio < targetACRatio, we need Filter Area > Air Volume / targetACRatio
     const requiredAreaSqFt = airVolume / targetACRatio;
     
     // Calculate required number of flaps
-    // requiredAreaSqFt = numFlaps * areaPerFlapSqFt
-    // Therefore: numFlaps = requiredAreaSqFt / areaPerFlapSqFt
     let suggestedFlaps = Math.ceil(requiredAreaSqFt / areaPerFlapSqFt);
     
-    // Apply minimum constraints
-    const minFlaps = 4;
+    // Apply minimum constraints and ensure multiple of 3
+    const minFlaps = 6; // Changed from 4 to 6 to ensure multiple of 3
     suggestedFlaps = Math.max(suggestedFlaps, minFlaps);
+    
+    // Round up to the next multiple of 3
+    if (suggestedFlaps % 3 !== 0) {
+      suggestedFlaps = Math.ceil(suggestedFlaps / 3) * 3;
+    }
     
     return suggestedFlaps;
   }
