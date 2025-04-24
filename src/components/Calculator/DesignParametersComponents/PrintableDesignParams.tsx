@@ -26,10 +26,10 @@ const PrintableDesignParams: React.FC<PrintableDesignParamsProps> = ({
   airVolumeACFM,
   formattedResults,
 }) => {
-  // Determine bag length unit and value
+  // Determine bag length unit and value based on design type
   const bagLengthDisplay = designType === 'bolt-weld' 
     ? `${bagLength} m` 
-    : `${(bagLength * 3.28084).toFixed(0)} ft`;
+    : `${bagLength} ft`;
 
   const safeResults = formattedResults || {
     filterArea: "-",
