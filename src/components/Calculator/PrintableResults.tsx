@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface PrintableResultsProps {
   // Design Configuration
@@ -38,13 +39,46 @@ const PrintableResults: React.FC<PrintableResultsProps> = ({
   airSavings,
   totalSavings
 }) => {
+  const [unitSystem, setUnitSystem] = useState<'metric' | 'imperial'>('metric');
+  
   // Determine bag length unit and convert if necessary
   const bagLengthDisplay = designType === 'bolt-weld' 
     ? `${bagLength} m` 
     : `${(bagLength * 3.28084).toFixed(0)} ft`;
 
+  // Convert values based on selected unit system
+  const convertedValues = {
+    filterArea: unitSystem === 'imperial' 
+      ? `${(parseFloat(filterArea) * 10.7639).toFixed(1)} ft²` 
+      : `${filterArea} m²`,
+    netFilterArea: unitSystem === 'imperial'
+      ? `${(parseFloat(netFilterArea) * 10.7639).toFixed(1)} ft²`
+      : `${netFilterArea} m²`,
+    acRatioGross: unitSystem === 'imperial'
+      ? `${(parseFloat(acRatioGross) * 3.28084).toFixed(1)} ft/min`
+      : `${acRatioGross} m³/m²/min`,
+    acRatioNet: unitSystem === 'imperial'
+      ? `${(parseFloat(acRatioNet) * 3.28084).toFixed(1)} ft/min`
+      : `${acRatioNet} m³/m²/min`,
+    airVolume: designType === 'modular' 
+      ? `${airVolume} ACFM` 
+      : `${airVolume} m³/h`
+  };
+
   return (
     <div className="p-6 print:p-0 space-y-8">
+      <div className="print:hidden mb-4">
+        <Select value={unitSystem} onValueChange={(value: 'metric' | 'imperial') => setUnitSystem(value)}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Select unit system" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="metric">Metric Units</SelectItem>
+            <SelectItem value="imperial">Imperial Units</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
       {/* Filter Design Configuration */}
       <section>
         <h2 className="text-xl font-semibold mb-4">Filter Design Configuration</h2>
@@ -52,9 +86,7 @@ const PrintableResults: React.FC<PrintableResultsProps> = ({
           <div>Filter Design Type:</div>
           <div>{designType === 'bolt-weld' ? 'Bolt/Weld' : 'Modular Design'}</div>
           <div>Air Volume:</div>
-          <div>
-            {airVolume} {designType === 'modular' ? 'ACFM' : 'm³/h'}
-          </div>
+          <div>{convertedValues.airVolume}</div>
           <div>Total No. EMC Flaps:</div>
           <div>{numEMCFlaps}</div>
           <div>Bag Length:</div>
@@ -67,13 +99,13 @@ const PrintableResults: React.FC<PrintableResultsProps> = ({
         <h2 className="text-xl font-semibold mb-4">Filter Parameters</h2>
         <div className="grid grid-cols-2 gap-4">
           <div>Filter Area (Gross):</div>
-          <div>{filterArea} m²</div>
+          <div>{convertedValues.filterArea}</div>
           <div>Net Filter Area (Cleaning):</div>
-          <div>{netFilterArea} m²</div>
+          <div>{convertedValues.netFilterArea}</div>
           <div>Air-to-Cloth Ratio (Gross):</div>
-          <div>{acRatioGross} m³/m²/min</div>
+          <div>{convertedValues.acRatioGross}</div>
           <div>Air-to-Cloth Ratio (Net):</div>
-          <div>{acRatioNet} m³/m²/min</div>
+          <div>{convertedValues.acRatioNet}</div>
           <div>Total Number of Bags:</div>
           <div>{totalBags}</div>
         </div>
