@@ -1,5 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useUnitConversion } from './hooks/useUnitConversion';
+import { FilterDesignSection } from './PrintableSections/FilterDesignSection';
+import { FilterParametersSection } from './PrintableSections/FilterParametersSection';
+import { SavingsSection } from './PrintableSections/SavingsSection';
 
 interface PrintableResultsProps {
   // Design Configuration
@@ -39,37 +43,14 @@ const PrintableResults: React.FC<PrintableResultsProps> = ({
   airSavings,
   totalSavings
 }) => {
-  const [unitSystem, setUnitSystem] = useState<'metric' | 'imperial'>('metric');
-  
-  // Update air volume display based on unit system and design type
-  const airVolumeDisplay = () => {
-    if (unitSystem === 'metric') {
-      return designType === 'modular' 
-        ? `${(parseFloat(airVolume) / 1.69901).toFixed(0)} m³/h`  // Convert ACFM to m³/h
-        : `${airVolume} m³/h`;
-    } else {
-      return designType === 'modular'
-        ? `${airVolume} ACFM`
-        : `${(parseFloat(airVolume) * 1.69901).toFixed(0)} ACFM`; // Convert m³/h to ACFM
-    }
-  };
-
-  // Convert values based on selected unit system
-  const convertedValues = {
-    filterArea: unitSystem === 'imperial' 
-      ? `${(parseFloat(filterArea) * 10.7639).toFixed(1)} ft²` 
-      : `${filterArea} m²`,
-    netFilterArea: unitSystem === 'imperial'
-      ? `${(parseFloat(netFilterArea) * 10.7639).toFixed(1)} ft²`
-      : `${netFilterArea} m²`,
-    acRatioGross: unitSystem === 'imperial'
-      ? `${(parseFloat(acRatioGross) * 3.28084).toFixed(1)} ft/min`
-      : `${acRatioGross} m³/m²/min`,
-    acRatioNet: unitSystem === 'imperial'
-      ? `${(parseFloat(acRatioNet) * 3.28084).toFixed(1)} ft/min`
-      : `${acRatioNet} m³/m²/min`,
-    airVolume: airVolumeDisplay()
-  };
+  const { unitSystem, setUnitSystem, convertedValues } = useUnitConversion(
+    designType,
+    filterArea,
+    netFilterArea,
+    acRatioGross,
+    acRatioNet,
+    airVolume
+  );
 
   return (
     <div className="p-6 print:p-0 space-y-8">
@@ -85,62 +66,28 @@ const PrintableResults: React.FC<PrintableResultsProps> = ({
         </Select>
       </div>
 
-      {/* Filter Design Configuration */}
-      <section>
-        <h2 className="text-xl font-semibold mb-4">Filter Design Configuration</h2>
-        <div className="grid grid-cols-2 gap-4">
-          <div>Filter Design Type:</div>
-          <div>{designType === 'bolt-weld' ? 'Bolt/Weld' : 'Modular Design'}</div>
-          <div>Air Volume:</div>
-          <div>{convertedValues.airVolume}</div>
-          <div>Total No. EMC Flaps:</div>
-          <div>{numEMCFlaps}</div>
-          <div>Bag Length:</div>
-          <div>{bagLengthDisplay}</div>
-        </div>
-      </section>
+      <FilterDesignSection
+        designType={designType}
+        airVolume={convertedValues.airVolume}
+        numEMCFlaps={numEMCFlaps}
+        bagLength={bagLength}
+      />
 
-      {/* Filter Parameters */}
-      <section>
-        <h2 className="text-xl font-semibold mb-4">Filter Parameters</h2>
-        <div className="grid grid-cols-2 gap-4">
-          <div>Filter Area (Gross):</div>
-          <div>{convertedValues.filterArea}</div>
-          <div>Net Filter Area (Cleaning):</div>
-          <div>{convertedValues.netFilterArea}</div>
-          <div>Air-to-Cloth Ratio (Gross):</div>
-          <div>{convertedValues.acRatioGross}</div>
-          <div>Air-to-Cloth Ratio (Net):</div>
-          <div>{convertedValues.acRatioNet}</div>
-          <div>Total Number of Bags:</div>
-          <div>{totalBags}</div>
-        </div>
-      </section>
+      <FilterParametersSection
+        filterArea={convertedValues.filterArea}
+        netFilterArea={convertedValues.netFilterArea}
+        acRatioGross={convertedValues.acRatioGross}
+        acRatioNet={convertedValues.acRatioNet}
+        totalBags={totalBags}
+      />
 
-      {/* OPEX Savings Analysis */}
-      <section>
-        <h2 className="text-xl font-semibold mb-4">OPEX Savings Analysis</h2>
-        <div className="text-lg mb-4">Savings in {savingYears} years:</div>
-        <div className="grid grid-cols-2 gap-4">
-          <div>Bag Material and Labor:</div>
-          <div>${bagSavings.toLocaleString(undefined, {maximumFractionDigits: 0})}</div>
-          <div>Savings $ in Fan Power Consumption:</div>
-          <div>${fanPowerSavings.toLocaleString(undefined, {maximumFractionDigits: 0})}</div>
-          <div>Savings $ in Compressed Air:</div>
-          <div>${airSavings.toLocaleString(undefined, {maximumFractionDigits: 0})}</div>
-        </div>
-      </section>
-
-      {/* Total Estimated Savings */}
-      <section className="mt-8">
-        <div className="text-center bg-green-50 border border-green-200 p-6 rounded-xl">
-          <h3 className="text-xl font-medium text-green-800 mb-4">Total Estimated Savings</h3>
-          <div className="text-4xl font-bold text-green-700 mb-1">
-            ${totalSavings.toLocaleString(undefined, {maximumFractionDigits: 0})}
-          </div>
-          <div className="text-sm text-green-600">Over {savingYears} years of operation</div>
-        </div>
-      </section>
+      <SavingsSection
+        savingYears={savingYears}
+        bagSavings={bagSavings}
+        fanPowerSavings={fanPowerSavings}
+        airSavings={airSavings}
+        totalSavings={totalSavings}
+      />
     </div>
   );
 };
