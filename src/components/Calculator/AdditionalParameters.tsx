@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 
 interface AdditionalParametersProps {
   gasTempC: number;
@@ -107,6 +108,22 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
   const safeToString = (value: number | null | undefined): string => {
     return value !== null && value !== undefined ? value.toString() : '';
   };
+
+  const calculatePressureUnits = (mbar: number | null) => {
+    if (mbar === null) return { kpa: null, psi: null, mmwg: null };
+    
+    const kpa = mbar * 0.1;
+    const psi = mbar * 0.0145038;
+    const mmwg = mbar * 10.1972;
+    
+    return {
+      kpa: kpa.toFixed(2),
+      psi: psi.toFixed(3),
+      mmwg: mmwg.toFixed(1)
+    };
+  };
+
+  const additionalPressureUnits = calculatePressureUnits(negativePressureMbar);
 
   return (
     <div className="space-y-4 p-4 border border-blue-100 rounded-xl bg-blue-50/50 animate-fadeIn">
@@ -264,23 +281,40 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
           <div className="w-1/2 relative">
             <Input 
               type="text"
-              value={safeToString(negativePressureMbar)}
+              value={negativePressureMbar !== null ? negativePressureMbar.toString() : ''}
               onChange={(e) => handleNegativePressureMbarChange(e.target.value)}
-              className="pr-12 w-full bg-white text-sm"
-              placeholder="Enter mbar"
+              className="pr-8 w-full bg-white text-sm"
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">mbar</span>
           </div>
           <div className="w-1/2 relative">
             <Input 
               type="text"
-              value={safeToString(negativePressureInchWG)}
+              value={negativePressureInchWG !== null ? negativePressureInchWG.toString() : ''}
               onChange={(e) => handleNegativePressureInchWGChange(e.target.value)}
               className="pr-12 w-full bg-white text-sm"
-              placeholder="Enter inchWG"
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">Inches W.G.</span>
           </div>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="outline" size="sm">
+                Other units
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-64 p-4 bg-white">
+              <div className="space-y-2">
+                <div className="grid grid-cols-2 gap-2 text-sm">
+                  <div className="text-gray-600">kPa:</div>
+                  <div>{additionalPressureUnits.kpa || '-'}</div>
+                  <div className="text-gray-600">PSI:</div>
+                  <div>{additionalPressureUnits.psi || '-'}</div>
+                  <div className="text-gray-600">mm W.G.:</div>
+                  <div>{additionalPressureUnits.mmwg || '-'}</div>
+                </div>
+              </div>
+            </PopoverContent>
+          </Popover>
         </div>
       </div>
       
