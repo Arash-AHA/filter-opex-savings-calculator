@@ -41,10 +41,18 @@ const PrintableResults: React.FC<PrintableResultsProps> = ({
 }) => {
   const [unitSystem, setUnitSystem] = useState<'metric' | 'imperial'>('metric');
   
-  // Determine bag length unit and convert if necessary
-  const bagLengthDisplay = designType === 'bolt-weld' 
-    ? `${bagLength} m` 
-    : `${(bagLength * 3.28084).toFixed(0)} ft`;
+  // Update air volume display based on unit system and design type
+  const airVolumeDisplay = () => {
+    if (unitSystem === 'metric') {
+      return designType === 'modular' 
+        ? `${(parseFloat(airVolume) / 1.69901).toFixed(0)} m³/h`  // Convert ACFM to m³/h
+        : `${airVolume} m³/h`;
+    } else {
+      return designType === 'modular'
+        ? `${airVolume} ACFM`
+        : `${(parseFloat(airVolume) * 1.69901).toFixed(0)} ACFM`; // Convert m³/h to ACFM
+    }
+  };
 
   // Convert values based on selected unit system
   const convertedValues = {
@@ -60,9 +68,7 @@ const PrintableResults: React.FC<PrintableResultsProps> = ({
     acRatioNet: unitSystem === 'imperial'
       ? `${(parseFloat(acRatioNet) * 3.28084).toFixed(1)} ft/min`
       : `${acRatioNet} m³/m²/min`,
-    airVolume: designType === 'modular' 
-      ? `${airVolume} ACFM` 
-      : `${airVolume} m³/h`
+    airVolume: airVolumeDisplay()
   };
 
   return (
