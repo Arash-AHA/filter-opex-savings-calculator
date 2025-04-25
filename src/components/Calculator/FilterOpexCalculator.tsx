@@ -1,4 +1,3 @@
-
 import React from 'react';
 import CalculatorSection from './CalculatorSection';
 import Transition from '../UI/Transition';
@@ -7,9 +6,24 @@ import FilterBagReplacement from './FilterBagReplacement';
 import OperationalParameters from './OperationalParameters';
 import SavingsResults from './SavingsResults';
 import { useCalculatorState } from './hooks/useCalculatorState';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { ChevronDown } from 'lucide-react';
+import { useState } from 'react';
 
 const FilterOpexCalculator = () => {
   const calculatorState = useCalculatorState();
+  const [openSections, setOpenSections] = useState({
+    bagReplacement: false,
+    operational: false,
+    savings: false
+  });
+
+  const toggleSection = (section: keyof typeof openSections) => {
+    setOpenSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }));
+  };
   
   return (
     <div className="max-w-5xl mx-auto">
@@ -88,106 +102,142 @@ const FilterOpexCalculator = () => {
           />
         </CalculatorSection>
         
-        {/* Filter Bag Replacement Section - Make always visible */}
-        <CalculatorSection 
-          title="Filter Bag Replacement" 
-          delay={300}
-          className="bg-gradient-to-r from-green-50 to-green-100/30 border border-green-100"
-        >
-          <FilterBagReplacement 
-            bagPrice={calculatorState.bagPrice}
-            setBagPrice={calculatorState.setBagPrice}
-            bagChangeTime={calculatorState.bagChangeTime}
-            setBagChangeTime={calculatorState.setBagChangeTime}
-            numPeople={calculatorState.numPeople}
-            setNumPeople={calculatorState.setNumPeople}
-            hourlyRate={calculatorState.hourlyRate}
-            setHourlyRate={calculatorState.setHourlyRate}
-            siteDistance={calculatorState.siteDistance}
-            setSiteDistance={calculatorState.setSiteDistance}
-            travelCost={calculatorState.travelCost}
-            setTravelCost={calculatorState.setTravelCost}
-            bagReplacementCost={calculatorState.bagReplacementCost}
-            setBagReplacementCost={calculatorState.setBagReplacementCost}
-            calculateTravelCost={() => {
-              if (calculatorState.results.daysToReplace > 0) {
-                calculatorState.calculateTravelCost(calculatorState.results.daysToReplace);
-              }
-            }}
-            formattedResults={calculatorState.formattedResults}
-          />
-        </CalculatorSection>
+        {/* Filter Bag Replacement Section */}
+        <Collapsible open={openSections.bagReplacement}>
+          <CalculatorSection 
+            title={
+              <CollapsibleTrigger 
+                onClick={() => toggleSection('bagReplacement')}
+                className="flex items-center justify-between w-full"
+              >
+                <span>Filter Bag Replacement</span>
+                <ChevronDown className={`h-4 w-4 transition-transform ${openSections.bagReplacement ? 'transform rotate-180' : ''}`} />
+              </CollapsibleTrigger>
+            }
+            delay={300}
+            className="bg-gradient-to-r from-green-50 to-green-100/30 border border-green-100"
+          >
+            <CollapsibleContent>
+              <FilterBagReplacement 
+                bagPrice={calculatorState.bagPrice}
+                setBagPrice={calculatorState.setBagPrice}
+                bagChangeTime={calculatorState.bagChangeTime}
+                setBagChangeTime={calculatorState.setBagChangeTime}
+                numPeople={calculatorState.numPeople}
+                setNumPeople={calculatorState.setNumPeople}
+                hourlyRate={calculatorState.hourlyRate}
+                setHourlyRate={calculatorState.setHourlyRate}
+                siteDistance={calculatorState.siteDistance}
+                setSiteDistance={calculatorState.setSiteDistance}
+                travelCost={calculatorState.travelCost}
+                setTravelCost={calculatorState.setTravelCost}
+                bagReplacementCost={calculatorState.bagReplacementCost}
+                setBagReplacementCost={calculatorState.setBagReplacementCost}
+                calculateTravelCost={() => {
+                  if (calculatorState.results.daysToReplace > 0) {
+                    calculatorState.calculateTravelCost(calculatorState.results.daysToReplace);
+                  }
+                }}
+                formattedResults={calculatorState.formattedResults}
+              />
+            </CollapsibleContent>
+          </CalculatorSection>
+        </Collapsible>
         
         {/* Operational Parameters Section */}
-        <CalculatorSection 
-          title="Operational Parameters" 
-          delay={500}
-          className="bg-gradient-to-r from-amber-50 to-amber-100/30 border border-amber-100"
-        >
-          <OperationalParameters 
-            currentLifeTime={calculatorState.currentLifeTime}
-            setCurrentLifeTime={calculatorState.setCurrentLifeTime}
-            scheuchLifeTime={calculatorState.scheuchLifeTime}
-            setScheuchLifeTime={calculatorState.setScheuchLifeTime}
-            currentDiffPressure={calculatorState.currentDiffPressure}
-            setCurrentDiffPressure={calculatorState.setCurrentDiffPressure}
-            scheuchDiffPressure={calculatorState.scheuchDiffPressure}
-            setScheuchDiffPressure={calculatorState.setScheuchDiffPressure}
-            currentAirConsumption={calculatorState.currentAirConsumption}
-            setCurrentAirConsumption={calculatorState.setCurrentAirConsumption}
-            scheuchAirConsumption={calculatorState.scheuchAirConsumption}
-            setScheuchAirConsumption={calculatorState.setScheuchAirConsumption}
-            currentMotorKW={calculatorState.currentMotorKW}
-            setCurrentMotorKW={calculatorState.setCurrentMotorKW}
-            scheuchMotorKW={calculatorState.scheuchMotorKW}
-            setScheuchMotorKW={calculatorState.setScheuchMotorKW}
-            bagQuality={calculatorState.bagQuality}
-            setBagQuality={calculatorState.setBagQuality}
-            cleaningPressure={calculatorState.cleaningPressure}
-            setCleaningPressure={calculatorState.setCleaningPressure}
-            minPulseInterval={calculatorState.minPulseInterval}
-            setMinPulseInterval={calculatorState.setMinPulseInterval}
-            avgPulseInterval={calculatorState.avgPulseInterval}
-            setAvgPulseInterval={calculatorState.setAvgPulseInterval}
-            numEMCFlaps={typeof calculatorState.numEMCFlaps === 'string' ? 
-              (calculatorState.numEMCFlaps === '' ? 0 : parseInt(calculatorState.numEMCFlaps)) : 
-              calculatorState.numEMCFlaps}
-            workingHours={calculatorState.workingHours}
-          />
-        </CalculatorSection>
+        <Collapsible open={openSections.operational}>
+          <CalculatorSection 
+            title={
+              <CollapsibleTrigger 
+                onClick={() => toggleSection('operational')}
+                className="flex items-center justify-between w-full"
+              >
+                <span>Operational Parameters</span>
+                <ChevronDown className={`h-4 w-4 transition-transform ${openSections.operational ? 'transform rotate-180' : ''}`} />
+              </CollapsibleTrigger>
+            }
+            delay={500}
+            className="bg-gradient-to-r from-amber-50 to-amber-100/30 border border-amber-100"
+          >
+            <CollapsibleContent>
+              <OperationalParameters 
+                currentLifeTime={calculatorState.currentLifeTime}
+                setCurrentLifeTime={calculatorState.setCurrentLifeTime}
+                scheuchLifeTime={calculatorState.scheuchLifeTime}
+                setScheuchLifeTime={calculatorState.setScheuchLifeTime}
+                currentDiffPressure={calculatorState.currentDiffPressure}
+                setCurrentDiffPressure={calculatorState.setCurrentDiffPressure}
+                scheuchDiffPressure={calculatorState.scheuchDiffPressure}
+                setScheuchDiffPressure={calculatorState.setScheuchDiffPressure}
+                currentAirConsumption={calculatorState.currentAirConsumption}
+                setCurrentAirConsumption={calculatorState.setCurrentAirConsumption}
+                scheuchAirConsumption={calculatorState.scheuchAirConsumption}
+                setScheuchAirConsumption={calculatorState.setScheuchAirConsumption}
+                currentMotorKW={calculatorState.currentMotorKW}
+                setCurrentMotorKW={calculatorState.setCurrentMotorKW}
+                scheuchMotorKW={calculatorState.scheuchMotorKW}
+                setScheuchMotorKW={calculatorState.setScheuchMotorKW}
+                bagQuality={calculatorState.bagQuality}
+                setBagQuality={calculatorState.setBagQuality}
+                cleaningPressure={calculatorState.cleaningPressure}
+                setCleaningPressure={calculatorState.setCleaningPressure}
+                minPulseInterval={calculatorState.minPulseInterval}
+                setMinPulseInterval={calculatorState.setMinPulseInterval}
+                avgPulseInterval={calculatorState.avgPulseInterval}
+                setAvgPulseInterval={calculatorState.setAvgPulseInterval}
+                numEMCFlaps={typeof calculatorState.numEMCFlaps === 'string' ? 
+                  (calculatorState.numEMCFlaps === '' ? 0 : parseInt(calculatorState.numEMCFlaps)) : 
+                  calculatorState.numEMCFlaps}
+                workingHours={calculatorState.workingHours}
+              />
+            </CollapsibleContent>
+          </CalculatorSection>
+        </Collapsible>
         
         {/* Results Section */}
-        <CalculatorSection 
-          title="OPEX Savings Analysis" 
-          delay={700}
-          className="bg-gradient-to-r from-yellow-50 to-yellow-100/30 border border-yellow-100"
-        >
-          <SavingsResults 
-            savingYears={calculatorState.savingYears}
-            setSavingYears={calculatorState.setSavingYears}
-            workingHours={calculatorState.workingHours}
-            setWorkingHours={calculatorState.setWorkingHours}
-            kwhCost={calculatorState.kwhCost}
-            setKwhCost={calculatorState.setKwhCost}
-            compressedAirCost={calculatorState.compressedAirCost}
-            setCompressedAirCost={calculatorState.setCompressedAirCost}
-            totalSavings={calculatorState.totalSavings}
-            currentLifeTime={calculatorState.currentLifeTime}
-            scheuchLifeTime={calculatorState.scheuchLifeTime}
-            currentDiffPressure={calculatorState.currentDiffPressure}
-            scheuchDiffPressure={calculatorState.scheuchDiffPressure}
-            currentAirConsumption={calculatorState.currentAirConsumption}
-            scheuchAirConsumption={calculatorState.scheuchAirConsumption}
-            currentMotorKW={calculatorState.currentMotorKW}
-            scheuchMotorKW={calculatorState.scheuchMotorKW}
-            designType={calculatorState.designType}
-            airVolumeM3h={calculatorState.airVolumeM3h}
-            airVolumeACFM={calculatorState.airVolumeACFM}
-            numEMCFlaps={calculatorState.numEMCFlaps}
-            bagLength={calculatorState.bagLength}
-            formattedResults={calculatorState.formattedResults}
-          />
-        </CalculatorSection>
+        <Collapsible open={openSections.savings}>
+          <CalculatorSection 
+            title={
+              <CollapsibleTrigger 
+                onClick={() => toggleSection('savings')}
+                className="flex items-center justify-between w-full"
+              >
+                <span>OPEX Savings Analysis</span>
+                <ChevronDown className={`h-4 w-4 transition-transform ${openSections.savings ? 'transform rotate-180' : ''}`} />
+              </CollapsibleTrigger>
+            }
+            delay={700}
+            className="bg-gradient-to-r from-yellow-50 to-yellow-100/30 border border-yellow-100"
+          >
+            <CollapsibleContent>
+              <SavingsResults 
+                savingYears={calculatorState.savingYears}
+                setSavingYears={calculatorState.setSavingYears}
+                workingHours={calculatorState.workingHours}
+                setWorkingHours={calculatorState.setWorkingHours}
+                kwhCost={calculatorState.kwhCost}
+                setKwhCost={calculatorState.setKwhCost}
+                compressedAirCost={calculatorState.compressedAirCost}
+                setCompressedAirCost={calculatorState.setCompressedAirCost}
+                totalSavings={calculatorState.totalSavings}
+                currentLifeTime={calculatorState.currentLifeTime}
+                scheuchLifeTime={calculatorState.scheuchLifeTime}
+                currentDiffPressure={calculatorState.currentDiffPressure}
+                scheuchDiffPressure={calculatorState.scheuchDiffPressure}
+                currentAirConsumption={calculatorState.currentAirConsumption}
+                scheuchAirConsumption={calculatorState.scheuchAirConsumption}
+                currentMotorKW={calculatorState.currentMotorKW}
+                scheuchMotorKW={calculatorState.scheuchMotorKW}
+                designType={calculatorState.designType}
+                airVolumeM3h={calculatorState.airVolumeM3h}
+                airVolumeACFM={calculatorState.airVolumeACFM}
+                numEMCFlaps={calculatorState.numEMCFlaps}
+                bagLength={calculatorState.bagLength}
+                formattedResults={calculatorState.formattedResults}
+              />
+            </CollapsibleContent>
+          </CalculatorSection>
+        </Collapsible>
       </div>
     </div>
   );
