@@ -12,6 +12,8 @@ import { useCalculatorState } from './hooks/useCalculatorState';
 const FilterOpexCalculator = () => {
   const calculatorState = useCalculatorState();
   const [openSections, setOpenSections] = useState({
+    design: true,
+    dimensions: true,
     bagReplacement: false,
     operational: false,
     savings: false
@@ -24,21 +26,28 @@ const FilterOpexCalculator = () => {
     }));
   };
   
+  // Ensure numEMCFlaps is a number for OperationalParameters
+  const numEMCFlapsAsNumber = typeof calculatorState.numEMCFlaps === 'string' 
+    ? parseInt(calculatorState.numEMCFlaps) || 0 
+    : calculatorState.numEMCFlaps;
+
   return (
     <div className="max-w-5xl mx-auto">
       <HeaderSection />
       
       <div className="grid grid-cols-1 gap-8">
-        {/* Design Type Selection */}
-        <CalculatorSection 
-          title="Filter Design Configuration" 
+        {/* Design Parameters Section */}
+        <CollapsibleSection
+          title="Filter Design Configuration"
+          isOpen={openSections.design}
+          onToggle={() => toggleSection('design')}
           delay={100}
           className="bg-gradient-to-r from-blue-50 to-blue-100/30 border border-blue-100"
         >
           <DesignParameters 
             {...calculatorState}
           />
-        </CalculatorSection>
+        </CollapsibleSection>
         
         {/* Filter Bag Replacement Section */}
         <CollapsibleSection
@@ -49,7 +58,11 @@ const FilterOpexCalculator = () => {
           className="bg-gradient-to-r from-green-50 to-green-100/30 border border-green-100"
         >
           <FilterBagReplacement 
-            {...calculatorState}
+            {...{
+              ...calculatorState,
+              numEMCFlaps: numEMCFlapsAsNumber,
+              calculateTravelCost: () => calculatorState.calculateTravelCost(calculatorState.results.daysToReplace)
+            }}
           />
         </CollapsibleSection>
         
@@ -62,7 +75,10 @@ const FilterOpexCalculator = () => {
           className="bg-gradient-to-r from-amber-50 to-amber-100/30 border border-amber-100"
         >
           <OperationalParameters 
-            {...calculatorState}
+            {...{
+              ...calculatorState,
+              numEMCFlaps: numEMCFlapsAsNumber
+            }}
           />
         </CollapsibleSection>
         

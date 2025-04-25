@@ -5,7 +5,7 @@ import { ChevronDown } from 'lucide-react';
 import CalculatorSection from '../CalculatorSection';
 
 interface CollapsibleSectionProps {
-  title: string;
+  title: React.ReactNode;
   isOpen: boolean;
   onToggle: () => void;
   children: React.ReactNode;
