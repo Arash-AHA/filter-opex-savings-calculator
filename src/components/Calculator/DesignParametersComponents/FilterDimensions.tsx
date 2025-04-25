@@ -1,9 +1,12 @@
+
 import React from 'react';
-import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Columns2, Columns3 } from 'lucide-react';
+import ChannelDimensionsInput from './Dimensions/ChannelDimensionsInput';
+import GasVelocityInput from './Dimensions/GasVelocityInput';
+import FilterDimensionsOutput from './Dimensions/FilterDimensionsOutput';
 
 interface FilterDimensionsProps {
   filterRowType: string;
@@ -49,38 +52,7 @@ const FilterDimensions: React.FC<FilterDimensionsProps> = ({
   const velocityUnit = isModular ? 'ft/min' : 'm/s';
   
   const isVelocityTooHigh = gasVelocityMS > 12;
-  
-  // Calculate filter dimensions based on design type and row configuration
-  const calculateFilterDimensions = () => {
-    if (isModular) {
-      // For modular design
-      const widthInches = 166 + (channelWidthMm / 25.4); // 166 + Clean Gas Channel Width in inches
-      let lengthInches = 0;
-      
-      if (filterRowType === 'single') {
-        lengthInches = (numEMCFlaps / 3) * 141; // Single row calculation
-      } else {
-        lengthInches = (numEMCFlaps / 6) * 141; // Double row calculation
-      }
-      
-      return {
-        width: widthInches.toFixed(1),
-        length: lengthInches.toFixed(1)
-      };
-    } else {
-      // For bolt-weld design (keep existing calculation)
-      const filterWidth = bagsPerRow === 18 ? (2 * 4500 + channelWidthMm) : (3750 * 2 + channelWidthMm);
-      const filterLength = filterRowType === 'single' ? numEMCFlaps * 1200 : (numEMCFlaps / 2) * 1200;
-      
-      return {
-        width: filterWidth.toFixed(0),
-        length: filterLength.toFixed(0)
-      };
-    }
-  };
 
-  const dimensions = calculateFilterDimensions();
-  
   // Handle input changes with unit conversion
   const handleWidthChange = (value: string) => {
     const numValue = parseFloat(value);
@@ -97,6 +69,33 @@ const FilterDimensions: React.FC<FilterDimensionsProps> = ({
       setChannelHeightMm(mmValue);
     }
   };
+
+  // Calculate filter dimensions
+  const dimensions = React.useMemo(() => {
+    if (isModular) {
+      const widthInches = 166 + (channelWidthMm / 25.4);
+      let lengthInches = filterRowType === 'single' ? 
+        (numEMCFlaps / 3) * 141 : 
+        (numEMCFlaps / 6) * 141;
+      
+      return {
+        width: widthInches.toFixed(1),
+        length: lengthInches.toFixed(1)
+      };
+    } else {
+      const filterWidth = bagsPerRow === 18 ? 
+        (2 * 4500 + channelWidthMm) : 
+        (3750 * 2 + channelWidthMm);
+      const filterLength = filterRowType === 'single' ? 
+        numEMCFlaps * 1200 : 
+        (numEMCFlaps / 2) * 1200;
+      
+      return {
+        width: filterWidth.toFixed(0),
+        length: filterLength.toFixed(0)
+      };
+    }
+  }, [isModular, channelWidthMm, filterRowType, numEMCFlaps, bagsPerRow]);
 
   React.useEffect(() => {
     if (isVelocityTooHigh && channelWidthMm > 0 && channelHeightMm > 0 && airVolumeM3h) {
@@ -138,87 +137,25 @@ const FilterDimensions: React.FC<FilterDimensionsProps> = ({
         </div>
       </div>
       
-      <div className="flex items-center mb-4 animate-fadeIn">
-        <div className="w-60 pr-4 calculator-field-label">
-          <span>Clean Gas Channel Width x Height:</span>
-        </div>
-        <div className="flex flex-1 space-x-2">
-          <div className="w-1/2 relative">
-            <input 
-              type="number"
-              value={channelWidthDisplay}
-              onChange={(e) => handleWidthChange(e.target.value)}
-              step={isModular ? 0.1 : 10}
-              min={10}
-              className="calculator-input pr-8 w-full"
-            />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">{unitText}</span>
-          </div>
-          <div className="w-1/2 relative">
-            <input 
-              type="number"
-              value={channelHeightDisplay}
-              onChange={(e) => handleHeightChange(e.target.value)}
-              step={isModular ? 0.1 : 10}
-              min={10}
-              className="calculator-input pr-8 w-full"
-            />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">{unitText}</span>
-          </div>
-        </div>
-      </div>
+      <ChannelDimensionsInput 
+        channelWidthDisplay={channelWidthDisplay}
+        channelHeightDisplay={channelHeightDisplay}
+        handleWidthChange={handleWidthChange}
+        handleHeightChange={handleHeightChange}
+        unitText={unitText}
+      />
       
-      <div className="flex items-center mb-4 animate-fadeIn">
-        <div className="w-60 pr-4 calculator-field-label">
-          <span>Gas velocity at filter inlet flange:</span>
-        </div>
-        <div className="flex flex-1 space-x-2">
-          <div className="w-full relative">
-            <input 
-              type="text"
-              value={velocityDisplay}
-              readOnly
-              className={cn("calculator-input pr-16 w-full bg-gray-50", 
-                isVelocityTooHigh ? "border-red-300 text-red-700" : "")}
-            />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500">
-              {velocityUnit}
-            </span>
-          </div>
-        </div>
-      </div>
+      <GasVelocityInput 
+        velocityDisplay={velocityDisplay}
+        velocityUnit={velocityUnit}
+        isVelocityTooHigh={isVelocityTooHigh}
+        gasVelocityMS={gasVelocityMS}
+      />
       
-      {isVelocityTooHigh && (
-        <div className="bg-red-50 p-3 rounded-md text-xs text-red-700 mt-2 font-medium">
-          Warning: Inlet velocity ({gasVelocityMS.toFixed(2)} m/s) should be maximum 12 m/s
-        </div>
-      )}
-      
-      <div className="flex items-center mb-4 animate-fadeIn">
-        <div className="w-60 pr-4 calculator-field-label">
-          <span>Filter dimensions: Width / Length</span>
-        </div>
-        <div className="flex flex-1 space-x-2">
-          <div className="w-1/2 relative">
-            <input 
-              type="text"
-              value={dimensions.width}
-              readOnly
-              className="calculator-input pr-8 w-full bg-gray-50"
-            />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">{unitText}</span>
-          </div>
-          <div className="w-1/2 relative">
-            <input 
-              type="text"
-              value={dimensions.length}
-              readOnly
-              className="calculator-input pr-8 w-full bg-gray-50"
-            />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">{unitText}</span>
-          </div>
-        </div>
-      </div>
+      <FilterDimensionsOutput 
+        dimensions={dimensions}
+        unitText={unitText}
+      />
     </>
   );
 };
