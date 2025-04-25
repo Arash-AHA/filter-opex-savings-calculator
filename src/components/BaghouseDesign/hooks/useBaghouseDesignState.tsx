@@ -17,7 +17,7 @@ export const useBaghouseDesignState = () => {
       designParameters.numEMCFlaps,
     designParameters.emcCleaningFactor,
     designParameters.airVolumeM3h,
-    designParameters.airVolumeACFM
+    designParameters.airVolumeACFM  // Add the missing 7th argument
   );
   
   // Simplified results object with only filter design related properties
