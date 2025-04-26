@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import CalculatorSection from './CalculatorSection';
 import Transition from '../UI/Transition';
@@ -41,7 +40,6 @@ const FilterOpexCalculator = () => {
       </div>
       
       <div className="grid grid-cols-1 gap-8">
-        {/* Design Type Selection */}
         <CalculatorSection 
           title="Filter Design Configuration" 
           delay={100}
@@ -102,7 +100,6 @@ const FilterOpexCalculator = () => {
           />
         </CalculatorSection>
         
-        {/* Filter Bag Replacement Section */}
         <Collapsible open={openSections.bagReplacement}>
           <CalculatorSection 
             title={
@@ -110,7 +107,7 @@ const FilterOpexCalculator = () => {
                 onClick={() => toggleSection('bagReplacement')}
                 className="flex items-center justify-between w-full"
               >
-                <span>Filter Bag Replacement</span>
+                <span>Filter Bag Replacement (Cost Estimation)</span>
                 <ChevronDown className={`h-4 w-4 transition-transform ${openSections.bagReplacement ? 'transform rotate-180' : ''}`} />
               </CollapsibleTrigger>
             }
@@ -144,7 +141,6 @@ const FilterOpexCalculator = () => {
           </CalculatorSection>
         </Collapsible>
         
-        {/* Operational Parameters Section */}
         <Collapsible open={openSections.operational}>
           <CalculatorSection 
             title={
@@ -194,7 +190,6 @@ const FilterOpexCalculator = () => {
           </CalculatorSection>
         </Collapsible>
         
-        {/* Results Section */}
         <Collapsible open={openSections.savings}>
           <CalculatorSection 
             title={
