@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CalculatorSection from './CalculatorSection';
 import Transition from '../UI/Transition';
 import DesignParameters from './DesignParameters';
@@ -152,7 +152,7 @@ const FilterOpexCalculator = () => {
                 onClick={() => toggleSection('operational')}
                 className="flex items-center justify-between w-full"
               >
-                <span>Operational Parameters</span>
+                <span>Operational Parameters (Savings with EMC Technology)</span>
                 <ChevronDown className={`h-4 w-4 transition-transform ${openSections.operational ? 'transform rotate-180' : ''}`} />
               </CollapsibleTrigger>
             }
