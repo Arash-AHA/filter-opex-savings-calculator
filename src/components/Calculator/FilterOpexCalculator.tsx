@@ -23,6 +23,16 @@ const FilterOpexCalculator = () => {
       [section]: !prev[section]
     }));
   };
+
+  const renderCollapsibleTrigger = (title: string, section: keyof typeof openSections) => (
+    <CollapsibleTrigger 
+      onClick={() => toggleSection(section)}
+      className="flex items-center justify-between w-full"
+    >
+      <span>{title}</span>
+      <ChevronDown className={`h-4 w-4 transition-transform ${openSections[section] ? 'transform rotate-180' : ''}`} />
+    </CollapsibleTrigger>
+  );
   
   return (
     <div className="max-w-5xl mx-auto">
@@ -102,15 +112,7 @@ const FilterOpexCalculator = () => {
         
         <Collapsible open={openSections.bagReplacement}>
           <CalculatorSection 
-            title={
-              <CollapsibleTrigger 
-                onClick={() => toggleSection('bagReplacement')}
-                className="flex items-center justify-between w-full"
-              >
-                <span>Filter Bag Replacement (Cost Estimation)</span>
-                <ChevronDown className={`h-4 w-4 transition-transform ${openSections.bagReplacement ? 'transform rotate-180' : ''}`} />
-              </CollapsibleTrigger>
-            }
+            title={renderCollapsibleTrigger("Filter Bag Replacement (Cost Estimation)", "bagReplacement")}
             delay={300}
             className="bg-gradient-to-r from-green-50 to-green-100/30 border border-green-100"
           >
@@ -143,15 +145,7 @@ const FilterOpexCalculator = () => {
         
         <Collapsible open={openSections.operational}>
           <CalculatorSection 
-            title={
-              <CollapsibleTrigger 
-                onClick={() => toggleSection('operational')}
-                className="flex items-center justify-between w-full"
-              >
-                <span>Operational Parameters (Savings with EMC Technology)</span>
-                <ChevronDown className={`h-4 w-4 transition-transform ${openSections.operational ? 'transform rotate-180' : ''}`} />
-              </CollapsibleTrigger>
-            }
+            title={renderCollapsibleTrigger("Operational Parameters (Savings with EMC Technology)", "operational")}
             delay={500}
             className="bg-gradient-to-r from-amber-50 to-amber-100/30 border border-amber-100"
           >
@@ -192,15 +186,7 @@ const FilterOpexCalculator = () => {
         
         <Collapsible open={openSections.savings}>
           <CalculatorSection 
-            title={
-              <CollapsibleTrigger 
-                onClick={() => toggleSection('savings')}
-                className="flex items-center justify-between w-full"
-              >
-                <span>OPEX Savings Analysis</span>
-                <ChevronDown className={`h-4 w-4 transition-transform ${openSections.savings ? 'transform rotate-180' : ''}`} />
-              </CollapsibleTrigger>
-            }
+            title={renderCollapsibleTrigger("OPEX Savings Analysis", "savings")}
             delay={700}
             className="bg-gradient-to-r from-yellow-50 to-yellow-100/30 border border-yellow-100"
           >
