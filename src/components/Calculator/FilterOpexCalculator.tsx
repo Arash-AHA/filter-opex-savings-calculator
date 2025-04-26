@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import CalculatorSection from './CalculatorSection';
 import Transition from '../UI/Transition';
@@ -8,8 +7,7 @@ import OperationalParameters from './OperationalParameters';
 import SavingsResults from './SavingsResults';
 import { useCalculatorState } from './hooks/useCalculatorState';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { ChevronDown, Bolt, Wrench } from 'lucide-react';
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { ChevronDown } from 'lucide-react';
 
 const FilterOpexCalculator = () => {
   const calculatorState = useCalculatorState();
@@ -235,34 +233,6 @@ const FilterOpexCalculator = () => {
             </CollapsibleContent>
           </CalculatorSection>
         </Collapsible>
-
-        {/* Design Type Selection at the bottom */}
-        <div className="mt-8 p-8 bg-gradient-to-r from-purple-50 to-purple-100/30 border border-purple-100 rounded-xl shadow-soft">
-          <h3 className="text-lg font-medium text-gray-900 mb-6 text-center">Select Filter Design Type</h3>
-          <ToggleGroup
-            type="single"
-            value={calculatorState.designType}
-            onValueChange={(value) => value && calculatorState.setDesignType(value)}
-            className="flex flex-col md:flex-row justify-center gap-4"
-          >
-            <ToggleGroupItem
-              value="bolt-weld"
-              aria-label="Bolt/Weld Design"
-              className="data-[state=on]:bg-purple-100 data-[state=on]:text-purple-900 data-[state=on]:ring-2 data-[state=on]:ring-purple-200 px-6 py-4 rounded-xl flex items-center gap-3 bg-white hover:bg-purple-50 transition-all duration-200"
-            >
-              <Bolt className="h-5 w-5" />
-              <span className="font-medium">Bolt/Weld Design</span>
-            </ToggleGroupItem>
-            <ToggleGroupItem
-              value="modular"
-              aria-label="Modular Design"
-              className="data-[state=on]:bg-purple-100 data-[state=on]:text-purple-900 data-[state=on]:ring-2 data-[state=on]:ring-purple-200 px-6 py-4 rounded-xl flex items-center gap-3 bg-white hover:bg-purple-50 transition-all duration-200"
-            >
-              <Wrench className="h-5 w-5" />
-              <span className="font-medium">Modular Design</span>
-            </ToggleGroupItem>
-          </ToggleGroup>
-        </div>
       </div>
     </div>
   );
