@@ -8,6 +8,8 @@ import SavingsResults from './SavingsResults';
 import { useCalculatorState } from './hooks/useCalculatorState';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { ChevronDown } from 'lucide-react';
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
 const FilterOpexCalculator = () => {
   const calculatorState = useCalculatorState();
@@ -233,6 +235,25 @@ const FilterOpexCalculator = () => {
             </CollapsibleContent>
           </CalculatorSection>
         </Collapsible>
+
+        {/* Design Type Selection at the bottom */}
+        <div className="mt-8 p-6 bg-gradient-to-r from-purple-50 to-purple-100/30 border border-purple-100 rounded-xl">
+          <h3 className="text-lg font-medium text-gray-900 mb-4">Select Filter Design Type</h3>
+          <RadioGroup
+            value={calculatorState.designType}
+            onValueChange={calculatorState.setDesignType}
+            className="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-6"
+          >
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="bolt-weld" id="bolt-weld" />
+              <Label htmlFor="bolt-weld" className="text-base">Bolt/Weld Design</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="modular" id="modular" />
+              <Label htmlFor="modular" className="text-base">Modular Design</Label>
+            </div>
+          </RadioGroup>
+        </div>
       </div>
     </div>
   );
