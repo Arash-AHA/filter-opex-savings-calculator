@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import CalculatorSection from './CalculatorSection';
 import Transition from '../UI/Transition';
@@ -8,7 +9,6 @@ import SavingsResults from './SavingsResults';
 import { useCalculatorState } from './hooks/useCalculatorState';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { ChevronDown } from 'lucide-react';
-import { useState } from 'react';
 
 const FilterOpexCalculator = () => {
   const calculatorState = useCalculatorState();
