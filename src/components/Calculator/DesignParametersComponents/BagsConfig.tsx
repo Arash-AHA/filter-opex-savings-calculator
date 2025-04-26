@@ -22,7 +22,7 @@ const BagsConfig: React.FC<BagsConfigProps> = ({
         <div className="w-60 pr-4 calculator-field-label">
           <span>Number of Bags per Row (cleaned by one pulsejet valve):</span>
         </div>
-        <div className="flex-1">
+        <div className="w-full max-w-md">
           <select
             value={bagsPerRow}
             onChange={(e) => setBagsPerRow(parseInt(e.target.value) || 0)}
@@ -44,7 +44,7 @@ const BagsConfig: React.FC<BagsConfigProps> = ({
         <div className="w-60 pr-4 calculator-field-label">
           <span>Bag Length:</span>
         </div>
-        <div className="flex-1">
+        <div className="w-full max-w-md">
           <select
             value={bagLength}
             onChange={(e) => setBagLength(parseInt(e.target.value) || 0)}
