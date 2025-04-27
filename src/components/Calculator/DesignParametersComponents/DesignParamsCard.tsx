@@ -1,11 +1,8 @@
 
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import { Card } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import CardHeader from './CardHeader';
-import ParameterRow from './ParameterRow';
-import PrintButton from './PrintButton';
-import PrintableDesignParams from './PrintableDesignParams';
+import { Button } from '@/components/ui/button';
+import { Printer } from 'lucide-react';
 
 interface DesignParamsCardProps {
   formattedResults: {
@@ -15,119 +12,69 @@ interface DesignParamsCardProps {
     acRatioNet: string;
     totalBags: number;
   } | null;
-  results: {
-    filterArea: number;
-    netFilterArea: number;
-    acRatioGross: number;
-    acRatioNet: number;
-    baselinePower: number;
-    improvedPower: number;
-    annualSavings: number;
-    totalBags: number;
-    daysToReplace: number;
-    totalReplacementCost: number;
-    tenYearSavings: number;
-    lifeExtension: number;
-    compressedAirSavings: number;
-  } | null;
-  m2ToSqFtFactor: number;
-  conversionFactor: number;
-  designType?: string;
-  numEMCFlaps?: number | string;
-  bagsPerRow?: number;
-  bagLength?: number;
-  airVolumeM3h?: string;
-  airVolumeACFM?: string;
+  designType: string;
 }
 
 const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
   formattedResults,
-  results,
-  designType = 'bolt-weld',
-  numEMCFlaps = 0,
-  bagsPerRow = 0,
-  bagLength = 0,
-  airVolumeM3h = '',
-  airVolumeACFM = ''
+  designType
 }) => {
-  const [open, setOpen] = useState(false);
-  const printContentRef = useRef<HTMLDivElement>(null);
+  const handlePrint = () => {
+    window.print();
+  };
 
   const safeResults = formattedResults || {
     filterArea: '-',
     netFilterArea: '-',
     acRatioGross: '-',
     acRatioNet: '-',
-    totalBags: 0,
-  };
-
-  const handlePrint = () => {
-    if (printContentRef.current) {
-      const printContents = printContentRef.current.innerHTML;
-      const win = window.open('', '', 'height=650,width=900,top=100,left=150');
-      if (win) {
-        win.document.write(`
-          <html>
-            <head>
-              <title>Filter Design Configuration</title>
-              <style>
-                body { font-family: 'Inter', Arial, sans-serif; margin: 0; padding: 24px; }
-                table { width: 100%; border-collapse: collapse; }
-                td { border-bottom: 1px solid #e5e7eb; padding: 8px 4px; }
-                th { font-weight: 600; }
-                h2, h3 { margin-bottom: 10px; margin-top: 0; }
-              </style>
-            </head>
-            <body>${printContents}</body>
-          </html>
-        `);
-        win.document.close();
-        win.focus();
-        setTimeout(() => {
-          win.print();
-          win.close();
-        }, 400);
-      }
-    }
+    totalBags: 0
   };
 
   return (
-    <>
-      <Card className="p-4 h-fit">
-        <CardHeader designType={designType} />
+    <Card className="p-6 min-w-[400px] w-full">
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold">
+          Design Parameters ({designType === 'bolt-weld' ? 'Bolt/Weld' : 'Modular Design'})
+        </h3>
+        
         <div className="space-y-3">
-          <ParameterRow label="Filter Area (Gross):" value={safeResults.filterArea} />
-          <ParameterRow label="Net Filter Area:(Cleaning)" value={safeResults.netFilterArea} />
-          <ParameterRow label="Air-to-Cloth Ratio (Gross):" value={safeResults.acRatioGross} />
-          <ParameterRow label="Air-to-Cloth Ratio (Net):" value={safeResults.acRatioNet} />
-          <ParameterRow label="Total Number of Bags:" value={safeResults.totalBags} />
-        </div>
-        <PrintButton onClick={() => setOpen(true)} />
-      </Card>
-
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-xl">
-          <DialogHeader>
-            <DialogTitle>Printable Filter Design Information</DialogTitle>
-            <DialogDescription>
-              Print or save as PDF by using your browser's print options.
-            </DialogDescription>
-          </DialogHeader>
-          <div ref={printContentRef} className="max-h-[70vh] overflow-auto bg-white p-0 rounded-md">
-            <PrintableDesignParams
-              designType={designType}
-              numEMCFlaps={numEMCFlaps}
-              bagsPerRow={bagsPerRow}
-              bagLength={bagLength}
-              airVolumeM3h={airVolumeM3h}
-              airVolumeACFM={airVolumeACFM}
-              formattedResults={formattedResults}
-            />
+          <div className="flex justify-between">
+            <span className="text-gray-600">Filter Area (Gross):</span>
+            <span>{safeResults.filterArea}</span>
           </div>
-          <PrintButton onClick={handlePrint} />
-        </DialogContent>
-      </Dialog>
-    </>
+          
+          <div className="flex justify-between">
+            <span className="text-gray-600">Net Filter Area:</span>
+            <span>{safeResults.netFilterArea}</span>
+          </div>
+          
+          <div className="flex justify-between">
+            <span className="text-gray-600">Air-to-Cloth Ratio (Gross):</span>
+            <span>{safeResults.acRatioGross}</span>
+          </div>
+          
+          <div className="flex justify-between">
+            <span className="text-gray-600">Air-to-Cloth Ratio (Net):</span>
+            <span>{safeResults.acRatioNet}</span>
+          </div>
+          
+          <div className="flex justify-between">
+            <span className="text-gray-600">Total Number of Bags:</span>
+            <span>{safeResults.totalBags}</span>
+          </div>
+        </div>
+
+        <Button 
+          onClick={handlePrint}
+          variant="outline" 
+          className="w-full mt-4 flex items-center justify-center gap-2"
+        >
+          <Printer className="h-4 w-4" />
+          Print
+        </Button>
+      </div>
+    </Card>
   );
 };
 
