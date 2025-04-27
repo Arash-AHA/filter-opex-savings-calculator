@@ -26,7 +26,6 @@ const PrintableDesignParams: React.FC<PrintableDesignParamsProps> = ({
   airVolumeACFM,
   formattedResults,
 }) => {
-  // Determine bag length unit and value based on design type
   const bagLengthDisplay = designType === 'bolt-weld' 
     ? `${bagLength} m` 
     : `${bagLength} ft`;
@@ -44,58 +43,72 @@ const PrintableDesignParams: React.FC<PrintableDesignParamsProps> = ({
       <h2 className="text-xl font-semibold mb-4 text-center">
         Filter Design Configuration – {designType === "bolt-weld" ? "Bolt/Weld" : "Modular Design"}
       </h2>
-      <table className="w-full border-t border-b border-gray-300 mb-4">
-        <tbody>
-          <tr>
-            <td className="py-2 font-medium">Design Type</td>
-            <td className="py-2">{designType === "bolt-weld" ? "Bolt/Weld" : "Modular Design"}</td>
-          </tr>
-          <tr>
-            <td className="py-2 font-medium">Number of EMC Flaps</td>
-            <td className="py-2">{numEMCFlaps}</td>
-          </tr>
-          <tr>
-            <td className="py-2 font-medium">Bags Per Row</td>
-            <td className="py-2">{bagsPerRow}</td>
-          </tr>
-          <tr>
-            <td className="py-2 font-medium">Bag Length</td>
-            <td className="py-2">{bagLengthDisplay}</td>
-          </tr>
-          <tr>
-            <td className="py-2 font-medium">
+      
+      <div className="space-y-4">
+        <div className="grid grid-cols-1 gap-4">
+          <div className="flex flex-col space-y-1">
+            <div className="font-medium">Design Type</div>
+            <div>{designType === "bolt-weld" ? "Bolt/Weld" : "Modular Design"}</div>
+          </div>
+          
+          <div className="flex flex-col space-y-1">
+            <div className="font-medium">Number of EMC Flaps</div>
+            <div>{numEMCFlaps}</div>
+          </div>
+          
+          <div className="flex flex-col space-y-1">
+            <div className="font-medium">Bags Per Row</div>
+            <div>{bagsPerRow}</div>
+          </div>
+          
+          <div className="flex flex-col space-y-1">
+            <div className="font-medium">Bag Length</div>
+            <div>{bagLengthDisplay}</div>
+          </div>
+          
+          <div className="flex flex-col space-y-1">
+            <div className="font-medium">
               {designType === "modular" ? "Air Volume (ACFM)" : "Air Volume (m³/h)"}
-            </td>
-            <td className="py-2">{designType === "modular" ? airVolumeACFM : airVolumeM3h}</td>
-          </tr>
-        </tbody>
-      </table>
-      <h3 className="text-lg font-semibold mb-2 mt-6">Calculated Parameters</h3>
-      <table className="w-full border-t border-b border-gray-300">
-        <tbody>
-          <tr>
-            <td className="py-2 font-medium">Filter Area (Gross)</td>
-            <td className="py-2">{safeResults.filterArea}</td>
-          </tr>
-          <tr>
-            <td className="py-2 font-medium">{designType === "modular" ? "Net Filter Area (Cleaning)" : "Net Filter Area"}</td>
-            <td className="py-2">{safeResults.netFilterArea}</td>
-          </tr>
-          <tr>
-            <td className="py-2 font-medium">Air-to-Cloth Ratio (Gross)</td>
-            <td className="py-2">{safeResults.acRatioGross}</td>
-          </tr>
-          <tr>
-            <td className="py-2 font-medium">Air-to-Cloth Ratio (Net)</td>
-            <td className="py-2">{safeResults.acRatioNet}</td>
-          </tr>
-          <tr>
-            <td className="py-2 font-medium">Total Number of Bags</td>
-            <td className="py-2">{safeResults.totalBags}</td>
-          </tr>
-        </tbody>
-      </table>
-      <div className="text-xs text-center mt-6 text-gray-500 print:hidden">Generated on {new Date().toLocaleString()}</div>
+            </div>
+            <div>{designType === "modular" ? airVolumeACFM : airVolumeM3h}</div>
+          </div>
+        </div>
+
+        <h3 className="text-lg font-semibold mt-6 mb-4">Calculated Parameters</h3>
+        
+        <div className="grid grid-cols-1 gap-4">
+          <div className="flex flex-col space-y-1">
+            <div className="font-medium">Filter Area (Gross)</div>
+            <div>{safeResults.filterArea}</div>
+          </div>
+          
+          <div className="flex flex-col space-y-1">
+            <div className="font-medium">
+              {designType === "modular" ? "Net Filter Area (Cleaning)" : "Net Filter Area"}
+            </div>
+            <div>{safeResults.netFilterArea}</div>
+          </div>
+          
+          <div className="flex flex-col space-y-1">
+            <div className="font-medium">Air-to-Cloth Ratio (Gross)</div>
+            <div>{safeResults.acRatioGross}</div>
+          </div>
+          
+          <div className="flex flex-col space-y-1">
+            <div className="font-medium">Air-to-Cloth Ratio (Net)</div>
+            <div>{safeResults.acRatioNet}</div>
+          </div>
+          
+          <div className="flex flex-col space-y-1">
+            <div className="font-medium">Total Number of Bags</div>
+            <div>{safeResults.totalBags}</div>
+          </div>
+        </div>
+      </div>
+      
+      <div className="text-xs text-center mt-6 text-gray-500 print:hidden">
+        Generated on {new Date().toLocaleString()}
+      </div>
     </div>
   );
 };

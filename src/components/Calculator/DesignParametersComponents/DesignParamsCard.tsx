@@ -1,3 +1,4 @@
+
 import React, { useRef, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
@@ -5,6 +6,7 @@ import CardHeader from './CardHeader';
 import ParameterRow from './ParameterRow';
 import PrintButton from './PrintButton';
 import PrintableDesignParams from './PrintableDesignParams';
+
 interface DesignParamsCardProps {
   formattedResults: {
     filterArea: string;
@@ -37,6 +39,7 @@ interface DesignParamsCardProps {
   airVolumeM3h?: string;
   airVolumeACFM?: string;
 }
+
 const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
   formattedResults,
   results,
@@ -49,6 +52,7 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
 }) => {
   const [open, setOpen] = useState(false);
   const printContentRef = useRef<HTMLDivElement>(null);
+  
   const safeResults = formattedResults || {
     filterArea: '-',
     netFilterArea: '-',
@@ -56,6 +60,7 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
     acRatioNet: '-',
     totalBags: 0
   };
+
   const handlePrint = () => {
     if (printContentRef.current) {
       const printContents = printContentRef.current.innerHTML;
@@ -67,10 +72,9 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
               <title>Filter Design Configuration</title>
               <style>
                 body { font-family: 'Inter', Arial, sans-serif; margin: 0; padding: 24px; }
-                table { width: 100%; border-collapse: collapse; }
-                td { border-bottom: 1px solid #e5e7eb; padding: 8px 4px; }
-                th { font-weight: 600; }
-                h2, h3 { margin-bottom: 10px; margin-top: 0; }
+                .parameter-row { margin-bottom: 16px; }
+                .parameter-label { font-weight: 600; margin-bottom: 4px; }
+                h2, h3 { margin-bottom: 16px; }
               </style>
             </head>
             <body>${printContents}</body>
@@ -85,12 +89,14 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
       }
     }
   };
-  return <>
+
+  return (
+    <>
       <Card className="p-4 h-fit">
         <CardHeader designType={designType} />
-        <div className="space-y-3">
+        <div className="space-y-4">
           <ParameterRow label="Filter Area (Gross):" value={safeResults.filterArea} />
-          <ParameterRow label="Net Filter Area:(Cleaning)" value={safeResults.netFilterArea} />
+          <ParameterRow label={`${designType === "modular" ? "Net Filter Area (Cleaning):" : "Net Filter Area:"}`} value={safeResults.netFilterArea} />
           <ParameterRow label="Air-to-Cloth Ratio (Gross):" value={safeResults.acRatioGross} />
           <ParameterRow label="Air-to-Cloth Ratio (Net):" value={safeResults.acRatioNet} />
           <ParameterRow label="Total Number of Bags:" value={safeResults.totalBags} />
@@ -107,11 +113,21 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
             </DialogDescription>
           </DialogHeader>
           <div ref={printContentRef} className="max-h-[70vh] overflow-auto bg-white p-0 rounded-md">
-            <PrintableDesignParams designType={designType} numEMCFlaps={numEMCFlaps} bagsPerRow={bagsPerRow} bagLength={bagLength} airVolumeM3h={airVolumeM3h} airVolumeACFM={airVolumeACFM} formattedResults={formattedResults} />
+            <PrintableDesignParams
+              designType={designType}
+              numEMCFlaps={numEMCFlaps}
+              bagsPerRow={bagsPerRow}
+              bagLength={bagLength}
+              airVolumeM3h={airVolumeM3h}
+              airVolumeACFM={airVolumeACFM}
+              formattedResults={formattedResults}
+            />
           </div>
           <PrintButton onClick={handlePrint} />
         </DialogContent>
       </Dialog>
-    </>;
+    </>
+  );
 };
+
 export default DesignParamsCard;
