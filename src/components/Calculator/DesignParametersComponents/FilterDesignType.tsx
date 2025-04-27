@@ -13,7 +13,7 @@ const FilterDesignType: React.FC<FilterDesignTypeProps> = ({
       <ToggleGroupItem value="bolt-weld" className="flex-1 data-[state=on]:bg-primary/10 data-[state=on]:text-primary data-[state=on]:ring-2 data-[state=on]:ring-primary/30 h-14 rounded-xl border-2 border-gray-200 hover:border-primary/50 transition-all duration-200 w-full">
         <div className="flex flex-col items-center gap-1">
           
-          <span className="text-sm font-medium">Bolt/Weld Design</span>
+          <span className="text-sm font-medium">Panelized Design</span>
         </div>
       </ToggleGroupItem>
       
