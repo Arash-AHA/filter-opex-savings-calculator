@@ -24,7 +24,7 @@ const FilterOpexCalculator = () => {
     }));
   };
 
-  const renderCollapsibleTrigger = (title: string, section: keyof typeof openSections) => (
+  const renderCollapsibleTrigger = (title: React.ReactNode, section: keyof typeof openSections) => (
     <CollapsibleTrigger 
       onClick={() => toggleSection(section)}
       className="flex items-center justify-between w-full"
