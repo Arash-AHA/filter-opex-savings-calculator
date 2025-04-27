@@ -93,11 +93,11 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
 
   return (
     <>
-      <Card className="p-4 h-fit min-w-[300px] w-full"> {/* Increased min-width and added full width */}
+      <Card className="p-4 h-fit">
         <CardHeader designType={designType} />
-        <div className="space-y-3 w-full"> {/* Added full width to ensure text doesn't get cut off */}
+        <div className="space-y-3">
           <ParameterRow label="Filter Area (Gross):" value={safeResults.filterArea} />
-          <ParameterRow label="Net Filter Area (Cleaning):" value={safeResults.netFilterArea} />
+          <ParameterRow label="Net Filter Area:(Cleaning)" value={safeResults.netFilterArea} />
           <ParameterRow label="Air-to-Cloth Ratio (Gross):" value={safeResults.acRatioGross} />
           <ParameterRow label="Air-to-Cloth Ratio (Net):" value={safeResults.acRatioNet} />
           <ParameterRow label="Total Number of Bags:" value={safeResults.totalBags} />
