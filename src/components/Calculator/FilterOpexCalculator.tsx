@@ -7,6 +7,7 @@ import SavingsResults from './SavingsResults';
 import { useCalculatorState } from './hooks/useCalculatorState';
 import CollapsibleSection from './components/CollapsibleSection';
 import CalculatorHeader from './components/CalculatorHeader';
+import CalculatorSection from './CalculatorSection';
 
 const FilterOpexCalculator = () => {
   const calculatorState = useCalculatorState();
@@ -24,7 +25,7 @@ const FilterOpexCalculator = () => {
   };
   
   return (
-    <div className="max-w-5xl mx-auto">
+    <div className="max-w-7xl mx-auto">
       <CalculatorHeader />
       
       <div className="grid grid-cols-1 gap-8">
@@ -34,7 +35,14 @@ const FilterOpexCalculator = () => {
           delay={100}
           className="bg-gradient-to-r from-blue-50 to-blue-100/30 border border-blue-100"
         >
-          <DesignParameters {...calculatorState} />
+          <div className="grid grid-cols-4 gap-6">
+            <div className="col-span-3">
+              <DesignParameters {...calculatorState} />
+            </div>
+            <div className="col-span-1">
+              {/* Right side content if any */}
+            </div>
+          </div>
         </CalculatorSection>
         
         {/* Filter Bag Replacement Section */}
@@ -56,7 +64,10 @@ const FilterOpexCalculator = () => {
           delay={500}
           gradientClass="bg-gradient-to-r from-amber-50 to-amber-100/30 border border-amber-100"
         >
-          <OperationalParameters {...calculatorState} />
+          <OperationalParameters 
+            {...calculatorState}
+            numEMCFlaps={Number(calculatorState.numEMCFlaps)}
+          />
         </CollapsibleSection>
         
         {/* OPEX Savings Analysis Section */}
