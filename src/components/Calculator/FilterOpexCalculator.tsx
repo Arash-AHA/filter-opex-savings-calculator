@@ -29,7 +29,7 @@ const FilterOpexCalculator = () => {
       onClick={() => toggleSection(section)}
       className="flex items-center justify-between w-full"
     >
-      {title}
+      <span>{title}</span>
       <ChevronDown className={`h-4 w-4 transition-transform ${openSections[section] ? 'transform rotate-180' : ''}`} />
     </CollapsibleTrigger>
   );

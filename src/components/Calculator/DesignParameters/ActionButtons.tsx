@@ -16,21 +16,25 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
   setShowDimensions
 }) => {
   return (
-    <div className="space-y-4 mb-4 w-[320px]">
-      <Button 
-        variant="outline" 
-        className="w-full"
-        onClick={() => setShowOtherParams(!showOtherParams)}
-      >
-        {showOtherParams ? 'Hide Other Parameters' : 'Show Other Filter Design Parameters'}
-      </Button>
-      <Button 
-        variant="outline" 
-        className="w-full"
-        onClick={() => setShowDimensions(!showDimensions)}
-      >
-        {showDimensions ? 'Hide Filter Dimensions / Footprint' : 'Show Filter Dimensions / Footprint'}
-      </Button>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+      <div className="flex-1">
+        <Button 
+          variant="outline" 
+          className="w-full"
+          onClick={() => setShowOtherParams(!showOtherParams)}
+        >
+          {showOtherParams ? 'Hide Other Parameters' : 'Show Other Filter Design Parameters'}
+        </Button>
+      </div>
+      <div className="flex-1">
+        <Button 
+          variant="outline" 
+          className="w-full"
+          onClick={() => setShowDimensions(!showDimensions)}
+        >
+          {showDimensions ? 'Hide Filter Dimensions / Footprint' : 'Show Filter Dimensions / Footprint'}
+        </Button>
+      </div>
     </div>
   );
 };
