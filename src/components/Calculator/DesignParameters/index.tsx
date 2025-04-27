@@ -65,7 +65,7 @@ interface DesignParametersProps {
 const DesignParameters: React.FC<DesignParametersProps> = props => {
   const parsedNumEMCFlaps = typeof props.numEMCFlaps === 'string' ? props.numEMCFlaps === '' ? 0 : parseInt(props.numEMCFlaps) : props.numEMCFlaps;
   return <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-      <div className="lg:col-span-5 space-y-4">
+      <div className="lg:col-span-5 space-y-1">
         <DesignTypeSection designType={props.designType} setDesignType={props.setDesignType} />
         
         <InputsSection airVolumeM3h={props.airVolumeM3h} airVolumeACFM={props.airVolumeACFM} numEMCFlaps={props.numEMCFlaps} bagsPerRow={props.bagsPerRow} bagLength={props.bagLength} designType={props.designType} handleAirVolumeM3hChange={props.handleAirVolumeM3hChange} handleAirVolumeACFMChange={props.handleAirVolumeACFMChange} setNumEMCFlaps={props.setNumEMCFlaps} setBagsPerRow={props.setBagsPerRow} setBagLength={props.setBagLength} />
