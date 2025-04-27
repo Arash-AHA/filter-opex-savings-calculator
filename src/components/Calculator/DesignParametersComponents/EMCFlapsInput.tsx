@@ -99,9 +99,9 @@ const EMCFlapsInput: React.FC<EMCFlapsInputProps> = ({
   };
 
   return (
-    <div className="flex items-center mb-4">
-      <div className="w-60 pr-4 calculator-field-label flex items-center">
-        <span>TOTAL Number of EMC Dampers:</span>
+    <div className="mb-4">
+      <div className="mb-2 flex items-center">
+        <span className="text-sm font-medium text-gray-700">TOTAL Number of EMC Dampers:</span>
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>

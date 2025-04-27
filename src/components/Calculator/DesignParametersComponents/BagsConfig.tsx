@@ -18,9 +18,9 @@ const BagsConfig: React.FC<BagsConfigProps> = ({
 }) => {
   return (
     <>
-      <div className="flex items-center mb-4">
-        <div className="w-60 pr-4 calculator-field-label">
-          <span>Number of Bags per Row (cleaned by one pulsejet valve):</span>
+      <div className="mb-4">
+        <div className="mb-2">
+          <span className="text-sm font-medium text-gray-700">Number of Bags per Row (cleaned by one pulsejet valve):</span>
         </div>
         <div className="w-full max-w-md">
           <select
@@ -40,9 +40,9 @@ const BagsConfig: React.FC<BagsConfigProps> = ({
         </div>
       </div>
       
-      <div className="flex items-center mb-4">
-        <div className="w-60 pr-4 calculator-field-label">
-          <span>Bag Length:</span>
+      <div className="mb-4">
+        <div className="mb-2">
+          <span className="text-sm font-medium text-gray-700">Bag Length:</span>
         </div>
         <div className="w-full max-w-md">
           <select
