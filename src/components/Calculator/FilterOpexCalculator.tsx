@@ -29,7 +29,7 @@ const FilterOpexCalculator = () => {
       onClick={() => toggleSection(section)}
       className="flex items-center justify-between w-full"
     >
-      {title}
+      <span>{title}</span>
       <ChevronDown className={`h-4 w-4 transition-transform ${openSections[section] ? 'transform rotate-180' : ''}`} />
     </CollapsibleTrigger>
   );
@@ -112,14 +112,11 @@ const FilterOpexCalculator = () => {
         
         <Collapsible open={openSections.bagReplacement}>
           <CalculatorSection 
-            title="Filter Bag Replacement (Cost Estimation)"
+            title={renderCollapsibleTrigger("Filter Bag Replacement (Cost Estimation)", "bagReplacement")}
             delay={300}
             className="bg-gradient-to-r from-green-50 to-green-100/30 border border-green-100"
           >
             <CollapsibleContent>
-              <div className="flex items-center justify-between w-full mb-4">
-                {renderCollapsibleTrigger("Filter Bag Replacement (Cost Estimation)", "bagReplacement")}
-              </div>
               <FilterBagReplacement 
                 bagPrice={calculatorState.bagPrice}
                 setBagPrice={calculatorState.setBagPrice}
@@ -148,14 +145,11 @@ const FilterOpexCalculator = () => {
         
         <Collapsible open={openSections.operational}>
           <CalculatorSection 
-            title="Operational Parameters (Savings with EMC Technology)"
+            title={renderCollapsibleTrigger("Operational Parameters (Savings with EMC Technology)", "operational")}
             delay={500}
             className="bg-gradient-to-r from-amber-50 to-amber-100/30 border border-amber-100"
           >
             <CollapsibleContent>
-              <div className="flex items-center justify-between w-full mb-4">
-                {renderCollapsibleTrigger("Operational Parameters (Savings with EMC Technology)", "operational")}
-              </div>
               <OperationalParameters 
                 currentLifeTime={calculatorState.currentLifeTime}
                 setCurrentLifeTime={calculatorState.setCurrentLifeTime}
@@ -192,14 +186,11 @@ const FilterOpexCalculator = () => {
         
         <Collapsible open={openSections.savings}>
           <CalculatorSection 
-            title="OPEX Savings Analysis"
+            title={renderCollapsibleTrigger("OPEX Savings Analysis", "savings")}
             delay={700}
             className="bg-gradient-to-r from-yellow-50 to-yellow-100/30 border border-yellow-100"
           >
             <CollapsibleContent>
-              <div className="flex items-center justify-between w-full mb-4">
-                {renderCollapsibleTrigger("OPEX Savings Analysis", "savings")}
-              </div>
               <SavingsResults 
                 savingYears={calculatorState.savingYears}
                 setSavingYears={calculatorState.setSavingYears}
