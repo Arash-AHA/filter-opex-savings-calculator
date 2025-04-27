@@ -17,7 +17,7 @@ const FilterDesignType: React.FC<FilterDesignTypeProps> = ({
       type="single" 
       value={designType}
       onValueChange={(value) => value && setDesignType(value)}
-      className="grid grid-cols-2 gap-4 w-full"
+      className="grid grid-cols-1 gap-4 w-full"
     >
       <ToggleGroupItem 
         value="bolt-weld" 
