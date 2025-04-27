@@ -35,7 +35,7 @@ const FilterOpexCalculator = () => {
   );
   
   return (
-    <div className="max-w-[1440px] mx-auto px-4 sm:px-6">
+    <div className="max-w-5xl mx-auto">
       <div className="text-center mb-8">
         <Transition animation="slide-in-left" delay={100}>
           <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-2">
@@ -55,78 +55,59 @@ const FilterOpexCalculator = () => {
           delay={100}
           className="bg-gradient-to-r from-blue-50 to-blue-100/30 border border-blue-100"
         >
-          <div className="grid grid-cols-12 gap-6">
-            <div className="col-span-8">
-              <DesignParameters 
-                designType={calculatorState.designType}
-                setDesignType={calculatorState.setDesignType}
-                airVolumeM3h={calculatorState.airVolumeM3h}
-                airVolumeACFM={calculatorState.airVolumeACFM}
-                numEMCFlaps={calculatorState.numEMCFlaps}
-                bagsPerRow={calculatorState.bagsPerRow}
-                bagLength={calculatorState.bagLength}
-                filterRowType={calculatorState.filterRowType}
-                setFilterRowType={calculatorState.setFilterRowType}
-                showDimensions={calculatorState.showDimensions}
-                setShowDimensions={calculatorState.setShowDimensions}
-                showOtherParams={calculatorState.showOtherParams}
-                setShowOtherParams={calculatorState.setShowOtherParams}
-                channelWidthMm={calculatorState.channelWidthMm}
-                setChannelWidthMm={calculatorState.setChannelWidthMm}
-                channelHeightMm={calculatorState.channelHeightMm}
-                setChannelHeightMm={calculatorState.setChannelHeightMm}
-                handleAirVolumeM3hChange={calculatorState.handleAirVolumeM3hChange}
-                handleAirVolumeACFMChange={calculatorState.handleAirVolumeACFMChange}
-                setNumEMCFlaps={calculatorState.setNumEMCFlaps}
-                setBagsPerRow={calculatorState.setBagsPerRow}
-                setBagLength={calculatorState.setBagLength}
-                formattedResults={calculatorState.formattedResults}
-                results={calculatorState.results}
-                m2ToSqFtFactor={calculatorState.m2ToSqFtFactor}
-                conversionFactor={calculatorState.conversionFactor}
-                gasTempC={calculatorState.gasTempC}
-                gasTempF={calculatorState.gasTempF}
-                dustConcGramAm3={calculatorState.dustConcGramAm3}
-                dustConcGrainACF={calculatorState.dustConcGrainACF}
-                dustConcGramNm3={calculatorState.dustConcGramNm3}
-                dustConcGrainSCF={calculatorState.dustConcGrainSCF}
-                handleGasTempCChange={calculatorState.handleGasTempCChange}
-                handleGasTempFChange={calculatorState.handleGasTempFChange}
-                handleDustConcGramAm3Change={calculatorState.handleDustConcGramAm3Change}
-                handleDustConcGrainACFChange={calculatorState.handleDustConcGrainACFChange}
-                handleDustConcGramNm3Change={calculatorState.handleDustConcGramNm3Change}
-                handleDustConcGrainSCFChange={calculatorState.handleDustConcGrainSCFChange}
-                outletDustKgH={calculatorState.outletDustKgH}
-                outletDustLbH={calculatorState.outletDustLbH}
-                handleOutletDustKgHChange={calculatorState.handleOutletDustKgHChange}
-                handleOutletDustLbHChange={calculatorState.handleOutletDustLbHChange}
-                estimateOutletDust={calculatorState.estimateOutletDust}
-                targetEmissionMgNm3={calculatorState.targetEmissionMgNm3}
-                targetEmissionGrainDscf={calculatorState.targetEmissionGrainDscf}
-                handleTargetEmissionMgNm3Change={calculatorState.handleTargetEmissionMgNm3Change}
-                handleTargetEmissionGrainDscfChange={calculatorState.handleTargetEmissionGrainDscfChange}
-                negativePressureMbar={calculatorState.negativePressureMbar}
-                negativePressureInchWG={calculatorState.negativePressureInchWG}
-                handleNegativePressureMbarChange={calculatorState.handleNegativePressureMbarChange}
-                handleNegativePressureInchWGChange={calculatorState.handleNegativePressureInchWGChange}
-              />
-            </div>
-            
-            <div className="col-span-4">
-              <DesignParamsCard 
-                formattedResults={calculatorState.formattedResults}
-                results={calculatorState.results}
-                m2ToSqFtFactor={calculatorState.m2ToSqFtFactor}
-                conversionFactor={calculatorState.conversionFactor}
-                designType={calculatorState.designType}
-                numEMCFlaps={calculatorState.numEMCFlaps}
-                bagsPerRow={calculatorState.bagsPerRow}
-                bagLength={calculatorState.bagLength}
-                airVolumeM3h={calculatorState.airVolumeM3h}
-                airVolumeACFM={calculatorState.airVolumeACFM}
-              />
-            </div>
-          </div>
+          <DesignParameters 
+            designType={calculatorState.designType}
+            setDesignType={calculatorState.setDesignType}
+            airVolumeM3h={calculatorState.airVolumeM3h}
+            airVolumeACFM={calculatorState.airVolumeACFM}
+            numEMCFlaps={calculatorState.numEMCFlaps}
+            bagsPerRow={calculatorState.bagsPerRow}
+            bagLength={calculatorState.bagLength}
+            filterRowType={calculatorState.filterRowType}
+            setFilterRowType={calculatorState.setFilterRowType}
+            showDimensions={calculatorState.showDimensions}
+            setShowDimensions={calculatorState.setShowDimensions}
+            showOtherParams={calculatorState.showOtherParams}
+            setShowOtherParams={calculatorState.setShowOtherParams}
+            channelWidthMm={calculatorState.channelWidthMm}
+            setChannelWidthMm={calculatorState.setChannelWidthMm}
+            channelHeightMm={calculatorState.channelHeightMm}
+            setChannelHeightMm={calculatorState.setChannelHeightMm}
+            handleAirVolumeM3hChange={calculatorState.handleAirVolumeM3hChange}
+            handleAirVolumeACFMChange={calculatorState.handleAirVolumeACFMChange}
+            setNumEMCFlaps={calculatorState.setNumEMCFlaps}
+            setBagsPerRow={calculatorState.setBagsPerRow}
+            setBagLength={calculatorState.setBagLength}
+            formattedResults={calculatorState.formattedResults}
+            results={calculatorState.results}
+            m2ToSqFtFactor={calculatorState.m2ToSqFtFactor}
+            conversionFactor={calculatorState.conversionFactor}
+            gasTempC={calculatorState.gasTempC}
+            gasTempF={calculatorState.gasTempF}
+            dustConcGramAm3={calculatorState.dustConcGramAm3}
+            dustConcGrainACF={calculatorState.dustConcGrainACF}
+            dustConcGramNm3={calculatorState.dustConcGramNm3}
+            dustConcGrainSCF={calculatorState.dustConcGrainSCF}
+            handleGasTempCChange={calculatorState.handleGasTempCChange}
+            handleGasTempFChange={calculatorState.handleGasTempFChange}
+            handleDustConcGramAm3Change={calculatorState.handleDustConcGramAm3Change}
+            handleDustConcGrainACFChange={calculatorState.handleDustConcGrainACFChange}
+            handleDustConcGramNm3Change={calculatorState.handleDustConcGramNm3Change}
+            handleDustConcGrainSCFChange={calculatorState.handleDustConcGrainSCFChange}
+            outletDustKgH={calculatorState.outletDustKgH}
+            outletDustLbH={calculatorState.outletDustLbH}
+            handleOutletDustKgHChange={calculatorState.handleOutletDustKgHChange}
+            handleOutletDustLbHChange={calculatorState.handleOutletDustLbHChange}
+            estimateOutletDust={calculatorState.estimateOutletDust}
+            targetEmissionMgNm3={calculatorState.targetEmissionMgNm3}
+            targetEmissionGrainDscf={calculatorState.targetEmissionGrainDscf}
+            handleTargetEmissionMgNm3Change={calculatorState.handleTargetEmissionMgNm3Change}
+            handleTargetEmissionGrainDscfChange={calculatorState.handleTargetEmissionGrainDscfChange}
+            negativePressureMbar={calculatorState.negativePressureMbar}
+            negativePressureInchWG={calculatorState.negativePressureInchWG}
+            handleNegativePressureMbarChange={calculatorState.handleNegativePressureMbarChange}
+            handleNegativePressureInchWGChange={calculatorState.handleNegativePressureInchWGChange}
+          />
         </CalculatorSection>
         
         <Collapsible open={openSections.bagReplacement}>
