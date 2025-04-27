@@ -7,7 +7,7 @@ interface CardHeaderProps {
 
 const CardHeader: React.FC<CardHeaderProps> = ({ designType }) => {
   return (
-    <h3 className="text-sm font-medium text-gray-700 mb-4">
+    <h3 className="text-sm font-medium text-gray-700 mb-4 whitespace-nowrap overflow-hidden text-ellipsis">
       {designType === 'bolt-weld'
         ? 'Design Parameters (Bolt/Weld)'
         : 'Design Parameters (Modular Design)'}
