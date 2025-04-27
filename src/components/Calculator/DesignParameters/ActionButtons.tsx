@@ -16,7 +16,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
   setShowDimensions
 }) => {
   return (
-    <div className="grid grid-cols-1 gap-4 mb-4 max-w-[642px]">
+    <div className="space-y-4 mb-4 w-[320px]">
       <Button 
         variant="outline" 
         className="w-full"
