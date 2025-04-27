@@ -66,13 +66,14 @@ interface DesignParametersProps {
 }
 
 const DesignParameters: React.FC<DesignParametersProps> = (props) => {
+  // Parse numEMCFlaps to a number when needed for functions expecting a number
   const parsedNumEMCFlaps = typeof props.numEMCFlaps === 'string' 
     ? (props.numEMCFlaps === '' ? 0 : parseInt(props.numEMCFlaps))
     : props.numEMCFlaps;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-      <div className="md:col-span-8 space-y-4">
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="md:col-span-3 space-y-4">
         <DesignTypeSection 
           designType={props.designType} 
           setDesignType={props.setDesignType} 
@@ -121,20 +122,18 @@ const DesignParameters: React.FC<DesignParametersProps> = (props) => {
         )}
       </div>
       
-      <div className="md:col-span-4">
-        <DesignParamsCard 
-          formattedResults={props.formattedResults}
-          results={props.results}
-          m2ToSqFtFactor={props.m2ToSqFtFactor}
-          conversionFactor={props.conversionFactor}
-          designType={props.designType}
-          numEMCFlaps={props.numEMCFlaps}
-          bagsPerRow={props.bagsPerRow}
-          bagLength={props.bagLength}
-          airVolumeM3h={props.airVolumeM3h}
-          airVolumeACFM={props.airVolumeACFM}
-        />
-      </div>
+      <DesignParamsCard 
+        formattedResults={props.formattedResults}
+        results={props.results}
+        m2ToSqFtFactor={props.m2ToSqFtFactor}
+        conversionFactor={props.conversionFactor}
+        designType={props.designType}
+        numEMCFlaps={props.numEMCFlaps}
+        bagsPerRow={props.bagsPerRow}
+        bagLength={props.bagLength}
+        airVolumeM3h={props.airVolumeM3h}
+        airVolumeACFM={props.airVolumeACFM}
+      />
     </div>
   );
 };
