@@ -93,7 +93,7 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
 
   return (
     <>
-      <Card className="p-4 h-fit min-w-[400px]">
+      <Card className="p-4 h-fit">
         <CardHeader designType={designType} />
         <div className="space-y-3">
           <ParameterRow label="Filter Area (Gross):" value={safeResults.filterArea} />
