@@ -71,8 +71,8 @@ const DesignParameters: React.FC<DesignParametersProps> = (props) => {
     : props.numEMCFlaps;
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-      <div className="lg:col-span-2 space-y-4">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="lg:col-span-5 space-y-4">
         <DesignTypeSection 
           designType={props.designType} 
           setDesignType={props.setDesignType} 
@@ -100,7 +100,7 @@ const DesignParameters: React.FC<DesignParametersProps> = (props) => {
         />
       </div>
 
-      <div className="lg:col-span-2">
+      <div className="lg:col-span-4">
         <div className="space-y-4">
           {props.showOtherParams && (
             <AdditionalParametersSection 
@@ -125,7 +125,7 @@ const DesignParameters: React.FC<DesignParametersProps> = (props) => {
         </div>
       </div>
       
-      <div className="lg:col-span-1">
+      <div className="lg:col-span-3">
         <DesignParamsCard 
           formattedResults={props.formattedResults}
           results={props.results}
