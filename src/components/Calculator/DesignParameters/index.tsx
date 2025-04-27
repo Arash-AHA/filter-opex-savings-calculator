@@ -91,17 +91,17 @@ const DesignParameters: React.FC<DesignParametersProps> = (props) => {
           setBagsPerRow={props.setBagsPerRow}
           setBagLength={props.setBagLength}
         />
+        
+        <ActionButtons 
+          showOtherParams={props.showOtherParams}
+          setShowOtherParams={props.setShowOtherParams}
+          showDimensions={props.showDimensions}
+          setShowDimensions={props.setShowDimensions}
+        />
       </div>
 
       <div className="lg:col-span-2">
         <div className="space-y-4">
-          <ActionButtons 
-            showOtherParams={props.showOtherParams}
-            setShowOtherParams={props.setShowOtherParams}
-            showDimensions={props.showDimensions}
-            setShowDimensions={props.setShowDimensions}
-          />
-          
           {props.showOtherParams && (
             <AdditionalParametersSection 
               {...props}
