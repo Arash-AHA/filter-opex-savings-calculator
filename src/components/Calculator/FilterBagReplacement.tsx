@@ -43,60 +43,84 @@ const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {/* Column 1 & 2: Labels & Inputs */}
-      <div className="md:col-span-2 space-y-4">
-        <InputField
-          label="Filter Bag Price per Piece (USD):"
-          value={bagPrice}
-          onChange={(value) => setBagPrice(parseFloat(value) || 0)}
-          type="number"
-          min={0}
-        />
+      <div className="md:col-span-2 space-y-6">
+        <div className="w-[320px]">
+          <InputField
+            label="Filter Bag Price per Piece (USD):"
+            value={bagPrice}
+            onChange={(value) => setBagPrice(parseFloat(value) || 0)}
+            type="number"
+            min={0}
+            labelClassName="block mb-2 text-sm text-gray-600"
+            inputClassName="w-full"
+          />
+        </div>
         
-        <InputField
-          label="Ave. time for changing one bag (minute):"
-          value={bagChangeTime}
-          onChange={(value) => setBagChangeTime(parseFloat(value) || 0)}
-          type="number"
-          min={0}
-          step={0.5}
-        />
+        <div className="w-[320px]">
+          <InputField
+            label="Ave. time for changing one bag (minute):"
+            value={bagChangeTime}
+            onChange={(value) => setBagChangeTime(parseFloat(value) || 0)}
+            type="number"
+            min={0}
+            step={0.5}
+            labelClassName="block mb-2 text-sm text-gray-600"
+            inputClassName="w-full"
+          />
+        </div>
         
-        <InputField
-          label="No. People:"
-          value={numPeople}
-          onChange={(value) => setNumPeople(parseInt(value) || 0)}
-          type="number"
-          min={1}
-        />
+        <div className="w-[320px]">
+          <InputField
+            label="No. People:"
+            value={numPeople}
+            onChange={(value) => setNumPeople(parseInt(value) || 0)}
+            type="number"
+            min={1}
+            labelClassName="block mb-2 text-sm text-gray-600"
+            inputClassName="w-full"
+          />
+        </div>
         
-        <InputField
-          label="Hourly rate (USD):"
-          value={hourlyRate}
-          onChange={(value) => setHourlyRate(parseFloat(value) || 0)}
-          type="number"
-          min={0}
-          step={0.01}
-        />
+        <div className="w-[320px]">
+          <InputField
+            label="Hourly rate (USD):"
+            value={hourlyRate}
+            onChange={(value) => setHourlyRate(parseFloat(value) || 0)}
+            type="number"
+            min={0}
+            step={0.01}
+            labelClassName="block mb-2 text-sm text-gray-600"
+            inputClassName="w-full"
+          />
+        </div>
         
-        <InputField
-          label="Travel distance to site location in miles:"
-          value={siteDistance}
-          onChange={(value) => setSiteDistance(parseFloat(value) || 0)}
-          type="number"
-          min={0}
-        />
+        <div className="w-[320px]">
+          <InputField
+            label="Travel distance to site location in miles:"
+            value={siteDistance}
+            onChange={(value) => setSiteDistance(parseFloat(value) || 0)}
+            type="number"
+            min={0}
+            labelClassName="block mb-2 text-sm text-gray-600"
+            inputClassName="w-full"
+          />
+        </div>
         
-        <InputField
-          label="Travel/accommodation cost for crew:"
-          value={travelCost}
-          onChange={(value) => setTravelCost(parseFloat(value) || 0)}
-          type="number"
-          min={0}
-          estimateButton={{
-            onClick: calculateTravelCost,
-            label: "Estimate"
-          }}
-        />
+        <div className="w-[320px]">
+          <InputField
+            label="Travel/accommodation cost for crew:"
+            value={travelCost}
+            onChange={(value) => setTravelCost(parseFloat(value) || 0)}
+            type="number"
+            min={0}
+            labelClassName="block mb-2 text-sm text-gray-600"
+            inputClassName="w-full"
+            estimateButton={{
+              onClick: calculateTravelCost,
+              label: "Estimate"
+            }}
+          />
+        </div>
       </div>
       
       {/* Column 3: Results */}
