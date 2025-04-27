@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import CalculatorSection from './CalculatorSection';
 import Transition from '../UI/Transition';
@@ -8,7 +9,7 @@ import SavingsResults from './SavingsResults';
 import { useCalculatorState } from './hooks/useCalculatorState';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { ChevronDown } from 'lucide-react';
-import DesignParamsCard from './DesignParamsCard';
+import DesignParamsCard from './DesignParametersComponents/DesignParamsCard';
 
 const FilterOpexCalculator = () => {
   const calculatorState = useCalculatorState();
@@ -131,7 +132,11 @@ const FilterOpexCalculator = () => {
         
         <Collapsible open={openSections.bagReplacement}>
           <CalculatorSection 
-            title={renderCollapsibleTrigger("Filter Bag Replacement (Cost Estimation)", "bagReplacement")}
+            title={
+              // Fix for TypeScript error - create a separate string title instead of JSX element
+              "Filter Bag Replacement (Cost Estimation)"
+            }
+            headerContent={renderCollapsibleTrigger("Filter Bag Replacement (Cost Estimation)", "bagReplacement")}
             delay={300}
             className="bg-gradient-to-r from-green-50 to-green-100/30 border border-green-100"
           >
@@ -164,7 +169,11 @@ const FilterOpexCalculator = () => {
         
         <Collapsible open={openSections.operational}>
           <CalculatorSection 
-            title={renderCollapsibleTrigger("Operational Parameters (Savings with EMC Technology)", "operational")}
+            title={
+              // Fix for TypeScript error - create a separate string title instead of JSX element
+              "Operational Parameters (Savings with EMC Technology)"
+            }
+            headerContent={renderCollapsibleTrigger("Operational Parameters (Savings with EMC Technology)", "operational")}
             delay={500}
             className="bg-gradient-to-r from-amber-50 to-amber-100/30 border border-amber-100"
           >
@@ -205,7 +214,11 @@ const FilterOpexCalculator = () => {
         
         <Collapsible open={openSections.savings}>
           <CalculatorSection 
-            title={renderCollapsibleTrigger("OPEX Savings Analysis", "savings")}
+            title={
+              // Fix for TypeScript error - create a separate string title instead of JSX element
+              "OPEX Savings Analysis"
+            }
+            headerContent={renderCollapsibleTrigger("OPEX Savings Analysis", "savings")}
             delay={700}
             className="bg-gradient-to-r from-yellow-50 to-yellow-100/30 border border-yellow-100"
           >
