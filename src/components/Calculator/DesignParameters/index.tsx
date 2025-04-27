@@ -71,7 +71,7 @@ const DesignParameters: React.FC<DesignParametersProps> = (props) => {
     : props.numEMCFlaps;
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
       <div className="lg:col-span-2 space-y-4">
         <DesignTypeSection 
           designType={props.designType} 
@@ -91,34 +91,38 @@ const DesignParameters: React.FC<DesignParametersProps> = (props) => {
           setBagsPerRow={props.setBagsPerRow}
           setBagLength={props.setBagLength}
         />
-        
-        <ActionButtons 
-          showOtherParams={props.showOtherParams}
-          setShowOtherParams={props.setShowOtherParams}
-          showDimensions={props.showDimensions}
-          setShowDimensions={props.setShowDimensions}
-        />
-        
-        {props.showOtherParams && (
-          <AdditionalParametersSection 
-            {...props}
+      </div>
+
+      <div className="lg:col-span-2">
+        <div className="space-y-4">
+          <ActionButtons 
+            showOtherParams={props.showOtherParams}
+            setShowOtherParams={props.setShowOtherParams}
+            showDimensions={props.showDimensions}
+            setShowDimensions={props.setShowDimensions}
           />
-        )}
-        
-        {props.showDimensions && (
-          <DimensionsSection
-            filterRowType={props.filterRowType}
-            setFilterRowType={props.setFilterRowType}
-            channelWidthMm={props.channelWidthMm}
-            setChannelWidthMm={props.setChannelWidthMm}
-            channelHeightMm={props.channelHeightMm}
-            setChannelHeightMm={props.setChannelHeightMm}
-            airVolumeM3h={props.airVolumeM3h}
-            numEMCFlaps={parsedNumEMCFlaps}
-            bagsPerRow={props.bagsPerRow}
-            designType={props.designType}
-          />
-        )}
+          
+          {props.showOtherParams && (
+            <AdditionalParametersSection 
+              {...props}
+            />
+          )}
+          
+          {props.showDimensions && (
+            <DimensionsSection
+              filterRowType={props.filterRowType}
+              setFilterRowType={props.setFilterRowType}
+              channelWidthMm={props.channelWidthMm}
+              setChannelWidthMm={props.setChannelWidthMm}
+              channelHeightMm={props.channelHeightMm}
+              setChannelHeightMm={props.setChannelHeightMm}
+              airVolumeM3h={props.airVolumeM3h}
+              numEMCFlaps={parsedNumEMCFlaps}
+              bagsPerRow={props.bagsPerRow}
+              designType={props.designType}
+            />
+          )}
+        </div>
       </div>
       
       <div className="lg:col-span-1">
@@ -140,4 +144,3 @@ const DesignParameters: React.FC<DesignParametersProps> = (props) => {
 };
 
 export default DesignParameters;
-
