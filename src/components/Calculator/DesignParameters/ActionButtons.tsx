@@ -16,17 +16,17 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
   setShowDimensions
 }) => {
   return (
-    <div className="flex flex-col space-y-4 items-start">
+    <div className="flex flex-col space-y-4">
       <Button 
         variant="outline" 
-        className="w-[280px]"
+        className="w-full"
         onClick={() => setShowOtherParams(!showOtherParams)}
       >
         {showOtherParams ? 'Hide Other Filter Design Parameters' : 'Show Other Filter Design Parameters'}
       </Button>
       <Button 
         variant="outline" 
-        className="w-[280px]"
+        className="w-full"
         onClick={() => setShowDimensions(!showDimensions)}
       >
         {showDimensions ? 'Hide Filter Dimensions / Footprint' : 'Show Filter Dimensions / Footprint'}
@@ -36,3 +36,4 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
 };
 
 export default ActionButtons;
+

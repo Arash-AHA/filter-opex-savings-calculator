@@ -1,3 +1,4 @@
+
 import React from 'react';
 import DesignTypeSection from './DesignTypeSection';
 import InputsSection from './InputsSection';
@@ -5,6 +6,7 @@ import ActionButtons from './ActionButtons';
 import AdditionalParametersSection from './AdditionalParametersSection';
 import DimensionsSection from './DimensionsSection';
 import DesignParamsCard from '../DesignParametersComponents/DesignParamsCard';
+
 interface DesignParametersProps {
   designType: string;
   setDesignType: (value: string) => void;
@@ -62,22 +64,78 @@ interface DesignParametersProps {
   handleNegativePressureMbarChange: (value: string) => void;
   handleNegativePressureInchWGChange: (value: string) => void;
 }
-const DesignParameters: React.FC<DesignParametersProps> = props => {
-  const parsedNumEMCFlaps = typeof props.numEMCFlaps === 'string' ? props.numEMCFlaps === '' ? 0 : parseInt(props.numEMCFlaps) : props.numEMCFlaps;
-  return <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-      <div className="lg:col-span-5 space-y-1">
-        <DesignTypeSection designType={props.designType} setDesignType={props.setDesignType} />
-        
-        <InputsSection airVolumeM3h={props.airVolumeM3h} airVolumeACFM={props.airVolumeACFM} numEMCFlaps={props.numEMCFlaps} bagsPerRow={props.bagsPerRow} bagLength={props.bagLength} designType={props.designType} handleAirVolumeM3hChange={props.handleAirVolumeM3hChange} handleAirVolumeACFMChange={props.handleAirVolumeACFMChange} setNumEMCFlaps={props.setNumEMCFlaps} setBagsPerRow={props.setBagsPerRow} setBagLength={props.setBagLength} />
-        
-        <ActionButtons showOtherParams={props.showOtherParams} setShowOtherParams={props.setShowOtherParams} showDimensions={props.showDimensions} setShowDimensions={props.setShowDimensions} />
-      </div>
 
-      
-      
-      <div className="lg:col-span-3">
-        <DesignParamsCard formattedResults={props.formattedResults} results={props.results} m2ToSqFtFactor={props.m2ToSqFtFactor} conversionFactor={props.conversionFactor} designType={props.designType} numEMCFlaps={props.numEMCFlaps} bagsPerRow={props.bagsPerRow} bagLength={props.bagLength} airVolumeM3h={props.airVolumeM3h} airVolumeACFM={props.airVolumeACFM} />
+const DesignParameters: React.FC<DesignParametersProps> = (props) => {
+  // Parse numEMCFlaps to a number when needed for functions expecting a number
+  const parsedNumEMCFlaps = typeof props.numEMCFlaps === 'string' 
+    ? (props.numEMCFlaps === '' ? 0 : parseInt(props.numEMCFlaps))
+    : props.numEMCFlaps;
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="md:col-span-3 space-y-4">
+        <DesignTypeSection 
+          designType={props.designType} 
+          setDesignType={props.setDesignType} 
+        />
+        
+        <InputsSection 
+          airVolumeM3h={props.airVolumeM3h}
+          airVolumeACFM={props.airVolumeACFM}
+          numEMCFlaps={props.numEMCFlaps}
+          bagsPerRow={props.bagsPerRow}
+          bagLength={props.bagLength}
+          designType={props.designType}
+          handleAirVolumeM3hChange={props.handleAirVolumeM3hChange}
+          handleAirVolumeACFMChange={props.handleAirVolumeACFMChange}
+          setNumEMCFlaps={props.setNumEMCFlaps}
+          setBagsPerRow={props.setBagsPerRow}
+          setBagLength={props.setBagLength}
+        />
+        
+        <ActionButtons 
+          showOtherParams={props.showOtherParams}
+          setShowOtherParams={props.setShowOtherParams}
+          showDimensions={props.showDimensions}
+          setShowDimensions={props.setShowDimensions}
+        />
+        
+        {props.showOtherParams && (
+          <AdditionalParametersSection 
+            {...props}
+          />
+        )}
+        
+        {props.showDimensions && (
+          <DimensionsSection
+            filterRowType={props.filterRowType}
+            setFilterRowType={props.setFilterRowType}
+            channelWidthMm={props.channelWidthMm}
+            setChannelWidthMm={props.setChannelWidthMm}
+            channelHeightMm={props.channelHeightMm}
+            setChannelHeightMm={props.setChannelHeightMm}
+            airVolumeM3h={props.airVolumeM3h}
+            numEMCFlaps={parsedNumEMCFlaps}
+            bagsPerRow={props.bagsPerRow}
+            designType={props.designType}
+          />
+        )}
       </div>
-    </div>;
+      
+      <DesignParamsCard 
+        formattedResults={props.formattedResults}
+        results={props.results}
+        m2ToSqFtFactor={props.m2ToSqFtFactor}
+        conversionFactor={props.conversionFactor}
+        designType={props.designType}
+        numEMCFlaps={props.numEMCFlaps}
+        bagsPerRow={props.bagsPerRow}
+        bagLength={props.bagLength}
+        airVolumeM3h={props.airVolumeM3h}
+        airVolumeACFM={props.airVolumeACFM}
+      />
+    </div>
+  );
 };
+
 export default DesignParameters;
