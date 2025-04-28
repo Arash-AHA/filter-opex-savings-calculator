@@ -1,8 +1,6 @@
-
 import React from 'react';
 import InputField from './InputField';
 import ResultCard from './ResultCard';
-
 interface FilterBagReplacementProps {
   bagPrice: number;
   setBagPrice: (value: number) => void;
@@ -21,7 +19,6 @@ interface FilterBagReplacementProps {
   calculateTravelCost: () => void;
   formattedResults: any;
 }
-
 const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
   bagPrice,
   setBagPrice,
@@ -40,63 +37,23 @@ const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
   calculateTravelCost,
   formattedResults
 }) => {
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+  return <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {/* Column 1 & 2: Labels & Inputs */}
       <div className="md:col-span-2 space-y-4">
-        <InputField
-          label="Filter Bag Price per Piece (USD):"
-          value={bagPrice}
-          onChange={(value) => setBagPrice(parseFloat(value) || 0)}
-          type="number"
-          min={0}
-        />
+        <InputField label="Filter Bag Price per Piece (USD):" value={bagPrice} onChange={value => setBagPrice(parseFloat(value) || 0)} type="number" min={0} />
         
-        <InputField
-          label="Ave. time for changing one bag (minute):"
-          value={bagChangeTime}
-          onChange={(value) => setBagChangeTime(parseFloat(value) || 0)}
-          type="number"
-          min={0}
-          step={0.5}
-        />
+        <InputField label="Ave. time for changing one bag (minute):" value={bagChangeTime} onChange={value => setBagChangeTime(parseFloat(value) || 0)} type="number" min={0} step={0.5} />
         
-        <InputField
-          label="No. People:"
-          value={numPeople}
-          onChange={(value) => setNumPeople(parseInt(value) || 0)}
-          type="number"
-          min={1}
-        />
+        <InputField label="No. People:" value={numPeople} onChange={value => setNumPeople(parseInt(value) || 0)} type="number" min={1} />
         
-        <InputField
-          label="Hourly rate (USD):"
-          value={hourlyRate}
-          onChange={(value) => setHourlyRate(parseFloat(value) || 0)}
-          type="number"
-          min={0}
-          step={0.01}
-        />
+        <InputField label="Hourly rate (USD):" value={hourlyRate} onChange={value => setHourlyRate(parseFloat(value) || 0)} type="number" min={0} step={0.01} />
         
-        <InputField
-          label="Travel distance to site location in miles:"
-          value={siteDistance}
-          onChange={(value) => setSiteDistance(parseFloat(value) || 0)}
-          type="number"
-          min={0}
-        />
+        <InputField label="Travel distance to site location in miles:" value={siteDistance} onChange={value => setSiteDistance(parseFloat(value) || 0)} type="number" min={0} />
         
-        <InputField
-          label="Travel/accommodation cost for crew:"
-          value={travelCost}
-          onChange={(value) => setTravelCost(parseFloat(value) || 0)}
-          type="number"
-          min={0}
-          estimateButton={{
-            onClick: calculateTravelCost,
-            label: "Estimate"
-          }}
-        />
+        <InputField label="Travel/accommodation cost for crew:" value={travelCost} onChange={value => setTravelCost(parseFloat(value) || 0)} type="number" min={0} estimateButton={{
+        onClick: calculateTravelCost,
+        label: "Estimate"
+      }} />
       </div>
       
       {/* Column 3: Results */}
@@ -105,7 +62,7 @@ const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
         
         <div className="space-y-4">
           <div className="grid grid-cols-2 items-center py-2 border-b border-gray-100">
-            <span className="text-sm text-gray-600">Total Number of Bags</span>
+            <span className="text-sm text-gray-600">Total QTY of Bags</span>
             <span className="text-sm font-medium text-right">{formattedResults.totalBags}</span>
           </div>
           
@@ -116,7 +73,7 @@ const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
           
           <div className="grid grid-cols-2 items-center py-2 border-b border-gray-100">
             <span className="text-sm text-gray-600">Bag Material Cost</span>
-            <span className="text-sm font-medium text-right">${(formattedResults.bagMaterialCost).toLocaleString()}</span>
+            <span className="text-sm font-medium text-right">${formattedResults.bagMaterialCost.toLocaleString()}</span>
           </div>
           
           <div className="grid grid-cols-2 items-center py-2">
@@ -125,8 +82,6 @@ const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default FilterBagReplacement;
