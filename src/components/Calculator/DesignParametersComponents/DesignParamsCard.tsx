@@ -52,13 +52,13 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
 }) => {
   const [open, setOpen] = useState(false);
   const printContentRef = useRef<HTMLDivElement>(null);
-  
+
   const safeResults = formattedResults || {
     filterArea: '-',
     netFilterArea: '-',
     acRatioGross: '-',
     acRatioNet: '-',
-    totalBags: 0
+    totalBags: 0,
   };
 
   const handlePrint = () => {
@@ -72,9 +72,10 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
               <title>Filter Design Configuration</title>
               <style>
                 body { font-family: 'Inter', Arial, sans-serif; margin: 0; padding: 24px; }
-                .parameter-row { margin-bottom: 16px; }
-                .parameter-label { font-weight: 600; margin-bottom: 4px; }
-                h2, h3 { margin-bottom: 16px; }
+                table { width: 100%; border-collapse: collapse; }
+                td { border-bottom: 1px solid #e5e7eb; padding: 8px 4px; }
+                th { font-weight: 600; }
+                h2, h3 { margin-bottom: 10px; margin-top: 0; }
               </style>
             </head>
             <body>${printContents}</body>
@@ -94,9 +95,9 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
     <>
       <Card className="p-4 h-fit">
         <CardHeader designType={designType} />
-        <div className="space-y-4">
+        <div className="space-y-3">
           <ParameterRow label="Filter Area (Gross):" value={safeResults.filterArea} />
-          <ParameterRow label={`${designType === "modular" ? "Net Filter Area (Cleaning):" : "Net Filter Area:"}`} value={safeResults.netFilterArea} />
+          <ParameterRow label="Net Filter Area:(Cleaning)" value={safeResults.netFilterArea} />
           <ParameterRow label="Air-to-Cloth Ratio (Gross):" value={safeResults.acRatioGross} />
           <ParameterRow label="Air-to-Cloth Ratio (Net):" value={safeResults.acRatioNet} />
           <ParameterRow label="Total Number of Bags:" value={safeResults.totalBags} />

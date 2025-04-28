@@ -8,9 +8,9 @@ interface ParameterRowProps {
 
 const ParameterRow: React.FC<ParameterRowProps> = ({ label, value }) => {
   return (
-    <div className="flex flex-col space-y-1">
-      <div className="text-sm font-medium text-gray-700">{label}</div>
-      <div className="text-sm">{value}</div>
+    <div className="flex justify-between border-b border-gray-100 pb-1">
+      <span className="text-gray-600 text-sm">{label}</span>
+      <span className="font-medium text-sm">{value}</span>
     </div>
   );
 };

@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import Transition from '../UI/Transition';
 
 type CalculatorSectionProps = {
-  title: React.ReactNode; // Changed from string to ReactNode to accept elements
+  title: string;
   children: React.ReactNode;
   className?: string;
   contentClassName?: string;

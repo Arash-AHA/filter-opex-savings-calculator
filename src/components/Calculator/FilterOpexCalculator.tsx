@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import CalculatorSection from './CalculatorSection';
 import Transition from '../UI/Transition';
@@ -24,14 +23,7 @@ const FilterOpexCalculator = () => {
       [section]: !prev[section]
     }));
   };
-
-  const renderCollapsibleTrigger = (title: string, section: keyof typeof openSections) => (
-    <div className="flex items-center justify-between w-full">
-      <span>{title}</span>
-      <ChevronDown className={`h-4 w-4 transition-transform ${openSections[section] ? 'transform rotate-180' : ''}`} />
-    </div>
-  );
-
+  
   return (
     <div className="max-w-5xl mx-auto">
       <div className="text-center mb-8">
@@ -48,26 +40,80 @@ const FilterOpexCalculator = () => {
       </div>
       
       <div className="grid grid-cols-1 gap-8">
-        {/* Section 1: Filter Design Configuration */}
         <CalculatorSection 
           title="Filter Design Configuration" 
           delay={100}
           className="bg-gradient-to-r from-blue-50 to-blue-100/30 border border-blue-100"
         >
-          <DesignParameters {...calculatorState} />
+          <DesignParameters 
+            designType={calculatorState.designType}
+            setDesignType={calculatorState.setDesignType}
+            airVolumeM3h={calculatorState.airVolumeM3h}
+            airVolumeACFM={calculatorState.airVolumeACFM}
+            numEMCFlaps={calculatorState.numEMCFlaps}
+            bagsPerRow={calculatorState.bagsPerRow}
+            bagLength={calculatorState.bagLength}
+            filterRowType={calculatorState.filterRowType}
+            setFilterRowType={calculatorState.setFilterRowType}
+            showDimensions={calculatorState.showDimensions}
+            setShowDimensions={calculatorState.setShowDimensions}
+            showOtherParams={calculatorState.showOtherParams}
+            setShowOtherParams={calculatorState.setShowOtherParams}
+            channelWidthMm={calculatorState.channelWidthMm}
+            setChannelWidthMm={calculatorState.setChannelWidthMm}
+            channelHeightMm={calculatorState.channelHeightMm}
+            setChannelHeightMm={calculatorState.setChannelHeightMm}
+            handleAirVolumeM3hChange={calculatorState.handleAirVolumeM3hChange}
+            handleAirVolumeACFMChange={calculatorState.handleAirVolumeACFMChange}
+            setNumEMCFlaps={calculatorState.setNumEMCFlaps}
+            setBagsPerRow={calculatorState.setBagsPerRow}
+            setBagLength={calculatorState.setBagLength}
+            formattedResults={calculatorState.formattedResults}
+            results={calculatorState.results}
+            m2ToSqFtFactor={calculatorState.m2ToSqFtFactor}
+            conversionFactor={calculatorState.conversionFactor}
+            gasTempC={calculatorState.gasTempC}
+            gasTempF={calculatorState.gasTempF}
+            dustConcGramAm3={calculatorState.dustConcGramAm3}
+            dustConcGrainACF={calculatorState.dustConcGrainACF}
+            dustConcGramNm3={calculatorState.dustConcGramNm3}
+            dustConcGrainSCF={calculatorState.dustConcGrainSCF}
+            handleGasTempCChange={calculatorState.handleGasTempCChange}
+            handleGasTempFChange={calculatorState.handleGasTempFChange}
+            handleDustConcGramAm3Change={calculatorState.handleDustConcGramAm3Change}
+            handleDustConcGrainACFChange={calculatorState.handleDustConcGrainACFChange}
+            handleDustConcGramNm3Change={calculatorState.handleDustConcGramNm3Change}
+            handleDustConcGrainSCFChange={calculatorState.handleDustConcGrainSCFChange}
+            outletDustKgH={calculatorState.outletDustKgH}
+            outletDustLbH={calculatorState.outletDustLbH}
+            handleOutletDustKgHChange={calculatorState.handleOutletDustKgHChange}
+            handleOutletDustLbHChange={calculatorState.handleOutletDustLbHChange}
+            estimateOutletDust={calculatorState.estimateOutletDust}
+            targetEmissionMgNm3={calculatorState.targetEmissionMgNm3}
+            targetEmissionGrainDscf={calculatorState.targetEmissionGrainDscf}
+            handleTargetEmissionMgNm3Change={calculatorState.handleTargetEmissionMgNm3Change}
+            handleTargetEmissionGrainDscfChange={calculatorState.handleTargetEmissionGrainDscfChange}
+            negativePressureMbar={calculatorState.negativePressureMbar}
+            negativePressureInchWG={calculatorState.negativePressureInchWG}
+            handleNegativePressureMbarChange={calculatorState.handleNegativePressureMbarChange}
+            handleNegativePressureInchWGChange={calculatorState.handleNegativePressureInchWGChange}
+          />
         </CalculatorSection>
         
-        {/* Section 2: Filter Bag Replacement */}
         <Collapsible open={openSections.bagReplacement}>
           <CalculatorSection 
-            title={renderCollapsibleTrigger("Filter Bag Replacement (Cost Estimation)", "bagReplacement")}
+            title={
+              <CollapsibleTrigger 
+                onClick={() => toggleSection('bagReplacement')}
+                className="flex items-center justify-between w-full"
+              >
+                <span>Filter Bag Replacement (Cost Estimation)</span>
+                <ChevronDown className={`h-4 w-4 transition-transform ${openSections.bagReplacement ? 'transform rotate-180' : ''}`} />
+              </CollapsibleTrigger>
+            }
             delay={300}
             className="bg-gradient-to-r from-green-50 to-green-100/30 border border-green-100"
           >
-            <CollapsibleTrigger 
-              onClick={() => toggleSection("bagReplacement")}
-              className="w-full h-full cursor-pointer absolute inset-0 opacity-0"
-            />
             <CollapsibleContent>
               <FilterBagReplacement 
                 bagPrice={calculatorState.bagPrice}
@@ -95,17 +141,20 @@ const FilterOpexCalculator = () => {
           </CalculatorSection>
         </Collapsible>
         
-        {/* Section 3: Operational Parameters */}
         <Collapsible open={openSections.operational}>
           <CalculatorSection 
-            title={renderCollapsibleTrigger("Operational Parameters (Savings with EMC Technology)", "operational")}
+            title={
+              <CollapsibleTrigger 
+                onClick={() => toggleSection('operational')}
+                className="flex items-center justify-between w-full"
+              >
+                <span>Operational Parameters (Savings with EMC Technology)</span>
+                <ChevronDown className={`h-4 w-4 transition-transform ${openSections.operational ? 'transform rotate-180' : ''}`} />
+              </CollapsibleTrigger>
+            }
             delay={500}
             className="bg-gradient-to-r from-amber-50 to-amber-100/30 border border-amber-100"
           >
-            <CollapsibleTrigger 
-              onClick={() => toggleSection("operational")}
-              className="w-full h-full cursor-pointer absolute inset-0 opacity-0"
-            />
             <CollapsibleContent>
               <OperationalParameters 
                 currentLifeTime={calculatorState.currentLifeTime}
@@ -141,17 +190,20 @@ const FilterOpexCalculator = () => {
           </CalculatorSection>
         </Collapsible>
         
-        {/* Section 4: OPEX Savings Analysis */}
         <Collapsible open={openSections.savings}>
           <CalculatorSection 
-            title={renderCollapsibleTrigger("OPEX Savings Analysis", "savings")}
+            title={
+              <CollapsibleTrigger 
+                onClick={() => toggleSection('savings')}
+                className="flex items-center justify-between w-full"
+              >
+                <span>OPEX Savings Analysis</span>
+                <ChevronDown className={`h-4 w-4 transition-transform ${openSections.savings ? 'transform rotate-180' : ''}`} />
+              </CollapsibleTrigger>
+            }
             delay={700}
             className="bg-gradient-to-r from-yellow-50 to-yellow-100/30 border border-yellow-100"
           >
-            <CollapsibleTrigger 
-              onClick={() => toggleSection("savings")}
-              className="w-full h-full cursor-pointer absolute inset-0 opacity-0"
-            />
             <CollapsibleContent>
               <SavingsResults 
                 savingYears={calculatorState.savingYears}

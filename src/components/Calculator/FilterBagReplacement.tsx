@@ -43,90 +43,60 @@ const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {/* Column 1 & 2: Labels & Inputs */}
-      <div className="md:col-span-2 space-y-6">
-        <div>
-          <div className="mb-2 text-sm text-gray-600">Filter Bag Price per Piece (USD):</div>
-          <div className="w-[400px]">
-            <InputField
-              value={bagPrice}
-              onChange={(value) => setBagPrice(parseFloat(value) || 0)}
-              type="number"
-              min={0}
-              inputClassName="w-full"
-            />
-          </div>
-        </div>
+      <div className="md:col-span-2 space-y-4">
+        <InputField
+          label="Filter Bag Price per Piece (USD):"
+          value={bagPrice}
+          onChange={(value) => setBagPrice(parseFloat(value) || 0)}
+          type="number"
+          min={0}
+        />
         
-        <div>
-          <div className="mb-2 text-sm text-gray-600">Ave. time for changing one bag (minute):</div>
-          <div className="w-[400px]">
-            <InputField
-              value={bagChangeTime}
-              onChange={(value) => setBagChangeTime(parseFloat(value) || 0)}
-              type="number"
-              min={0}
-              step={0.5}
-              inputClassName="w-full"
-            />
-          </div>
-        </div>
+        <InputField
+          label="Ave. time for changing one bag (minute):"
+          value={bagChangeTime}
+          onChange={(value) => setBagChangeTime(parseFloat(value) || 0)}
+          type="number"
+          min={0}
+          step={0.5}
+        />
         
-        <div>
-          <div className="mb-2 text-sm text-gray-600">No. People:</div>
-          <div className="w-[400px]">
-            <InputField
-              value={numPeople}
-              onChange={(value) => setNumPeople(parseInt(value) || 0)}
-              type="number"
-              min={1}
-              inputClassName="w-full"
-            />
-          </div>
-        </div>
+        <InputField
+          label="No. People:"
+          value={numPeople}
+          onChange={(value) => setNumPeople(parseInt(value) || 0)}
+          type="number"
+          min={1}
+        />
         
-        <div>
-          <div className="mb-2 text-sm text-gray-600">Hourly rate (USD):</div>
-          <div className="w-[400px]">
-            <InputField
-              value={hourlyRate}
-              onChange={(value) => setHourlyRate(parseFloat(value) || 0)}
-              type="number"
-              min={0}
-              step={0.01}
-              inputClassName="w-full"
-            />
-          </div>
-        </div>
+        <InputField
+          label="Hourly rate (USD):"
+          value={hourlyRate}
+          onChange={(value) => setHourlyRate(parseFloat(value) || 0)}
+          type="number"
+          min={0}
+          step={0.01}
+        />
         
-        <div>
-          <div className="mb-2 text-sm text-gray-600">Travel distance to site location in miles:</div>
-          <div className="w-[400px]">
-            <InputField
-              value={siteDistance}
-              onChange={(value) => setSiteDistance(parseFloat(value) || 0)}
-              type="number"
-              min={0}
-              inputClassName="w-full"
-            />
-          </div>
-        </div>
+        <InputField
+          label="Travel distance to site location in miles:"
+          value={siteDistance}
+          onChange={(value) => setSiteDistance(parseFloat(value) || 0)}
+          type="number"
+          min={0}
+        />
         
-        <div>
-          <div className="mb-2 text-sm text-gray-600">Travel/accommodation cost for crew:</div>
-          <div className="w-[400px]">
-            <InputField
-              value={travelCost}
-              onChange={(value) => setTravelCost(parseFloat(value) || 0)}
-              type="number"
-              min={0}
-              inputClassName="w-full"
-              estimateButton={{
-                onClick: calculateTravelCost,
-                label: "Estimate"
-              }}
-            />
-          </div>
-        </div>
+        <InputField
+          label="Travel/accommodation cost for crew:"
+          value={travelCost}
+          onChange={(value) => setTravelCost(parseFloat(value) || 0)}
+          type="number"
+          min={0}
+          estimateButton={{
+            onClick: calculateTravelCost,
+            label: "Estimate"
+          }}
+        />
       </div>
       
       {/* Column 3: Results */}
@@ -146,7 +116,7 @@ const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
           
           <div className="grid grid-cols-2 items-center py-2 border-b border-gray-100">
             <span className="text-sm text-gray-600">Bag Material Cost</span>
-            <span className="text-sm font-medium text-right">${formattedResults.bagMaterialCost.toLocaleString()}</span>
+            <span className="text-sm font-medium text-right">${(formattedResults.bagMaterialCost).toLocaleString()}</span>
           </div>
           
           <div className="grid grid-cols-2 items-center py-2">
