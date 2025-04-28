@@ -1,40 +1,24 @@
 
 import React from 'react';
-import { cn } from '@/lib/utils';
 import Transition from '../UI/Transition';
 
-type CalculatorSectionProps = {
-  title: string;
-  children: React.ReactNode;
-  className?: string;
-  contentClassName?: string;
-  headerClassName?: string;
-  headerContent?: React.ReactNode;
+interface CalculatorSectionProps {
+  title: React.ReactNode;
   delay?: number;
-};
+  className?: string;
+  children: React.ReactNode;
+}
 
 const CalculatorSection: React.FC<CalculatorSectionProps> = ({
   title,
-  children,
-  className,
-  contentClassName,
-  headerClassName,
-  headerContent,
   delay = 0,
+  className = '',
+  children
 }) => {
   return (
-    <Transition
-      className={cn("calculator-section", className)}
-      animation="fade-in"
-      delay={delay}
-    >
-      <div className={cn("calculator-section-header", headerClassName)}>
-        <div className="flex items-center justify-between">
-          <h2 className="calculator-section-title">{title}</h2>
-          {headerContent}
-        </div>
-      </div>
-      <div className={cn("calculator-section-content", contentClassName)}>
+    <Transition animation="slide-down" delay={delay}>
+      <div className={`p-6 rounded-lg shadow-sm ${className}`}>
+        <div className="mb-6">{title}</div>
         {children}
       </div>
     </Transition>
