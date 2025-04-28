@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { HelpCircle } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -100,8 +99,8 @@ const EMCFlapsInput: React.FC<EMCFlapsInputProps> = ({
   };
 
   return (
-    <div className="flex items-center mb-4">
-      <div className="w-60 pr-4 calculator-field-label flex items-center">
+    <div className="flex flex-col mb-4">
+      <div className="w-full calculator-field-label mb-2 flex items-center">
         <span>TOTAL Quantity of EMC Flaps:</span>
         <TooltipProvider>
           <Tooltip>
@@ -123,17 +122,15 @@ const EMCFlapsInput: React.FC<EMCFlapsInputProps> = ({
           </Tooltip>
         </TooltipProvider>
       </div>
-      <div className="flex-1">
-        <div>
-          <input
-            type="text"
-            value={inputValue}
-            onChange={(e) => handleEMCFlapsInputChange(e.target.value)}
-            onBlur={handleEMCFlapsBlur}
-            className="calculator-input w-full"
-            placeholder="Enter value"
-          />
-        </div>
+      <div>
+        <input
+          type="text"
+          value={inputValue}
+          onChange={(e) => handleEMCFlapsInputChange(e.target.value)}
+          onBlur={handleEMCFlapsBlur}
+          className="calculator-input w-full"
+          placeholder="Enter value"
+        />
       </div>
     </div>
   );
