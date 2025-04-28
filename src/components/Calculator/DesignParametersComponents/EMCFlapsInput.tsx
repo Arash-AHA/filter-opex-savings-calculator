@@ -102,7 +102,7 @@ const EMCFlapsInput: React.FC<EMCFlapsInputProps> = ({
   return (
     <div className="flex items-center mb-4">
       <div className="w-60 pr-4 calculator-field-label flex items-center">
-        <span>TOTAL No. EMC Flaps:</span>
+        <span>TOTAL Quantity of EMC Flaps:</span>
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
