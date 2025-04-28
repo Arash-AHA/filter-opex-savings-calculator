@@ -26,13 +26,10 @@ const FilterOpexCalculator = () => {
   };
 
   const renderCollapsibleTrigger = (title: string, section: keyof typeof openSections) => (
-    <CollapsibleTrigger 
-      onClick={() => toggleSection(section)}
-      className="flex items-center justify-between w-full"
-    >
+    <div className="flex items-center justify-between w-full">
       <span>{title}</span>
       <ChevronDown className={`h-4 w-4 transition-transform ${openSections[section] ? 'transform rotate-180' : ''}`} />
-    </CollapsibleTrigger>
+    </div>
   );
 
   return (
@@ -67,6 +64,10 @@ const FilterOpexCalculator = () => {
             delay={300}
             className="bg-gradient-to-r from-green-50 to-green-100/30 border border-green-100"
           >
+            <CollapsibleTrigger 
+              onClick={() => toggleSection("bagReplacement")}
+              className="w-full h-full cursor-pointer absolute inset-0 opacity-0"
+            />
             <CollapsibleContent>
               <FilterBagReplacement 
                 bagPrice={calculatorState.bagPrice}
@@ -101,6 +102,10 @@ const FilterOpexCalculator = () => {
             delay={500}
             className="bg-gradient-to-r from-amber-50 to-amber-100/30 border border-amber-100"
           >
+            <CollapsibleTrigger 
+              onClick={() => toggleSection("operational")}
+              className="w-full h-full cursor-pointer absolute inset-0 opacity-0"
+            />
             <CollapsibleContent>
               <OperationalParameters 
                 currentLifeTime={calculatorState.currentLifeTime}
@@ -143,6 +148,10 @@ const FilterOpexCalculator = () => {
             delay={700}
             className="bg-gradient-to-r from-yellow-50 to-yellow-100/30 border border-yellow-100"
           >
+            <CollapsibleTrigger 
+              onClick={() => toggleSection("savings")}
+              className="w-full h-full cursor-pointer absolute inset-0 opacity-0"
+            />
             <CollapsibleContent>
               <SavingsResults 
                 savingYears={calculatorState.savingYears}
