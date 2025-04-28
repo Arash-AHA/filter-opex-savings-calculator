@@ -17,7 +17,7 @@ export const SavingsSection: React.FC<SavingsSectionProps> = ({
   totalSavings,
 }) => {
   return (
-    <>
+    <div className="bg-blue-50/50 p-6 rounded-lg">
       <section>
         <h2 className="text-xl font-semibold mb-4">OPEX Savings Analysis</h2>
         <div className="text-lg mb-4">Savings in {savingYears} years:</div>
@@ -40,6 +40,6 @@ export const SavingsSection: React.FC<SavingsSectionProps> = ({
           <div className="text-sm text-green-600">Over {savingYears} years of operation</div>
         </div>
       </section>
-    </>
+    </div>
   );
 };
