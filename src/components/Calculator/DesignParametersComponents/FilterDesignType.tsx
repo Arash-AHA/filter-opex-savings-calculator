@@ -13,6 +13,7 @@ const FilterDesignType: React.FC<FilterDesignTypeProps> = ({
 }) => {
   return (
     <div className="mb-6">
+      <div className="font-medium text-gray-700 mb-2">Filter Design Type:</div>
       <ToggleGroup type="single" value={designType} onValueChange={value => value && setDesignType(value)} className="flex gap-2">
         <ToggleGroupItem 
           value="bolt-weld" 
