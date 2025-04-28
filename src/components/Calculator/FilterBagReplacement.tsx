@@ -67,7 +67,7 @@ const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
           </div>
           
           <div className="grid grid-cols-2 items-center py-2 border-b border-gray-100">
-            <span className="text-sm text-gray-600">Days to Replace Bags</span>
+            <span className="text-sm text-gray-600\nw-[140px]">Days to Replace Bags</span>
             <span className="text-sm font-medium text-right">{formattedResults.daysToReplace}</span>
           </div>
           
