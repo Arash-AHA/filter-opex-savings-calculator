@@ -8,7 +8,7 @@ const Index = () => {
       <FilterOpexCalculator />
       
       <footer className="mt-20 text-center text-gray-500 text-sm">
-        <p>© 2023 Filter OPEX Savings Calculator. All rights reserved.</p>
+        <p>© 2023 Baghouse OPEX Savings. All rights reserved.</p>
       </footer>
     </div>
   );
