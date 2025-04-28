@@ -52,7 +52,7 @@ const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
               onChange={(value) => setBagPrice(parseFloat(value) || 0)}
               type="number"
               min={0}
-              inputClassName="w-full"
+              className="w-full"
             />
           </div>
         </div>
@@ -66,7 +66,7 @@ const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
               type="number"
               min={0}
               step={0.5}
-              inputClassName="w-full"
+              className="w-full"
             />
           </div>
         </div>
@@ -79,7 +79,7 @@ const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
               onChange={(value) => setNumPeople(parseInt(value) || 0)}
               type="number"
               min={1}
-              inputClassName="w-full"
+              className="w-full"
             />
           </div>
         </div>
@@ -93,7 +93,7 @@ const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
               type="number"
               min={0}
               step={0.01}
-              inputClassName="w-full"
+              className="w-full"
             />
           </div>
         </div>
@@ -106,7 +106,7 @@ const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
               onChange={(value) => setSiteDistance(parseFloat(value) || 0)}
               type="number"
               min={0}
-              inputClassName="w-full"
+              className="w-full"
             />
           </div>
         </div>
@@ -119,7 +119,7 @@ const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
               onChange={(value) => setTravelCost(parseFloat(value) || 0)}
               type="number"
               min={0}
-              inputClassName="w-full"
+              className="w-full"
               estimateButton={{
                 onClick: calculateTravelCost,
                 label: "Estimate"
