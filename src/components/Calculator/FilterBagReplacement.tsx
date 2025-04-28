@@ -45,7 +45,7 @@ const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
       {/* Column 1 & 2: Labels & Inputs */}
       <div className="md:col-span-2 space-y-6">
         <div>
-          <div className="mb-2 text-sm text-gray-600 w-full">Filter Bag Price per Piece (USD):</div>
+          <div className="mb-2 text-sm text-gray-600">Filter Bag Price per Piece (USD):</div>
           <div className="w-[400px]">
             <InputField
               value={bagPrice}
@@ -58,7 +58,7 @@ const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
         </div>
         
         <div>
-          <div className="mb-2 text-sm text-gray-600 w-full">Ave. time for changing one bag (minute):</div>
+          <div className="mb-2 text-sm text-gray-600">Ave. time for changing one bag (minute):</div>
           <div className="w-[400px]">
             <InputField
               value={bagChangeTime}
@@ -72,7 +72,7 @@ const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
         </div>
         
         <div>
-          <div className="mb-2 text-sm text-gray-600 w-full">No. People:</div>
+          <div className="mb-2 text-sm text-gray-600">No. People:</div>
           <div className="w-[400px]">
             <InputField
               value={numPeople}
@@ -85,7 +85,7 @@ const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
         </div>
         
         <div>
-          <div className="mb-2 text-sm text-gray-600 w-full">Hourly rate (USD):</div>
+          <div className="mb-2 text-sm text-gray-600">Hourly rate (USD):</div>
           <div className="w-[400px]">
             <InputField
               value={hourlyRate}
@@ -99,7 +99,7 @@ const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
         </div>
         
         <div>
-          <div className="mb-2 text-sm text-gray-600 w-full">Travel distance to site location in miles:</div>
+          <div className="mb-2 text-sm text-gray-600">Travel distance to site location in miles:</div>
           <div className="w-[400px]">
             <InputField
               value={siteDistance}
@@ -112,7 +112,7 @@ const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
         </div>
         
         <div>
-          <div className="mb-2 text-sm text-gray-600 w-full">Travel/accommodation cost for crew:</div>
+          <div className="mb-2 text-sm text-gray-600">Travel/accommodation cost for crew:</div>
           <div className="w-[400px]">
             <InputField
               value={travelCost}
