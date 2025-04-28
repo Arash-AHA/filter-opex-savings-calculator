@@ -29,9 +29,7 @@ const FilterOpexCalculator = () => {
           </div>
         </Transition>
         <Transition animation="slide-in-right" delay={300}>
-          <p className="text-sm text-gray-500 italic mt-2">
-            By Arash Haghi, Scheuch North America
-          </p>
+          <p className="text-sm text-gray-500 italic mt-2">By Arash Haghi</p>
         </Transition>
       </div>
       
