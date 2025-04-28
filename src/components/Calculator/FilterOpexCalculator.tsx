@@ -25,7 +25,7 @@ const FilterOpexCalculator = () => {
       <div className="text-center mb-8">
         <Transition animation="slide-in-left" delay={100}>
           <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-2">
-            <h1 className="text-3xl font-medium text-gray-900">Baghouse OPEX Savings Calculator</h1>
+            <h1 className="text-3xl font-medium text-gray-900">BAGHOUSE OPEX SAVINGS</h1>
           </div>
         </Transition>
         <Transition animation="slide-in-right" delay={300}>
