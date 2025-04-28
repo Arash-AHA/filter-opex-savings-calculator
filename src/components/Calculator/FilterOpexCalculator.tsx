@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import CalculatorSection from './CalculatorSection';
 import Transition from '../UI/Transition';
@@ -33,7 +34,7 @@ const FilterOpexCalculator = () => {
       <ChevronDown className={`h-4 w-4 transition-transform ${openSections[section] ? 'transform rotate-180' : ''}`} />
     </CollapsibleTrigger>
   );
-  
+
   return (
     <div className="max-w-5xl mx-auto">
       <div className="text-center mb-8">
@@ -50,66 +51,16 @@ const FilterOpexCalculator = () => {
       </div>
       
       <div className="grid grid-cols-1 gap-8">
+        {/* Section 1: Filter Design Configuration */}
         <CalculatorSection 
           title="Filter Design Configuration" 
           delay={100}
           className="bg-gradient-to-r from-blue-50 to-blue-100/30 border border-blue-100"
         >
-          <DesignParameters 
-            designType={calculatorState.designType}
-            setDesignType={calculatorState.setDesignType}
-            airVolumeM3h={calculatorState.airVolumeM3h}
-            airVolumeACFM={calculatorState.airVolumeACFM}
-            numEMCFlaps={calculatorState.numEMCFlaps}
-            bagsPerRow={calculatorState.bagsPerRow}
-            bagLength={calculatorState.bagLength}
-            filterRowType={calculatorState.filterRowType}
-            setFilterRowType={calculatorState.setFilterRowType}
-            showDimensions={calculatorState.showDimensions}
-            setShowDimensions={calculatorState.setShowDimensions}
-            showOtherParams={calculatorState.showOtherParams}
-            setShowOtherParams={calculatorState.setShowOtherParams}
-            channelWidthMm={calculatorState.channelWidthMm}
-            setChannelWidthMm={calculatorState.setChannelWidthMm}
-            channelHeightMm={calculatorState.channelHeightMm}
-            setChannelHeightMm={calculatorState.setChannelHeightMm}
-            handleAirVolumeM3hChange={calculatorState.handleAirVolumeM3hChange}
-            handleAirVolumeACFMChange={calculatorState.handleAirVolumeACFMChange}
-            setNumEMCFlaps={calculatorState.setNumEMCFlaps}
-            setBagsPerRow={calculatorState.setBagsPerRow}
-            setBagLength={calculatorState.setBagLength}
-            formattedResults={calculatorState.formattedResults}
-            results={calculatorState.results}
-            m2ToSqFtFactor={calculatorState.m2ToSqFtFactor}
-            conversionFactor={calculatorState.conversionFactor}
-            gasTempC={calculatorState.gasTempC}
-            gasTempF={calculatorState.gasTempF}
-            dustConcGramAm3={calculatorState.dustConcGramAm3}
-            dustConcGrainACF={calculatorState.dustConcGrainACF}
-            dustConcGramNm3={calculatorState.dustConcGramNm3}
-            dustConcGrainSCF={calculatorState.dustConcGrainSCF}
-            handleGasTempCChange={calculatorState.handleGasTempCChange}
-            handleGasTempFChange={calculatorState.handleGasTempFChange}
-            handleDustConcGramAm3Change={calculatorState.handleDustConcGramAm3Change}
-            handleDustConcGrainACFChange={calculatorState.handleDustConcGrainACFChange}
-            handleDustConcGramNm3Change={calculatorState.handleDustConcGramNm3Change}
-            handleDustConcGrainSCFChange={calculatorState.handleDustConcGrainSCFChange}
-            outletDustKgH={calculatorState.outletDustKgH}
-            outletDustLbH={calculatorState.outletDustLbH}
-            handleOutletDustKgHChange={calculatorState.handleOutletDustKgHChange}
-            handleOutletDustLbHChange={calculatorState.handleOutletDustLbHChange}
-            estimateOutletDust={calculatorState.estimateOutletDust}
-            targetEmissionMgNm3={calculatorState.targetEmissionMgNm3}
-            targetEmissionGrainDscf={calculatorState.targetEmissionGrainDscf}
-            handleTargetEmissionMgNm3Change={calculatorState.handleTargetEmissionMgNm3Change}
-            handleTargetEmissionGrainDscfChange={calculatorState.handleTargetEmissionGrainDscfChange}
-            negativePressureMbar={calculatorState.negativePressureMbar}
-            negativePressureInchWG={calculatorState.negativePressureInchWG}
-            handleNegativePressureMbarChange={calculatorState.handleNegativePressureMbarChange}
-            handleNegativePressureInchWGChange={calculatorState.handleNegativePressureInchWGChange}
-          />
+          <DesignParameters {...calculatorState} />
         </CalculatorSection>
         
+        {/* Section 2: Filter Bag Replacement */}
         <Collapsible open={openSections.bagReplacement}>
           <CalculatorSection 
             title={renderCollapsibleTrigger("Filter Bag Replacement (Cost Estimation)", "bagReplacement")}
@@ -143,6 +94,7 @@ const FilterOpexCalculator = () => {
           </CalculatorSection>
         </Collapsible>
         
+        {/* Section 3: Operational Parameters */}
         <Collapsible open={openSections.operational}>
           <CalculatorSection 
             title={renderCollapsibleTrigger("Operational Parameters (Savings with EMC Technology)", "operational")}
@@ -184,6 +136,7 @@ const FilterOpexCalculator = () => {
           </CalculatorSection>
         </Collapsible>
         
+        {/* Section 4: OPEX Savings Analysis */}
         <Collapsible open={openSections.savings}>
           <CalculatorSection 
             title={renderCollapsibleTrigger("OPEX Savings Analysis", "savings")}
