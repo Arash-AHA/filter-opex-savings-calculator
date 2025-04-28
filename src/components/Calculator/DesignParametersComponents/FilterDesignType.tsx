@@ -17,14 +17,14 @@ const FilterDesignType: React.FC<FilterDesignTypeProps> = ({
         <ToggleGroupItem 
           value="bolt-weld" 
           aria-label="Panelized Design"
-          className="flex-1 data-[state=on]:bg-primary data-[state=on]:text-white"
+          className="flex-1 border border-gray-200 rounded-md data-[state=on]:bg-primary data-[state=on]:text-white"
         >
           Panelized Design
         </ToggleGroupItem>
         <ToggleGroupItem 
           value="modular" 
           aria-label="Modular Design"
-          className="flex-1 data-[state=on]:bg-primary data-[state=on]:text-white"
+          className="flex-1 border border-gray-200 rounded-md data-[state=on]:bg-primary data-[state=on]:text-white"
         >
           Modular Design
         </ToggleGroupItem>
