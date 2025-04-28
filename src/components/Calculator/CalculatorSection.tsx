@@ -16,7 +16,7 @@ const CalculatorSection: React.FC<CalculatorSectionProps> = ({
   children
 }) => {
   return (
-    <Transition animation="slide-down" delay={delay}>
+    <Transition animation="fade-in" delay={delay}>
       <div className={`p-6 rounded-lg shadow-sm ${className}`}>
         <div className="mb-6">{title}</div>
         {children}
