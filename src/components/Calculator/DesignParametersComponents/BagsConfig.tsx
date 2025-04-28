@@ -1,5 +1,5 @@
-
 import React from 'react';
+
 interface BagsConfigProps {
   bagsPerRow: number;
   bagLength: number;
@@ -40,11 +40,11 @@ const BagsConfig: React.FC<BagsConfigProps> = ({
         </div>
       </div>
       
-      <div className="flex items-center mb-4">
-        <div className="w-60 pr-4 calculator-field-label">
+      <div className="flex flex-col mb-4">
+        <div className="w-full calculator-field-label mb-2">
           <span>Filter Bag Length:</span>
         </div>
-        <div className="flex-1">
+        <div>
           <select 
             value={bagLength} 
             onChange={e => setBagLength(parseInt(e.target.value) || 0)} 
