@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import DifferentialPressureSection from './DifferentialPressureSection';
 import CompressedAirSection from './CompressedAirSection';
@@ -50,7 +51,8 @@ const OperationalParameters: React.FC<OperationalParametersProps> = (props) => {
           
           <div className="space-y-1">
             <div className="text-sm font-medium text-gray-700">Filter Bag Life time</div>
-            <div className="grid grid-cols-2 gap-3">
+            {/* Modified this section to put the inputs on separate rows */}
+            <div className="space-y-3">
               <div className="space-y-1">
                 <div className="text-sm text-gray-500">Current Situation:</div>
                 <div className="flex items-center">
