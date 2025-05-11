@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -129,8 +130,8 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
     <div className="space-y-4 p-4 border border-blue-100 rounded-xl bg-blue-50/50 animate-fadeIn">
       <h3 className="font-medium text-gray-700 mb-2">Additional Filter Design Parameters</h3>
       
-      <div className="flex items-center mb-4">
-        <div className="w-60 pr-4 calculator-field-label text-sm">
+      <div className="flex flex-col md:flex-row md:items-center mb-4">
+        <div className="w-full md:w-60 pr-4 calculator-field-label text-sm mb-2 md:mb-0">
           <span>Gas Temperature:</span>
         </div>
         <div className="flex flex-1 space-x-2">
@@ -139,7 +140,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
               type="text"
               value={safeToString(gasTempC)}
               onChange={(e) => handleGasTempCChange(e.target.value)}
-              className="pr-8 w-full bg-white text-sm"
+              className="pr-10 w-full bg-white text-lg md:text-sm"
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">°C</span>
           </div>
@@ -148,15 +149,15 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
               type="text"
               value={safeToString(gasTempF)}
               onChange={(e) => handleGasTempFChange(e.target.value)}
-              className="pr-8 w-full bg-white text-sm"
+              className="pr-10 w-full bg-white text-lg md:text-sm"
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">°F</span>
           </div>
         </div>
       </div>
       
-      <div className="flex items-center mb-4">
-        <div className="w-60 pr-4 calculator-field-label text-sm">
+      <div className="flex flex-col md:flex-row md:items-center mb-4">
+        <div className="w-full md:w-60 pr-4 calculator-field-label text-sm mb-2 md:mb-0">
           <span>Inlet Dust Concentration (Actual):</span>
         </div>
         <div className="flex flex-1 space-x-2">
@@ -165,7 +166,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
               type="text"
               value={safeToString(dustConcGramAm3)}
               onChange={(e) => handleDustConcGramAm3Change(e.target.value)}
-              className="pr-12 w-full bg-white text-sm"
+              className="pr-14 w-full bg-white text-lg md:text-sm"
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">g/Am³</span>
           </div>
@@ -174,15 +175,15 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
               type="text"
               value={safeToString(dustConcGrainACF)}
               onChange={(e) => handleDustConcGrainACFChange(e.target.value)}
-              className="pr-12 w-full bg-white text-sm"
+              className="pr-14 w-full bg-white text-lg md:text-sm"
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">grain/ACF</span>
           </div>
         </div>
       </div>
       
-      <div className="flex items-center mb-4">
-        <div className="w-60 pr-4 calculator-field-label text-sm">
+      <div className="flex flex-col md:flex-row md:items-center mb-4">
+        <div className="w-full md:w-60 pr-4 calculator-field-label text-sm mb-2 md:mb-0">
           <span>Inlet Dust Concentration (Normal):</span>
         </div>
         <div className="flex flex-1 space-x-2">
@@ -191,7 +192,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
               type="text"
               value={safeToString(dustConcGramNm3)}
               onChange={(e) => handleDustConcGramNm3Change(e.target.value)}
-              className="pr-12 w-full bg-white text-sm"
+              className="pr-14 w-full bg-white text-lg md:text-sm"
               placeholder="Enter g/Nm³"
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">g/Nm³</span>
@@ -201,7 +202,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
               type="text"
               value={safeToString(dustConcGrainSCF)}
               onChange={(e) => handleDustConcGrainSCFChange(e.target.value)}
-              className="pr-12 w-full bg-white text-sm"
+              className="pr-14 w-full bg-white text-lg md:text-sm"
               placeholder="Enter grain/SCF"
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">grain/SCF</span>
@@ -209,27 +210,27 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
         </div>
       </div>
       
-      <div className="flex items-center mb-4">
-        <div className="w-60 pr-4 calculator-field-label text-sm">
+      <div className="flex flex-col md:flex-row md:items-center mb-4">
+        <div className="w-full md:w-60 pr-4 calculator-field-label text-sm mb-2 md:mb-0">
           <span>Outlet Dust Concentration:</span>
         </div>
-        <div className="flex flex-1 items-center space-x-2">
-          <div className="w-1/2 relative">
+        <div className="flex flex-1 flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-2">
+          <div className="w-full md:w-1/2 relative">
             <Input 
               type="text"
               value={safeToString(outletDustKgH)}
               onChange={(e) => handleOutletDustKgHChange(e.target.value)}
-              className="pr-12 w-full bg-white text-sm"
+              className="pr-14 w-full bg-white text-lg md:text-sm"
               placeholder="Enter kg/h"
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">kg/h</span>
           </div>
-          <div className="w-1/2 relative">
+          <div className="w-full md:w-1/2 relative">
             <Input 
               type="text"
               value={safeToString(outletDustLbH)}
               onChange={(e) => handleOutletDustLbHChange(e.target.value)}
-              className="pr-12 w-full bg-white text-sm"
+              className="pr-14 w-full bg-white text-lg md:text-sm"
               placeholder="Enter lb/h"
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">lb/h</span>
@@ -238,15 +239,15 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
             type="button"
             onClick={estimateOutletDust}
             variant="outline"
-            className="ml-2 shrink-0 h-10"
+            className="w-full md:w-auto md:ml-2 h-10"
           >
             Estimate
           </Button>
         </div>
       </div>
       
-      <div className="flex items-center mb-4">
-        <div className="w-60 pr-4 calculator-field-label text-sm">
+      <div className="flex flex-col md:flex-row md:items-center mb-4">
+        <div className="w-full md:w-60 pr-4 calculator-field-label text-sm mb-2 md:mb-0">
           <span>Target Emission:</span>
         </div>
         <div className="flex flex-1 space-x-2">
@@ -255,7 +256,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
               type="text"
               value={safeToString(targetEmissionMgNm3)}
               onChange={(e) => handleTargetEmissionMgNm3Change(e.target.value)}
-              className="pr-12 w-full bg-white text-sm"
+              className="pr-14 w-full bg-white text-lg md:text-sm"
               placeholder="Enter mg/Nm³"
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">mg/Nm³ (dry)</span>
@@ -265,7 +266,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
               type="text"
               value={safeToString(targetEmissionGrainDscf)}
               onChange={(e) => handleTargetEmissionGrainDscfChange(e.target.value)}
-              className="pr-12 w-full bg-white text-sm"
+              className="pr-14 w-full bg-white text-lg md:text-sm"
               placeholder="Enter grain/dscf"
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">grain/dscf (dry)</span>
@@ -273,32 +274,32 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
         </div>
       </div>
       
-      <div className="flex items-center mb-4">
-        <div className="w-60 pr-4 calculator-field-label text-sm">
+      <div className="flex flex-col md:flex-row md:items-center mb-4">
+        <div className="w-full md:w-60 pr-4 calculator-field-label text-sm mb-2 md:mb-0">
           <span>Negative Pressure at Filter Inlet:</span>
         </div>
-        <div className="flex flex-1 space-x-2">
-          <div className="w-1/2 relative">
+        <div className="flex flex-1 flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
+          <div className="w-full md:w-1/2 relative">
             <Input 
               type="text"
               value={negativePressureMbar !== null ? negativePressureMbar.toString() : ''}
               onChange={(e) => handleNegativePressureMbarChange(e.target.value)}
-              className="pr-8 w-full bg-white text-sm"
+              className="pr-10 w-full bg-white text-lg md:text-sm"
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">mbar</span>
           </div>
-          <div className="w-1/2 relative">
+          <div className="w-full md:w-1/2 relative">
             <Input 
               type="text"
               value={negativePressureInchWG !== null ? negativePressureInchWG.toString() : ''}
               onChange={(e) => handleNegativePressureInchWGChange(e.target.value)}
-              className="pr-12 w-full bg-white text-sm"
+              className="pr-14 w-full bg-white text-lg md:text-sm"
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">Inches W.G.</span>
           </div>
           <Popover>
             <PopoverTrigger asChild>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="w-full md:w-auto">
                 Other units
               </Button>
             </PopoverTrigger>
@@ -318,8 +319,8 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
         </div>
       </div>
       
-      <div className="flex items-center mb-4">
-        <div className="w-60 pr-4 calculator-field-label text-sm">
+      <div className="flex flex-col md:flex-row md:items-center mb-4">
+        <div className="w-full md:w-60 pr-4 calculator-field-label text-sm mb-2 md:mb-0">
           <span>Duct before BH (Size & Velocity):</span>
         </div>
         <div className="flex flex-1 space-x-2">
@@ -331,7 +332,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
                 setDuctVelocity(e.target.value);
                 setDuctSize('');
               }}
-              className="pr-12 w-full bg-white text-sm"
+              className="pr-14 w-full bg-white text-lg md:text-sm"
               placeholder={designType === 'modular' ? 'Enter velocity' : 'Enter velocity'}
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">
@@ -346,7 +347,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
                 setDuctSize(e.target.value);
                 setDuctVelocity('');
               }}
-              className="pr-12 w-full bg-white text-sm"
+              className="pr-14 w-full bg-white text-lg md:text-sm"
               placeholder={designType === 'modular' ? 'Enter duct size' : 'Enter duct size'}
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">
