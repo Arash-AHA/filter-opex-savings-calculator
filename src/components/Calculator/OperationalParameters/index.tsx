@@ -57,31 +57,35 @@ const OperationalParameters: React.FC<OperationalParametersProps> = (props) => {
             <div className="space-y-3">
               <div className="space-y-1">
                 <div className="text-sm text-gray-500">Current Situation:</div>
-                <div className="flex flex-col">
+                <div className={isMobile ? "flex flex-col" : "flex items-center"}>
                   <input
                     type="number"
                     value={props.currentLifeTime}
                     onChange={(e) => props.setCurrentLifeTime(parseFloat(e.target.value) || 0)}
-                    className="w-full min-w-0 rounded-md border border-gray-200 px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-primary h-8"
+                    className={`w-full min-w-0 ${isMobile ? "rounded-md" : "rounded-l-md"} border border-gray-200 px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-primary h-8`}
                     min={1}
                     max={60}
                   />
-                  <span className="text-xs text-gray-500 mt-1">Months</span>
+                  <span className={`inline-flex items-center px-2 py-1 text-sm text-gray-500 bg-gray-50 ${isMobile ? "rounded-md border border-gray-200 mt-1 justify-center" : "border border-l-0 border-gray-200 rounded-r-md whitespace-nowrap"} h-8`}>
+                    Months
+                  </span>
                 </div>
               </div>
               
               <div className="space-y-1">
                 <div className="text-sm text-gray-500">Scheuch EMC Technology:</div>
-                <div className="flex flex-col">
+                <div className={isMobile ? "flex flex-col" : "flex items-center"}>
                   <input
                     type="number"
                     value={props.scheuchLifeTime}
                     onChange={(e) => props.setScheuchLifeTime(parseFloat(e.target.value) || 0)}
-                    className="w-full min-w-0 rounded-md border border-gray-200 px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-primary h-8"
+                    className={`w-full min-w-0 ${isMobile ? "rounded-md" : "rounded-l-md"} border border-gray-200 px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-primary h-8`}
                     min={1}
                     max={60}
                   />
-                  <span className="text-xs text-gray-500 mt-1">Months</span>
+                  <span className={`inline-flex items-center px-2 py-1 text-sm text-gray-500 bg-gray-50 ${isMobile ? "rounded-md border border-gray-200 mt-1 justify-center" : "border border-l-0 border-gray-200 rounded-r-md whitespace-nowrap"} h-8`}>
+                    Months
+                  </span>
                 </div>
               </div>
             </div>
