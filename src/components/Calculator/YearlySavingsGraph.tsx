@@ -46,7 +46,7 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
     if (onCageFrequencyChange) onCageFrequencyChange(value);
   };
 
-  // Generate yearly data with bag costs added at specific intervals
+  // Generate yearly data with bag costs added as a step function at specific years
   const data = useMemo(() => {
     const yearlyData = [];
     
@@ -59,26 +59,23 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
       'Total': 0
     });
     
-    // Calculate total bag replacement cost
-    const totalBagReplacementCost = bagSavings;
+    // Calculate the exact years when bag changes occur
+    const bagChangeYears = new Set();
+    if (localBagFrequency > 0) {
+      for (let month = localBagFrequency; month <= savingYears * 12; month += localBagFrequency) {
+        const exactYear = month / 12;
+        const yearIndex = Math.ceil(exactYear);
+        bagChangeYears.add(yearIndex);
+      }
+    }
+    
+    let accumulatedBagCost = 0;
     
     for (let year = 1; year <= savingYears; year++) {
-      // Calculate if a bag change is due this year based on frequency
-      const currentMonthNumber = year * 12;
-      const bagChangeOccursThisYear = 
-        localBagFrequency > 0 && 
-        (currentMonthNumber % localBagFrequency === 0 || 
-        (currentMonthNumber - 12 < localBagFrequency && currentMonthNumber >= localBagFrequency));
-      
-      // Calculate accumulated bag costs - only add cost when frequency is reached
-      const bagCostThisYear = bagChangeOccursThisYear ? totalBagReplacementCost : 0;
-      
-      // Get previous year's accumulated bag cost
-      const previousYearIndex = yearlyData.length - 1;
-      const previousBagCost = yearlyData[previousYearIndex]['Bag Material & Labor'];
-      
-      // Accumulate bag costs - add current cost to previous accumulated cost
-      const accumulatedBagCost = previousBagCost + bagCostThisYear;
+      // Check if this year is a bag change year
+      if (bagChangeYears.has(year)) {
+        accumulatedBagCost += bagSavings;
+      }
       
       // Calculate linear fan power and air savings
       const yearlyFanPowerSavings = fanPowerSavings / savingYears * year;
