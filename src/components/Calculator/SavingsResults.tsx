@@ -1,3 +1,4 @@
+
 import React, { useRef, useState } from 'react';
 import InputField from './InputField';
 import ResultCard from './ResultCard';
@@ -396,7 +397,7 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
 
       {/* Yearly Savings Graph Dialog - Now shown when Show Graph is clicked */}
       <Dialog open={showGraphDialog} onOpenChange={setShowGraphDialog}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-5xl w-[90vw] max-h-[90vh]">
           <DialogHeader>
             <DialogTitle>OPEX Cost Over {savingYears} Years</DialogTitle>
             <DialogDescription>
@@ -419,3 +420,4 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
 };
 
 export default SavingsResults;
+

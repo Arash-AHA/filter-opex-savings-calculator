@@ -38,7 +38,7 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
   return (
     <Card className="w-full">
       <CardContent className="pt-6">
-        <div className="h-[400px]">
+        <div className="h-[500px]">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
               data={data}
@@ -109,3 +109,4 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
 };
 
 export default YearlySavingsGraph;
+
