@@ -97,6 +97,8 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
   const [showPrintDialog, setShowPrintDialog] = useState(false);
   const [showGraphDialog, setShowGraphDialog] = useState(false);
   const [showYearlyGraphDialog, setShowYearlyGraphDialog] = useState(false);
+  const [bagChangeFrequency, setBagChangeFrequency] = useState(currentLifeTime);
+  const [cageReplacementFrequency, setCageReplacementFrequency] = useState(currentLifeTime * 2); // Default to twice the bag lifetime
   const printContentRef = useRef<HTMLDivElement>(null);
   // Add state for air unit type
   const [airUnitType, setAirUnitType] = useState<AirUnitType>('Nm³');
@@ -410,6 +412,10 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
             fanPowerSavings={totalSavings.fanPowerSavings}
             airSavings={totalSavings.airSavings}
             savingYears={savingYears}
+            bagChangeFrequency={bagChangeFrequency}
+            cageReplacementFrequency={cageReplacementFrequency}
+            onBagFrequencyChange={setBagChangeFrequency}
+            onCageFrequencyChange={setCageReplacementFrequency}
             isOpen={true}
             onClose={() => {}}
           />
@@ -420,4 +426,3 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
 };
 
 export default SavingsResults;
-
