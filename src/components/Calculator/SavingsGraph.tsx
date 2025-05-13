@@ -48,6 +48,12 @@ const SavingsGraph: React.FC<SavingsGraphProps> = ({
                   maximumFractionDigits: 0,
                   notation: 'compact',
                 })}`}
+                label={{ 
+                  value: 'USD', 
+                  angle: -90, 
+                  position: 'insideLeft',
+                  style: { textAnchor: 'middle' }
+                }}
               />
               <Tooltip 
                 formatter={(value) => [`$${Number(value).toLocaleString(undefined, {

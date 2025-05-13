@@ -1,4 +1,3 @@
-
 import React, { useRef, useState } from 'react';
 import InputField from './InputField';
 import ResultCard from './ResultCard';
@@ -8,6 +7,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Printer, ScrollText, BarChart } from 'lucide-react';
 import PrintableResults from './PrintableResults';
 import SavingsGraph from './SavingsGraph';
+import YearlySavingsGraph from './YearlySavingsGraph';
 import { EnergyUnit } from './hooks/useSavingsCalculation';
 import { 
   Select,
@@ -95,6 +95,7 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
 }) => {
   const [showPrintDialog, setShowPrintDialog] = useState(false);
   const [showGraphDialog, setShowGraphDialog] = useState(false);
+  const [showYearlyGraphDialog, setShowYearlyGraphDialog] = useState(false);
   const printContentRef = useRef<HTMLDivElement>(null);
   // Add state for air unit type
   const [airUnitType, setAirUnitType] = useState<AirUnitType>('Nm³');
@@ -343,6 +344,15 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
             <BarChart className="h-4 w-4" />
             Show Graph
           </Button>
+          
+          <Button
+            variant="outline"
+            className="flex items-center gap-2"
+            onClick={() => setShowYearlyGraphDialog(true)}
+          >
+            <BarChart className="h-4 w-4" />
+            OPEX by Year
+          </Button>
         </div>
       </div>
 
@@ -412,6 +422,16 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
           />
         </DialogContent>
       </Dialog>
+
+      {/* Yearly Savings Graph Dialog */}
+      <YearlySavingsGraph
+        bagSavings={totalSavings.bagSavings}
+        fanPowerSavings={totalSavings.fanPowerSavings}
+        airSavings={totalSavings.airSavings}
+        savingYears={savingYears}
+        isOpen={showYearlyGraphDialog}
+        onClose={() => setShowYearlyGraphDialog(false)}
+      />
     </>
   );
 };
