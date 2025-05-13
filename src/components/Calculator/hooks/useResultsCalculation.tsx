@@ -1,4 +1,3 @@
-
 import { useMemo } from 'react';
 import { useFilterAreaCalculation } from './useFilterAreaCalculation';
 import { useBagReplacementCalculation } from './useBagReplacementCalculation';
@@ -13,7 +12,7 @@ export const useResultsCalculation = (
   airVolumeM3h: string,
   emcCleaningFactor: number,
   bagPrice: number,
-  cagePrice: number,
+  cagePrice: number, // Added cagePrice parameter
   bagChangeTime: number,
   numPeople: number,
   travelCost: number,
@@ -53,7 +52,7 @@ export const useResultsCalculation = (
     bagChangeTime,
     numPeople,
     bagPrice,
-    cagePrice
+    cagePrice // Added cagePrice
   );
   
   // Calculate life extension
@@ -62,11 +61,7 @@ export const useResultsCalculation = (
   // Calculate lifetime savings
   const standardReplacements = 120 / currentLifeTime;
   const emcReplacements = 120 / scheuchLifeTime;
-  const replacementSavings = (standardReplacements - emcReplacements) * (
-    (bagResults.totalBags * bagPrice) + 
-    (bagResults.totalBags * cagePrice) + 
-    parseFloat(bagReplacementCost.toString())
-  );
+  const replacementSavings = (standardReplacements - emcReplacements) * (bagResults.totalBags * bagPrice + parseFloat(bagReplacementCost.toString()));
   
   // Calculate compressed air savings
   const compressedAirSavings = (currentAirConsumption - scheuchAirConsumption) * workingHours;
@@ -115,12 +110,6 @@ export const useResultsCalculation = (
                          (((savingYears * 12) / scheuchLifeTime) * 
                           ((bagResults.totalBags * bagPrice) + travelCost)));
       
-      // Cage Replacement Savings
-      const cageSavings = ((((savingYears * 12) / currentLifeTime) * 
-                           (bagResults.totalBags * cagePrice)) - 
-                          (((savingYears * 12) / scheuchLifeTime) * 
-                           (bagResults.totalBags * cagePrice)));
-      
       // Fan Power Consumption using the effective kWh cost
       const fanPowerSavings = (((parseFloat(airVolumeM3h) * 
                                (currentDiffPressure - scheuchDiffPressure) * 100) / 
@@ -144,17 +133,15 @@ export const useResultsCalculation = (
       
       return {
         bagSavings,
-        cageSavings,
         fanPowerSavings,
         airSavings,
-        total: bagSavings + cageSavings + fanPowerSavings + airSavings
+        total: bagSavings + fanPowerSavings + airSavings
       };
     } catch (error) {
       console.error("Error calculating total savings:", error);
       // Return default values if calculation fails
       return {
         bagSavings: 0,
-        cageSavings: 0,
         fanPowerSavings: 0,
         airSavings: 0,
         total: 0
@@ -162,7 +149,7 @@ export const useResultsCalculation = (
     }
   }, [
     savingYears, currentLifeTime, scheuchLifeTime, 
-    bagResults.totalBags, bagPrice, cagePrice, travelCost,
+    bagResults.totalBags, bagPrice, travelCost,
     airVolumeM3h, currentDiffPressure, scheuchDiffPressure,
     effectiveKwhCost, workingHours,
     currentAirConsumption, scheuchAirConsumption, compressedAirCost,
