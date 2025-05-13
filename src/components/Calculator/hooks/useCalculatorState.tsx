@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useDesignParameters } from './useDesignParameters';
 import { useBagReplacement } from './useBagReplacement';
 import { useOperationalParameters } from './useOperationalParameters';
-import { useSavingsCalculation } from './useSavingsCalculation';
+import { useSavingsCalculation, EnergyUnit } from './useSavingsCalculation';
 import { useResultsCalculation } from './useResultsCalculation';
 
 export const useCalculatorState = () => {
@@ -62,6 +62,7 @@ export const useCalculatorState = () => {
     savingsCalc.compressedAirCost,
     designParams.m2ToSqFtFactor,
     designParams.conversionFactor,
+    savingsCalc.energyUnit,
     designParams.airVolumeACFM
   );
 
@@ -96,6 +97,8 @@ export const useCalculatorState = () => {
     setKwhCost: savingsCalc.setKwhCost,
     compressedAirCost: savingsCalc.compressedAirCost,
     setCompressedAirCost: savingsCalc.setCompressedAirCost,
+    energyUnit: savingsCalc.energyUnit,
+    setEnergyUnit: savingsCalc.setEnergyUnit,
     
     // Calculated results
     results,
