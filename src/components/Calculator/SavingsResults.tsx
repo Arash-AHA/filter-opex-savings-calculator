@@ -1,11 +1,13 @@
+
 import React, { useRef, useState } from 'react';
 import InputField from './InputField';
 import ResultCard from './ResultCard';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Printer, ScrollText } from 'lucide-react';
+import { Printer, ScrollText, BarChart } from 'lucide-react';
 import PrintableResults from './PrintableResults';
+import SavingsGraph from './SavingsGraph';
 import { EnergyUnit } from './hooks/useSavingsCalculation';
 import { 
   Select,
@@ -92,6 +94,7 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
   formattedResults
 }) => {
   const [showPrintDialog, setShowPrintDialog] = useState(false);
+  const [showGraphDialog, setShowGraphDialog] = useState(false);
   const printContentRef = useRef<HTMLDivElement>(null);
   // Add state for air unit type
   const [airUnitType, setAirUnitType] = useState<AirUnitType>('Nm³');
@@ -322,7 +325,7 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
           </div>
         </div>
         
-        <div className="flex justify-center mt-6">
+        <div className="flex justify-center mt-6 gap-4">
           <Button
             variant="outline"
             className="flex items-center gap-2"
@@ -331,9 +334,19 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
             <Printer className="h-4 w-4" />
             Print Results
           </Button>
+          
+          <Button
+            variant="outline"
+            className="flex items-center gap-2"
+            onClick={() => setShowGraphDialog(true)}
+          >
+            <BarChart className="h-4 w-4" />
+            Show Graph
+          </Button>
         </div>
       </div>
 
+      {/* Print Results Dialog */}
       <Dialog open={showPrintDialog} onOpenChange={setShowPrintDialog}>
         <DialogContent className="max-w-4xl max-h-[90vh] p-0">
           <DialogHeader className="p-6 pb-0">
@@ -377,6 +390,26 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
               Export as PDF
             </Button>
           </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Savings Graph Dialog */}
+      <Dialog open={showGraphDialog} onOpenChange={setShowGraphDialog}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Savings Breakdown</DialogTitle>
+            <DialogDescription>
+              Visual breakdown of the estimated savings over {savingYears} years.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <SavingsGraph 
+            bagSavings={totalSavings.bagSavings}
+            fanPowerSavings={totalSavings.fanPowerSavings}
+            airSavings={totalSavings.airSavings}
+            total={totalSavings.total}
+            savingYears={savingYears}
+          />
         </DialogContent>
       </Dialog>
     </>
