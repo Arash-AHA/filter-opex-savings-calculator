@@ -1,6 +1,7 @@
-
 import React from 'react';
 import { cn } from '@/lib/utils';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Info } from 'lucide-react';
 
 type InputFieldProps = {
   id?: string;
@@ -27,6 +28,7 @@ type InputFieldProps = {
     onClick: () => void;
     label: string;
   };
+  tooltip?: string; // Add the tooltip property to the interface
 };
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -46,6 +48,7 @@ const InputField: React.FC<InputFieldProps> = ({
   inputClassName,
   secondaryInput,
   estimateButton,
+  tooltip,
 }) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     onChange(e.target.value);
@@ -127,13 +130,38 @@ const InputField: React.FC<InputFieldProps> = ({
     );
   };
 
+  // Render the label with optional tooltip
+  const renderLabel = () => {
+    if (!label) return null;
+    
+    if (tooltip) {
+      return (
+        <div className={cn("calculator-field-label flex items-center gap-1", labelClassName)}>
+          {label}
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Info className="h-4 w-4 text-muted-foreground cursor-help" />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="max-w-xs">{tooltip}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+      );
+    }
+    
+    return (
+      <div className={cn("calculator-field-label", labelClassName)}>
+        {label}
+      </div>
+    );
+  };
+
   return (
     <div className={cn("mb-4 flex items-center flex-wrap", className)}>
-      {label && (
-        <div className={cn("calculator-field-label", labelClassName)}>
-          {label}
-        </div>
-      )}
+      {renderLabel()}
       <div className={cn("calculator-field-input", secondaryInput && 'flex-1')}>
         <div className="flex">
           <div className={cn("flex-1", estimateButton && 'pr-2')}>
