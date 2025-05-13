@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import CalculatorSection from './CalculatorSection';
 import Transition from '../UI/Transition';
@@ -64,10 +65,8 @@ const FilterOpexCalculator = () => {
                 setTravelCost={calculatorState.setTravelCost} 
                 bagReplacementCost={calculatorState.bagReplacementCost} 
                 setBagReplacementCost={calculatorState.setBagReplacementCost} 
-                calculateTravelCost={() => {
-                  if (calculatorState.results.daysToReplace > 0) {
-                    calculatorState.calculateTravelCost(calculatorState.results.daysToReplace);
-                  }
+                calculateTravelCost={(daysToReplace) => {
+                  calculatorState.calculateTravelCost(daysToReplace);
                 }} 
                 formattedResults={calculatorState.formattedResults} 
               />
@@ -81,7 +80,34 @@ const FilterOpexCalculator = () => {
                 <ChevronDown className={`h-4 w-4 transition-transform ${openSections.operational ? 'transform rotate-180' : ''}`} />
               </CollapsibleTrigger>} delay={500} className="bg-gradient-to-r from-amber-50 to-amber-100/30 border border-amber-100">
             <CollapsibleContent>
-              <OperationalParameters currentLifeTime={calculatorState.currentLifeTime} setCurrentLifeTime={calculatorState.setCurrentLifeTime} scheuchLifeTime={calculatorState.scheuchLifeTime} setScheuchLifeTime={calculatorState.setScheuchLifeTime} currentDiffPressure={calculatorState.currentDiffPressure} setCurrentDiffPressure={calculatorState.setCurrentDiffPressure} scheuchDiffPressure={calculatorState.scheuchDiffPressure} setScheuchDiffPressure={calculatorState.setScheuchDiffPressure} currentAirConsumption={calculatorState.currentAirConsumption} setCurrentAirConsumption={calculatorState.setCurrentAirConsumption} scheuchAirConsumption={calculatorState.scheuchAirConsumption} setScheuchAirConsumption={calculatorState.setScheuchAirConsumption} currentMotorKW={calculatorState.currentMotorKW} setCurrentMotorKW={calculatorState.setCurrentMotorKW} scheuchMotorKW={calculatorState.scheuchMotorKW} setScheuchMotorKW={calculatorState.setScheuchMotorKW} bagQuality={calculatorState.bagQuality} setBagQuality={calculatorState.setBagQuality} cleaningPressure={calculatorState.cleaningPressure} setCleaningPressure={calculatorState.setCleaningPressure} minPulseInterval={calculatorState.minPulseInterval} setMinPulseInterval={calculatorState.setMinPulseInterval} avgPulseInterval={calculatorState.avgPulseInterval} setAvgPulseInterval={calculatorState.setAvgPulseInterval} numEMCFlaps={typeof calculatorState.numEMCFlaps === 'string' ? calculatorState.numEMCFlaps === '' ? 0 : parseInt(calculatorState.numEMCFlaps) : calculatorState.numEMCFlaps} workingHours={calculatorState.workingHours} />
+              <OperationalParameters 
+                currentLifeTime={calculatorState.currentLifeTime} 
+                setCurrentLifeTime={calculatorState.setCurrentLifeTime} 
+                scheuchLifeTime={calculatorState.scheuchLifeTime} 
+                setScheuchLifeTime={calculatorState.setScheuchLifeTime} 
+                currentDiffPressure={calculatorState.currentDiffPressure} 
+                setCurrentDiffPressure={calculatorState.setCurrentDiffPressure} 
+                scheuchDiffPressure={calculatorState.scheuchDiffPressure} 
+                setScheuchDiffPressure={calculatorState.setScheuchDiffPressure} 
+                currentAirConsumption={calculatorState.currentAirConsumption} 
+                setCurrentAirConsumption={calculatorState.setCurrentAirConsumption} 
+                scheuchAirConsumption={calculatorState.scheuchAirConsumption} 
+                setScheuchAirConsumption={calculatorState.setScheuchAirConsumption} 
+                currentMotorKW={calculatorState.currentMotorKW} 
+                setCurrentMotorKW={calculatorState.setCurrentMotorKW} 
+                scheuchMotorKW={calculatorState.scheuchMotorKW} 
+                setScheuchMotorKW={calculatorState.setScheuchMotorKW}
+                bagQuality={calculatorState.bagQuality}
+                setBagQuality={calculatorState.setBagQuality}
+                cleaningPressure={calculatorState.cleaningPressure}
+                setCleaningPressure={calculatorState.setCleaningPressure}
+                minPulseInterval={calculatorState.minPulseInterval}
+                setMinPulseInterval={calculatorState.setMinPulseInterval}
+                avgPulseInterval={calculatorState.avgPulseInterval}
+                setAvgPulseInterval={calculatorState.setAvgPulseInterval}
+                numEMCFlaps={typeof calculatorState.numEMCFlaps === 'string' ? calculatorState.numEMCFlaps === '' ? 0 : parseInt(calculatorState.numEMCFlaps) : calculatorState.numEMCFlaps} 
+                workingHours={calculatorState.workingHours} 
+              />
             </CollapsibleContent>
           </CalculatorSection>
         </Collapsible>
@@ -117,7 +143,10 @@ const FilterOpexCalculator = () => {
                 airVolumeACFM={calculatorState.airVolumeACFM} 
                 numEMCFlaps={calculatorState.numEMCFlaps} 
                 bagLength={calculatorState.bagLength} 
-                formattedResults={calculatorState.formattedResults} 
+                formattedResults={calculatorState.formattedResults}
+                bagPrice={calculatorState.bagPrice}
+                cagePrice={calculatorState.cagePrice}
+                totalBags={calculatorState.results.totalBags}
               />
             </CollapsibleContent>
           </CalculatorSection>

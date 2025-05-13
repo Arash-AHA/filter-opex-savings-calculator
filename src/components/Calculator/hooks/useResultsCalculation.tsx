@@ -1,3 +1,4 @@
+
 import { useMemo } from 'react';
 import { useFilterAreaCalculation } from './useFilterAreaCalculation';
 import { useBagReplacementCalculation } from './useBagReplacementCalculation';
@@ -66,6 +67,9 @@ export const useResultsCalculation = (
   // Calculate compressed air savings
   const compressedAirSavings = (currentAirConsumption - scheuchAirConsumption) * workingHours;
   
+  // Calculate yearly compressed air cost
+  const yearlyCompressedAirCost = scheuchMotorKW * kwhCost * workingHours;
+  
   // Combined results
   const results = useMemo(() => {
     return {
@@ -76,9 +80,10 @@ export const useResultsCalculation = (
       totalReplacementCost: parseFloat(bagReplacementCost.toString()),
       tenYearSavings: replacementSavings,
       lifeExtension,
-      compressedAirSavings
+      compressedAirSavings,
+      yearlyCompressedAirCost // Added new result
     };
-  }, [filterResults, bagResults, bagReplacementCost, replacementSavings, lifeExtension, compressedAirSavings]);
+  }, [filterResults, bagResults, bagReplacementCost, replacementSavings, lifeExtension, compressedAirSavings, yearlyCompressedAirCost]);
   
   // Use the formatted results hook
   const formattedResults = useFormattedResults(
