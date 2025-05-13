@@ -7,9 +7,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Printer, ScrollText } from 'lucide-react';
 import PrintableResults from './PrintableResults';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Label } from '@/components/ui/label';
-import { useIsMobile } from '@/hooks/use-mobile';
 
 interface SavingsResultsProps {
   savingYears: number;
@@ -20,8 +17,6 @@ interface SavingsResultsProps {
   setKwhCost: (value: number) => void;
   compressedAirCost: string;
   setCompressedAirCost: (value: string) => void;
-  energyUnit?: string;
-  setEnergyUnit?: (value: string) => void;
   totalSavings: {
     bagSavings: number;
     fanPowerSavings: number;
@@ -59,8 +54,6 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
   setKwhCost,
   compressedAirCost,
   setCompressedAirCost,
-  energyUnit = "kWh",
-  setEnergyUnit = () => {},
   totalSavings,
   currentLifeTime,
   scheuchLifeTime,
@@ -79,7 +72,6 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
 }) => {
   const [showPrintDialog, setShowPrintDialog] = useState(false);
   const printContentRef = useRef<HTMLDivElement>(null);
-  const isMobile = useIsMobile();
   
   // Safely access formattedResults with default fallback values
   const safeFormattedResults = formattedResults || {
@@ -88,16 +80,6 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
     acRatioGross: "0",
     acRatioNet: "0",
     totalBags: 0
-  };
-
-  const energyUnitOptions = [
-    { value: "kWh", label: "kWh" },
-    { value: "MMBtu", label: "MMBtu" },
-    { value: "therm", label: "therm" }
-  ];
-
-  const handleEnergyUnitChange = (value: string) => {
-    setEnergyUnit(value);
   };
 
   const handlePrint = () => {
@@ -159,42 +141,15 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
             className="mb-6"
           />
           
-          <div className="mb-6">
-            <div className="flex flex-col space-y-2">
-              <div className="calculator-field-label">
-                USD per:
-              </div>
-              <div className="flex flex-col space-y-2">
-                <div className="flex gap-2 items-start">
-                  <input
-                    type="number"
-                    value={kwhCost}
-                    onChange={(e) => setKwhCost(parseFloat(e.target.value) || 0)}
-                    min={0}
-                    step={0.01}
-                    className="calculator-input flex-grow"
-                  />
-                  <Select
-                    value={energyUnit}
-                    onValueChange={handleEnergyUnitChange}
-                  >
-                    <SelectTrigger className="w-24">
-                      <SelectValue placeholder="Unit" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {energyUnitOptions.map((option) => (
-                        <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="text-xs text-gray-500">
-                  {energyUnit === "kWh" ? "Price per kilowatt-hour" : 
-                   energyUnit === "MMBtu" ? "Price per million BTU" : "Price per therm"}
-                </div>
-              </div>
-            </div>
-          </div>
+          <InputField
+            label="USD per kWh for plant:"
+            value={kwhCost}
+            onChange={(value) => setKwhCost(parseFloat(value) || 0)}
+            type="number"
+            min={0}
+            step={0.01}
+            className="mb-6"
+          />
           
           <InputField
             label="USD/Nm³ from Plant Network:"
