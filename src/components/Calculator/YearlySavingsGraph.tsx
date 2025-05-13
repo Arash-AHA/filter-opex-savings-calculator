@@ -18,22 +18,33 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
   airSavings,
   savingYears
 }) => {
-  // Generate yearly data
-  const data = Array.from({ length: savingYears }, (_, index) => {
-    const year = index + 1;
-    const yearlyBagSavings = bagSavings / savingYears * year;
-    const yearlyFanPowerSavings = fanPowerSavings / savingYears * year;
-    const yearlyAirSavings = airSavings / savingYears * year;
-    const totalYearlySavings = yearlyBagSavings + yearlyFanPowerSavings + yearlyAirSavings;
-    
-    return {
-      year: `Year ${year}`,
-      'Bag Material & Labor': yearlyBagSavings,
-      'Fan Power': yearlyFanPowerSavings,
-      'Compressed Air': yearlyAirSavings,
-      'Total': totalYearlySavings
-    };
-  });
+  // Generate yearly data, now including Year 0
+  const data = [
+    // Add Year 0 with all values at 0
+    {
+      year: 'Year 0',
+      'Bag Material & Labor': 0,
+      'Fan Power': 0,
+      'Compressed Air': 0,
+      'Total': 0
+    },
+    // Generate the rest of the years
+    ...Array.from({ length: savingYears }, (_, index) => {
+      const year = index + 1;
+      const yearlyBagSavings = bagSavings / savingYears * year;
+      const yearlyFanPowerSavings = fanPowerSavings / savingYears * year;
+      const yearlyAirSavings = airSavings / savingYears * year;
+      const totalYearlySavings = yearlyBagSavings + yearlyFanPowerSavings + yearlyAirSavings;
+      
+      return {
+        year: `Year ${year}`,
+        'Bag Material & Labor': yearlyBagSavings,
+        'Fan Power': yearlyFanPowerSavings,
+        'Compressed Air': yearlyAirSavings,
+        'Total': totalYearlySavings
+      };
+    })
+  ];
 
   return (
     <Card className="w-full">
@@ -109,4 +120,3 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
 };
 
 export default YearlySavingsGraph;
-
