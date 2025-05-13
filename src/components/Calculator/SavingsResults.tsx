@@ -17,7 +17,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { SavingsSection } from './PrintableSections/SavingsSection';
 
 // Conversion factors to kWh
 const CONVERSION_FACTORS = {
@@ -254,8 +253,7 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
         </div>
         
         <div className="md:col-span-2">
-          <div className="grid grid-cols-1 gap-6">
-            {/* Improvement Metrics Card */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="bg-white p-5 rounded-xl shadow-soft border border-gray-100">
               <h3 className="text-sm font-medium text-gray-700 mb-4 pb-2 border-b">Improvement Metrics</h3>
               
@@ -286,7 +284,6 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
               </div>
             </div>
             
-            {/* OPEX Savings Card */}
             <div className="bg-white p-5 rounded-xl shadow-soft border border-gray-100">
               <h3 className="text-center text-sm font-medium text-gray-700 mb-4 pb-2 border-b">OPEX Savings in {savingYears} years</h3>
               
@@ -323,82 +320,11 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
         </div>
       </div>
       
-      {/* Display OPEX Savings Analysis section */}
-      <div className="mt-8 mb-8">
-        <SavingsSection
-          savingYears={savingYears}
-          bagSavings={totalSavings.bagSavings}
-          fanPowerSavings={totalSavings.fanPowerSavings}
-          airSavings={totalSavings.airSavings}
-          totalSavings={totalSavings.total}
-        />
-      </div>
-      
-      {/* Annual Cost Breakdown */}
-      <div className="mt-8">
-        <h3 className="text-lg font-medium text-gray-800 mb-4">Annual Cost Breakdown</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-white p-5 rounded-xl shadow-soft border border-gray-100">
-            <h4 className="text-sm font-medium text-gray-700 mb-3">Current System Annual Costs</h4>
-            <div className="space-y-3">
-              <div className="flex justify-between">
-                <span>Fan Power Consumption:</span>
-                <span>${(currentMotorKW * workingHours * kwhCost).toLocaleString(undefined, {maximumFractionDigits: 0})}/year</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Compressed Air Consumption:</span>
-                <span>${(currentAirConsumption * workingHours * (parseFloat(compressedAirCost) || 0)).toLocaleString(undefined, {maximumFractionDigits: 0})}/year</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Bag Replacement:</span>
-                <span>${(safeFormattedResults.totalBags * (bagChangeFrequency > 0 ? 12 / bagChangeFrequency : 0)).toLocaleString(undefined, {maximumFractionDigits: 0})}/year</span>
-              </div>
-              <div className="h-px bg-gray-200 my-2"></div>
-              <div className="flex justify-between font-medium">
-                <span>Total Annual Cost:</span>
-                <span>${(
-                  currentMotorKW * workingHours * kwhCost + 
-                  currentAirConsumption * workingHours * (parseFloat(compressedAirCost) || 0) +
-                  safeFormattedResults.totalBags * (bagChangeFrequency > 0 ? 12 / bagChangeFrequency : 0)
-                ).toLocaleString(undefined, {maximumFractionDigits: 0})}</span>
-              </div>
-            </div>
-          </div>
-          
-          <div className="bg-white p-5 rounded-xl shadow-soft border border-gray-100">
-            <h4 className="text-sm font-medium text-gray-700 mb-3">EMC System Annual Costs</h4>
-            <div className="space-y-3">
-              <div className="flex justify-between">
-                <span>Fan Power Consumption:</span>
-                <span>${(scheuchMotorKW * workingHours * kwhCost).toLocaleString(undefined, {maximumFractionDigits: 0})}/year</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Compressed Air Consumption:</span>
-                <span>${(scheuchAirConsumption * workingHours * (parseFloat(compressedAirCost) || 0)).toLocaleString(undefined, {maximumFractionDigits: 0})}/year</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Bag Replacement:</span>
-                <span>${(safeFormattedResults.totalBags * (scheuchLifeTime > 0 ? 12 / scheuchLifeTime : 0)).toLocaleString(undefined, {maximumFractionDigits: 0})}/year</span>
-              </div>
-              <div className="h-px bg-gray-200 my-2"></div>
-              <div className="flex justify-between font-medium">
-                <span>Total Annual Cost:</span>
-                <span>${(
-                  scheuchMotorKW * workingHours * kwhCost + 
-                  scheuchAirConsumption * workingHours * (parseFloat(compressedAirCost) || 0) +
-                  safeFormattedResults.totalBags * (scheuchLifeTime > 0 ? 12 / scheuchLifeTime : 0)
-                ).toLocaleString(undefined, {maximumFractionDigits: 0})}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
       <div className="mt-10">
         <div className="flex justify-center">
-          <div className="bg-green-50 border border-green-200 p-6 rounded-xl max-w-2xl w-full text-center">
+          <div className="bg-green-50 border border-green-200 p-6 rounded-xl max-w-2xl text-center">
             <h3 className="text-xl font-medium text-green-800 mb-4">Total Estimated Savings</h3>
-            <div className="text-5xl font-bold text-green-700 mb-2">${totalSavings.total.toLocaleString(undefined, {maximumFractionDigits: 0})}</div>
+            <div className="text-4xl font-bold text-green-700 mb-1">${totalSavings.total.toLocaleString(undefined, {maximumFractionDigits: 0})}</div>
             <div className="text-sm text-green-600">Over {savingYears} years of operation with EMC technology</div>
           </div>
         </div>
