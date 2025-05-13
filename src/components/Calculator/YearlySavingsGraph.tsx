@@ -46,12 +46,8 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
     if (onCageFrequencyChange) onCageFrequencyChange(value);
   };
 
-  // Generate yearly data with accumulating bag costs based on frequency
+  // Generate yearly data with bag costs added at specific intervals
   const data = useMemo(() => {
-    // Calculate the total replacement cost per occurrence (bag replacement event)
-    const totalReplacementCostPerEvent = bagSavings / (savingYears * 12 / localBagFrequency);
-    
-    // Create an array to track accumulated costs over time
     const yearlyData = [];
     
     // Add Year 0 with all values at 0
@@ -63,20 +59,26 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
       'Total': 0
     });
     
-    let accumulatedBagCost = 0;
+    // Calculate total bag replacement cost
+    const totalBagReplacementCost = bagSavings;
     
-    // Generate the rest of the years
     for (let year = 1; year <= savingYears; year++) {
-      // Check if a bag change is due this year
-      // Convert years to months and check if it's a multiple of the bag change frequency
-      const monthsElapsed = year * 12;
+      // Calculate if a bag change is due this year based on frequency
+      const currentMonthNumber = year * 12;
+      const bagChangeOccursThisYear = 
+        localBagFrequency > 0 && 
+        (currentMonthNumber % localBagFrequency === 0 || 
+        (currentMonthNumber - 12 < localBagFrequency && currentMonthNumber >= localBagFrequency));
       
-      // If we've passed a bag change threshold, add the replacement cost
-      if (monthsElapsed % localBagFrequency === 0 || 
-          (monthsElapsed > localBagFrequency && Math.floor(monthsElapsed / localBagFrequency) > 
-           Math.floor((monthsElapsed - 12) / localBagFrequency))) {
-        accumulatedBagCost += totalReplacementCostPerEvent;
-      }
+      // Calculate accumulated bag costs - only add cost when frequency is reached
+      const bagCostThisYear = bagChangeOccursThisYear ? totalBagReplacementCost : 0;
+      
+      // Get previous year's accumulated bag cost
+      const previousYearIndex = yearlyData.length - 1;
+      const previousBagCost = yearlyData[previousYearIndex]['Bag Material & Labor'];
+      
+      // Accumulate bag costs - add current cost to previous accumulated cost
+      const accumulatedBagCost = previousBagCost + bagCostThisYear;
       
       // Calculate linear fan power and air savings
       const yearlyFanPowerSavings = fanPowerSavings / savingYears * year;
