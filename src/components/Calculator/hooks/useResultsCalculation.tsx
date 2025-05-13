@@ -30,7 +30,8 @@ export const useResultsCalculation = (
   compressedAirCost: string,
   m2ToSqFtFactor: number,
   conversionFactor: number,
-  airVolumeACFM?: string
+  airVolumeACFM?: string,
+  energyUnit: string = 'kWh'
 ) => {
   // Use the filter area calculation hook with the additional airVolumeACFM parameter
   const filterResults = useFilterAreaCalculation(
@@ -107,7 +108,8 @@ export const useResultsCalculation = (
       scheuchDiffPressure,
       kwhCost,
       workingHours,
-      savingYears
+      savingYears,
+      energyUnit
     };
 
     // Air savings parameters
@@ -119,11 +121,24 @@ export const useResultsCalculation = (
       scheuchMotorKW,
       kwhCost,
       workingHours,
-      savingYears
+      savingYears,
+      energyUnit
     };
 
     // Calculate savings directly
     try {
+      // Convert energy costs to equivalent kWh cost for calculation
+      let effectiveKwhCost = kwhCost;
+      
+      // Apply conversion based on selected energy unit
+      if (energyUnit === 'MMBtu') {
+        // 1 MMBtu ≈ 293.07 kWh
+        effectiveKwhCost = kwhCost / 293.07;
+      } else if (energyUnit === 'therm') {
+        // 1 therm ≈ 29.307 kWh
+        effectiveKwhCost = kwhCost / 29.307;
+      }
+
       // Bag Material and Labor
       const bagSavings = ((((savingYears * 12) / currentLifeTime) * 
                           ((bagResults.totalBags * bagPrice) + travelCost)) - 
@@ -133,7 +148,7 @@ export const useResultsCalculation = (
       // Fan Power Consumption
       const fanPowerSavings = (((parseFloat(airVolumeM3h) * 
                                (currentDiffPressure - scheuchDiffPressure) * 100) / 
-                               (3600 * 1000 * 0.8)) * kwhCost * 
+                               (3600 * 1000 * 0.8)) * effectiveKwhCost * 
                                workingHours * savingYears);
       
       // Compressed Air Consumption
@@ -148,7 +163,7 @@ export const useResultsCalculation = (
       // Otherwise, use the motor KW difference
       else {
         airSavings = (currentMotorKW - scheuchMotorKW) * 
-                     kwhCost * workingHours * savingYears;
+                     effectiveKwhCost * workingHours * savingYears;
       }
       
       return {
@@ -171,7 +186,7 @@ export const useResultsCalculation = (
     savingYears, currentLifeTime, scheuchLifeTime, 
     bagResults.totalBags, bagPrice, travelCost,
     airVolumeM3h, currentDiffPressure, scheuchDiffPressure,
-    kwhCost, workingHours,
+    kwhCost, workingHours, energyUnit,
     currentAirConsumption, scheuchAirConsumption, compressedAirCost,
     currentMotorKW, scheuchMotorKW
   ]);
