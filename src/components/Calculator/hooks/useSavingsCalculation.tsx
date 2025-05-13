@@ -1,3 +1,4 @@
+
 import { useState, useMemo } from 'react';
 
 export interface BagSavingsParams {
@@ -29,12 +30,27 @@ export interface AirSavingsParams {
   savingYears: number;
 }
 
+export type EnergyUnit = 'kWh' | 'MMBtu' | 'therms';
+
+// Conversion factors to kWh
+const CONVERSION_FACTORS = {
+  'kWh': 1,
+  'MMBtu': 293.07107, // 1 MMBtu = 293.07107 kWh
+  'therms': 29.3071, // 1 therm = 29.3071 kWh
+};
+
 export const useSavingsCalculation = () => {
   // Default values for savings parameters
   const [savingYears, setSavingYears] = useState(10);
   const [workingHours, setWorkingHours] = useState(8760);
   const [kwhCost, setKwhCost] = useState(0.12);
   const [compressedAirCost, setCompressedAirCost] = useState('');
+  const [energyUnit, setEnergyUnit] = useState<EnergyUnit>('kWh');
+
+  // Convert energy cost to kWh equivalent
+  const energyCostInKwh = useMemo(() => {
+    return kwhCost / CONVERSION_FACTORS[energyUnit];
+  }, [kwhCost, energyUnit]);
 
   // The calculation function
   const calculateSavings = (
@@ -49,10 +65,13 @@ export const useSavingsCalculation = () => {
                          (((bagParams.savingYears * 12) / bagParams.scheuchLifeTime) * 
                           ((bagParams.totalBags * bagParams.bagPrice) + bagParams.travelCost)));
       
+      // For power calculations, always use the kWh equivalent cost
+      const effectiveKwhCost = energyCostInKwh * CONVERSION_FACTORS['kWh']; // Convert back to per kWh
+
       // Fan Power Consumption
       const fanPowerSavings = (((parseFloat(powerParams.airVolumeM3h) * 
                                (powerParams.currentDiffPressure - powerParams.scheuchDiffPressure) * 100) / 
-                               (3600 * 1000 * 0.8)) * powerParams.kwhCost * 
+                               (3600 * 1000 * 0.8)) * effectiveKwhCost * 
                                powerParams.workingHours * powerParams.savingYears);
       
       // Compressed Air Consumption
@@ -67,7 +86,7 @@ export const useSavingsCalculation = () => {
       // Otherwise, use the motor KW difference
       else {
         airSavings = (airParams.currentMotorKW - airParams.scheuchMotorKW) * 
-                     airParams.kwhCost * airParams.workingHours * airParams.savingYears;
+                     effectiveKwhCost * airParams.workingHours * airParams.savingYears;
       }
       
       return {
@@ -97,6 +116,9 @@ export const useSavingsCalculation = () => {
     setKwhCost,
     compressedAirCost,
     setCompressedAirCost,
+    energyUnit,
+    setEnergyUnit,
+    energyCostInKwh,
     calculateSavings
   };
 };

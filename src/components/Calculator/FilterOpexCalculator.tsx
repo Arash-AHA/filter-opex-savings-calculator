@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import CalculatorSection from './CalculatorSection';
 import Transition from '../UI/Transition';
@@ -8,6 +9,7 @@ import SavingsResults from './SavingsResults';
 import { useCalculatorState } from './hooks/useCalculatorState';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { ChevronDown } from 'lucide-react';
+
 const FilterOpexCalculator = () => {
   const calculatorState = useCalculatorState();
   const [openSections, setOpenSections] = useState({
@@ -15,12 +17,14 @@ const FilterOpexCalculator = () => {
     operational: false,
     savings: false
   });
+  
   const toggleSection = (section: keyof typeof openSections) => {
     setOpenSections(prev => ({
       ...prev,
       [section]: !prev[section]
     }));
   };
+  
   return <div className="max-w-5xl mx-auto">
       <div className="text-center mb-8">
         <Transition animation="slide-in-left" delay={100}>
@@ -70,11 +74,38 @@ const FilterOpexCalculator = () => {
                 <ChevronDown className={`h-4 w-4 transition-transform ${openSections.savings ? 'transform rotate-180' : ''}`} />
               </CollapsibleTrigger>} delay={700} className="bg-gradient-to-r from-yellow-50 to-yellow-100/30 border border-yellow-100">
             <CollapsibleContent>
-              <SavingsResults savingYears={calculatorState.savingYears} setSavingYears={calculatorState.setSavingYears} workingHours={calculatorState.workingHours} setWorkingHours={calculatorState.setWorkingHours} kwhCost={calculatorState.kwhCost} setKwhCost={calculatorState.setKwhCost} compressedAirCost={calculatorState.compressedAirCost} setCompressedAirCost={calculatorState.setCompressedAirCost} totalSavings={calculatorState.totalSavings} currentLifeTime={calculatorState.currentLifeTime} scheuchLifeTime={calculatorState.scheuchLifeTime} currentDiffPressure={calculatorState.currentDiffPressure} scheuchDiffPressure={calculatorState.scheuchDiffPressure} currentAirConsumption={calculatorState.currentAirConsumption} scheuchAirConsumption={calculatorState.scheuchAirConsumption} currentMotorKW={calculatorState.currentMotorKW} scheuchMotorKW={calculatorState.scheuchMotorKW} designType={calculatorState.designType} airVolumeM3h={calculatorState.airVolumeM3h} airVolumeACFM={calculatorState.airVolumeACFM} numEMCFlaps={calculatorState.numEMCFlaps} bagLength={calculatorState.bagLength} formattedResults={calculatorState.formattedResults} />
+              <SavingsResults 
+                savingYears={calculatorState.savingYears} 
+                setSavingYears={calculatorState.setSavingYears} 
+                workingHours={calculatorState.workingHours} 
+                setWorkingHours={calculatorState.setWorkingHours} 
+                kwhCost={calculatorState.kwhCost} 
+                setKwhCost={calculatorState.setKwhCost} 
+                compressedAirCost={calculatorState.compressedAirCost} 
+                setCompressedAirCost={calculatorState.setCompressedAirCost}
+                energyUnit={calculatorState.energyUnit}
+                setEnergyUnit={calculatorState.setEnergyUnit}
+                totalSavings={calculatorState.totalSavings} 
+                currentLifeTime={calculatorState.currentLifeTime} 
+                scheuchLifeTime={calculatorState.scheuchLifeTime} 
+                currentDiffPressure={calculatorState.currentDiffPressure} 
+                scheuchDiffPressure={calculatorState.scheuchDiffPressure} 
+                currentAirConsumption={calculatorState.currentAirConsumption} 
+                scheuchAirConsumption={calculatorState.scheuchAirConsumption} 
+                currentMotorKW={calculatorState.currentMotorKW} 
+                scheuchMotorKW={calculatorState.scheuchMotorKW} 
+                designType={calculatorState.designType} 
+                airVolumeM3h={calculatorState.airVolumeM3h} 
+                airVolumeACFM={calculatorState.airVolumeACFM} 
+                numEMCFlaps={calculatorState.numEMCFlaps} 
+                bagLength={calculatorState.bagLength} 
+                formattedResults={calculatorState.formattedResults} 
+              />
             </CollapsibleContent>
           </CalculatorSection>
         </Collapsible>
       </div>
     </div>;
 };
+
 export default FilterOpexCalculator;

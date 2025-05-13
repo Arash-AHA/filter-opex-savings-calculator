@@ -7,6 +7,21 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Printer, ScrollText } from 'lucide-react';
 import PrintableResults from './PrintableResults';
+import { EnergyUnit } from './hooks/useSavingsCalculation';
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+// Conversion factors to kWh
+const CONVERSION_FACTORS = {
+  'kWh': 1,
+  'MMBtu': 293.07107, // 1 MMBtu = 293.07107 kWh
+  'therms': 29.3071, // 1 therm = 29.3071 kWh
+};
 
 interface SavingsResultsProps {
   savingYears: number;
@@ -17,6 +32,8 @@ interface SavingsResultsProps {
   setKwhCost: (value: number) => void;
   compressedAirCost: string;
   setCompressedAirCost: (value: string) => void;
+  energyUnit: EnergyUnit;
+  setEnergyUnit: (value: EnergyUnit) => void;
   totalSavings: {
     bagSavings: number;
     fanPowerSavings: number;
@@ -54,6 +71,8 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
   setKwhCost,
   compressedAirCost,
   setCompressedAirCost,
+  energyUnit,
+  setEnergyUnit,
   totalSavings,
   currentLifeTime,
   scheuchLifeTime,
@@ -117,6 +136,11 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
     }
   };
 
+  // Calculate equivalent kWh value for display
+  const equivalentKwhValue = energyUnit !== 'kWh' 
+    ? (kwhCost * CONVERSION_FACTORS[energyUnit]).toFixed(4)
+    : null;
+
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -141,15 +165,37 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
             className="mb-6"
           />
           
-          <InputField
-            label="USD per kWh for plant:"
-            value={kwhCost}
-            onChange={(value) => setKwhCost(parseFloat(value) || 0)}
-            type="number"
-            min={0}
-            step={0.01}
-            className="mb-6"
-          />
+          <div className="mb-6">
+            <div className="calculator-field-label">
+              USD per 
+              <Select value={energyUnit} onValueChange={(value: EnergyUnit) => setEnergyUnit(value)}>
+                <SelectTrigger className="ml-2 w-24 h-8 inline-flex">
+                  <SelectValue placeholder="kWh" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="kWh">kWh</SelectItem>
+                  <SelectItem value="MMBtu">MMBtu</SelectItem>
+                  <SelectItem value="therms">therms</SelectItem>
+                </SelectContent>
+              </Select> 
+              for plant:
+            </div>
+            <div className="calculator-field-input">
+              <input
+                type="number"
+                value={kwhCost}
+                onChange={(e) => setKwhCost(parseFloat(e.target.value) || 0)}
+                min={0}
+                step={0.01}
+                className="calculator-input"
+              />
+              {energyUnit !== 'kWh' && (
+                <div className="text-xs text-gray-500 mt-1">
+                  Equivalent to ${equivalentKwhValue} per kWh
+                </div>
+              )}
+            </div>
+          </div>
           
           <InputField
             label="USD/Nm³ from Plant Network:"
