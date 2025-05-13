@@ -344,15 +344,6 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
             <BarChart className="h-4 w-4" />
             Show Graph
           </Button>
-          
-          <Button
-            variant="outline"
-            className="flex items-center gap-2"
-            onClick={() => setShowYearlyGraphDialog(true)}
-          >
-            <BarChart className="h-4 w-4" />
-            OPEX by Year
-          </Button>
         </div>
       </div>
 
@@ -403,35 +394,26 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
         </DialogContent>
       </Dialog>
 
-      {/* Savings Graph Dialog */}
+      {/* Yearly Savings Graph Dialog - Now shown when Show Graph is clicked */}
       <Dialog open={showGraphDialog} onOpenChange={setShowGraphDialog}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>Savings Breakdown</DialogTitle>
+            <DialogTitle>OPEX Cost Over {savingYears} Years</DialogTitle>
             <DialogDescription>
-              Visual breakdown of the estimated savings over {savingYears} years.
+              Yearly breakdown of OPEX costs over the {savingYears} year period.
             </DialogDescription>
           </DialogHeader>
           
-          <SavingsGraph 
+          <YearlySavingsGraph 
             bagSavings={totalSavings.bagSavings}
             fanPowerSavings={totalSavings.fanPowerSavings}
             airSavings={totalSavings.airSavings}
-            total={totalSavings.total}
             savingYears={savingYears}
+            isOpen={true}
+            onClose={() => {}}
           />
         </DialogContent>
       </Dialog>
-
-      {/* Yearly Savings Graph Dialog */}
-      <YearlySavingsGraph
-        bagSavings={totalSavings.bagSavings}
-        fanPowerSavings={totalSavings.fanPowerSavings}
-        airSavings={totalSavings.airSavings}
-        savingYears={savingYears}
-        isOpen={showYearlyGraphDialog}
-        onClose={() => setShowYearlyGraphDialog(false)}
-      />
     </>
   );
 };
