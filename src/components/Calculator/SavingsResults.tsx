@@ -1,4 +1,3 @@
-
 import React, { useRef, useState } from 'react';
 import InputField from './InputField';
 import ResultCard from './ResultCard';
@@ -65,6 +64,7 @@ interface SavingsResultsProps {
     acRatioNet: string;
     totalBags: number;
   } | null;
+  cagePrice: number; // We need to add this prop to the component
 }
 
 const SavingsResults: React.FC<SavingsResultsProps> = ({
@@ -92,7 +92,8 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
   airVolumeACFM,
   numEMCFlaps,
   bagLength,
-  formattedResults
+  formattedResults,
+  cagePrice
 }) => {
   const [showPrintDialog, setShowPrintDialog] = useState(false);
   const [showGraphDialog, setShowGraphDialog] = useState(false);
@@ -416,6 +417,7 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
             cageReplacementFrequency={cageReplacementFrequency}
             onBagFrequencyChange={setBagChangeFrequency}
             onCageFrequencyChange={setCageReplacementFrequency}
+            cagePrice={cagePrice} // Pass the cage price to the graph component
             isOpen={true}
             onClose={() => {}}
           />
