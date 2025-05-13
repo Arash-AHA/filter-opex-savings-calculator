@@ -213,7 +213,7 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
           
           <div className="mb-6">
             <div className="calculator-field-label mb-2">
-              USD/Nm³ from Plant Network:
+              <span className="whitespace-nowrap">USD/Nm³ from Plant Network:</span>
             </div>
             <div className="calculator-field-input w-full">
               <input
