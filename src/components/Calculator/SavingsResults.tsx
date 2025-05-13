@@ -1,3 +1,4 @@
+
 import React, { useRef, useState } from 'react';
 import InputField from './InputField';
 import ResultCard from './ResultCard';
@@ -180,19 +181,21 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
               for plant:
             </div>
             <div className="calculator-field-input">
-              <input
-                type="number"
-                value={kwhCost}
-                onChange={(e) => setKwhCost(parseFloat(e.target.value) || 0)}
-                min={0}
-                step={0.01}
-                className="calculator-input"
-              />
-              {energyUnit !== 'kWh' && (
-                <div className="text-xs text-gray-500 mt-1 inline-flex items-center ml-2">
-                  Equivalent to ${equivalentKwhValue} per kWh
-                </div>
-              )}
+              <div className="flex items-center">
+                <input
+                  type="number"
+                  value={kwhCost}
+                  onChange={(e) => setKwhCost(parseFloat(e.target.value) || 0)}
+                  min={0}
+                  step={0.01}
+                  className="calculator-input"
+                />
+                {energyUnit !== 'kWh' && (
+                  <span className="text-xs text-gray-500 ml-2 whitespace-nowrap">
+                    Equivalent to ${equivalentKwhValue} per kWh
+                  </span>
+                )}
+              </div>
             </div>
           </div>
           
