@@ -23,6 +23,9 @@ const CONVERSION_FACTORS = {
   'therms': 29.3071, // 1 therm = 29.3071 kWh
 };
 
+// Air unit types
+type AirUnitType = 'Nm³' | 'SCFM';
+
 interface SavingsResultsProps {
   savingYears: number;
   setSavingYears: (value: number) => void;
@@ -91,6 +94,8 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
 }) => {
   const [showPrintDialog, setShowPrintDialog] = useState(false);
   const printContentRef = useRef<HTMLDivElement>(null);
+  // Add state for air unit type
+  const [airUnitType, setAirUnitType] = useState<AirUnitType>('Nm³');
   
   // Safely access formattedResults with default fallback values
   const safeFormattedResults = formattedResults || {
@@ -213,7 +218,19 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
           
           <div className="mb-6">
             <div className="calculator-field-label mb-2">
-              <span className="whitespace-nowrap">USD/Nm³ from Plant Network:</span>
+              <span className="flex items-center gap-1 whitespace-nowrap">
+                USD/
+                <Select value={airUnitType} onValueChange={(value: AirUnitType) => setAirUnitType(value)}>
+                  <SelectTrigger className="mx-0 w-20 h-8 px-2">
+                    <SelectValue placeholder="Nm³" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Nm³">Nm³</SelectItem>
+                    <SelectItem value="SCFM">SCFM</SelectItem>
+                  </SelectContent>
+                </Select>
+                from Plant Network:
+              </span>
             </div>
             <div className="calculator-field-input w-full">
               <input

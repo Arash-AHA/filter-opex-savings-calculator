@@ -31,6 +31,7 @@ export interface AirSavingsParams {
 }
 
 export type EnergyUnit = 'kWh' | 'MMBtu' | 'therms';
+export type AirUnitType = 'Nm³' | 'SCFM';
 
 // Conversion factors to kWh
 const CONVERSION_FACTORS = {
@@ -46,6 +47,7 @@ export const useSavingsCalculation = () => {
   const [kwhCost, setKwhCost] = useState(0.12);
   const [compressedAirCost, setCompressedAirCost] = useState('');
   const [energyUnit, setEnergyUnit] = useState<EnergyUnit>('kWh');
+  const [airUnitType, setAirUnitType] = useState<AirUnitType>('Nm³');
 
   // Convert energy cost to kWh equivalent
   const energyCostInKwh = useMemo(() => {
@@ -118,6 +120,8 @@ export const useSavingsCalculation = () => {
     setCompressedAirCost,
     energyUnit,
     setEnergyUnit,
+    airUnitType,
+    setAirUnitType,
     energyCostInKwh,
     calculateSavings
   };
