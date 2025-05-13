@@ -31,9 +31,6 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
   // Local state for frequencies if not controlled from parent
   const [localBagFrequency, setLocalBagFrequency] = useState(bagChangeFrequency);
   const [localCageFrequency, setLocalCageFrequency] = useState(cageReplacementFrequency);
-  // Add state for percentage of bags and cages changed
-  const [bagChangePercentage, setBagChangePercentage] = useState(100);
-  const [cageChangePercentage, setCageChangePercentage] = useState(100);
 
   // Handle bag frequency change
   const handleBagFrequencyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,23 +46,10 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
     if (onCageFrequencyChange) onCageFrequencyChange(value);
   };
 
-  // Handle bag change percentage change
-  const handleBagChangePercentageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value) || 0;
-    setBagChangePercentage(Math.min(100, Math.max(0, value)));
-  };
-
-  // Handle cage change percentage change
-  const handleCageChangePercentageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value) || 0;
-    setCageChangePercentage(Math.min(100, Math.max(0, value)));
-  };
-
   // Generate yearly data with accumulating bag costs based on frequency
   const data = useMemo(() => {
     // Calculate the total replacement cost per occurrence (bag replacement event)
-    // Adjust cost based on the percentage of bags/cages changed
-    const totalReplacementCostPerEvent = bagSavings / (savingYears * 12 / localBagFrequency) * (bagChangePercentage / 100);
+    const totalReplacementCostPerEvent = bagSavings / (savingYears * 12 / localBagFrequency);
     
     // Create an array to track accumulated costs over time
     const yearlyData = [];
@@ -111,7 +95,7 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
     }
     
     return yearlyData;
-  }, [bagSavings, fanPowerSavings, airSavings, savingYears, localBagFrequency, bagChangePercentage]);
+  }, [bagSavings, fanPowerSavings, airSavings, savingYears, localBagFrequency]);
 
   return (
     <Card className="w-full">
@@ -130,20 +114,6 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
               />
               <span className="ml-2 text-sm text-gray-500">months</span>
             </div>
-            
-            <Label htmlFor="bagPercentage" className="mt-4 mb-2 block">% of Bags changed over time:</Label>
-            <div className="flex items-center">
-              <Input
-                id="bagPercentage"
-                type="number"
-                min={0}
-                max={100}
-                value={bagChangePercentage}
-                onChange={handleBagChangePercentageChange}
-                className="w-full"
-              />
-              <span className="ml-2 text-sm text-gray-500">%</span>
-            </div>
           </div>
           <div>
             <Label htmlFor="cageFrequency" className="mb-2 block">Support Cage replacement Frequency:</Label>
@@ -157,20 +127,6 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
                 className="w-full"
               />
               <span className="ml-2 text-sm text-gray-500">months</span>
-            </div>
-            
-            <Label htmlFor="cagePercentage" className="mt-4 mb-2 block">% of Support Cages changed over time:</Label>
-            <div className="flex items-center">
-              <Input
-                id="cagePercentage"
-                type="number"
-                min={0}
-                max={100}
-                value={cageChangePercentage}
-                onChange={handleCageChangePercentageChange}
-                className="w-full"
-              />
-              <span className="ml-2 text-sm text-gray-500">%</span>
             </div>
           </div>
         </div>
