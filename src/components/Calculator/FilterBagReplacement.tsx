@@ -5,8 +5,8 @@ import ResultCard from './ResultCard';
 interface FilterBagReplacementProps {
   bagPrice: number;
   setBagPrice: (value: number) => void;
-  cagePrice: number;  // Added support cage price prop
-  setCagePrice: (value: number) => void; // Added support cage price setter prop
+  cagePrice: number;
+  setCagePrice: (value: number) => void;
   bagChangeTime: number;
   setBagChangeTime: (value: number) => void;
   numPeople: number;
@@ -42,6 +42,9 @@ const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
   calculateTravelCost,
   formattedResults
 }) => {
+  // Calculate total cage cost
+  const totalCageCost = formattedResults.totalBags * cagePrice;
+
   return <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {/* Column 1 & 2: Labels & Inputs */}
       <div className="md:col-span-2 space-y-4">
@@ -83,9 +86,14 @@ const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
             <span className="text-sm font-medium text-right">${formattedResults.bagMaterialCost.toLocaleString()}</span>
           </div>
           
+          <div className="grid grid-cols-2 items-center py-2 border-b border-gray-100">
+            <span className="text-sm text-gray-600">Cage Material Cost</span>
+            <span className="text-sm font-medium text-right">${totalCageCost.toLocaleString()}</span>
+          </div>
+          
           <div className="grid grid-cols-2 items-center py-2">
             <span className="text-sm text-gray-600 font-semibold\nw-[160px]">Total Replacement Cost</span>
-            <span className="text-sm font-semibold text-right">${(formattedResults.bagMaterialCost + travelCost).toLocaleString()}</span>
+            <span className="text-sm font-semibold text-right">${(formattedResults.bagMaterialCost + totalCageCost + travelCost).toLocaleString()}</span>
           </div>
         </div>
       </div>

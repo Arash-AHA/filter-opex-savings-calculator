@@ -1,32 +1,12 @@
-
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import InputField from './InputField';
-import ResultCard from './ResultCard';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Printer, ScrollText, BarChart } from 'lucide-react';
-import PrintableResults from './PrintableResults';
-import SavingsGraph from './SavingsGraph';
 import YearlySavingsGraph from './YearlySavingsGraph';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
+// Import the EnergyUnit type from the hook
 import { EnergyUnit } from './hooks/useSavingsCalculation';
-import { 
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
-// Conversion factors to kWh
-const CONVERSION_FACTORS = {
-  'kWh': 1,
-  'MMBtu': 293.07107, // 1 MMBtu = 293.07107 kWh
-  'therms': 29.3071, // 1 therm = 29.3071 kWh
-};
-
-// Air unit types
-type AirUnitType = 'Nm³' | 'SCFM';
 
 interface SavingsResultsProps {
   savingYears: number;
@@ -41,6 +21,7 @@ interface SavingsResultsProps {
   setEnergyUnit: (value: EnergyUnit) => void;
   totalSavings: {
     bagSavings: number;
+    cageSavings?: number;
     fanPowerSavings: number;
     airSavings: number;
     total: number;
@@ -58,13 +39,7 @@ interface SavingsResultsProps {
   airVolumeACFM: string;
   numEMCFlaps: number | string;
   bagLength: number;
-  formattedResults: {
-    filterArea: string;
-    netFilterArea: string;
-    acRatioGross: string;
-    acRatioNet: string;
-    totalBags: number;
-  } | null;
+  formattedResults: any;
 }
 
 const SavingsResults: React.FC<SavingsResultsProps> = ({
@@ -92,336 +67,129 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
   airVolumeACFM,
   numEMCFlaps,
   bagLength,
-  formattedResults
+  formattedResults,
 }) => {
-  const [showPrintDialog, setShowPrintDialog] = useState(false);
-  const [showGraphDialog, setShowGraphDialog] = useState(false);
-  const [showYearlyGraphDialog, setShowYearlyGraphDialog] = useState(false);
-  const [bagChangeFrequency, setBagChangeFrequency] = useState(currentLifeTime);
-  const [cageReplacementFrequency, setCageReplacementFrequency] = useState(currentLifeTime * 2); // Default to twice the bag lifetime
-  const printContentRef = useRef<HTMLDivElement>(null);
-  // Add state for air unit type
-  const [airUnitType, setAirUnitType] = useState<AirUnitType>('Nm³');
+  // Handle energy unit change
+  const handleEnergyUnitChange = (value: string) => {
+    setEnergyUnit(value as EnergyUnit);
+  };
   
-  // Safely access formattedResults with default fallback values
-  const safeFormattedResults = formattedResults || {
-    filterArea: "0",
-    netFilterArea: "0",
-    acRatioGross: "0",
-    acRatioNet: "0",
-    totalBags: 0
-  };
-
-  const handlePrint = () => {
-    if (printContentRef.current) {
-      const printContents = printContentRef.current.innerHTML;
-      const win = window.open('', '', 'height=800,width=1000,top=100,left=100');
-      if (win) {
-        win.document.write(`
-          <html>
-            <head>
-              <title>OPEX Savings Analysis</title>
-              <style>
-                body { font-family: 'Inter', Arial, sans-serif; margin: 0; padding: 24px; }
-                .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-                section { margin-bottom: 2rem; page-break-inside: avoid; }
-                h2 { color: #374151; margin-bottom: 1rem; }
-                table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
-                td, th { padding: 8px; border-bottom: 1px solid #e5e7eb; }
-                @media print {
-                  body { padding: 20px; }
-                  section { page-break-inside: avoid; }
-                }
-              </style>
-            </head>
-            <body>${printContents}</body>
-          </html>
-        `);
-        win.document.close();
-        win.focus();
-        setTimeout(() => {
-          win.print();
-          win.close();
-        }, 400);
-      }
-    }
-  };
-
-  // Calculate equivalent kWh value for display
-  const equivalentKwhValue = energyUnit !== 'kWh' 
-    ? (kwhCost * CONVERSION_FACTORS[energyUnit]).toFixed(4)
-    : null;
-
   return (
-    <>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="md:col-span-1">
-          <h3 className="text-sm font-medium text-gray-700 mb-4">Calculation Parameters</h3>
-          
-          <div className="mb-6">
-            <div className="calculator-field-label mb-2">
-              Saving in x years:
-            </div>
-            <div className="calculator-field-input w-full">
-              <input
-                type="number"
-                value={savingYears}
-                onChange={(e) => setSavingYears(parseInt(e.target.value) || 0)}
-                min={1}
-                className="calculator-input w-full"
-              />
-            </div>
-          </div>
-          
-          <div className="mb-6">
-            <div className="calculator-field-label mb-2">
-              Working hours per year:
-            </div>
-            <div className="calculator-field-input w-full">
-              <input
-                type="number"
-                value={workingHours}
-                onChange={(e) => setWorkingHours(parseInt(e.target.value) || 0)}
-                min={1}
-                className="calculator-input w-full"
-              />
-            </div>
-          </div>
-          
-          <div className="mb-6">
-            <div className="calculator-field-label mb-2">
-              <span className="flex items-center gap-1 whitespace-nowrap">
-                USD per
-                <Select value={energyUnit} onValueChange={(value: EnergyUnit) => setEnergyUnit(value)}>
-                  <SelectTrigger className="mx-1 w-24 h-8">
-                    <SelectValue placeholder="kWh" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="kWh">kWh</SelectItem>
-                    <SelectItem value="MMBtu">MMBtu</SelectItem>
-                    <SelectItem value="therms">therms</SelectItem>
-                  </SelectContent>
-                </Select>
-                for plant:
-              </span>
-            </div>
-            <div className="calculator-field-input w-full">
-              <input
-                type="number"
-                value={kwhCost}
-                onChange={(e) => setKwhCost(parseFloat(e.target.value) || 0)}
-                min={0}
-                step={0.01}
-                className="calculator-input w-full"
-              />
-              {energyUnit !== 'kWh' && (
-                <div className="text-xs text-gray-500 mt-1">
-                  Equivalent to ${equivalentKwhValue} per kWh
-                </div>
-              )}
-            </div>
-          </div>
-          
-          <div className="mb-6">
-            <div className="calculator-field-label mb-2">
-              <span className="flex items-center gap-1 whitespace-nowrap">
-                USD per
-                <Select value={airUnitType} onValueChange={(value: AirUnitType) => setAirUnitType(value)}>
-                  <SelectTrigger className="mx-0 w-20 h-8 px-2">
-                    <SelectValue placeholder="Nm³" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Nm³">Nm³</SelectItem>
-                    <SelectItem value="SCFM">SCFM</SelectItem>
-                  </SelectContent>
-                </Select>
-                from Plant Network:
-              </span>
-            </div>
-            <div className="calculator-field-input w-full">
-              <input
-                type="number"
-                value={compressedAirCost}
-                onChange={(e) => setCompressedAirCost(e.target.value)}
-                min={0}
-                step={0.01}
-                placeholder="Leave empty if not available"
-                className="calculator-input w-full"
-              />
-            </div>
-          </div>
-        </div>
-        
-        <div className="md:col-span-2">
+    <div className="space-y-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="md:col-span-2 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-white p-5 rounded-xl shadow-soft border border-gray-100">
-              <h3 className="text-sm font-medium text-gray-700 mb-4 pb-2 border-b">Improvement Metrics</h3>
-              
-              <div className="space-y-4">
-                <ResultCard
-                  label="Bag Life Time Extension"
-                  value={`${(scheuchLifeTime - currentLifeTime)} months (${((scheuchLifeTime - currentLifeTime) / currentLifeTime * 100).toFixed(0)}%)`}
-                  className="bg-transparent shadow-none border-0 p-0"
-                />
-                
-                <ResultCard
-                  label="Saving in Differential Pressure"
-                  value={`${(currentDiffPressure - scheuchDiffPressure)} mbar (${((currentDiffPressure - scheuchDiffPressure) / currentDiffPressure * 100).toFixed(0)}%)`}
-                  className="bg-transparent shadow-none border-0 p-0"
-                />
-                
-                <ResultCard
-                  label="Saving in Compressed Air"
-                  value={`${(currentAirConsumption - scheuchAirConsumption)} Nm³/h (${((currentAirConsumption - scheuchAirConsumption) / currentAirConsumption * 100).toFixed(0)}%)`}
-                  className="bg-transparent shadow-none border-0 p-0"
-                />
-                
-                <ResultCard
-                  label="Saving in Motor KW"
-                  value={`${(currentMotorKW - scheuchMotorKW)} kW (${((currentMotorKW - scheuchMotorKW) / currentMotorKW * 100).toFixed(0)}%)`}
-                  className="bg-transparent shadow-none border-0 p-0"
-                />
-              </div>
+            <InputField 
+              label="Analysis Period (Years):" 
+              value={savingYears} 
+              onChange={value => setSavingYears(parseInt(value) || 0)} 
+              type="number" 
+              min={1}
+              max={30}
+            />
+            <InputField 
+              label="Annual Operating Hours:" 
+              value={workingHours} 
+              onChange={value => setWorkingHours(parseInt(value) || 0)} 
+              type="number" 
+              min={0}
+              max={8760}
+            />
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm text-gray-700 mb-2">Energy Unit:</label>
+              <Select value={energyUnit} onValueChange={handleEnergyUnitChange}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select energy unit" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="kWh">kWh</SelectItem>
+                  <SelectItem value="MMBtu">MMBtu</SelectItem>
+                  <SelectItem value="therms">therms</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             
-            <div className="bg-white p-5 rounded-xl shadow-soft border border-gray-100">
-              <h3 className="text-center text-sm font-medium text-gray-700 mb-4 pb-2 border-b">OPEX Savings in {savingYears} years</h3>
-              
-              <div className="space-y-4">
-                <ResultCard
-                  label="Bag Material and Labor"
-                  value={`$${totalSavings.bagSavings.toLocaleString(undefined, {maximumFractionDigits: 0})}`}
-                  className="bg-transparent shadow-none border-0 p-0"
-                />
-                
-                <ResultCard
-                  label="Savings $ in Fan Power Consumption"
-                  value={`$${totalSavings.fanPowerSavings.toLocaleString(undefined, {maximumFractionDigits: 0})}`}
-                  className="bg-transparent shadow-none border-0 p-0"
-                />
-                
-                <ResultCard
-                  label="Savings $ in Compressed Air"
-                  value={`$${totalSavings.airSavings.toLocaleString(undefined, {maximumFractionDigits: 0})}`}
-                  className="bg-transparent shadow-none border-0 p-0"
-                />
-                
-                <div className="h-px bg-gray-200 my-2"></div>
-                
-                <ResultCard
-                  label={`Total Savings in ${savingYears} years`}
-                  value={`$${totalSavings.total.toLocaleString(undefined, {maximumFractionDigits: 0})}`}
-                  valueClassName="text-xl font-bold text-green-600"
-                  className="bg-transparent shadow-none border-0 p-0"
-                />
-              </div>
-            </div>
+            <InputField 
+              label={`Energy Cost (USD/${energyUnit}):`} 
+              value={kwhCost} 
+              onChange={value => setKwhCost(parseFloat(value) || 0)} 
+              type="number" 
+              min={0}
+              step={0.01}
+            />
           </div>
-        </div>
-      </div>
-      
-      <div className="mt-10">
-        <div className="flex justify-center">
-          <div className="bg-green-50 border border-green-200 p-6 rounded-xl max-w-2xl text-center">
-            <h3 className="text-xl font-medium text-green-800 mb-4">Total Estimated Savings</h3>
-            <div className="text-4xl font-bold text-green-700 mb-1">${totalSavings.total.toLocaleString(undefined, {maximumFractionDigits: 0})}</div>
-            <div className="text-sm text-green-600">Over {savingYears} years of operation with EMC technology</div>
-          </div>
+          
+          <InputField 
+            label="Compressed Air Cost (USD/Nm³):" 
+            value={compressedAirCost} 
+            onChange={value => setCompressedAirCost(value)} 
+            type="number" 
+            min={0}
+            step={0.001}
+            tooltip="Leave blank to calculate based on motor kW difference"
+          />
         </div>
         
-        <div className="flex justify-center mt-6 gap-4">
-          <Button
-            variant="outline"
-            className="flex items-center gap-2"
-            onClick={() => setShowPrintDialog(true)}
-          >
-            <Printer className="h-4 w-4" />
-            Print Results
-          </Button>
-          
-          <Button
-            variant="outline"
-            className="flex items-center gap-2"
-            onClick={() => setShowGraphDialog(true)}
-          >
-            <BarChart className="h-4 w-4" />
-            Show Graph
-          </Button>
-        </div>
-      </div>
-
-      {/* Print Results Dialog */}
-      <Dialog open={showPrintDialog} onOpenChange={setShowPrintDialog}>
-        <DialogContent className="max-w-4xl max-h-[90vh] p-0">
-          <DialogHeader className="p-6 pb-0">
-            <DialogTitle className="flex items-center gap-2">
-              <ScrollText className="h-5 w-5" />
-              Print Results
-            </DialogTitle>
-            <DialogDescription>
-              Scroll through the results and click "Export as PDF" to save or print.
-            </DialogDescription>
-          </DialogHeader>
-          
-          <ScrollArea className="h-[calc(90vh-180px)] p-6">
-            <div ref={printContentRef}>
-              <PrintableResults
-                designType={designType}
-                airVolume={designType === 'modular' ? airVolumeACFM : airVolumeM3h}
-                numEMCFlaps={numEMCFlaps}
-                bagLength={bagLength}
-                filterArea={safeFormattedResults.filterArea}
-                netFilterArea={safeFormattedResults.netFilterArea}
-                acRatioGross={safeFormattedResults.acRatioGross}
-                acRatioNet={safeFormattedResults.acRatioNet}
-                totalBags={safeFormattedResults.totalBags}
-                savingYears={savingYears}
-                bagSavings={totalSavings.bagSavings}
-                fanPowerSavings={totalSavings.fanPowerSavings}
-                airSavings={totalSavings.airSavings}
-                totalSavings={totalSavings.total}
-              />
+        <Card className="h-fit">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base">Total Savings (10 Years)</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-4xl font-bold text-center text-green-600">
+              ${totalSavings.total.toLocaleString(undefined, { maximumFractionDigits: 0 })}
             </div>
-          </ScrollArea>
-          
-          <div className="p-6 pt-0 border-t mt-6">
-            <Button
-              variant="default"
-              onClick={handlePrint}
-              className="w-full flex items-center justify-center gap-2"
-            >
-              <Printer className="h-4 w-4" />
-              Export as PDF
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* Yearly Savings Graph Dialog - Now shown when Show Graph is clicked */}
-      <Dialog open={showGraphDialog} onOpenChange={setShowGraphDialog}>
-        <DialogContent className="max-w-5xl w-[90vw] max-h-[90vh]">
-          <DialogHeader>
-            <DialogTitle>OPEX Cost Over {savingYears} Years</DialogTitle>
-            <DialogDescription>
-              Yearly breakdown of OPEX costs over the {savingYears} year period.
-            </DialogDescription>
-          </DialogHeader>
-          
-          <YearlySavingsGraph 
-            bagSavings={totalSavings.bagSavings}
-            fanPowerSavings={totalSavings.fanPowerSavings}
-            airSavings={totalSavings.airSavings}
-            savingYears={savingYears}
-            bagChangeFrequency={bagChangeFrequency}
-            cageReplacementFrequency={cageReplacementFrequency}
-            onBagFrequencyChange={setBagChangeFrequency}
-            onCageFrequencyChange={setCageReplacementFrequency}
-            isOpen={true}
-            onClose={() => {}}
-          />
-        </DialogContent>
-      </Dialog>
-    </>
+          </CardContent>
+        </Card>
+      </div>
+      
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[250px]">Savings Category</TableHead>
+            <TableHead>Amount (USD)</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow>
+            <TableCell>Bag Material & Labor Savings</TableCell>
+            <TableCell>${totalSavings.bagSavings.toLocaleString(undefined, { maximumFractionDigits: 0 })}</TableCell>
+          </TableRow>
+          {totalSavings.cageSavings !== undefined && (
+            <TableRow>
+              <TableCell>Cage Replacement Savings</TableCell>
+              <TableCell>${totalSavings.cageSavings.toLocaleString(undefined, { maximumFractionDigits: 0 })}</TableCell>
+            </TableRow>
+          )}
+          <TableRow>
+            <TableCell>Fan Power Savings</TableCell>
+            <TableCell>${totalSavings.fanPowerSavings.toLocaleString(undefined, { maximumFractionDigits: 0 })}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Compressed Air Savings</TableCell>
+            <TableCell>${totalSavings.airSavings.toLocaleString(undefined, { maximumFractionDigits: 0 })}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell className="font-bold">Total Savings</TableCell>
+            <TableCell className="font-bold">${totalSavings.total.toLocaleString(undefined, { maximumFractionDigits: 0 })}</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+      
+      <div className="mt-8">
+        <h3 className="text-lg font-medium mb-4">Yearly Savings Projection</h3>
+        <YearlySavingsGraph 
+          bagSavings={totalSavings.bagSavings / (savingYears * 12 / currentLifeTime)} 
+          fanPowerSavings={totalSavings.fanPowerSavings} 
+          airSavings={totalSavings.airSavings} 
+          savingYears={savingYears} 
+          bagChangeFrequency={currentLifeTime}
+          cageReplacementFrequency={currentLifeTime * 2}
+        />
+      </div>
+    </div>
   );
 };
 
