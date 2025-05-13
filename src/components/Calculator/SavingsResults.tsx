@@ -189,7 +189,7 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
                 className="calculator-input"
               />
               {energyUnit !== 'kWh' && (
-                <div className="text-xs text-gray-500 mt-1">
+                <div className="text-xs text-gray-500 mt-1 inline-flex items-center ml-2">
                   Equivalent to ${equivalentKwhValue} per kWh
                 </div>
               )}
