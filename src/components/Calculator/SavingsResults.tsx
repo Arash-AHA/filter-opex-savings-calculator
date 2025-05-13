@@ -1,4 +1,3 @@
-
 import React, { useRef, useState } from 'react';
 import InputField from './InputField';
 import ResultCard from './ResultCard';
@@ -219,7 +218,7 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
           <div className="mb-6">
             <div className="calculator-field-label mb-2">
               <span className="flex items-center gap-1 whitespace-nowrap">
-                USD/
+                USD per
                 <Select value={airUnitType} onValueChange={(value: AirUnitType) => setAirUnitType(value)}>
                   <SelectTrigger className="mx-0 w-20 h-8 px-2">
                     <SelectValue placeholder="Nm³" />
