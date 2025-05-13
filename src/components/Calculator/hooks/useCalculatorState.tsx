@@ -44,6 +44,7 @@ export const useCalculatorState = () => {
     designParams.airVolumeM3h,
     designParams.emcCleaningFactor,
     bagReplacement.bagPrice,
+    bagReplacement.cagePrice, // Added cagePrice
     bagReplacement.bagChangeTime,
     bagReplacement.numPeople,
     bagReplacement.travelCost,

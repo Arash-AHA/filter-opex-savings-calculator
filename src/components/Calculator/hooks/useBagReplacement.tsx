@@ -4,6 +4,7 @@ import { useState, useCallback } from 'react';
 export const useBagReplacement = () => {
   // Filter bag replacement parameters with default values
   const [bagPrice, setBagPrice] = useState(190);
+  const [cagePrice, setCagePrice] = useState(80); // Added support cage price state
   const [bagChangeTime, setBagChangeTime] = useState(15);
   const [numPeople, setNumPeople] = useState(4);
   const [hourlyRate, setHourlyRate] = useState(200);
@@ -25,6 +26,8 @@ export const useBagReplacement = () => {
   return {
     bagPrice,
     setBagPrice,
+    cagePrice,        // Added support cage price
+    setCagePrice,     // Added support cage price setter
     bagChangeTime,
     setBagChangeTime,
     numPeople,

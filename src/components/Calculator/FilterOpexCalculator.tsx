@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import CalculatorSection from './CalculatorSection';
 import Transition from '../UI/Transition';
@@ -48,11 +47,30 @@ const FilterOpexCalculator = () => {
                 <ChevronDown className={`h-4 w-4 transition-transform ${openSections.bagReplacement ? 'transform rotate-180' : ''}`} />
               </CollapsibleTrigger>} delay={300} className="bg-gradient-to-r from-green-50 to-green-100/30 border border-green-100">
             <CollapsibleContent>
-              <FilterBagReplacement bagPrice={calculatorState.bagPrice} setBagPrice={calculatorState.setBagPrice} bagChangeTime={calculatorState.bagChangeTime} setBagChangeTime={calculatorState.setBagChangeTime} numPeople={calculatorState.numPeople} setNumPeople={calculatorState.setNumPeople} hourlyRate={calculatorState.hourlyRate} setHourlyRate={calculatorState.setHourlyRate} siteDistance={calculatorState.siteDistance} setSiteDistance={calculatorState.setSiteDistance} travelCost={calculatorState.travelCost} setTravelCost={calculatorState.setTravelCost} bagReplacementCost={calculatorState.bagReplacementCost} setBagReplacementCost={calculatorState.setBagReplacementCost} calculateTravelCost={() => {
-              if (calculatorState.results.daysToReplace > 0) {
-                calculatorState.calculateTravelCost(calculatorState.results.daysToReplace);
-              }
-            }} formattedResults={calculatorState.formattedResults} />
+              <FilterBagReplacement 
+                bagPrice={calculatorState.bagPrice} 
+                setBagPrice={calculatorState.setBagPrice}
+                cagePrice={calculatorState.cagePrice}
+                setCagePrice={calculatorState.setCagePrice}
+                bagChangeTime={calculatorState.bagChangeTime} 
+                setBagChangeTime={calculatorState.setBagChangeTime} 
+                numPeople={calculatorState.numPeople} 
+                setNumPeople={calculatorState.setNumPeople} 
+                hourlyRate={calculatorState.hourlyRate} 
+                setHourlyRate={calculatorState.setHourlyRate} 
+                siteDistance={calculatorState.siteDistance} 
+                setSiteDistance={calculatorState.setSiteDistance} 
+                travelCost={calculatorState.travelCost} 
+                setTravelCost={calculatorState.setTravelCost} 
+                bagReplacementCost={calculatorState.bagReplacementCost} 
+                setBagReplacementCost={calculatorState.setBagReplacementCost} 
+                calculateTravelCost={() => {
+                  if (calculatorState.results.daysToReplace > 0) {
+                    calculatorState.calculateTravelCost(calculatorState.results.daysToReplace);
+                  }
+                }} 
+                formattedResults={calculatorState.formattedResults} 
+              />
             </CollapsibleContent>
           </CalculatorSection>
         </Collapsible>

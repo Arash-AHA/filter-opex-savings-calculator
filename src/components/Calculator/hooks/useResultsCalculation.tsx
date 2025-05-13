@@ -12,6 +12,7 @@ export const useResultsCalculation = (
   airVolumeM3h: string,
   emcCleaningFactor: number,
   bagPrice: number,
+  cagePrice: number, // Added cagePrice parameter
   bagChangeTime: number,
   numPeople: number,
   travelCost: number,
@@ -44,13 +45,14 @@ export const useResultsCalculation = (
     airVolumeACFM
   );
   
-  // Use the bag replacement calculation hook
+  // Use the bag replacement calculation hook with cagePrice
   const bagResults = useBagReplacementCalculation(
     numEMCFlaps,
     bagsPerRow,
     bagChangeTime,
     numPeople,
-    bagPrice
+    bagPrice,
+    cagePrice // Added cagePrice
   );
   
   // Calculate life extension

@@ -6,7 +6,8 @@ export const useBagReplacementCalculation = (
   bagsPerRow: number,
   bagChangeTime: number,
   numPeople: number,
-  bagPrice: number
+  bagPrice: number,
+  cagePrice: number = 0 // Added cagePrice with default value
 ) => {
   // Calculate bag replacement metrics
   const bagResults = useMemo(() => {
@@ -17,10 +18,13 @@ export const useBagReplacementCalculation = (
       // Calculate days to replace
       const daysToReplace = (totalBags * bagChangeTime / 60 / 10 / numPeople * 2) || 0;
       
+      // Calculate material cost including both bags and cages
+      const bagMaterialCost = totalBags * bagPrice + (totalBags * cagePrice);
+      
       return {
         totalBags,
         daysToReplace,
-        bagMaterialCost: totalBags * bagPrice
+        bagMaterialCost
       };
     } catch (error) {
       console.error("Error calculating bag replacement results:", error);
@@ -31,7 +35,7 @@ export const useBagReplacementCalculation = (
         bagMaterialCost: 0
       };
     }
-  }, [numEMCFlaps, bagsPerRow, bagChangeTime, numPeople, bagPrice]);
+  }, [numEMCFlaps, bagsPerRow, bagChangeTime, numPeople, bagPrice, cagePrice]);
 
   return bagResults;
 };

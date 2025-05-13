@@ -1,9 +1,12 @@
+
 import React from 'react';
 import InputField from './InputField';
 import ResultCard from './ResultCard';
 interface FilterBagReplacementProps {
   bagPrice: number;
   setBagPrice: (value: number) => void;
+  cagePrice: number;  // Added support cage price prop
+  setCagePrice: (value: number) => void; // Added support cage price setter prop
   bagChangeTime: number;
   setBagChangeTime: (value: number) => void;
   numPeople: number;
@@ -22,6 +25,8 @@ interface FilterBagReplacementProps {
 const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
   bagPrice,
   setBagPrice,
+  cagePrice,
+  setCagePrice,
   bagChangeTime,
   setBagChangeTime,
   numPeople,
@@ -41,6 +46,8 @@ const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
       {/* Column 1 & 2: Labels & Inputs */}
       <div className="md:col-span-2 space-y-4">
         <InputField label="Filter Bag Price per Piece (USD):" value={bagPrice} onChange={value => setBagPrice(parseFloat(value) || 0)} type="number" min={0} />
+        
+        <InputField label="Support Cage Price per Piece (USD):" value={cagePrice} onChange={value => setCagePrice(parseFloat(value) || 0)} type="number" min={0} />
         
         <InputField label="Ave. time for changing one bag (minute):" value={bagChangeTime} onChange={value => setBagChangeTime(parseFloat(value) || 0)} type="number" min={0} step={0.5} />
         
