@@ -17,6 +17,7 @@ interface YearlySavingsGraphProps {
   isOpen?: boolean;
   onClose?: () => void;
   cagePrice?: number; // Added cage price prop
+  totalBags?: number; // Added totalBags prop for accurate cage cost calculation
 }
 
 const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
@@ -28,7 +29,8 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
   cageReplacementFrequency = 48, // Default to 48 months if not provided
   onBagFrequencyChange,
   onCageFrequencyChange,
-  cagePrice = 80 // Default cage price if not provided
+  cagePrice = 80, // Default cage price if not provided
+  totalBags = 0 // Default totalBags to 0 if not provided
 }) => {
   // Local state for frequencies if not controlled from parent
   const [localBagFrequency, setLocalBagFrequency] = useState(bagChangeFrequency);
@@ -93,7 +95,9 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
       
       // Check if this year is a cage replacement year
       if (cageChangeYears.has(year)) {
-        accumulatedCageCost += (bagSavings / 2); // Using half of bag savings as an estimate for cage cost
+        // Calculate cage replacement cost correctly as totalBags * cagePrice
+        const cageReplacementCost = totalBags * cagePrice;
+        accumulatedCageCost += cageReplacementCost;
       }
       
       // Calculate linear fan power and air savings
@@ -114,7 +118,16 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
     }
     
     return yearlyData;
-  }, [bagSavings, fanPowerSavings, airSavings, savingYears, localBagFrequency, localCageFrequency]);
+  }, [
+    bagSavings, 
+    fanPowerSavings, 
+    airSavings, 
+    savingYears, 
+    localBagFrequency, 
+    localCageFrequency, 
+    cagePrice, 
+    totalBags
+  ]);
 
   return (
     <Card className="w-full">

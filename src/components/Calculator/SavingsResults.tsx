@@ -64,7 +64,7 @@ interface SavingsResultsProps {
     acRatioNet: string;
     totalBags: number;
   } | null;
-  cagePrice: number; // We need to add this prop to the component
+  cagePrice: number; // Support cage price prop
 }
 
 const SavingsResults: React.FC<SavingsResultsProps> = ({
@@ -113,6 +113,9 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
     totalBags: 0
   };
 
+  // Pass totalBags from formattedResults to YearlySavingsGraph for accurate cage cost calculation
+  const totalBags = formattedResults?.totalBags || 0;
+  
   const handlePrint = () => {
     if (printContentRef.current) {
       const printContents = printContentRef.current.innerHTML;
@@ -398,7 +401,7 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
         </DialogContent>
       </Dialog>
 
-      {/* Yearly Savings Graph Dialog - Now shown when Show Graph is clicked */}
+      {/* Yearly Savings Graph Dialog - Now with totalBags passed for accurate cage cost calculation */}
       <Dialog open={showGraphDialog} onOpenChange={setShowGraphDialog}>
         <DialogContent className="max-w-5xl w-[90vw] max-h-[90vh]">
           <DialogHeader>
@@ -417,7 +420,8 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
             cageReplacementFrequency={cageReplacementFrequency}
             onBagFrequencyChange={setBagChangeFrequency}
             onCageFrequencyChange={setCageReplacementFrequency}
-            cagePrice={cagePrice} // Pass the cage price to the graph component
+            cagePrice={cagePrice}
+            totalBags={totalBags}
             isOpen={true}
             onClose={() => {}}
           />
