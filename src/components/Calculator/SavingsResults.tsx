@@ -1,4 +1,3 @@
-
 import React, { useRef, useState } from 'react';
 import InputField from './InputField';
 import ResultCard from './ResultCard';
@@ -166,8 +165,8 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
           />
           
           <div className="mb-6">
-            <div className="flex items-center calculator-field-label">
-              <span>USD per</span>
+            <div className="calculator-field-label flex items-center whitespace-nowrap">
+              USD per
               <Select value={energyUnit} onValueChange={(value: EnergyUnit) => setEnergyUnit(value)}>
                 <SelectTrigger className="mx-2 w-24 h-8 inline-flex">
                   <SelectValue placeholder="kWh" />
@@ -178,7 +177,7 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
                   <SelectItem value="therms">therms</SelectItem>
                 </SelectContent>
               </Select>
-              <span>for plant:</span>
+              for plant:
             </div>
             <div className="calculator-field-input">
               <input
