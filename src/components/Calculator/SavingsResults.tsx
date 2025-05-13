@@ -178,19 +178,21 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
           </div>
           
           <div className="mb-6">
-            <div className="calculator-field-label mb-2 flex items-center gap-1">
-              USD per
-              <Select value={energyUnit} onValueChange={(value: EnergyUnit) => setEnergyUnit(value)}>
-                <SelectTrigger className="mx-1 w-24 h-8">
-                  <SelectValue placeholder="kWh" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="kWh">kWh</SelectItem>
-                  <SelectItem value="MMBtu">MMBtu</SelectItem>
-                  <SelectItem value="therms">therms</SelectItem>
-                </SelectContent>
-              </Select>
-              for plant:
+            <div className="calculator-field-label mb-2">
+              <span className="flex items-center gap-1 whitespace-nowrap">
+                USD per
+                <Select value={energyUnit} onValueChange={(value: EnergyUnit) => setEnergyUnit(value)}>
+                  <SelectTrigger className="mx-1 w-24 h-8">
+                    <SelectValue placeholder="kWh" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="kWh">kWh</SelectItem>
+                    <SelectItem value="MMBtu">MMBtu</SelectItem>
+                    <SelectItem value="therms">therms</SelectItem>
+                  </SelectContent>
+                </Select>
+                for plant:
+              </span>
             </div>
             <div className="calculator-field-input w-full">
               <input
