@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -46,33 +46,56 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
     if (onCageFrequencyChange) onCageFrequencyChange(value);
   };
 
-  // Generate yearly data, now including Year 0
-  const data = [
+  // Generate yearly data with accumulating bag costs based on frequency
+  const data = useMemo(() => {
+    // Calculate the total replacement cost per occurrence (bag replacement event)
+    const totalReplacementCostPerEvent = bagSavings / (savingYears * 12 / localBagFrequency);
+    
+    // Create an array to track accumulated costs over time
+    const yearlyData = [];
+    
     // Add Year 0 with all values at 0
-    {
+    yearlyData.push({
       year: 'Year 0',
       'Bag Material & Labor': 0,
       'Fan Power': 0,
       'Compressed Air': 0,
       'Total': 0
-    },
+    });
+    
+    let accumulatedBagCost = 0;
+    
     // Generate the rest of the years
-    ...Array.from({ length: savingYears }, (_, index) => {
-      const year = index + 1;
-      const yearlyBagSavings = bagSavings / savingYears * year;
+    for (let year = 1; year <= savingYears; year++) {
+      // Check if a bag change is due this year
+      // Convert years to months and check if it's a multiple of the bag change frequency
+      const monthsElapsed = year * 12;
+      
+      // If we've passed a bag change threshold, add the replacement cost
+      if (monthsElapsed % localBagFrequency === 0 || 
+          (monthsElapsed > localBagFrequency && Math.floor(monthsElapsed / localBagFrequency) > 
+           Math.floor((monthsElapsed - 12) / localBagFrequency))) {
+        accumulatedBagCost += totalReplacementCostPerEvent;
+      }
+      
+      // Calculate linear fan power and air savings
       const yearlyFanPowerSavings = fanPowerSavings / savingYears * year;
       const yearlyAirSavings = airSavings / savingYears * year;
-      const totalYearlySavings = yearlyBagSavings + yearlyFanPowerSavings + yearlyAirSavings;
       
-      return {
+      // Total savings include the accumulated bag costs plus the linear savings
+      const totalYearlySavings = accumulatedBagCost + yearlyFanPowerSavings + yearlyAirSavings;
+      
+      yearlyData.push({
         year: `Year ${year}`,
-        'Bag Material & Labor': yearlyBagSavings,
+        'Bag Material & Labor': accumulatedBagCost,
         'Fan Power': yearlyFanPowerSavings,
         'Compressed Air': yearlyAirSavings,
         'Total': totalYearlySavings
-      };
-    })
-  ];
+      });
+    }
+    
+    return yearlyData;
+  }, [bagSavings, fanPowerSavings, airSavings, savingYears, localBagFrequency]);
 
   return (
     <Card className="w-full">
