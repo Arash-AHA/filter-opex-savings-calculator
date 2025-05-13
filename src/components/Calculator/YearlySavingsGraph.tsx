@@ -10,12 +10,6 @@ interface YearlySavingsGraphProps {
   fanPowerSavings: number;
   airSavings: number;
   savingYears: number;
-  scheuchMotorKW: number;  // Added scheuchMotorKW
-  kwhCost: number;         // Added kwhCost
-  workingHours: number;    // Added workingHours
-  totalBags: number;       // Added totalBags for cage calculation
-  bagPrice: number;        // Added for better bag cost calculation
-  cagePrice: number;       // Added for cage cost calculation
   bagChangeFrequency?: number;
   cageReplacementFrequency?: number;
   onBagFrequencyChange?: (value: number) => void;
@@ -29,12 +23,6 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
   fanPowerSavings,
   airSavings,
   savingYears,
-  scheuchMotorKW,   // New prop
-  kwhCost,          // New prop
-  workingHours,     // New prop
-  totalBags,        // New prop
-  bagPrice,         // New prop
-  cagePrice,        // New prop
   bagChangeFrequency = 24, // Default to 24 months if not provided
   cageReplacementFrequency = 48, // Default to 48 months if not provided
   onBagFrequencyChange,
@@ -58,11 +46,6 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
     if (onCageFrequencyChange) onCageFrequencyChange(value);
   };
 
-  // Calculate yearly compressed air cost
-  const yearlyCompressedAirCost = useMemo(() => {
-    return scheuchMotorKW * kwhCost * workingHours;
-  }, [scheuchMotorKW, kwhCost, workingHours]);
-
   // Generate yearly data with bag costs added as a step function at specific years
   const data = useMemo(() => {
     const yearlyData = [];
@@ -71,7 +54,6 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
     yearlyData.push({
       year: 'Year 0',
       'Bag Material & Labor': 0,
-      'Cage Replacement': 0,
       'Fan Power': 0,
       'Compressed Air': 0,
       'Total': 0
@@ -87,55 +69,32 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
       }
     }
     
-    // Calculate the exact years when cage replacements occur
-    const cageChangeYears = new Set();
-    if (localCageFrequency > 0) {
-      for (let month = localCageFrequency; month <= savingYears * 12; month += localCageFrequency) {
-        const exactYear = month / 12;
-        const yearIndex = Math.ceil(exactYear);
-        cageChangeYears.add(yearIndex);
-      }
-    }
-    
     let accumulatedBagCost = 0;
-    let accumulatedCageCost = 0;
     
     for (let year = 1; year <= savingYears; year++) {
       // Check if this year is a bag change year
       if (bagChangeYears.has(year)) {
-        // Calculate actual bag cost using totalBags and bagPrice
-        const bagCostThisYear = totalBags * bagPrice;
-        accumulatedBagCost += bagCostThisYear;
+        accumulatedBagCost += bagSavings;
       }
       
-      // Check if this year is a cage replacement year
-      if (cageChangeYears.has(year)) {
-        // Calculate cage replacement cost
-        const cageCostThisYear = totalBags * cagePrice;
-        accumulatedCageCost += cageCostThisYear;
-      }
-      
-      // Calculate yearly fan power savings
+      // Calculate linear fan power and air savings
       const yearlyFanPowerSavings = fanPowerSavings / savingYears * year;
+      const yearlyAirSavings = airSavings / savingYears * year;
       
-      // Calculate yearly compressed air cost, which accumulates yearly
-      const yearlyCompressedAir = yearlyCompressedAirCost * year;
-      
-      // Total savings include all costs
-      const totalYearlySavings = accumulatedBagCost + accumulatedCageCost + yearlyFanPowerSavings + yearlyCompressedAir;
+      // Total savings include the accumulated bag costs plus the linear savings
+      const totalYearlySavings = accumulatedBagCost + yearlyFanPowerSavings + yearlyAirSavings;
       
       yearlyData.push({
         year: `Year ${year}`,
         'Bag Material & Labor': accumulatedBagCost,
-        'Cage Replacement': accumulatedCageCost,
         'Fan Power': yearlyFanPowerSavings,
-        'Compressed Air': yearlyCompressedAir,
+        'Compressed Air': yearlyAirSavings,
         'Total': totalYearlySavings
       });
     }
     
     return yearlyData;
-  }, [bagSavings, fanPowerSavings, savingYears, localBagFrequency, localCageFrequency, totalBags, bagPrice, cagePrice, yearlyCompressedAirCost]);
+  }, [bagSavings, fanPowerSavings, airSavings, savingYears, localBagFrequency]);
 
   return (
     <Card className="w-full">
@@ -209,13 +168,6 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
                 type="monotone" 
                 dataKey="Bag Material & Labor" 
                 stroke="#4ade80" 
-                activeDot={{ r: 8 }}
-                strokeWidth={2}
-              />
-              <Line 
-                type="monotone" 
-                dataKey="Cage Replacement" 
-                stroke="#fb923c" 
                 activeDot={{ r: 8 }}
                 strokeWidth={2}
               />
