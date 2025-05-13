@@ -147,23 +147,35 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
         <div className="md:col-span-1">
           <h3 className="text-sm font-medium text-gray-700 mb-4">Calculation Parameters</h3>
           
-          <InputField
-            label="Saving in x years:"
-            value={savingYears}
-            onChange={(value) => setSavingYears(parseInt(value) || 0)}
-            type="number"
-            min={1}
-            className="mb-6"
-          />
+          <div className="mb-6">
+            <div className="calculator-field-label mb-2">
+              Saving in x years:
+            </div>
+            <div className="calculator-field-input w-full">
+              <input
+                type="number"
+                value={savingYears}
+                onChange={(e) => setSavingYears(parseInt(e.target.value) || 0)}
+                min={1}
+                className="calculator-input w-full"
+              />
+            </div>
+          </div>
           
-          <InputField
-            label="Working hours per year:"
-            value={workingHours}
-            onChange={(value) => setWorkingHours(parseInt(value) || 0)}
-            type="number"
-            min={1}
-            className="mb-6"
-          />
+          <div className="mb-6">
+            <div className="calculator-field-label mb-2">
+              Working hours per year:
+            </div>
+            <div className="calculator-field-input w-full">
+              <input
+                type="number"
+                value={workingHours}
+                onChange={(e) => setWorkingHours(parseInt(e.target.value) || 0)}
+                min={1}
+                className="calculator-input w-full"
+              />
+            </div>
+          </div>
           
           <div className="mb-6">
             <div className="calculator-field-label mb-2 flex items-center gap-1">
@@ -197,15 +209,22 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
             </div>
           </div>
           
-          <InputField
-            label="USD/Nm³ from Plant Network:"
-            value={compressedAirCost}
-            onChange={(value) => setCompressedAirCost(value)}
-            type="number"
-            min={0}
-            step={0.01}
-            placeholder="Leave empty if not available"
-          />
+          <div className="mb-6">
+            <div className="calculator-field-label mb-2">
+              USD/Nm³ from Plant Network:
+            </div>
+            <div className="calculator-field-input w-full">
+              <input
+                type="number"
+                value={compressedAirCost}
+                onChange={(e) => setCompressedAirCost(e.target.value)}
+                min={0}
+                step={0.01}
+                placeholder="Leave empty if not available"
+                className="calculator-input w-full"
+              />
+            </div>
+          </div>
         </div>
         
         <div className="md:col-span-2">
