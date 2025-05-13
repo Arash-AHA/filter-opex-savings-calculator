@@ -1,3 +1,4 @@
+
 import React, { useRef, useState } from 'react';
 import InputField from './InputField';
 import ResultCard from './ResultCard';
@@ -64,7 +65,6 @@ interface SavingsResultsProps {
     acRatioNet: string;
     totalBags: number;
   } | null;
-  cagePrice: number; // Support cage price prop
 }
 
 const SavingsResults: React.FC<SavingsResultsProps> = ({
@@ -92,8 +92,7 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
   airVolumeACFM,
   numEMCFlaps,
   bagLength,
-  formattedResults,
-  cagePrice
+  formattedResults
 }) => {
   const [showPrintDialog, setShowPrintDialog] = useState(false);
   const [showGraphDialog, setShowGraphDialog] = useState(false);
@@ -113,9 +112,6 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
     totalBags: 0
   };
 
-  // Pass totalBags from formattedResults to YearlySavingsGraph for accurate cage cost calculation
-  const totalBags = formattedResults?.totalBags || 0;
-  
   const handlePrint = () => {
     if (printContentRef.current) {
       const printContents = printContentRef.current.innerHTML;
@@ -401,7 +397,7 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
         </DialogContent>
       </Dialog>
 
-      {/* Yearly Savings Graph Dialog - Now with totalBags passed for accurate cage cost calculation */}
+      {/* Yearly Savings Graph Dialog - Now shown when Show Graph is clicked */}
       <Dialog open={showGraphDialog} onOpenChange={setShowGraphDialog}>
         <DialogContent className="max-w-5xl w-[90vw] max-h-[90vh]">
           <DialogHeader>
@@ -420,8 +416,6 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
             cageReplacementFrequency={cageReplacementFrequency}
             onBagFrequencyChange={setBagChangeFrequency}
             onCageFrequencyChange={setCageReplacementFrequency}
-            cagePrice={cagePrice}
-            totalBags={totalBags}
             isOpen={true}
             onClose={() => {}}
           />
