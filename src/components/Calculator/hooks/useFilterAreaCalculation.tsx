@@ -28,9 +28,6 @@ export const useFilterAreaCalculation = (
       const totalFilterArea = calculateTotalFilterArea();
       const netFilterArea = calculateTotalNetFilterArea(totalFilterArea);
       
-      // Calculate total number of bags
-      const totalBags = bagsPerRow * numEMCFlaps * 5;
-      
       // Calculate OPEX metrics - check for valid inputs to prevent NaN
       let parsedAirVolume: number;
       
@@ -52,8 +49,7 @@ export const useFilterAreaCalculation = (
         acRatioGross: acRatioGross,
         acRatioNet: acRatioNet,
         baselinePower: baselinePowerConsumption,
-        improvedPower: improvedPowerConsumption,
-        totalBags: totalBags
+        improvedPower: improvedPowerConsumption
       };
     } catch (error) {
       console.error("Error calculating filter results:", error);
@@ -64,11 +60,10 @@ export const useFilterAreaCalculation = (
         acRatioGross: 0,
         acRatioNet: 0,
         baselinePower: 0,
-        improvedPower: 0,
-        totalBags: 0
+        improvedPower: 0
       };
     }
-  }, [calculateTotalFilterArea, calculateTotalNetFilterArea, airVolumeM3h, airVolumeACFM, designType, bagsPerRow, numEMCFlaps]);
+  }, [calculateTotalFilterArea, calculateTotalNetFilterArea, airVolumeM3h, airVolumeACFM, designType]);
 
   return filterResults;
 };

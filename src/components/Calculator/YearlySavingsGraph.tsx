@@ -46,8 +46,12 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
     if (onCageFrequencyChange) onCageFrequencyChange(value);
   };
 
-  // Generate yearly data with bag costs added as a step function at specific years
+  // Generate yearly data with accumulating bag costs based on frequency
   const data = useMemo(() => {
+    // Calculate the total replacement cost per occurrence (bag replacement event)
+    const totalReplacementCostPerEvent = bagSavings / (savingYears * 12 / localBagFrequency);
+    
+    // Create an array to track accumulated costs over time
     const yearlyData = [];
     
     // Add Year 0 with all values at 0
@@ -59,22 +63,19 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
       'Total': 0
     });
     
-    // Calculate the exact years when bag changes occur
-    const bagChangeYears = new Set();
-    if (localBagFrequency > 0) {
-      for (let month = localBagFrequency; month <= savingYears * 12; month += localBagFrequency) {
-        const exactYear = month / 12;
-        const yearIndex = Math.ceil(exactYear);
-        bagChangeYears.add(yearIndex);
-      }
-    }
-    
     let accumulatedBagCost = 0;
     
+    // Generate the rest of the years
     for (let year = 1; year <= savingYears; year++) {
-      // Check if this year is a bag change year
-      if (bagChangeYears.has(year)) {
-        accumulatedBagCost += bagSavings;
+      // Check if a bag change is due this year
+      // Convert years to months and check if it's a multiple of the bag change frequency
+      const monthsElapsed = year * 12;
+      
+      // If we've passed a bag change threshold, add the replacement cost
+      if (monthsElapsed % localBagFrequency === 0 || 
+          (monthsElapsed > localBagFrequency && Math.floor(monthsElapsed / localBagFrequency) > 
+           Math.floor((monthsElapsed - 12) / localBagFrequency))) {
+        accumulatedBagCost += totalReplacementCostPerEvent;
       }
       
       // Calculate linear fan power and air savings

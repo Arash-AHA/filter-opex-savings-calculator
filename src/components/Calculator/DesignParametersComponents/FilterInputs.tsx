@@ -35,12 +35,6 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
   const [suggestedFlaps, setSuggestedFlaps] = useState<number | null>(null);
   
   useEffect(() => {
-    // Only calculate suggested flaps if we have valid air volume input
-    if ((!airVolumeM3h || airVolumeM3h === '') && (!airVolumeACFM || airVolumeACFM === '')) {
-      setSuggestedFlaps(null);
-      return;
-    }
-    
     let suggested = suggestEMCFlaps(
       designType,
       bagLength,
@@ -55,16 +49,13 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
         suggested = suggested + (3 - remainder);
       }
       
-      // Only calculate A/C ratio if we have valid inputs
-      if (airVolumeACFM && airVolumeACFM !== '') {
-        const areaPerFlap = bagLength * bagsPerRow * 5 * 1.6;
-        const totalArea = areaPerFlap * suggested;
-        const airVolume = parseFloat(airVolumeACFM) || 0;
-        const acRatio = totalArea > 0 ? airVolume / totalArea : 0;
-        
-        if (acRatio > 3.2) {
-          suggested += 3;
-        }
+      const areaPerFlap = bagLength * bagsPerRow * 5 * 1.6;
+      const totalArea = areaPerFlap * suggested;
+      const airVolume = parseFloat(airVolumeACFM) || 0;
+      const acRatio = totalArea > 0 ? airVolume / totalArea : 0;
+      
+      if (acRatio > 3.2) {
+        suggested += 3;
       }
     }
     
@@ -72,21 +63,18 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
   }, [designType, bagLength, bagsPerRow, airVolumeM3h, airVolumeACFM]);
   
   const calculateAcRatio = () => {
-    if ((!airVolumeM3h || airVolumeM3h === '') && (!airVolumeACFM || airVolumeACFM === '')) return 0;
-    
-    const numEMCFlapsValue = typeof numEMCFlaps === 'string' ? 
-                           (numEMCFlaps === '' ? 0 : parseInt(numEMCFlaps)) : 
-                           numEMCFlaps;
-    
-    if (numEMCFlapsValue <= 0) return 0;
-                           
     if (designType === 'bolt-weld') {
       const areaPerFlap = Math.PI * (165/1000) * bagLength * 5 * bagsPerRow;
-      const totalArea = areaPerFlap * numEMCFlapsValue;
+      const totalArea = areaPerFlap * (typeof numEMCFlaps === 'string' ? 
+                                       (numEMCFlaps === '' ? 0 : parseInt(numEMCFlaps)) : 
+                                       numEMCFlaps);
       
       const airVolume = parseFloat(airVolumeM3h) || 0;
       return totalArea > 0 ? (airVolume / 60) / totalArea : 0;
     } else {
+      const numEMCFlapsValue = typeof numEMCFlaps === 'string' ? 
+                               (numEMCFlaps === '' ? 0 : parseInt(numEMCFlaps)) : 
+                               numEMCFlaps;
       const totalArea = bagLength * bagsPerRow * numEMCFlapsValue * 5 * 1.6;
       
       const airVolume = parseFloat(airVolumeACFM) || 0;

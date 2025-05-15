@@ -1,4 +1,3 @@
-
 /**
  * Utility functions for OPEX calculator calculations
  */
@@ -16,10 +15,9 @@ export const calculateFilterArea = (
     // PI()*165/1000*Bag length*5*No. bags in a row*No. EMC flaps
     return Math.PI * (165/1000) * bagLength * 5 * bagsPerRow * numEMCFlaps;
   } else {
-    // For Modular design
-    // Total Number of Bags * 1.6 * Filter Bag Length
-    const totalBags = bagsPerRow * numEMCFlaps * 5;
-    return totalBags * 1.6 * bagLength;
+    // For Modular design - the result is directly in sq.ft
+    // Bag Length * No. Bags in a Row * TOTAL No. EMC Flaps * 5 * 1.6
+    return bagLength * bagsPerRow * numEMCFlaps * 5 * 1.6;
   }
 };
 
@@ -38,9 +36,8 @@ export const calculateNetFilterArea = (
     // For bolt-weld design, use numEMCFlaps-1 in the calculation
     return Math.PI * (165/1000) * bagLength * 5 * bagsPerRow * (numEMCFlaps - 1);
   } else {
-    // For modular design, using the updated formula with numEMCFlaps-1 and bag length
-    const totalBags = bagsPerRow * (numEMCFlaps - 1) * 5;
-    return totalBags * 1.6 * bagLength;
+    // For modular design, use numEMCFlaps-1 (UPDATED FORMULA)
+    return bagLength * bagsPerRow * (numEMCFlaps - 1) * 5 * 1.6;
   }
 };
 

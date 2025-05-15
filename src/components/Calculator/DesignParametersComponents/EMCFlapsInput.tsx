@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { HelpCircle } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -28,12 +27,11 @@ const EMCFlapsInput: React.FC<EMCFlapsInputProps> = ({
   bagLength,
   currentAcRatio,
 }) => {
-  const [inputValue, setInputValue] = useState<string>(numEMCFlaps !== '' ? numEMCFlaps.toString() : '');
+  const [inputValue, setInputValue] = useState<string>(numEMCFlaps.toString());
   const { toast } = useToast();
 
-  // Update local state when numEMCFlaps changes from parent
   useEffect(() => {
-    setInputValue(numEMCFlaps !== '' ? numEMCFlaps.toString() : '');
+    setInputValue(numEMCFlaps.toString());
   }, [numEMCFlaps]);
 
   const handleEMCFlapsInputChange = (value: string) => {
@@ -64,29 +62,27 @@ const EMCFlapsInput: React.FC<EMCFlapsInputProps> = ({
         }
         
         // Check A/C ratio even if multiple of 3 is valid
-        if (airVolumeACFM && airVolumeACFM !== '' && parsedValue > 0) {
-          const areaPerFlap = bagLength * bagsPerRow * 5 * 1.6;
-          const totalArea = areaPerFlap * parsedValue;
-          const airVolume = parseFloat(airVolumeACFM) || 0;
-          const acRatio = totalArea > 0 ? airVolume / totalArea : 0;
-          
-          if (acRatio > 3.2) {
-            // Round up to the next multiple of 3
-            const adjustedValue = parsedValue + 3;
-            toast({
-              title: "Warning: High A/C Ratio",
-              description: `Increasing EMC flaps to ${adjustedValue} to maintain A/C ratio below 3.2.`,
-              variant: "destructive",
-            });
-            setInputValue(adjustedValue.toString());
-            setNumEMCFlaps(adjustedValue);
-            return;
-          }
+        const areaPerFlap = bagLength * bagsPerRow * 5 * 1.6;
+        const totalArea = areaPerFlap * parsedValue;
+        const airVolume = parseFloat(airVolumeACFM) || 0;
+        const acRatio = totalArea > 0 ? airVolume / totalArea : 0;
+        
+        if (acRatio > 3.2) {
+          // Round up to the next multiple of 3
+          const adjustedValue = parsedValue + 3;
+          toast({
+            title: "Warning: High A/C Ratio",
+            description: `Increasing EMC flaps to ${adjustedValue} to maintain A/C ratio below 3.2.`,
+            variant: "destructive",
+          });
+          setInputValue(adjustedValue.toString());
+          setNumEMCFlaps(adjustedValue);
+          return;
         }
       }
       setNumEMCFlaps(parsedValue);
     } else {
-      setInputValue(numEMCFlaps !== '' ? numEMCFlaps.toString() : '');
+      setInputValue(numEMCFlaps.toString());
     }
   };
 
@@ -133,7 +129,7 @@ const EMCFlapsInput: React.FC<EMCFlapsInputProps> = ({
           onChange={(e) => handleEMCFlapsInputChange(e.target.value)}
           onBlur={handleEMCFlapsBlur}
           className="calculator-input w-full"
-          placeholder="Enter quantity"
+          placeholder="Enter value"
         />
       </div>
     </div>

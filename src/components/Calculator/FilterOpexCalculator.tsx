@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import CalculatorSection from './CalculatorSection';
 import Transition from '../UI/Transition';
@@ -23,13 +22,6 @@ const FilterOpexCalculator = () => {
       ...prev,
       [section]: !prev[section]
     }));
-  };
-  
-  // Create a wrapper for calculateTravelCost that doesn't require parameters
-  const handleCalculateTravelCost = () => {
-    // Use the days from calculatorState.results if available, or default to 1
-    const daysToReplace = calculatorState.results?.daysToReplace || 1;
-    calculatorState.calculateTravelCost(daysToReplace);
   };
   
   return <div className="max-w-5xl mx-auto">
@@ -72,7 +64,11 @@ const FilterOpexCalculator = () => {
                 setTravelCost={calculatorState.setTravelCost} 
                 bagReplacementCost={calculatorState.bagReplacementCost} 
                 setBagReplacementCost={calculatorState.setBagReplacementCost} 
-                calculateTravelCost={handleCalculateTravelCost} 
+                calculateTravelCost={() => {
+                  if (calculatorState.results.daysToReplace > 0) {
+                    calculatorState.calculateTravelCost(calculatorState.results.daysToReplace);
+                  }
+                }} 
                 formattedResults={calculatorState.formattedResults} 
               />
             </CollapsibleContent>
