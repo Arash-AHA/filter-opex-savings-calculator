@@ -1,17 +1,23 @@
 
 import React from 'react';
+
 interface AirVolumeInputsProps {
   airVolumeM3h: string;
   airVolumeACFM: string;
   handleAirVolumeM3hChange: (value: string) => void;
   handleAirVolumeACFMChange: (value: string) => void;
 }
+
 const AirVolumeInputs: React.FC<AirVolumeInputsProps> = ({
   airVolumeM3h,
   airVolumeACFM,
   handleAirVolumeM3hChange,
   handleAirVolumeACFMChange
 }) => {
+  // Default values if empty
+  const displayAirVolumeM3h = airVolumeM3h === '' ? '375000' : airVolumeM3h;
+  const displayAirVolumeACFM = airVolumeACFM === '' ? '221000' : airVolumeACFM;
+  
   return (
     <div className="flex flex-col mb-4">
       <div className="w-60 pr-4 calculator-field-label mb-2">
@@ -21,9 +27,9 @@ const AirVolumeInputs: React.FC<AirVolumeInputsProps> = ({
         <div className="relative">
           <input 
             type="text" 
-            value={airVolumeM3h} 
+            value={displayAirVolumeM3h} 
             onChange={e => handleAirVolumeM3hChange(e.target.value)} 
-            placeholder="Enter value" 
+            placeholder="375000" 
             className="calculator-input pr-12 w-full" 
           />
           <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500">m³/h</span>
@@ -31,9 +37,9 @@ const AirVolumeInputs: React.FC<AirVolumeInputsProps> = ({
         <div className="relative">
           <input 
             type="text" 
-            value={airVolumeACFM} 
+            value={displayAirVolumeACFM} 
             onChange={e => handleAirVolumeACFMChange(e.target.value)} 
-            placeholder="Enter value" 
+            placeholder="221000" 
             className="calculator-input pr-12 w-full" 
           />
           <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500">ACFM</span>
@@ -42,4 +48,5 @@ const AirVolumeInputs: React.FC<AirVolumeInputsProps> = ({
     </div>
   );
 };
+
 export default AirVolumeInputs;
