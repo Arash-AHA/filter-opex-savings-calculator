@@ -19,8 +19,8 @@ const AirVolumeInputs: React.FC<AirVolumeInputsProps> = ({
       <div className="w-full calculator-field-label mb-2">
         <span>Design Air Volume:</span>
       </div>
-      <div className="flex space-x-4">
-        <div className="relative w-1/2">
+      <div className="flex flex-col space-y-3">
+        <div className="relative w-full">
           <input
             type="text"
             value={airVolumeM3h}
@@ -32,7 +32,7 @@ const AirVolumeInputs: React.FC<AirVolumeInputsProps> = ({
             m³/h
           </span>
         </div>
-        <div className="relative w-1/2">
+        <div className="relative w-full">
           <input
             type="text"
             value={airVolumeACFM}
