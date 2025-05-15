@@ -1,4 +1,3 @@
-
 /**
  * Utility functions for OPEX calculator calculations
  */
@@ -44,6 +43,9 @@ export const calculateNetFilterArea = (
 
 /**
  * Calculate suggested number of EMC flaps based on air volume and target A/C ratio
+ * 
+ * This function suggests the number of EMC flaps needed to maintain the A/C ratio below
+ * the target value (1.0 for bolt-weld, 3.2 for modular design)
  */
 export const suggestEMCFlaps = (
   designType: string,
@@ -143,112 +145,4 @@ export const formatCurrency = (value: number): string => {
     minimumFractionDigits: 2, 
     maximumFractionDigits: 2
   });
-};
-
-/**
- * Calculate results for the calculator
- */
-export const calculateResults = (calculatorState: any) => {
-  // Use existing hooks to calculate results
-  try {
-    const filterArea = calculateFilterArea(
-      calculatorState.designType,
-      calculatorState.bagLength,
-      calculatorState.bagsPerRow,
-      calculatorState.numEMCFlaps
-    );
-    
-    const netFilterArea = calculateNetFilterArea(
-      calculatorState.designType,
-      calculatorState.bagLength,
-      calculatorState.bagsPerRow,
-      calculatorState.numEMCFlaps,
-      calculatorState.emcCleaningFactor,
-      filterArea
-    );
-    
-    // Calculate OPEX metrics - check for valid inputs to prevent NaN
-    let parsedAirVolume: number;
-    
-    // For modular design, use ACFM value
-    if (calculatorState.designType === 'modular' && calculatorState.airVolumeACFM) {
-      parsedAirVolume = parseFloat(calculatorState.airVolumeACFM) || 0;
-    } else {
-      parsedAirVolume = parseFloat(calculatorState.airVolumeM3h) || 0;
-    }
-    
-    const acRatioGross = parsedAirVolume / filterArea || 0;
-    const acRatioNet = parsedAirVolume / netFilterArea || 0;
-    const baselinePower = parsedAirVolume * 0.0002 || 0; // 0.0002 kW per m³/h
-    const improvedPower = baselinePower * 0.8 || 0; // 20% reduction
-    
-    // Calculate total bags
-    const totalBags = calculatorState.numEMCFlaps * calculatorState.bagsPerRow * 5;
-    
-    // Calculate days to replace
-    const daysToReplace = (totalBags * calculatorState.bagChangeTime / 60 / 10 / calculatorState.numPeople * 2) || 0;
-    
-    return {
-      filterArea,
-      netFilterArea,
-      acRatioGross,
-      acRatioNet,
-      baselinePower,
-      improvedPower,
-      annualSavings: 0, // Kept for state compatibility
-      totalBags,
-      daysToReplace,
-      totalReplacementCost: calculatorState.bagReplacementCost || 0,
-      tenYearSavings: 0,
-      lifeExtension: 0,
-      compressedAirSavings: 0
-    };
-  } catch (error) {
-    console.error("Error calculating results:", error);
-    return {
-      filterArea: 0,
-      netFilterArea: 0,
-      acRatioGross: 0,
-      acRatioNet: 0,
-      baselinePower: 0,
-      improvedPower: 0,
-      annualSavings: 0,
-      totalBags: 0,
-      daysToReplace: 0,
-      totalReplacementCost: 0,
-      tenYearSavings: 0,
-      lifeExtension: 0,
-      compressedAirSavings: 0
-    };
-  }
-};
-
-/**
- * Format results for display
- */
-export const formatResults = (results: any, conversionFactor: number, m2ToSqFtFactor: number) => {
-  try {
-    if (!results) {
-      return null;
-    }
-    
-    const formattedResults = {
-      filterArea: `${results.filterArea.toFixed(2)} m²`,
-      netFilterArea: `${results.netFilterArea.toFixed(2)} m²`,
-      acRatioGross: `${(results.acRatioGross / 60).toFixed(2)} m³/min/m²`,
-      acRatioNet: `${(results.acRatioNet / 60).toFixed(2)} m³/min/m²`,
-      baselinePower: `${results.baselinePower.toFixed(2)} kW`,
-      improvedPower: `${results.improvedPower.toFixed(2)} kW`,
-      totalBags: results.totalBags,
-      daysToReplace: results.daysToReplace.toFixed(2),
-      bagMaterialCost: 0, // Will be calculated based on bag price
-      tenYearSavings: `${Number(0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`,
-      lifeExtension: `0 months`
-    };
-    
-    return formattedResults;
-  } catch (error) {
-    console.error("Error formatting results:", error);
-    return null;
-  }
 };

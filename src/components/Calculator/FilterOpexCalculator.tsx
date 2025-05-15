@@ -1,15 +1,13 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
 import DesignParameters from './DesignParameters';
 import FilterBagReplacement from './FilterBagReplacement';
 import { useDesignParameters } from './hooks/useDesignParameters';
-import { useCalculatorState } from './hooks/useCalculatorState';
+import { calculateResults, formatResults } from './hooks/utils/calculationUtils';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 
 const FilterOpexCalculator: React.FC = () => {
-  const designParameters = useDesignParameters();
-  const calculatorState = useCalculatorState();
+  const calculatorState = useDesignParameters();
   const [results, setResults] = useState<any>(null);
   const [formattedResults, setFormattedResults] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -17,38 +15,44 @@ const FilterOpexCalculator: React.FC = () => {
   const calculateAndSetResults = useCallback(() => {
     setIsLoading(true);
     setTimeout(() => {
-      setResults(calculatorState.results);
-      setFormattedResults(calculatorState.formattedResults);
+      const calculatedResults = calculateResults(calculatorState);
+      const formatted = formatResults(calculatedResults, calculatorState.conversionFactor, calculatorState.m2ToSqFtFactor);
+      setResults(calculatedResults);
+      setFormattedResults(formatted);
       setIsLoading(false);
     }, 500);
-  }, [calculatorState.results, calculatorState.formattedResults]);
+  }, [calculatorState]);
 
   useEffect(() => {
     calculateAndSetResults();
   }, [
-    designParameters.designType,
-    designParameters.airVolumeM3h,
-    designParameters.airVolumeACFM,
-    designParameters.numEMCFlaps,
-    designParameters.bagsPerRow,
-    designParameters.bagLength,
-    designParameters.gasTempC,
-    designParameters.gasTempF,
-    designParameters.dustConcGramAm3,
-    designParameters.dustConcGrainACF,
-    designParameters.dustConcGramNm3,
-    designParameters.dustConcGrainSCF,
-    designParameters.outletDustKgH,
-    designParameters.outletDustLbH,
-    designParameters.targetEmissionMgNm3,
-    designParameters.targetEmissionGrainDscf,
-    designParameters.negativePressureMbar,
-    designParameters.negativePressureInchWG,
-    designParameters.filterRowType,
-    designParameters.channelWidthMm,
-    designParameters.channelHeightMm,
+    calculatorState.designType,
+    calculatorState.airVolumeM3h,
+    calculatorState.airVolumeACFM,
+    calculatorState.numEMCFlaps,
+    calculatorState.bagsPerRow,
+    calculatorState.bagLength,
+    calculatorState.gasTempC,
+    calculatorState.gasTempF,
+    calculatorState.dustConcGramAm3,
+    calculatorState.dustConcGrainACF,
+    calculatorState.dustConcGramNm3,
+    calculatorState.dustConcGrainSCF,
+    calculatorState.outletDustKgH,
+    calculatorState.outletDustLbH,
+    calculatorState.targetEmissionMgNm3,
+    calculatorState.targetEmissionGrainDscf,
+    calculatorState.negativePressureMbar,
+    calculatorState.negativePressureInchWG,
+    calculatorState.filterRowType,
+    calculatorState.channelWidthMm,
+    calculatorState.channelHeightMm,
     calculateAndSetResults
   ]);
+
+  const calculateTravelCost = (days: number) => {
+    return days * calculatorState.travelCost;
+  };
 
   return (
     <div className="container mx-auto p-4">
@@ -59,61 +63,61 @@ const FilterOpexCalculator: React.FC = () => {
         </CardHeader>
         <CardContent className="space-y-4">
           <DesignParameters
-            designType={designParameters.designType}
-            setDesignType={designParameters.setDesignType}
-            airVolumeM3h={designParameters.airVolumeM3h}
-            airVolumeACFM={designParameters.airVolumeACFM}
-            numEMCFlaps={designParameters.numEMCFlaps}
-            bagsPerRow={designParameters.bagsPerRow}
-            bagLength={designParameters.bagLength}
-            filterRowType={designParameters.filterRowType}
-            setFilterRowType={designParameters.setFilterRowType}
-            showDimensions={designParameters.showDimensions}
-            setShowDimensions={designParameters.setShowDimensions}
-            showOtherParams={designParameters.showOtherParams}
-            setShowOtherParams={designParameters.setShowOtherParams}
-            channelWidthMm={designParameters.channelWidthMm}
-            setChannelWidthMm={designParameters.setChannelWidthMm}
-            channelHeightMm={designParameters.channelHeightMm}
-            setChannelHeightMm={designParameters.setChannelHeightMm}
-            handleAirVolumeM3hChange={designParameters.handleAirVolumeM3hChange}
-            handleAirVolumeACFMChange={designParameters.handleAirVolumeACFMChange}
-            setNumEMCFlaps={designParameters.setNumEMCFlaps}
-            setBagsPerRow={designParameters.setBagsPerRow}
-            setBagLength={designParameters.setBagLength}
+            designType={calculatorState.designType}
+            setDesignType={calculatorState.setDesignType}
+            airVolumeM3h={calculatorState.airVolumeM3h}
+            airVolumeACFM={calculatorState.airVolumeACFM}
+            numEMCFlaps={calculatorState.numEMCFlaps}
+            bagsPerRow={calculatorState.bagsPerRow}
+            bagLength={calculatorState.bagLength}
+            filterRowType={calculatorState.filterRowType}
+            setFilterRowType={calculatorState.setFilterRowType}
+            showDimensions={calculatorState.showDimensions}
+            setShowDimensions={calculatorState.setShowDimensions}
+            showOtherParams={calculatorState.showOtherParams}
+            setShowOtherParams={calculatorState.setShowOtherParams}
+            channelWidthMm={calculatorState.channelWidthMm}
+            setChannelWidthMm={calculatorState.setChannelWidthMm}
+            channelHeightMm={calculatorState.channelHeightMm}
+            setChannelHeightMm={calculatorState.setChannelHeightMm}
+            handleAirVolumeM3hChange={calculatorState.handleAirVolumeM3hChange}
+            handleAirVolumeACFMChange={calculatorState.handleAirVolumeACFMChange}
+            setNumEMCFlaps={calculatorState.setNumEMCFlaps}
+            setBagsPerRow={calculatorState.setBagsPerRow}
+            setBagLength={calculatorState.setBagLength}
             formattedResults={formattedResults}
             results={results}
-            m2ToSqFtFactor={designParameters.m2ToSqFtFactor}
-            conversionFactor={designParameters.conversionFactor}
+            m2ToSqFtFactor={calculatorState.m2ToSqFtFactor}
+            conversionFactor={calculatorState.conversionFactor}
             // Additional parameters
-            gasTempC={designParameters.gasTempC}
-            gasTempF={designParameters.gasTempF}
-            dustConcGramAm3={designParameters.dustConcGramAm3}
-            dustConcGrainACF={designParameters.dustConcGrainACF}
-            dustConcGramNm3={designParameters.dustConcGramNm3}
-            dustConcGrainSCF={designParameters.dustConcGrainSCF}
-            handleGasTempCChange={designParameters.handleGasTempCChange}
-            handleGasTempFChange={designParameters.handleGasTempFChange}
-            handleDustConcGramAm3Change={designParameters.handleDustConcGramAm3Change}
-            handleDustConcGrainACFChange={designParameters.handleDustConcGrainACFChange}
-            handleDustConcGramNm3Change={designParameters.handleDustConcGramNm3Change}
-            handleDustConcGrainSCFChange={designParameters.handleDustConcGrainSCFChange}
+            gasTempC={calculatorState.gasTempC}
+            gasTempF={calculatorState.gasTempF}
+            dustConcGramAm3={calculatorState.dustConcGramAm3}
+            dustConcGrainACF={calculatorState.dustConcGrainACF}
+            dustConcGramNm3={calculatorState.dustConcGramNm3}
+            dustConcGrainSCF={calculatorState.dustConcGrainSCF}
+            handleGasTempCChange={calculatorState.handleGasTempCChange}
+            handleGasTempFChange={calculatorState.handleGasTempFChange}
+            handleDustConcGramAm3Change={calculatorState.handleDustConcGramAm3Change}
+            handleDustConcGrainACFChange={calculatorState.handleDustConcGrainACFChange}
+            handleDustConcGramNm3Change={calculatorState.handleDustConcGramNm3Change}
+            handleDustConcGrainSCFChange={calculatorState.handleDustConcGrainSCFChange}
             // Outlet dust parameters
-            outletDustKgH={designParameters.outletDustKgH}
-            outletDustLbH={designParameters.outletDustLbH}
-            handleOutletDustKgHChange={designParameters.handleOutletDustKgHChange}
-            handleOutletDustLbHChange={designParameters.handleOutletDustLbHChange}
-            estimateOutletDust={designParameters.estimateOutletDust}
+            outletDustKgH={calculatorState.outletDustKgH}
+            outletDustLbH={calculatorState.outletDustLbH}
+            handleOutletDustKgHChange={calculatorState.handleOutletDustKgHChange}
+            handleOutletDustLbHChange={calculatorState.handleOutletDustLbHChange}
+            estimateOutletDust={calculatorState.estimateOutletDust}
             // Target emission parameters
-            targetEmissionMgNm3={designParameters.targetEmissionMgNm3}
-            targetEmissionGrainDscf={designParameters.targetEmissionGrainDscf}
-            handleTargetEmissionMgNm3Change={designParameters.handleTargetEmissionMgNm3Change}
-            handleTargetEmissionGrainDscfChange={designParameters.handleTargetEmissionGrainDscfChange}
+            targetEmissionMgNm3={calculatorState.targetEmissionMgNm3}
+            targetEmissionGrainDscf={calculatorState.targetEmissionGrainDscf}
+            handleTargetEmissionMgNm3Change={calculatorState.handleTargetEmissionMgNm3Change}
+            handleTargetEmissionGrainDscfChange={calculatorState.handleTargetEmissionGrainDscfChange}
             // Negative pressure parameters
-            negativePressureMbar={designParameters.negativePressureMbar}
-            negativePressureInchWG={designParameters.negativePressureInchWG}
-            handleNegativePressureMbarChange={designParameters.handleNegativePressureMbarChange}
-            handleNegativePressureInchWGChange={designParameters.handleNegativePressureInchWGChange}
+            negativePressureMbar={calculatorState.negativePressureMbar}
+            negativePressureInchWG={calculatorState.negativePressureInchWG}
+            handleNegativePressureMbarChange={calculatorState.handleNegativePressureMbarChange}
+            handleNegativePressureInchWGChange={calculatorState.handleNegativePressureInchWGChange}
           />
 
           {isLoading ? (
@@ -124,28 +128,19 @@ const FilterOpexCalculator: React.FC = () => {
             </div>
           ) : (
             <FilterBagReplacement 
-              bagPrice={calculatorState.bagPrice}
-              setBagPrice={calculatorState.setBagPrice}
-              cagePrice={calculatorState.cagePrice}
-              setCagePrice={calculatorState.setCagePrice}
-              bagChangeTime={calculatorState.bagChangeTime}
-              setBagChangeTime={calculatorState.setBagChangeTime}
-              numPeople={calculatorState.numPeople}
-              setNumPeople={calculatorState.setNumPeople}
-              hourlyRate={calculatorState.hourlyRate}
-              setHourlyRate={calculatorState.setHourlyRate}
-              siteDistance={calculatorState.siteDistance}
-              setSiteDistance={calculatorState.setSiteDistance}
-              travelCost={calculatorState.travelCost}
-              setTravelCost={calculatorState.setTravelCost}
-              bagReplacementCost={calculatorState.bagReplacementCost}
-              setBagReplacementCost={calculatorState.setBagReplacementCost}
-              calculateTravelCost={() => calculatorState.calculateTravelCost(calculatorState.bagResults?.daysToReplace || 0)}
-              formattedResults={formattedResults || {
-                totalBags: 0,
-                daysToReplace: "0.00",
-                bagMaterialCost: 0,
-              }}
+              designType={calculatorState.designType} 
+              numEMCFlaps={calculatorState.numEMCFlaps} 
+              filterArea={calculatorState.filterResults.totalFilterArea} 
+              daysToReplace={calculatorState.daysToReplace} 
+              setDaysToReplace={calculatorState.setDaysToReplace} 
+              laborCostPerHour={calculatorState.laborCostPerHour} 
+              setLaborCostPerHour={calculatorState.setLaborCostPerHour} 
+              travelCost={calculatorState.travelCost} 
+              setTravelCost={calculatorState.setTravelCost} 
+              bagReplacementCost={calculatorState.bagReplacementCost} 
+              setBagReplacementCost={calculatorState.setBagReplacementCost} 
+              calculateTravelCost={calculateTravelCost} 
+              formattedResults={calculatorState.formattedResults} 
             />
           )}
         </CardContent>
