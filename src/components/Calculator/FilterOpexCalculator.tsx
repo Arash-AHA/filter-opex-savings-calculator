@@ -1,126 +1,152 @@
-
-import React, { useState } from 'react';
-import CalculatorSection from './CalculatorSection';
-import Transition from '../UI/Transition';
+import React, { useState, useEffect, useCallback } from 'react';
 import DesignParameters from './DesignParameters';
 import FilterBagReplacement from './FilterBagReplacement';
-import OperationalParameters from './OperationalParameters';
-import SavingsResults from './SavingsResults';
-import { useCalculatorState } from './hooks/useCalculatorState';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { ChevronDown } from 'lucide-react';
+import { useDesignParameters } from './hooks/useDesignParameters';
+import { calculateResults, formatResults } from './hooks/utils/calculationUtils';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Skeleton } from "@/components/ui/skeleton"
 
-const FilterOpexCalculator = () => {
-  const calculatorState = useCalculatorState();
-  const [openSections, setOpenSections] = useState({
-    bagReplacement: false,
-    operational: false,
-    savings: false
-  });
-  
-  const toggleSection = (section: keyof typeof openSections) => {
-    setOpenSections(prev => ({
-      ...prev,
-      [section]: !prev[section]
-    }));
+const FilterOpexCalculator: React.FC = () => {
+  const calculatorState = useDesignParameters();
+  const [results, setResults] = useState<any>(null);
+  const [formattedResults, setFormattedResults] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const calculateAndSetResults = useCallback(() => {
+    setIsLoading(true);
+    setTimeout(() => {
+      const calculatedResults = calculateResults(calculatorState);
+      const formatted = formatResults(calculatedResults, calculatorState.conversionFactor, calculatorState.m2ToSqFtFactor);
+      setResults(calculatedResults);
+      setFormattedResults(formatted);
+      setIsLoading(false);
+    }, 500);
+  }, [calculatorState]);
+
+  useEffect(() => {
+    calculateAndSetResults();
+  }, [
+    calculatorState.designType,
+    calculatorState.airVolumeM3h,
+    calculatorState.airVolumeACFM,
+    calculatorState.numEMCFlaps,
+    calculatorState.bagsPerRow,
+    calculatorState.bagLength,
+    calculatorState.gasTempC,
+    calculatorState.gasTempF,
+    calculatorState.dustConcGramAm3,
+    calculatorState.dustConcGrainACF,
+    calculatorState.dustConcGramNm3,
+    calculatorState.dustConcGrainSCF,
+    calculatorState.outletDustKgH,
+    calculatorState.outletDustLbH,
+    calculatorState.targetEmissionMgNm3,
+    calculatorState.targetEmissionGrainDscf,
+    calculatorState.negativePressureMbar,
+    calculatorState.negativePressureInchWG,
+    calculatorState.filterRowType,
+    calculatorState.channelWidthMm,
+    calculatorState.channelHeightMm,
+    calculateAndSetResults
+  ]);
+
+  const calculateTravelCost = (days: number) => {
+    return days * calculatorState.travelCost;
   };
-  
-  return <div className="max-w-5xl mx-auto">
-      <div className="text-center mb-8">
-        <Transition animation="slide-in-left" delay={100}>
-          <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-2">
-            <h1 className="text-3xl font-medium text-gray-900">BAGHOUSE OPEX SAVINGS</h1>
-          </div>
-        </Transition>
-        <Transition animation="slide-in-right" delay={300}>
-          <p className="text-sm text-gray-500 italic mt-2">By Arash Haghi</p>
-        </Transition>
-      </div>
-      
-      <div className="grid grid-cols-1 gap-8">
-        <CalculatorSection title="Filter Design Configuration" delay={100} className="bg-gradient-to-r from-blue-50 to-blue-100/30 border border-blue-100">
-          <DesignParameters designType={calculatorState.designType} setDesignType={calculatorState.setDesignType} airVolumeM3h={calculatorState.airVolumeM3h} airVolumeACFM={calculatorState.airVolumeACFM} numEMCFlaps={calculatorState.numEMCFlaps} bagsPerRow={calculatorState.bagsPerRow} bagLength={calculatorState.bagLength} filterRowType={calculatorState.filterRowType} setFilterRowType={calculatorState.setFilterRowType} showDimensions={calculatorState.showDimensions} setShowDimensions={calculatorState.setShowDimensions} showOtherParams={calculatorState.showOtherParams} setShowOtherParams={calculatorState.setShowOtherParams} channelWidthMm={calculatorState.channelWidthMm} setChannelWidthMm={calculatorState.setChannelWidthMm} channelHeightMm={calculatorState.channelHeightMm} setChannelHeightMm={calculatorState.setChannelHeightMm} handleAirVolumeM3hChange={calculatorState.handleAirVolumeM3hChange} handleAirVolumeACFMChange={calculatorState.handleAirVolumeACFMChange} setNumEMCFlaps={calculatorState.setNumEMCFlaps} setBagsPerRow={calculatorState.setBagsPerRow} setBagLength={calculatorState.setBagLength} formattedResults={calculatorState.formattedResults} results={calculatorState.results} m2ToSqFtFactor={calculatorState.m2ToSqFtFactor} conversionFactor={calculatorState.conversionFactor} gasTempC={calculatorState.gasTempC} gasTempF={calculatorState.gasTempF} dustConcGramAm3={calculatorState.dustConcGramAm3} dustConcGrainACF={calculatorState.dustConcGrainACF} dustConcGramNm3={calculatorState.dustConcGramNm3} dustConcGrainSCF={calculatorState.dustConcGrainSCF} handleGasTempCChange={calculatorState.handleGasTempCChange} handleGasTempFChange={calculatorState.handleGasTempFChange} handleDustConcGramAm3Change={calculatorState.handleDustConcGramAm3Change} handleDustConcGrainACFChange={calculatorState.handleDustConcGrainACFChange} handleDustConcGramNm3Change={calculatorState.handleDustConcGramNm3Change} handleDustConcGrainSCFChange={calculatorState.handleDustConcGrainSCFChange} outletDustKgH={calculatorState.outletDustKgH} outletDustLbH={calculatorState.outletDustLbH} handleOutletDustKgHChange={calculatorState.handleOutletDustKgHChange} handleOutletDustLbHChange={calculatorState.handleOutletDustLbHChange} estimateOutletDust={calculatorState.estimateOutletDust} targetEmissionMgNm3={calculatorState.targetEmissionMgNm3} targetEmissionGrainDscf={calculatorState.targetEmissionGrainDscf} handleTargetEmissionMgNm3Change={calculatorState.handleTargetEmissionMgNm3Change} handleTargetEmissionGrainDscfChange={calculatorState.handleTargetEmissionGrainDscfChange} negativePressureMbar={calculatorState.negativePressureMbar} negativePressureInchWG={calculatorState.negativePressureInchWG} handleNegativePressureMbarChange={calculatorState.handleNegativePressureMbarChange} handleNegativePressureInchWGChange={calculatorState.handleNegativePressureInchWGChange} />
-        </CalculatorSection>
-        
-        <Collapsible open={openSections.bagReplacement}>
-          <CalculatorSection title={<CollapsibleTrigger onClick={() => toggleSection('bagReplacement')} className="flex items-center justify-between w-full">
-                <span>Filter Bag Replacement (Cost Estimation)</span>
-                <ChevronDown className={`h-4 w-4 transition-transform ${openSections.bagReplacement ? 'transform rotate-180' : ''}`} />
-              </CollapsibleTrigger>} delay={300} className="bg-gradient-to-r from-green-50 to-green-100/30 border border-green-100">
-            <CollapsibleContent>
-              <FilterBagReplacement 
-                bagPrice={calculatorState.bagPrice} 
-                setBagPrice={calculatorState.setBagPrice}
-                cagePrice={calculatorState.cagePrice}
-                setCagePrice={calculatorState.setCagePrice}
-                bagChangeTime={calculatorState.bagChangeTime} 
-                setBagChangeTime={calculatorState.setBagChangeTime} 
-                numPeople={calculatorState.numPeople} 
-                setNumPeople={calculatorState.setNumPeople} 
-                hourlyRate={calculatorState.hourlyRate} 
-                setHourlyRate={calculatorState.setHourlyRate} 
-                siteDistance={calculatorState.siteDistance} 
-                setSiteDistance={calculatorState.setSiteDistance} 
-                travelCost={calculatorState.travelCost} 
-                setTravelCost={calculatorState.setTravelCost} 
-                bagReplacementCost={calculatorState.bagReplacementCost} 
-                setBagReplacementCost={calculatorState.setBagReplacementCost} 
-                calculateTravelCost={calculatorState.calculateTravelCost} 
-                formattedResults={calculatorState.formattedResults} 
-              />
-            </CollapsibleContent>
-          </CalculatorSection>
-        </Collapsible>
-        
-        <Collapsible open={openSections.operational}>
-          <CalculatorSection title={<CollapsibleTrigger onClick={() => toggleSection('operational')} className="flex items-center justify-between w-full">
-                <span>Operational Parameters (Savings with EMC Technology)</span>
-                <ChevronDown className={`h-4 w-4 transition-transform ${openSections.operational ? 'transform rotate-180' : ''}`} />
-              </CollapsibleTrigger>} delay={500} className="bg-gradient-to-r from-amber-50 to-amber-100/30 border border-amber-100">
-            <CollapsibleContent>
-              <OperationalParameters currentLifeTime={calculatorState.currentLifeTime} setCurrentLifeTime={calculatorState.setCurrentLifeTime} scheuchLifeTime={calculatorState.scheuchLifeTime} setScheuchLifeTime={calculatorState.setScheuchLifeTime} currentDiffPressure={calculatorState.currentDiffPressure} setCurrentDiffPressure={calculatorState.setCurrentDiffPressure} scheuchDiffPressure={calculatorState.scheuchDiffPressure} setScheuchDiffPressure={calculatorState.setScheuchDiffPressure} currentAirConsumption={calculatorState.currentAirConsumption} setCurrentAirConsumption={calculatorState.setCurrentAirConsumption} scheuchAirConsumption={calculatorState.scheuchAirConsumption} setScheuchAirConsumption={calculatorState.setScheuchAirConsumption} currentMotorKW={calculatorState.currentMotorKW} setCurrentMotorKW={calculatorState.setCurrentMotorKW} scheuchMotorKW={calculatorState.scheuchMotorKW} setScheuchMotorKW={calculatorState.setScheuchMotorKW} bagQuality={calculatorState.bagQuality} setBagQuality={calculatorState.setBagQuality} cleaningPressure={calculatorState.cleaningPressure} setCleaningPressure={calculatorState.setCleaningPressure} minPulseInterval={calculatorState.minPulseInterval} setMinPulseInterval={calculatorState.setMinPulseInterval} avgPulseInterval={calculatorState.avgPulseInterval} setAvgPulseInterval={calculatorState.setAvgPulseInterval} numEMCFlaps={typeof calculatorState.numEMCFlaps === 'string' ? calculatorState.numEMCFlaps === '' ? 0 : parseInt(calculatorState.numEMCFlaps) : calculatorState.numEMCFlaps} workingHours={calculatorState.workingHours} />
-            </CollapsibleContent>
-          </CalculatorSection>
-        </Collapsible>
-        
-        <Collapsible open={openSections.savings}>
-          <CalculatorSection title={<CollapsibleTrigger onClick={() => toggleSection('savings')} className="flex items-center justify-between w-full">
-                <span>OPEX Savings Analysis</span>
-                <ChevronDown className={`h-4 w-4 transition-transform ${openSections.savings ? 'transform rotate-180' : ''}`} />
-              </CollapsibleTrigger>} delay={700} className="bg-gradient-to-r from-yellow-50 to-yellow-100/30 border border-yellow-100">
-            <CollapsibleContent>
-              <SavingsResults 
-                savingYears={calculatorState.savingYears} 
-                setSavingYears={calculatorState.setSavingYears} 
-                workingHours={calculatorState.workingHours} 
-                setWorkingHours={calculatorState.setWorkingHours} 
-                kwhCost={calculatorState.kwhCost} 
-                setKwhCost={calculatorState.setKwhCost} 
-                compressedAirCost={calculatorState.compressedAirCost} 
-                setCompressedAirCost={calculatorState.setCompressedAirCost}
-                energyUnit={calculatorState.energyUnit}
-                setEnergyUnit={calculatorState.setEnergyUnit}
-                totalSavings={calculatorState.totalSavings} 
-                currentLifeTime={calculatorState.currentLifeTime} 
-                scheuchLifeTime={calculatorState.scheuchLifeTime} 
-                currentDiffPressure={calculatorState.currentDiffPressure} 
-                scheuchDiffPressure={calculatorState.scheuchDiffPressure} 
-                currentAirConsumption={calculatorState.currentAirConsumption} 
-                scheuchAirConsumption={calculatorState.scheuchAirConsumption} 
-                currentMotorKW={calculatorState.currentMotorKW} 
-                scheuchMotorKW={calculatorState.scheuchMotorKW} 
-                designType={calculatorState.designType} 
-                airVolumeM3h={calculatorState.airVolumeM3h} 
-                airVolumeACFM={calculatorState.airVolumeACFM} 
-                numEMCFlaps={calculatorState.numEMCFlaps} 
-                bagLength={calculatorState.bagLength} 
-                formattedResults={calculatorState.formattedResults} 
-              />
-            </CollapsibleContent>
-          </CalculatorSection>
-        </Collapsible>
-      </div>
-    </div>;
+
+  return (
+    <div className="container mx-auto p-4">
+      <Card className="w-full">
+        <CardHeader>
+          <CardTitle>Filter OPEX Calculator</CardTitle>
+          <CardDescription>Enter your filter design parameters to calculate OPEX.</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <DesignParameters
+            designType={calculatorState.designType}
+            setDesignType={calculatorState.setDesignType}
+            airVolumeM3h={calculatorState.airVolumeM3h}
+            airVolumeACFM={calculatorState.airVolumeACFM}
+            numEMCFlaps={calculatorState.numEMCFlaps}
+            bagsPerRow={calculatorState.bagsPerRow}
+            bagLength={calculatorState.bagLength}
+            filterRowType={calculatorState.filterRowType}
+            setFilterRowType={calculatorState.setFilterRowType}
+            showDimensions={calculatorState.showDimensions}
+            setShowDimensions={calculatorState.setShowDimensions}
+            showOtherParams={calculatorState.showOtherParams}
+            setShowOtherParams={calculatorState.setShowOtherParams}
+            channelWidthMm={calculatorState.channelWidthMm}
+            setChannelWidthMm={calculatorState.setChannelWidthMm}
+            channelHeightMm={calculatorState.channelHeightMm}
+            setChannelHeightMm={calculatorState.setChannelHeightMm}
+            handleAirVolumeM3hChange={calculatorState.handleAirVolumeM3hChange}
+            handleAirVolumeACFMChange={calculatorState.handleAirVolumeACFMChange}
+            setNumEMCFlaps={calculatorState.setNumEMCFlaps}
+            setBagsPerRow={calculatorState.setBagsPerRow}
+            setBagLength={calculatorState.setBagLength}
+            formattedResults={formattedResults}
+            results={results}
+            m2ToSqFtFactor={calculatorState.m2ToSqFtFactor}
+            conversionFactor={calculatorState.conversionFactor}
+            // Additional parameters
+            gasTempC={calculatorState.gasTempC}
+            gasTempF={calculatorState.gasTempF}
+            dustConcGramAm3={calculatorState.dustConcGramAm3}
+            dustConcGrainACF={calculatorState.dustConcGrainACF}
+            dustConcGramNm3={calculatorState.dustConcGramNm3}
+            dustConcGrainSCF={calculatorState.dustConcGrainSCF}
+            handleGasTempCChange={calculatorState.handleGasTempCChange}
+            handleGasTempFChange={calculatorState.handleGasTempFChange}
+            handleDustConcGramAm3Change={calculatorState.handleDustConcGramAm3Change}
+            handleDustConcGrainACFChange={calculatorState.handleDustConcGrainACFChange}
+            handleDustConcGramNm3Change={calculatorState.handleDustConcGramNm3Change}
+            handleDustConcGrainSCFChange={calculatorState.handleDustConcGrainSCFChange}
+            // Outlet dust parameters
+            outletDustKgH={calculatorState.outletDustKgH}
+            outletDustLbH={calculatorState.outletDustLbH}
+            handleOutletDustKgHChange={calculatorState.handleOutletDustKgHChange}
+            handleOutletDustLbHChange={calculatorState.handleOutletDustLbHChange}
+            estimateOutletDust={calculatorState.estimateOutletDust}
+            // Target emission parameters
+            targetEmissionMgNm3={calculatorState.targetEmissionMgNm3}
+            targetEmissionGrainDscf={calculatorState.targetEmissionGrainDscf}
+            handleTargetEmissionMgNm3Change={calculatorState.handleTargetEmissionMgNm3Change}
+            handleTargetEmissionGrainDscfChange={calculatorState.handleTargetEmissionGrainDscfChange}
+            // Negative pressure parameters
+            negativePressureMbar={calculatorState.negativePressureMbar}
+            negativePressureInchWG={calculatorState.negativePressureInchWG}
+            handleNegativePressureMbarChange={calculatorState.handleNegativePressureMbarChange}
+            handleNegativePressureInchWGChange={calculatorState.handleNegativePressureInchWGChange}
+          />
+
+          {isLoading ? (
+            <div className="flex flex-col space-y-2">
+              <Skeleton className="h-4 w-[250px]" />
+              <Skeleton className="h-4 w-[200px]" />
+              <Skeleton className="h-4 w-[150px]" />
+            </div>
+          ) : (
+            <FilterBagReplacement 
+              designType={calculatorState.designType} 
+              numEMCFlaps={calculatorState.numEMCFlaps} 
+              filterArea={calculatorState.filterResults.totalFilterArea} 
+              daysToReplace={calculatorState.daysToReplace} 
+              setDaysToReplace={calculatorState.setDaysToReplace} 
+              laborCostPerHour={calculatorState.laborCostPerHour} 
+              setLaborCostPerHour={calculatorState.setLaborCostPerHour} 
+              travelCost={calculatorState.travelCost} 
+              setTravelCost={calculatorState.setTravelCost} 
+              bagReplacementCost={calculatorState.bagReplacementCost} 
+              setBagReplacementCost={calculatorState.setBagReplacementCost} 
+              calculateTravelCost={calculateTravelCost} 
+              formattedResults={calculatorState.formattedResults} 
+            />
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  );
 };
 
 export default FilterOpexCalculator;
