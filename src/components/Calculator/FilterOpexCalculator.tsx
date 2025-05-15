@@ -25,6 +25,13 @@ const FilterOpexCalculator = () => {
     }));
   };
   
+  // Create a wrapper for calculateTravelCost that doesn't require parameters
+  const handleCalculateTravelCost = () => {
+    // Use the days from calculatorState.results if available, or default to 1
+    const daysToReplace = calculatorState.results?.daysToReplace || 1;
+    calculatorState.calculateTravelCost(daysToReplace);
+  };
+  
   return <div className="max-w-5xl mx-auto">
       <div className="text-center mb-8">
         <Transition animation="slide-in-left" delay={100}>
@@ -65,7 +72,7 @@ const FilterOpexCalculator = () => {
                 setTravelCost={calculatorState.setTravelCost} 
                 bagReplacementCost={calculatorState.bagReplacementCost} 
                 setBagReplacementCost={calculatorState.setBagReplacementCost} 
-                calculateTravelCost={calculatorState.calculateTravelCost} 
+                calculateTravelCost={handleCalculateTravelCost} 
                 formattedResults={calculatorState.formattedResults} 
               />
             </CollapsibleContent>

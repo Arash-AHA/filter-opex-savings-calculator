@@ -1,12 +1,12 @@
-
 import React from 'react';
 import InputField from './InputField';
 import ResultCard from './ResultCard';
+
 interface FilterBagReplacementProps {
   bagPrice: number;
   setBagPrice: (value: number) => void;
-  cagePrice: number;  // Added support cage price prop
-  setCagePrice: (value: number) => void; // Added support cage price setter prop
+  cagePrice: number;  
+  setCagePrice: (value: number) => void; 
   bagChangeTime: number;
   setBagChangeTime: (value: number) => void;
   numPeople: number;
@@ -19,9 +19,10 @@ interface FilterBagReplacementProps {
   setTravelCost: (value: number) => void;
   bagReplacementCost: number;
   setBagReplacementCost: (value: number) => void;
-  calculateTravelCost: () => void;
+  calculateTravelCost: () => void;  // This expects a function with no parameters
   formattedResults: any;
 }
+
 const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
   bagPrice,
   setBagPrice,
@@ -91,4 +92,5 @@ const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
       </div>
     </div>;
 };
+
 export default FilterBagReplacement;
