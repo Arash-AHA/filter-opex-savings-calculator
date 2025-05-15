@@ -65,7 +65,7 @@ const FilterOpexCalculator = () => {
                 setTravelCost={calculatorState.setTravelCost} 
                 bagReplacementCost={calculatorState.bagReplacementCost} 
                 setBagReplacementCost={calculatorState.setBagReplacementCost} 
-                calculateTravelCost={(days) => calculatorState.calculateTravelCost(days)} 
+                calculateTravelCost={calculatorState.calculateTravelCost} 
                 formattedResults={calculatorState.formattedResults} 
               />
             </CollapsibleContent>
