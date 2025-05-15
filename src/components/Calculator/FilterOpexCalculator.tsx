@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import CalculatorSection from './CalculatorSection';
 import Transition from '../UI/Transition';
@@ -64,11 +65,7 @@ const FilterOpexCalculator = () => {
                 setTravelCost={calculatorState.setTravelCost} 
                 bagReplacementCost={calculatorState.bagReplacementCost} 
                 setBagReplacementCost={calculatorState.setBagReplacementCost} 
-                calculateTravelCost={() => {
-                  if (calculatorState.results.daysToReplace > 0) {
-                    calculatorState.calculateTravelCost(calculatorState.results.daysToReplace);
-                  }
-                }} 
+                calculateTravelCost={(days) => calculatorState.calculateTravelCost(days)} 
                 formattedResults={calculatorState.formattedResults} 
               />
             </CollapsibleContent>
