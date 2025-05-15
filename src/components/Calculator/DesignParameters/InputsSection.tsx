@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import FilterInputs from '../DesignParametersComponents/FilterInputs';
 
 interface InputsSectionProps {
@@ -17,14 +17,11 @@ interface InputsSectionProps {
 }
 
 const InputsSection: React.FC<InputsSectionProps> = (props) => {
-  // Ensure default values if empty
-  const airVolumeM3h = props.airVolumeM3h || '375000';
-  const airVolumeACFM = props.airVolumeACFM || '221000';
-
+  // We're no longer setting default values here since we handle that in the hooks
   return (
     <FilterInputs 
-      airVolumeM3h={airVolumeM3h}
-      airVolumeACFM={airVolumeACFM}
+      airVolumeM3h={props.airVolumeM3h}
+      airVolumeACFM={props.airVolumeACFM}
       numEMCFlaps={props.numEMCFlaps}
       bagsPerRow={props.bagsPerRow}
       bagLength={props.bagLength}

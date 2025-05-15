@@ -1,21 +1,21 @@
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
 export const useAirVolumeParameters = (conversionFactor: number) => {
-  // Bolt-weld specific parameters - ensure non-empty values
+  // Bolt-weld specific parameters with default values
   const [boltWeldAirVolume, setBoltWeldAirVolume] = useState('375000');
   const [boltWeldNumEMCFlaps, setBoltWeldNumEMCFlaps] = useState<number | string>(14);
   const [boltWeldBagsPerRow, setBoltWeldBagsPerRow] = useState(18);
   const [boltWeldBagLength, setBoltWeldBagLength] = useState(10);
   
-  // Modular specific parameters - ensure non-empty values
+  // Modular specific parameters with default values
   const [modularAirVolume, setModularAirVolume] = useState('375000');
   const [modularNumEMCFlaps, setModularNumEMCFlaps] = useState<number | string>(24);
   const [modularBagsPerRow, setModularBagsPerRow] = useState(15);
   const [modularBagLength, setModularBagLength] = useState(24);
 
-  // Current values based on design type - ensure non-empty values
-  const [airVolumeM3h, setAirVolumeM3h] = useState(boltWeldAirVolume || '375000');
+  // Current active values (will be switched based on design type)
+  const [airVolumeM3h, setAirVolumeM3h] = useState(boltWeldAirVolume);
   const [airVolumeACFM, setAirVolumeACFM] = useState(
     ((parseFloat(boltWeldAirVolume) || 375000) * conversionFactor).toFixed(0)
   );
@@ -27,26 +27,22 @@ export const useAirVolumeParameters = (conversionFactor: number) => {
   const [isACFMUpdating, setIsACFMUpdating] = useState(false);
 
   const handleAirVolumeM3hChange = useCallback((value: string) => {
-    // If value is empty, use default
-    const updatedValue = value.trim() === '' ? '375000' : value;
-    setAirVolumeM3h(updatedValue);
+    setAirVolumeM3h(value);
     
     if (!isACFMUpdating) {
       setIsM3hUpdating(true);
-      const acfmValue = (parseFloat(updatedValue) * conversionFactor).toFixed(0);
+      const acfmValue = (parseFloat(value || '0') * conversionFactor).toFixed(0);
       setAirVolumeACFM(acfmValue);
       setTimeout(() => setIsM3hUpdating(false), 100);
     }
   }, [isACFMUpdating, conversionFactor]);
 
   const handleAirVolumeACFMChange = useCallback((value: string) => {
-    // If value is empty, use default
-    const updatedValue = value.trim() === '' ? '221000' : value;
-    setAirVolumeACFM(updatedValue);
+    setAirVolumeACFM(value);
     
     if (!isM3hUpdating) {
       setIsACFMUpdating(true);
-      const m3hValue = (parseFloat(updatedValue) / conversionFactor).toFixed(0);
+      const m3hValue = (parseFloat(value || '0') / conversionFactor).toFixed(0);
       setAirVolumeM3h(m3hValue);
       setTimeout(() => setIsACFMUpdating(false), 100);
     }

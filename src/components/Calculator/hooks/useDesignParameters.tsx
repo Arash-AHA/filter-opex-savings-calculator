@@ -1,3 +1,4 @@
+
 import { useCallback, useEffect } from 'react';
 import { useDesignType } from './useDesignType';
 import { useAirVolumeParameters } from './useAirVolumeParameters';
@@ -17,12 +18,14 @@ export const useDesignParameters = () => {
   // Update current values when design type changes
   useEffect(() => {
     if (designTypeState.designType === 'bolt-weld') {
+      // Set current values to bolt-weld specific values
       airVolumeState.setAirVolumeM3h(airVolumeState.boltWeldAirVolume);
       airVolumeState.setAirVolumeACFM((parseFloat(airVolumeState.boltWeldAirVolume) * conversionFactor).toFixed(0));
       airVolumeState.setNumEMCFlaps(airVolumeState.boltWeldNumEMCFlaps);
       airVolumeState.setBagsPerRow(airVolumeState.boltWeldBagsPerRow);
       airVolumeState.setBagLength(airVolumeState.boltWeldBagLength);
     } else {
+      // Set current values to modular specific values
       airVolumeState.setAirVolumeM3h(airVolumeState.modularAirVolume);
       airVolumeState.setAirVolumeACFM((parseFloat(airVolumeState.modularAirVolume) * conversionFactor).toFixed(0));
       airVolumeState.setNumEMCFlaps(airVolumeState.modularNumEMCFlaps);
@@ -41,6 +44,34 @@ export const useDesignParameters = () => {
     airVolumeState.modularBagLength,
     conversionFactor
   ]);
+
+  // Handle air volume changes and update the design-specific values
+  const handleAirVolumeM3hChange = useCallback((value: string) => {
+    airVolumeState.handleAirVolumeM3hChange(value);
+    
+    // Also update the design-specific value
+    if (designTypeState.designType === 'bolt-weld') {
+      airVolumeState.setBoltWeldAirVolume(value);
+    } else {
+      airVolumeState.setModularAirVolume(value);
+    }
+  }, [designTypeState.designType, airVolumeState]);
+
+  const handleAirVolumeACFMChange = useCallback((value: string) => {
+    airVolumeState.handleAirVolumeACFMChange(value);
+    
+    // The M3h value will be updated by the handler, so we need to update the design-specific value
+    if (designTypeState.designType === 'bolt-weld') {
+      // The M3h value is calculated in the handler, so we need to wait for the next tick
+      setTimeout(() => {
+        airVolumeState.setBoltWeldAirVolume(airVolumeState.airVolumeM3h);
+      }, 150);
+    } else {
+      setTimeout(() => {
+        airVolumeState.setModularAirVolume(airVolumeState.airVolumeM3h);
+      }, 150);
+    }
+  }, [designTypeState.designType, airVolumeState]);
 
   // Estimate outlet dust calculation
   const estimateOutletDust = useCallback(() => {
@@ -100,5 +131,9 @@ export const useDesignParameters = () => {
     setNumEMCFlaps: setDesignSpecificNumEMCFlaps,
     setBagsPerRow: setDesignSpecificBagsPerRow,
     setBagLength: setDesignSpecificBagLength,
+    
+    // Override handlers to update design-specific values
+    handleAirVolumeM3hChange,
+    handleAirVolumeACFMChange,
   };
 };

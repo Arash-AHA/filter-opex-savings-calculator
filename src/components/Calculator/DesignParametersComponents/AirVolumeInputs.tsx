@@ -14,10 +14,6 @@ const AirVolumeInputs: React.FC<AirVolumeInputsProps> = ({
   handleAirVolumeM3hChange,
   handleAirVolumeACFMChange
 }) => {
-  // Default values if empty
-  const displayAirVolumeM3h = airVolumeM3h === '' ? '375000' : airVolumeM3h;
-  const displayAirVolumeACFM = airVolumeACFM === '' ? '221000' : airVolumeACFM;
-  
   return (
     <div className="flex flex-col mb-4">
       <div className="w-60 pr-4 calculator-field-label mb-2">
@@ -27,7 +23,7 @@ const AirVolumeInputs: React.FC<AirVolumeInputsProps> = ({
         <div className="relative">
           <input 
             type="text" 
-            value={displayAirVolumeM3h} 
+            value={airVolumeM3h} 
             onChange={e => handleAirVolumeM3hChange(e.target.value)} 
             placeholder="375000" 
             className="calculator-input pr-12 w-full" 
@@ -37,7 +33,7 @@ const AirVolumeInputs: React.FC<AirVolumeInputsProps> = ({
         <div className="relative">
           <input 
             type="text" 
-            value={displayAirVolumeACFM} 
+            value={airVolumeACFM} 
             onChange={e => handleAirVolumeACFMChange(e.target.value)} 
             placeholder="221000" 
             className="calculator-input pr-12 w-full" 
