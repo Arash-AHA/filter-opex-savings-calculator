@@ -1,4 +1,3 @@
-
 import { useCallback, useEffect } from 'react';
 import { useDesignType } from './useDesignType';
 import { useAirVolumeParameters } from './useAirVolumeParameters';
@@ -18,35 +17,15 @@ export const useDesignParameters = () => {
   // Update current values when design type changes
   useEffect(() => {
     if (designTypeState.designType === 'bolt-weld') {
-      // Only update air volume if it's not already set by the user
-      if (airVolumeState.airVolumeM3h === '') {
-        airVolumeState.setAirVolumeM3h(airVolumeState.boltWeldAirVolume);
-        if (airVolumeState.boltWeldAirVolume) {
-          airVolumeState.setAirVolumeACFM((parseFloat(airVolumeState.boltWeldAirVolume) * conversionFactor).toFixed(0));
-        }
-      }
-      
-      // Only update EMC flaps if not already set by user
-      if (airVolumeState.numEMCFlaps === '') {
-        airVolumeState.setNumEMCFlaps(airVolumeState.boltWeldNumEMCFlaps);
-      }
-      
+      airVolumeState.setAirVolumeM3h(airVolumeState.boltWeldAirVolume);
+      airVolumeState.setAirVolumeACFM((parseFloat(airVolumeState.boltWeldAirVolume) * conversionFactor).toFixed(0));
+      airVolumeState.setNumEMCFlaps(airVolumeState.boltWeldNumEMCFlaps);
       airVolumeState.setBagsPerRow(airVolumeState.boltWeldBagsPerRow);
       airVolumeState.setBagLength(airVolumeState.boltWeldBagLength);
     } else {
-      // Only update air volume if it's not already set by the user
-      if (airVolumeState.airVolumeM3h === '') {
-        airVolumeState.setAirVolumeM3h(airVolumeState.modularAirVolume);
-        if (airVolumeState.modularAirVolume) {
-          airVolumeState.setAirVolumeACFM((parseFloat(airVolumeState.modularAirVolume) * conversionFactor).toFixed(0));
-        }
-      }
-      
-      // Only update EMC flaps if not already set by user
-      if (airVolumeState.numEMCFlaps === '') {
-        airVolumeState.setNumEMCFlaps(airVolumeState.modularNumEMCFlaps);
-      }
-      
+      airVolumeState.setAirVolumeM3h(airVolumeState.modularAirVolume);
+      airVolumeState.setAirVolumeACFM((parseFloat(airVolumeState.modularAirVolume) * conversionFactor).toFixed(0));
+      airVolumeState.setNumEMCFlaps(airVolumeState.modularNumEMCFlaps);
       airVolumeState.setBagsPerRow(airVolumeState.modularBagsPerRow);
       airVolumeState.setBagLength(airVolumeState.modularBagLength);
     }
