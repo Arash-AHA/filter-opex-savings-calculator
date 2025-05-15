@@ -1,3 +1,4 @@
+
 import { useCallback, useEffect } from 'react';
 import { useDesignType } from './useDesignType';
 import { useAirVolumeParameters } from './useAirVolumeParameters';
@@ -17,14 +18,24 @@ export const useDesignParameters = () => {
   // Update current values when design type changes
   useEffect(() => {
     if (designTypeState.designType === 'bolt-weld') {
-      airVolumeState.setAirVolumeM3h(airVolumeState.boltWeldAirVolume);
-      airVolumeState.setAirVolumeACFM((parseFloat(airVolumeState.boltWeldAirVolume) * conversionFactor).toFixed(0));
+      // Only update if boltWeldAirVolume is not empty
+      if (airVolumeState.boltWeldAirVolume) {
+        airVolumeState.setAirVolumeM3h(airVolumeState.boltWeldAirVolume);
+        airVolumeState.setAirVolumeACFM((parseFloat(airVolumeState.boltWeldAirVolume) * conversionFactor).toFixed(0));
+      }
+      
+      // Update EMC flaps and other parameters
       airVolumeState.setNumEMCFlaps(airVolumeState.boltWeldNumEMCFlaps);
       airVolumeState.setBagsPerRow(airVolumeState.boltWeldBagsPerRow);
       airVolumeState.setBagLength(airVolumeState.boltWeldBagLength);
     } else {
-      airVolumeState.setAirVolumeM3h(airVolumeState.modularAirVolume);
-      airVolumeState.setAirVolumeACFM((parseFloat(airVolumeState.modularAirVolume) * conversionFactor).toFixed(0));
+      // Only update if modularAirVolume is not empty
+      if (airVolumeState.modularAirVolume) {
+        airVolumeState.setAirVolumeM3h(airVolumeState.modularAirVolume);
+        airVolumeState.setAirVolumeACFM((parseFloat(airVolumeState.modularAirVolume) * conversionFactor).toFixed(0));
+      }
+      
+      // Update EMC flaps and other parameters
       airVolumeState.setNumEMCFlaps(airVolumeState.modularNumEMCFlaps);
       airVolumeState.setBagsPerRow(airVolumeState.modularBagsPerRow);
       airVolumeState.setBagLength(airVolumeState.modularBagLength);
@@ -57,6 +68,13 @@ export const useDesignParameters = () => {
       airVolumeState.setBoltWeldNumEMCFlaps(value);
     } else {
       airVolumeState.setModularNumEMCFlaps(value);
+    }
+    
+    // Store the current air volume values based on design type when changing EMC flaps
+    if (designTypeState.designType === 'bolt-weld' && airVolumeState.airVolumeM3h) {
+      airVolumeState.setBoltWeldAirVolume(airVolumeState.airVolumeM3h);
+    } else if (designTypeState.designType === 'modular' && airVolumeState.airVolumeM3h) {
+      airVolumeState.setModularAirVolume(airVolumeState.airVolumeM3h);
     }
   }, [designTypeState.designType, airVolumeState]);
   
