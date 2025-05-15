@@ -36,7 +36,7 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
   
   useEffect(() => {
     // Only calculate suggested flaps if we have valid air volume input
-    if (!airVolumeM3h && !airVolumeACFM) {
+    if ((!airVolumeM3h || airVolumeM3h === '') && (!airVolumeACFM || airVolumeACFM === '')) {
       setSuggestedFlaps(null);
       return;
     }
@@ -72,7 +72,7 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
   }, [designType, bagLength, bagsPerRow, airVolumeM3h, airVolumeACFM]);
   
   const calculateAcRatio = () => {
-    if (!airVolumeM3h && !airVolumeACFM) return 0;
+    if ((!airVolumeM3h || airVolumeM3h === '') && (!airVolumeACFM || airVolumeACFM === '')) return 0;
     
     const numEMCFlapsValue = typeof numEMCFlaps === 'string' ? 
                            (numEMCFlaps === '' ? 0 : parseInt(numEMCFlaps)) : 
