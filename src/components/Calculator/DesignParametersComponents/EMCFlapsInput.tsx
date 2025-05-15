@@ -31,6 +31,7 @@ const EMCFlapsInput: React.FC<EMCFlapsInputProps> = ({
   const [inputValue, setInputValue] = useState<string>(numEMCFlaps !== '' ? numEMCFlaps.toString() : '');
   const { toast } = useToast();
 
+  // Update local state when numEMCFlaps changes from parent
   useEffect(() => {
     setInputValue(numEMCFlaps !== '' ? numEMCFlaps.toString() : '');
   }, [numEMCFlaps]);
