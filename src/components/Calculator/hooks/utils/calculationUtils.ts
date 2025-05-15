@@ -15,9 +15,10 @@ export const calculateFilterArea = (
     // PI()*165/1000*Bag length*5*No. bags in a row*No. EMC flaps
     return Math.PI * (165/1000) * bagLength * 5 * bagsPerRow * numEMCFlaps;
   } else {
-    // For Modular design - the result is directly in sq.ft
-    // Bag Length * No. Bags in a Row * TOTAL No. EMC Flaps * 5 * 1.6
-    return bagLength * bagsPerRow * numEMCFlaps * 5 * 1.6;
+    // For Modular design - formula updated to match specification
+    // Total Number of Bags * 1.6 * Number of Bags per Row
+    const totalBags = bagsPerRow * numEMCFlaps * 5;
+    return totalBags * 1.6 * bagsPerRow;
   }
 };
 
@@ -36,8 +37,9 @@ export const calculateNetFilterArea = (
     // For bolt-weld design, use numEMCFlaps-1 in the calculation
     return Math.PI * (165/1000) * bagLength * 5 * bagsPerRow * (numEMCFlaps - 1);
   } else {
-    // For modular design, use numEMCFlaps-1 (UPDATED FORMULA)
-    return bagLength * bagsPerRow * (numEMCFlaps - 1) * 5 * 1.6;
+    // For modular design, using the updated formula with numEMCFlaps-1
+    const totalBags = bagsPerRow * (numEMCFlaps - 1) * 5;
+    return totalBags * 1.6 * bagsPerRow;
   }
 };
 
