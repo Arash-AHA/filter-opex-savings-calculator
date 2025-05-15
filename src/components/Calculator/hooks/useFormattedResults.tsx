@@ -1,22 +1,15 @@
-
 import { useMemo } from 'react';
+import { formatCurrency } from './utils/calculationUtils';
 
-export interface FilterResults {
+interface FilterResults {
   filterArea: number;
   netFilterArea: number;
   acRatioGross: number;
   acRatioNet: number;
-  baselinePower: number;
-  improvedPower: number;
 }
 
-export interface BagResults {
+interface BagResults {
   totalBags: number;
-  daysToReplace: number;
-}
-
-export interface LifetimeResults {
-  lifeExtension: number;
 }
 
 export const useFormattedResults = (
@@ -28,59 +21,42 @@ export const useFormattedResults = (
   m2ToSqFtFactor: number,
   conversionFactor: number
 ) => {
-  // Formatted results
   const formattedResults = useMemo(() => {
     try {
-      if (!filterResults || !bagResults) {
-        // Return default values if input results are not available
-        return null;
-      }
-      
-      if (designType === 'bolt-weld') {
-        // Metric units - divide A/C ratios by 60 and change unit to m³/min/m²
-        return {
-          filterArea: `${filterResults.filterArea.toFixed(2)} m²`,
-          netFilterArea: `${filterResults.netFilterArea.toFixed(2)} m²`,
-          acRatioGross: `${(filterResults.acRatioGross / 60).toFixed(2)} m³/min/m²`,
-          acRatioNet: `${(filterResults.acRatioNet / 60).toFixed(2)} m³/min/m²`,
-          baselinePower: `${filterResults.baselinePower.toFixed(2)} kW`,
-          improvedPower: `${filterResults.improvedPower.toFixed(2)} kW`,
-          totalBags: bagResults.totalBags,
-          daysToReplace: bagResults.daysToReplace.toFixed(2),
-          bagMaterialCost: bagResults.totalBags * bagPrice,
-          tenYearSavings: `${Number(0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`,
-          lifeExtension: `${lifeExtension} months`
-        };
-      } else {
-        // Imperial units
-        const filterAreaSqFt = (filterResults.filterArea * m2ToSqFtFactor).toFixed(2);
-        const netFilterAreaSqFt = (filterResults.netFilterArea * m2ToSqFtFactor).toFixed(2);
-        const acRatioGrossImperial = (filterResults.acRatioGross / m2ToSqFtFactor * conversionFactor).toFixed(2);
-        const acRatioNetImperial = (filterResults.acRatioNet / m2ToSqFtFactor * conversionFactor).toFixed(2);
-        
-        return {
-          filterArea: `${filterAreaSqFt} sq ft`,
-          netFilterArea: `${netFilterAreaSqFt} sq ft`,
-          acRatioGross: `${acRatioGrossImperial} cfm/sq ft`,
-          acRatioNet: `${acRatioNetImperial} cfm/sq ft`,
-          baselinePower: `${filterResults.baselinePower.toFixed(2)} kW`,
-          improvedPower: `${filterResults.improvedPower.toFixed(2)} kW`,
-          totalBags: bagResults.totalBags,
-          daysToReplace: bagResults.daysToReplace.toFixed(2),
-          bagMaterialCost: bagResults.totalBags * bagPrice,
-          tenYearSavings: `${Number(0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`,
-          lifeExtension: `${lifeExtension} months`
-        };
-      }
+      const filterAreaDisplay = designType === 'bolt-weld'
+        ? `${filterResults?.filterArea?.toFixed(2)} m²`
+        : `${(filterResults?.filterArea * m2ToSqFtFactor).toFixed(2)} sq ft`;
+
+      const netFilterAreaDisplay = designType === 'bolt-weld'
+        ? `${filterResults?.netFilterArea?.toFixed(2)} m²`
+        : `${(filterResults?.netFilterArea * m2ToSqFtFactor).toFixed(2)} sq ft`;
+
+      const acRatioGrossDisplay = designType === 'bolt-weld'
+        ? `${filterResults?.acRatioGross?.toFixed(2)} m³/min/m²`
+        : `${filterResults?.acRatioGross?.toFixed(2)} ft/min`;
+
+      const acRatioNetDisplay = designType === 'bolt-weld'
+        ? `${filterResults?.acRatioNet?.toFixed(2)} m³/min/m²`
+        : `${filterResults?.acRatioNet?.toFixed(2)} ft/min`;
+
+      return {
+        filterArea: filterAreaDisplay,
+        netFilterArea: netFilterAreaDisplay,
+        acRatioGross: acRatioGrossDisplay,
+        acRatioNet: acRatioNetDisplay,
+        totalBags: bagResults?.totalBags?.toLocaleString(),
+      };
     } catch (error) {
       console.error("Error formatting results:", error);
-      // Return null if formatting fails
-      return null;
+      return {
+        filterArea: 'Error',
+        netFilterArea: 'Error',
+        acRatioGross: 'Error',
+        acRatioNet: 'Error',
+        totalBags: 'Error',
+      };
     }
-  }, [
-    designType, filterResults, bagResults, lifeExtension, 
-    bagPrice, m2ToSqFtFactor, conversionFactor
-  ]);
+  }, [designType, filterResults, bagResults, m2ToSqFtFactor]);
 
   return formattedResults;
 };
