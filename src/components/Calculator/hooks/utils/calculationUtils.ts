@@ -1,3 +1,4 @@
+
 /**
  * Utility functions for OPEX calculator calculations
  */
@@ -15,7 +16,7 @@ export const calculateFilterArea = (
     // PI()*165/1000*Bag length*5*No. bags in a row*No. EMC flaps
     return Math.PI * (165/1000) * bagLength * 5 * bagsPerRow * numEMCFlaps;
   } else {
-    // For Modular design - formula updated to use bag length instead of bags per row
+    // For Modular design
     // Total Number of Bags * 1.6 * Filter Bag Length
     const totalBags = bagsPerRow * numEMCFlaps * 5;
     return totalBags * 1.6 * bagLength;
