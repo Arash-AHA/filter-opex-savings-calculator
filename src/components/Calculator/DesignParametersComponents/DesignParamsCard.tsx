@@ -2,6 +2,7 @@
 import React, { useRef, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { useToast } from "@/hooks/use-toast";
 import CardHeader from './CardHeader';
 import ParameterRow from './ParameterRow';
 import PrintButton from './PrintButton';
@@ -38,6 +39,7 @@ interface DesignParamsCardProps {
   bagLength?: number;
   airVolumeM3h?: string;
   airVolumeACFM?: string;
+  onEraseInputs?: () => void;
 }
 
 const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
@@ -48,10 +50,12 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
   bagsPerRow = 0,
   bagLength = 0,
   airVolumeM3h = '',
-  airVolumeACFM = ''
+  airVolumeACFM = '',
+  onEraseInputs
 }) => {
   const [open, setOpen] = useState(false);
   const printContentRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
 
   const safeResults = formattedResults || {
     filterArea: '-',
@@ -91,6 +95,17 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
     }
   };
 
+  const handleEraseInputs = () => {
+    if (onEraseInputs) {
+      onEraseInputs();
+      toast({
+        title: "Inputs cleared",
+        description: "Design inputs have been reset.",
+      });
+      setOpen(false);
+    }
+  };
+
   return (
     <>
       <Card className="p-4 h-fit">
@@ -122,6 +137,7 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
               airVolumeM3h={airVolumeM3h}
               airVolumeACFM={airVolumeACFM}
               formattedResults={formattedResults}
+              onEraseInputs={handleEraseInputs}
             />
           </div>
           <PrintButton onClick={handlePrint} />

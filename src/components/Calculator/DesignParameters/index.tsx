@@ -71,6 +71,15 @@ const DesignParameters: React.FC<DesignParametersProps> = (props) => {
     ? (props.numEMCFlaps === '' ? 0 : parseInt(props.numEMCFlaps))
     : props.numEMCFlaps;
 
+  // Function to handle erasing input fields
+  const handleEraseInputs = () => {
+    props.handleAirVolumeM3hChange('');
+    props.handleAirVolumeACFMChange('');
+    props.setNumEMCFlaps('');
+    props.setBagsPerRow(0);
+    props.setBagLength(0);
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div className="md:col-span-2 space-y-4">
@@ -133,6 +142,7 @@ const DesignParameters: React.FC<DesignParametersProps> = (props) => {
         bagLength={props.bagLength}
         airVolumeM3h={props.airVolumeM3h}
         airVolumeACFM={props.airVolumeACFM}
+        onEraseInputs={handleEraseInputs}
       />
     </div>
   );

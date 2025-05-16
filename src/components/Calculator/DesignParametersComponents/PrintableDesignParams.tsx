@@ -1,7 +1,9 @@
 
 import React from 'react';
+import { FilterDesignSection } from '../PrintableSections/FilterDesignSection';
+import { FilterParametersSection } from '../PrintableSections/FilterParametersSection';
 
-interface PrintableDesignParamsProps {
+export interface PrintableDesignParamsProps {
   designType: string;
   numEMCFlaps: number | string;
   bagsPerRow: number;
@@ -15,6 +17,7 @@ interface PrintableDesignParamsProps {
     acRatioNet: string;
     totalBags: number;
   } | null;
+  onEraseInputs?: () => void;
 }
 
 const PrintableDesignParams: React.FC<PrintableDesignParamsProps> = ({
@@ -25,81 +28,31 @@ const PrintableDesignParams: React.FC<PrintableDesignParamsProps> = ({
   airVolumeM3h,
   airVolumeACFM,
   formattedResults,
+  onEraseInputs
 }) => {
-  // Determine bag length unit and value based on design type
-  const bagLengthDisplay = designType === 'bolt-weld' 
-    ? `${bagLength} m` 
-    : `${bagLength} ft`;
-
-  const safeResults = formattedResults || {
-    filterArea: "-",
-    netFilterArea: "-",
-    acRatioGross: "-",
-    acRatioNet: "-",
-    totalBags: 0,
-  };
-
-  const flapsLabel = designType === 'bolt-weld' 
-    ? 'Number of EMC Flaps (Panelized)' 
-    : 'Number of EMC Flaps (Modular)';
+  const airVolumeDisplay = designType === 'bolt-weld' 
+    ? `${airVolumeM3h} m³/h` 
+    : `${airVolumeACFM} ACFM`;
 
   return (
-    <div className="p-6 print:p-0 bg-white text-gray-900 rounded-lg">
-      <h2 className="text-xl font-semibold mb-4 text-center">
-        Filter Design Configuration – {designType === "bolt-weld" ? "Bolt/Weld" : "Modular Design"}
-      </h2>
-      <table className="w-full border-t border-b border-gray-300 mb-4">
-        <tbody>
-          <tr>
-            <td className="py-2 font-medium">Design Type</td>
-            <td className="py-2">{designType === "bolt-weld" ? "Bolt/Weld" : "Modular Design"}</td>
-          </tr>
-          <tr>
-            <td className="py-2 font-medium">{flapsLabel}</td>
-            <td className="py-2">{numEMCFlaps}</td>
-          </tr>
-          <tr>
-            <td className="py-2 font-medium">Bags Per Row</td>
-            <td className="py-2">{bagsPerRow}</td>
-          </tr>
-          <tr>
-            <td className="py-2 font-medium">Bag Length</td>
-            <td className="py-2">{bagLengthDisplay}</td>
-          </tr>
-          <tr>
-            <td className="py-2 font-medium">
-              {designType === "modular" ? "Air Volume (ACFM)" : "Air Volume (m³/h)"}
-            </td>
-            <td className="py-2">{designType === "modular" ? airVolumeACFM : airVolumeM3h}</td>
-          </tr>
-        </tbody>
-      </table>
-      <h3 className="text-lg font-semibold mb-2 mt-6">Calculated Parameters</h3>
-      <table className="w-full border-t border-b border-gray-300">
-        <tbody>
-          <tr>
-            <td className="py-2 font-medium">Filter Area (Gross)</td>
-            <td className="py-2">{safeResults.filterArea}</td>
-          </tr>
-          <tr>
-            <td className="py-2 font-medium">{designType === "modular" ? "Net Filter Area (Cleaning)" : "Net Filter Area"}</td>
-            <td className="py-2">{safeResults.netFilterArea}</td>
-          </tr>
-          <tr>
-            <td className="py-2 font-medium">Air-to-Cloth Ratio (Gross)</td>
-            <td className="py-2">{safeResults.acRatioGross}</td>
-          </tr>
-          <tr>
-            <td className="py-2 font-medium">Air-to-Cloth Ratio (Net)</td>
-            <td className="py-2">{safeResults.acRatioNet}</td>
-          </tr>
-          <tr>
-            <td className="py-2 font-medium">Total Number of Bags</td>
-            <td className="py-2">{safeResults.totalBags}</td>
-          </tr>
-        </tbody>
-      </table>
-      <div className="text-xs text-center mt-6 text-gray-500 print:hidden">Generated on {new Date().toLocaleString()}</div>
+    <div className="p-6 space-y-8">
+      <FilterDesignSection
+        designType={designType}
+        airVolume={airVolumeDisplay}
+        numEMCFlaps={numEMCFlaps}
+        bagLength={bagLength}
+        onEraseInputs={onEraseInputs}
+      />
+      
+      {formattedResults && (
+        <FilterParametersSection
+          filterArea={formattedResults.filterArea}
+          netFilterArea={formattedResults.netFilterArea}
+          acRatioGross={formattedResults.acRatioGross}
+          acRatioNet={formattedResults.acRatioNet}
+          totalBags={formattedResults.totalBags}
+        />
+      )}
     </div>
   );
 };
