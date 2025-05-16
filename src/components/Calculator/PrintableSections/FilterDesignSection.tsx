@@ -18,13 +18,17 @@ export const FilterDesignSection: React.FC<FilterDesignSectionProps> = ({
   bagLength,
   onEraseInputs,
 }) => {
+  // Determine unit and labels based on design type
   const bagLengthDisplay = designType === 'bolt-weld' 
-    ? `${bagLength} m` 
-    : `${bagLength} ft`;
+    ? `${bagLength || '-'} m` 
+    : `${bagLength || '-'} ft`;
     
   const flapsLabel = designType === 'bolt-weld' 
     ? 'Total No. EMC Flaps (Panelized):' 
     : 'Total No. EMC Flaps (Modular):';
+  
+  // Design type name for display
+  const designTypeName = designType === 'bolt-weld' ? 'Panelized Design' : 'Modular Design';
 
   return (
     <section className="relative">
@@ -44,13 +48,13 @@ export const FilterDesignSection: React.FC<FilterDesignSectionProps> = ({
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div>Filter Design Type:</div>
-        <div>{designType === 'bolt-weld' ? 'Bolt/Weld' : 'Modular Design'}</div>
+        <div>{designTypeName}</div>
         <div>Air Volume:</div>
         <div>{airVolume || '-'}</div>
         <div>{flapsLabel}</div>
         <div>{numEMCFlaps || '-'}</div>
         <div>Bag Length:</div>
-        <div>{bagLength ? bagLengthDisplay : '-'}</div>
+        <div>{bagLengthDisplay}</div>
       </div>
     </section>
   );

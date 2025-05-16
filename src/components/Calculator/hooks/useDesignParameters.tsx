@@ -142,6 +142,32 @@ export const useDesignParameters = () => {
     return airVolumeState.bagLength ?? 0; // Use 0 for calculations when null
   };
 
+  // Enhanced erase inputs function that handles design-specific resets
+  const eraseInputs = useCallback(() => {
+    // Reset all inputs based on the current design type
+    if (designTypeState.designType === 'bolt-weld') {
+      // Reset Panelized (bolt-weld) specific values
+      airVolumeState.setBoltWeldAirVolume('');
+      airVolumeState.setBoltWeldNumEMCFlaps('');
+      airVolumeState.setBoltWeldBagsPerRow(null);
+      airVolumeState.setBoltWeldBagLength(null);
+    } else {
+      // Reset Modular design specific values
+      airVolumeState.setModularAirVolume('');
+      airVolumeState.setModularNumEMCFlaps('');
+      airVolumeState.setModularBagsPerRow(null);
+      airVolumeState.setModularBagLength(null);
+    }
+    
+    // Reset the current active values too
+    airVolumeState.setAirVolumeM3h('');
+    airVolumeState.setAirVolumeACFM('');
+    airVolumeState.setNumEMCFlaps('');
+    airVolumeState.setBagsPerRow(null);
+    airVolumeState.setBagLength(null);
+
+  }, [designTypeState.designType, airVolumeState]);
+
   return {
     // Constants
     conversionFactor,
@@ -162,6 +188,7 @@ export const useDesignParameters = () => {
     setNumEMCFlaps: setDesignSpecificNumEMCFlaps,
     setBagsPerRow: setDesignSpecificBagsPerRow,
     setBagLength: setDesignSpecificBagLength,
+    eraseInputs,
     
     // Override handlers to update design-specific values
     handleAirVolumeM3hChange,

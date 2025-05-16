@@ -102,9 +102,12 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
     if (onEraseInputs) {
       setIsRefreshing(true);
       onEraseInputs();
+      
+      // Show a toast message based on the design type
+      const designDescription = designType === 'bolt-weld' ? 'Panelized Design' : 'Modular Design';
       toast({
-        title: "Inputs cleared",
-        description: "Design inputs have been reset.",
+        title: `${designDescription} inputs cleared`,
+        description: "Design parameters have been reset.",
       });
       
       // Add a slight delay before closing the dialog and resetting refresh state

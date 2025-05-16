@@ -1,3 +1,4 @@
+
 import React from 'react';
 import DesignTypeSection from './DesignTypeSection';
 import InputsSection from './InputsSection';
@@ -62,6 +63,7 @@ interface DesignParametersProps {
   negativePressureInchWG: number | null;
   handleNegativePressureMbarChange: (value: string) => void;
   handleNegativePressureInchWGChange: (value: string) => void;
+  eraseInputs?: () => void;
 }
 
 const DesignParameters: React.FC<DesignParametersProps> = (props) => {
@@ -132,6 +134,7 @@ const DesignParameters: React.FC<DesignParametersProps> = (props) => {
         bagLength={props.bagLength}
         airVolumeM3h={props.airVolumeM3h}
         airVolumeACFM={props.airVolumeACFM}
+        onEraseInputs={props.eraseInputs}
       />
     </div>
   );
