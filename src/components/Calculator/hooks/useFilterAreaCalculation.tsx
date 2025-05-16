@@ -32,6 +32,8 @@ export const useFilterAreaCalculation = (
 
   // Calculate filter area
   const calculateTotalFilterArea = useCallback(() => {
+    // Verify input values used in calculation
+    console.log(`Calculating total filter area with: bagLength=${bagLength}, bagsPerRow=${bagsPerRow}, numEMCFlaps=${numEMCFlaps}`);
     return calculateFilterArea(designType, bagLength, bagsPerRow, numEMCFlaps);
   }, [designType, bagLength, bagsPerRow, numEMCFlaps]);
   

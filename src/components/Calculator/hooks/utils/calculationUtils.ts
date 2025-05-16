@@ -19,19 +19,8 @@ export const calculateFilterArea = (
   } else {
     // For Modular design - the result is directly in sq.ft
     // Bag Length * No. Bags in a Row * TOTAL No. EMC Flaps * 5 * 1.6
-    // Using the values from the picture: 24 * 15 * 12 * 5 * 1.6 = 34,560 sq ft
     const result = bagLength * bagsPerRow * numEMCFlaps * 5 * 1.6;
     console.log(`Modular design filter area calculation: ${bagLength} * ${bagsPerRow} * ${numEMCFlaps} * 5 * 1.6 = ${result}`);
-    
-    // Check if this matches the displayed value of 372000.38 sq ft
-    console.log(`DEBUG: Expected 372000.38 sq ft, calculated ${result} sq ft`);
-    
-    // Calculate what bagLength would be needed to get 372000.38 sq ft
-    if (bagsPerRow && numEMCFlaps) {
-      const requiredBagLength = 372000.38 / (bagsPerRow * numEMCFlaps * 5 * 1.6);
-      console.log(`DEBUG: To get 372000.38 sq ft, would need bagLength = ${requiredBagLength.toFixed(2)}`);
-    }
-    
     return result;
   }
 };
