@@ -18,8 +18,8 @@ export const useBagReplacementCalculation = (
       // Calculate days to replace
       const daysToReplace = (totalBags * bagChangeTime / 60 / 10 / numPeople * 2) || 0;
       
-      // Calculate material cost including both bags and cages
-      const bagMaterialCost = totalBags * bagPrice + (totalBags * cagePrice);
+      // Calculate material cost for bags only (not including cages)
+      const bagMaterialCost = totalBags * bagPrice;
       
       return {
         totalBags,
@@ -35,7 +35,7 @@ export const useBagReplacementCalculation = (
         bagMaterialCost: 0
       };
     }
-  }, [numEMCFlaps, bagsPerRow, bagChangeTime, numPeople, bagPrice, cagePrice]);
+  }, [numEMCFlaps, bagsPerRow, bagChangeTime, numPeople, bagPrice]);
 
   return bagResults;
 };

@@ -83,6 +83,11 @@ const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
             <span className="text-sm font-medium text-right">${formattedResults.bagMaterialCost.toLocaleString()}</span>
           </div>
           
+          <div className="grid grid-cols-2 items-center py-2 border-b border-gray-100">
+            <span className="text-sm text-gray-600">Support Cage Material Cost</span>
+            <span className="text-sm font-medium text-right">${(formattedResults.totalBags * cagePrice).toLocaleString()}</span>
+          </div>
+          
           <div className="grid grid-cols-2 items-center py-2">
             <span className="text-sm text-gray-600 font-semibold\nw-[160px]">Total Filter Bag Replacement Cost</span>
             <span className="text-sm font-semibold text-right">${(formattedResults.bagMaterialCost + travelCost).toLocaleString()}</span>
