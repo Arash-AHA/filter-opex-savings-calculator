@@ -3,8 +3,6 @@ import React, { useRef, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Button } from '@/components/ui/button';
-import { Eraser } from 'lucide-react';
 import CardHeader from './CardHeader';
 import ParameterRow from './ParameterRow';
 import PrintButton from './PrintButton';
@@ -111,20 +109,7 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
   return (
     <>
       <Card className="p-4 h-fit">
-        <div className="flex justify-between items-center mb-4">
-          <CardHeader designType={designType} />
-          {onEraseInputs && (
-            <Button 
-              variant="outline" 
-              size="sm" 
-              onClick={onEraseInputs}
-              className="flex items-center gap-1"
-            >
-              <Eraser className="h-4 w-4" />
-              Erase inputs
-            </Button>
-          )}
-        </div>
+        <CardHeader designType={designType} />
         <div className="space-y-3">
           <ParameterRow label="Filter Area (Gross):" value={safeResults.filterArea} />
           <ParameterRow label="Net Filter Area:(Cleaning)" value={safeResults.netFilterArea} />
