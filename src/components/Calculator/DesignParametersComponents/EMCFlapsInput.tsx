@@ -87,6 +87,13 @@ const EMCFlapsInput: React.FC<EMCFlapsInputProps> = ({
     }
   };
 
+  // Handle Enter key press to trigger blur effect
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleEMCFlapsBlur();
+    }
+  };
+
   // For bolt-weld design only, provide apply suggested option
   const applySuggestedFlaps = () => {
     if (suggestedFlaps && designType === 'bolt-weld') {
@@ -134,6 +141,7 @@ const EMCFlapsInput: React.FC<EMCFlapsInputProps> = ({
           value={inputValue}
           onChange={(e) => handleEMCFlapsInputChange(e.target.value)}
           onBlur={handleEMCFlapsBlur}
+          onKeyDown={handleKeyDown}
           className="calculator-input w-full"
           placeholder="Enter value"
         />
