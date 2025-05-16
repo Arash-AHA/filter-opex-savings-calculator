@@ -1,4 +1,3 @@
-
 import { useMemo } from 'react';
 import { useFilterAreaCalculation } from './useFilterAreaCalculation';
 import { useBagReplacementCalculation } from './useBagReplacementCalculation';
@@ -13,7 +12,7 @@ export const useResultsCalculation = (
   airVolumeM3h: string,
   emcCleaningFactor: number,
   bagPrice: number,
-  cagePrice: number,
+  cagePrice: number, // Added cagePrice parameter
   bagChangeTime: number,
   numPeople: number,
   travelCost: number,
@@ -53,7 +52,7 @@ export const useResultsCalculation = (
     bagChangeTime,
     numPeople,
     bagPrice,
-    cagePrice
+    cagePrice // Added cagePrice
   );
   
   // Calculate life extension
@@ -64,7 +63,7 @@ export const useResultsCalculation = (
   const emcReplacements = 120 / scheuchLifeTime;
   const replacementSavings = (standardReplacements - emcReplacements) * (bagResults.totalBags * bagPrice + parseFloat(bagReplacementCost.toString()));
   
-  // Calculate compressed air savings based on working hours
+  // Calculate compressed air savings
   const compressedAirSavings = (currentAirConsumption - scheuchAirConsumption) * workingHours;
   
   // Combined results
@@ -161,9 +160,6 @@ export const useResultsCalculation = (
     results,
     formattedResults,
     totalSavings,
-    effectiveKwhCost,
-    // Also return these values for the YearlySavingsGraph component
-    airVolumeM3h,
-    scheuchDiffPressure
+    effectiveKwhCost
   };
 };
