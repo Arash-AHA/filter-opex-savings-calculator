@@ -25,34 +25,35 @@ const DifferentialPressureSection: React.FC<DifferentialPressureSectionProps> = 
         <div className="text-sm font-medium text-gray-700">Filter Differential Pressure</div>
         <div className="text-sm text-gray-500">Current Situation:</div>
         <div className={`grid grid-cols-${isMobile ? '1' : '2'} gap-3`}>
-          <div className="flex flex-col">
+          <div className={isMobile ? "flex flex-col" : "flex items-center"}>
+            {!isMobile && (
+              <span className="inline-flex items-center px-2 py-2 text-sm text-gray-500 bg-gray-50 border border-r-0 border-gray-200 rounded-l-md whitespace-nowrap">
+                mbar
+              </span>
+            )}
             <input
               type="number"
               value={currentDiffPressure}
               onChange={(e) => setCurrentDiffPressure(parseFloat(e.target.value) || 0)}
-              className="w-full min-w-0 rounded-md border border-gray-200 px-2 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+              className={`w-full min-w-0 rounded-${isMobile ? 'md' : 'r-md'} border border-gray-200 px-2 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary`}
               min={0}
             />
-            {isMobile ? (
+            {isMobile && (
               <span className="text-xs text-gray-500 mt-1">mbar</span>
-            ) : (
-              <span className="inline-flex items-center px-2 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md whitespace-nowrap">
-                mbar
-              </span>
             )}
           </div>
           {!isMobile && (
             <div className="flex items-center">
+              <span className="inline-flex items-center px-2 py-2 text-sm text-gray-500 bg-gray-50 border border-r-0 border-gray-200 rounded-l-md whitespace-nowrap">
+                Inches&nbsp;W.G.
+              </span>
               <input
                 type="text"
                 value={(currentDiffPressure * 0.4).toFixed(2)}
                 onChange={(e) => setCurrentDiffPressure(parseFloat(e.target.value) / 0.4 || 0)}
-                className="w-full min-w-0 rounded-l-md border border-gray-200 px-2 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full min-w-0 rounded-r-md border border-gray-200 px-2 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
                 min={0}
               />
-              <span className="inline-flex items-center px-2 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md whitespace-nowrap">
-                Inches&nbsp;W.G.
-              </span>
             </div>
           )}
           {isMobile && (
@@ -74,34 +75,35 @@ const DifferentialPressureSection: React.FC<DifferentialPressureSectionProps> = 
         <div className="text-sm font-medium text-gray-700">Filter Differential Pressure</div>
         <div className="text-sm text-gray-500">Scheuch EMC Technology:</div>
         <div className={`grid grid-cols-${isMobile ? '1' : '2'} gap-3`}>
-          <div className="flex flex-col">
+          <div className={isMobile ? "flex flex-col" : "flex items-center"}>
+            {!isMobile && (
+              <span className="inline-flex items-center px-2 py-2 text-sm text-gray-500 bg-gray-50 border border-r-0 border-gray-200 rounded-l-md whitespace-nowrap">
+                mbar
+              </span>
+            )}
             <input
               type="number"
               value={scheuchDiffPressure}
               onChange={(e) => setScheuchDiffPressure(parseFloat(e.target.value) || 0)}
-              className="w-full min-w-0 rounded-md border border-gray-200 px-2 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+              className={`w-full min-w-0 rounded-${isMobile ? 'md' : 'r-md'} border border-gray-200 px-2 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary`}
               min={0}
             />
-            {isMobile ? (
+            {isMobile && (
               <span className="text-xs text-gray-500 mt-1">mbar</span>
-            ) : (
-              <span className="inline-flex items-center px-2 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md whitespace-nowrap">
-                mbar
-              </span>
             )}
           </div>
           {!isMobile && (
             <div className="flex items-center">
+              <span className="inline-flex items-center px-2 py-2 text-sm text-gray-500 bg-gray-50 border border-r-0 border-gray-200 rounded-l-md whitespace-nowrap">
+                Inches&nbsp;W.G.
+              </span>
               <input
                 type="text"
                 value={(scheuchDiffPressure * 0.4).toFixed(2)}
                 onChange={(e) => setScheuchDiffPressure(parseFloat(e.target.value) / 0.4 || 0)}
-                className="w-full min-w-0 rounded-l-md border border-gray-200 px-2 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full min-w-0 rounded-r-md border border-gray-200 px-2 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
                 min={0}
               />
-              <span className="inline-flex items-center px-2 py-2 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-200 rounded-r-md whitespace-nowrap">
-                Inches&nbsp;W.G.
-              </span>
             </div>
           )}
           {isMobile && (
