@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import CalculatorSection from './CalculatorSection';
 import Transition from '../UI/Transition';
@@ -27,10 +28,23 @@ const FilterOpexCalculator = () => {
   };
   
   const handleEraseInputs = () => {
+    // Reset all design parameters to empty or default values
+    // For both design types (bolt-weld and modular)
+    calculatorState.setBoltWeldAirVolume('');
+    calculatorState.setModularAirVolume('');
     calculatorState.handleAirVolumeM3hChange('');
     calculatorState.handleAirVolumeACFMChange('');
+    
+    calculatorState.setBoltWeldNumEMCFlaps('');
+    calculatorState.setModularNumEMCFlaps('');
     calculatorState.setNumEMCFlaps('');
+    
+    calculatorState.setBoltWeldBagsPerRow(0);
+    calculatorState.setModularBagsPerRow(0);
     calculatorState.setBagsPerRow(0);
+    
+    calculatorState.setBoltWeldBagLength(0);
+    calculatorState.setModularBagLength(0);
     calculatorState.setBagLength(0);
     
     toast({
