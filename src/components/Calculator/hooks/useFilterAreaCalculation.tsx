@@ -1,3 +1,4 @@
+
 import { useCallback, useMemo, useEffect } from 'react';
 import { calculateFilterArea, calculateNetFilterArea } from './utils/calculationUtils';
 
@@ -21,11 +22,7 @@ export const useFilterAreaCalculation = (
     console.log(`airVolumeM3h: ${airVolumeM3h}`);
     console.log(`airVolumeACFM: ${airVolumeACFM}`);
     
-    // Check if this is the calculation shown in the picture with updated formula
-    if (designType === 'modular' && bagLength === 24 && bagsPerRow === 15 && numEMCFlaps === 12) {
-      const manualCalculation = 24 * 12 * 5 * 1.6 * 15 * 12;
-      console.log(`DEBUG: Manual calculation check with updated formula: 24 * 12 * 5 * 1.6 * 15 * 12 = ${manualCalculation}`);
-    }
+    // Remove debug check for modular design calculation
   }, [designType, bagLength, bagsPerRow, numEMCFlaps, emcCleaningFactor, airVolumeM3h, airVolumeACFM]);
 
   // Calculate filter area
