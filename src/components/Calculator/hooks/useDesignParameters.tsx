@@ -1,3 +1,4 @@
+
 import { useCallback, useEffect } from 'react';
 import { useDesignType } from './useDesignType';
 import { useAirVolumeParameters } from './useAirVolumeParameters';
@@ -19,8 +20,18 @@ export const useDesignParameters = () => {
     if (designTypeState.designType === 'bolt-weld') {
       // Set current values to bolt-weld specific values
       airVolumeState.setAirVolumeM3h(airVolumeState.boltWeldAirVolume);
-      airVolumeState.setAirVolumeACFM((parseFloat(airVolumeState.boltWeldAirVolume) * conversionFactor).toFixed(0));
+      
+      // Only calculate ACFM if we have a value for m3h
+      if (airVolumeState.boltWeldAirVolume) {
+        airVolumeState.setAirVolumeACFM((parseFloat(airVolumeState.boltWeldAirVolume) * conversionFactor).toFixed(0));
+      } else {
+        airVolumeState.setAirVolumeACFM('');
+      }
+      
+      // Set EMC flaps to empty string if the stored value is empty
       airVolumeState.setNumEMCFlaps(airVolumeState.boltWeldNumEMCFlaps);
+      
+      // Set bags configuration - these always have defaults
       airVolumeState.setBagsPerRow(airVolumeState.boltWeldBagsPerRow);
       airVolumeState.setBagLength(airVolumeState.boltWeldBagLength);
     } else {

@@ -14,6 +14,14 @@ const AirVolumeInputs: React.FC<AirVolumeInputsProps> = ({
   handleAirVolumeM3hChange,
   handleAirVolumeACFMChange
 }) => {
+  // Handle Enter key press to maintain value during rendering
+  const handleKeyDown = (e: React.KeyboardEvent, updateFunction: (value: string) => void, value: string) => {
+    if (e.key === 'Enter') {
+      // Apply input value again to ensure it's set
+      updateFunction(value);
+    }
+  };
+
   return (
     <div className="flex flex-col mb-4">
       <div className="w-60 pr-4 calculator-field-label mb-2">
@@ -25,6 +33,7 @@ const AirVolumeInputs: React.FC<AirVolumeInputsProps> = ({
             type="text" 
             value={airVolumeM3h} 
             onChange={e => handleAirVolumeM3hChange(e.target.value)} 
+            onKeyDown={e => handleKeyDown(e, handleAirVolumeM3hChange, airVolumeM3h)}
             placeholder="Enter air volume" 
             className="calculator-input pr-12 w-full" 
           />
@@ -35,6 +44,7 @@ const AirVolumeInputs: React.FC<AirVolumeInputsProps> = ({
             type="text" 
             value={airVolumeACFM} 
             onChange={e => handleAirVolumeACFMChange(e.target.value)} 
+            onKeyDown={e => handleKeyDown(e, handleAirVolumeACFMChange, airVolumeACFM)}
             placeholder="Enter air volume" 
             className="calculator-input pr-12 w-full" 
           />

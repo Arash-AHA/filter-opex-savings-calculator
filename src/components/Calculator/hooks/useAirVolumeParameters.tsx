@@ -1,10 +1,9 @@
-
 import { useState, useCallback, useEffect } from 'react';
 
 export const useAirVolumeParameters = (conversionFactor: number) => {
-  // Bolt-weld specific parameters with default values
-  const [boltWeldAirVolume, setBoltWeldAirVolume] = useState('375000');
-  const [boltWeldNumEMCFlaps, setBoltWeldNumEMCFlaps] = useState<number | string>(14);
+  // Bolt-weld specific parameters with empty defaults for user input
+  const [boltWeldAirVolume, setBoltWeldAirVolume] = useState('');
+  const [boltWeldNumEMCFlaps, setBoltWeldNumEMCFlaps] = useState<number | string>('');
   const [boltWeldBagsPerRow, setBoltWeldBagsPerRow] = useState(18);
   const [boltWeldBagLength, setBoltWeldBagLength] = useState(10);
   
@@ -16,9 +15,7 @@ export const useAirVolumeParameters = (conversionFactor: number) => {
 
   // Current active values (will be switched based on design type)
   const [airVolumeM3h, setAirVolumeM3h] = useState(boltWeldAirVolume);
-  const [airVolumeACFM, setAirVolumeACFM] = useState(
-    ((parseFloat(boltWeldAirVolume) || 375000) * conversionFactor).toFixed(0)
-  );
+  const [airVolumeACFM, setAirVolumeACFM] = useState('');
   const [numEMCFlaps, setNumEMCFlaps] = useState<number | string>(boltWeldNumEMCFlaps);
   const [bagsPerRow, setBagsPerRow] = useState(boltWeldBagsPerRow);
   const [bagLength, setBagLength] = useState(boltWeldBagLength);
@@ -31,7 +28,7 @@ export const useAirVolumeParameters = (conversionFactor: number) => {
     
     if (!isACFMUpdating) {
       setIsM3hUpdating(true);
-      const acfmValue = (parseFloat(value || '0') * conversionFactor).toFixed(0);
+      const acfmValue = value ? (parseFloat(value || '0') * conversionFactor).toFixed(0) : '';
       setAirVolumeACFM(acfmValue);
       setTimeout(() => setIsM3hUpdating(false), 100);
     }
@@ -42,7 +39,7 @@ export const useAirVolumeParameters = (conversionFactor: number) => {
     
     if (!isM3hUpdating) {
       setIsACFMUpdating(true);
-      const m3hValue = (parseFloat(value || '0') / conversionFactor).toFixed(0);
+      const m3hValue = value ? (parseFloat(value || '0') / conversionFactor).toFixed(0) : '';
       setAirVolumeM3h(m3hValue);
       setTimeout(() => setIsACFMUpdating(false), 100);
     }

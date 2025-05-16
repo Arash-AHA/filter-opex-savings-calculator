@@ -37,44 +37,20 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
   useEffect(() => {
     // Only calculate suggested flaps when air volume is provided
     if ((airVolumeM3h && airVolumeM3h !== '0') || (airVolumeACFM && airVolumeACFM !== '0')) {
-      // For bolt-weld design, calculate suggested flaps
-      if (designType === 'bolt-weld') {
-        if (numEMCFlaps === '' || numEMCFlaps === 0) {
-          let suggested = suggestEMCFlaps(
-            designType,
-            bagLength,
-            bagsPerRow,
-            airVolumeM3h,
-            airVolumeACFM
-          );
-          setSuggestedFlaps(suggested);
-        } else {
-          // If user has already provided input, just calculate a suggested value for comparison
-          const suggested = suggestEMCFlaps(
-            designType,
-            bagLength,
-            bagsPerRow,
-            airVolumeM3h,
-            airVolumeACFM
-          );
-          setSuggestedFlaps(suggested);
-        }
-      } else {
-        // For modular design, we don't auto-apply but still calculate for reference
-        const suggested = suggestEMCFlaps(
-          designType,
-          bagLength,
-          bagsPerRow,
-          airVolumeM3h,
-          airVolumeACFM
-        );
-        setSuggestedFlaps(suggested);
-      }
+      // Calculate suggested flaps for both design types
+      const suggested = suggestEMCFlaps(
+        designType,
+        bagLength,
+        bagsPerRow,
+        airVolumeM3h,
+        airVolumeACFM
+      );
+      setSuggestedFlaps(suggested);
     } else {
       // If no air volume is provided, reset suggested flaps
       setSuggestedFlaps(null);
     }
-  }, [designType, bagLength, bagsPerRow, airVolumeM3h, airVolumeACFM, numEMCFlaps]);
+  }, [designType, bagLength, bagsPerRow, airVolumeM3h, airVolumeACFM]);
   
   const calculateAcRatio = () => {
     // Only calculate when we have necessary values

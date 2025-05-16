@@ -28,11 +28,11 @@ const EMCFlapsInput: React.FC<EMCFlapsInputProps> = ({
   bagLength,
   currentAcRatio,
 }) => {
-  const [inputValue, setInputValue] = useState<string>(numEMCFlaps.toString());
+  const [inputValue, setInputValue] = useState<string>(numEMCFlaps?.toString() || '');
   const { toast } = useToast();
 
   useEffect(() => {
-    setInputValue(numEMCFlaps.toString());
+    setInputValue(numEMCFlaps?.toString() || '');
   }, [numEMCFlaps]);
 
   const handleEMCFlapsInputChange = (value: string) => {
@@ -83,7 +83,7 @@ const EMCFlapsInput: React.FC<EMCFlapsInputProps> = ({
       }
       setNumEMCFlaps(parsedValue);
     } else {
-      setInputValue(numEMCFlaps.toString());
+      setInputValue(numEMCFlaps?.toString() || '');
     }
   };
 
