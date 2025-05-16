@@ -39,6 +39,10 @@ const PrintableDesignParams: React.FC<PrintableDesignParamsProps> = ({
     totalBags: 0,
   };
 
+  const flapsLabel = designType === 'bolt-weld' 
+    ? 'Number of EMC Flaps (Panelized)' 
+    : 'Number of EMC Flaps (Modular)';
+
   return (
     <div className="p-6 print:p-0 bg-white text-gray-900 rounded-lg">
       <h2 className="text-xl font-semibold mb-4 text-center">
@@ -51,7 +55,7 @@ const PrintableDesignParams: React.FC<PrintableDesignParamsProps> = ({
             <td className="py-2">{designType === "bolt-weld" ? "Bolt/Weld" : "Modular Design"}</td>
           </tr>
           <tr>
-            <td className="py-2 font-medium">Number of EMC Flaps</td>
+            <td className="py-2 font-medium">{flapsLabel}</td>
             <td className="py-2">{numEMCFlaps}</td>
           </tr>
           <tr>

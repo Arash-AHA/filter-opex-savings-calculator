@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { HelpCircle } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -98,10 +99,15 @@ const EMCFlapsInput: React.FC<EMCFlapsInputProps> = ({
     }
   };
 
+  // Set the label text based on design type
+  const emcFlapsLabel = designType === 'modular' 
+    ? "TOTAL Quantity of EMC Flaps: (Modular)" 
+    : "TOTAL Quantity of EMC Flaps: (Panelized)";
+
   return (
     <div className="flex flex-col mb-4">
       <div className="w-full calculator-field-label mb-2 flex items-center">
-        <span>TOTAL Quantity of EMC Flaps:</span>
+        <span>{emcFlapsLabel}</span>
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>

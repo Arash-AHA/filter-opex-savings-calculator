@@ -8,6 +8,9 @@ export const useDesignType = () => {
   const [filterRowType, setFilterRowType] = useState('single');
   const [channelWidthMm, setChannelWidthMm] = useState(3150);
   const [channelHeightMm, setChannelHeightMm] = useState(3000);
+  // Add labels for EMC flaps based on design type
+  const modularFlapsLabel = "TOTAL Quantity of EMC Flaps: (Modular)";
+  const panelizedFlapsLabel = "TOTAL Quantity of EMC Flaps: (Panelized)";
 
   // Hide dimensions if modular design is selected
   useEffect(() => {
@@ -28,6 +31,8 @@ export const useDesignType = () => {
     channelWidthMm,
     setChannelWidthMm,
     channelHeightMm,
-    setChannelHeightMm
+    setChannelHeightMm,
+    modularFlapsLabel,
+    panelizedFlapsLabel
   };
 };

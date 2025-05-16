@@ -17,6 +17,10 @@ export const FilterDesignSection: React.FC<FilterDesignSectionProps> = ({
   const bagLengthDisplay = designType === 'bolt-weld' 
     ? `${bagLength} m` 
     : `${bagLength} ft`;
+    
+  const flapsLabel = designType === 'bolt-weld' 
+    ? 'Total No. EMC Flaps (Panelized):' 
+    : 'Total No. EMC Flaps (Modular):';
 
   return (
     <section>
@@ -26,7 +30,7 @@ export const FilterDesignSection: React.FC<FilterDesignSectionProps> = ({
         <div>{designType === 'bolt-weld' ? 'Bolt/Weld' : 'Modular Design'}</div>
         <div>Air Volume:</div>
         <div>{airVolume}</div>
-        <div>Total No. EMC Flaps:</div>
+        <div>{flapsLabel}</div>
         <div>{numEMCFlaps}</div>
         <div>Bag Length:</div>
         <div>{bagLengthDisplay}</div>
