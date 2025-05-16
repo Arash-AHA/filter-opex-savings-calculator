@@ -354,7 +354,7 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
             onClick={() => setShowGraphDialog(true)}
           >
             <BarChart className="h-4 w-4" />
-            Show Graph
+            Show EMC Operation Cost
           </Button>
         </div>
       </div>
@@ -406,13 +406,13 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
         </DialogContent>
       </Dialog>
 
-      {/* Yearly Savings Graph Dialog - Now shown when Show Graph is clicked */}
+      {/* Yearly Savings Graph Dialog - Now shown when Show EMC Operation Cost is clicked */}
       <Dialog open={showGraphDialog} onOpenChange={setShowGraphDialog}>
         <DialogContent className="max-w-5xl w-[90vw] max-h-[90vh]">
           <DialogHeader>
-            <DialogTitle>OPEX Cost Over {savingYears} Years</DialogTitle>
+            <DialogTitle>EMC Operation Cost Over {savingYears} Years</DialogTitle>
             <DialogDescription>
-              Yearly breakdown of OPEX costs over the {savingYears} year period.
+              Yearly breakdown of operational costs over the {savingYears} year period.
             </DialogDescription>
           </DialogHeader>
           
