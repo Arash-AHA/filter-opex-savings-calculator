@@ -21,8 +21,6 @@ export const useFilterAreaCalculation = (
     console.log(`emcCleaningFactor: ${emcCleaningFactor}`);
     console.log(`airVolumeM3h: ${airVolumeM3h}`);
     console.log(`airVolumeACFM: ${airVolumeACFM}`);
-    
-    // Remove debug check for modular design calculation
   }, [designType, bagLength, bagsPerRow, numEMCFlaps, emcCleaningFactor, airVolumeM3h, airVolumeACFM]);
 
   // Calculate filter area

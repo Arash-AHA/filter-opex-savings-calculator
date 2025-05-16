@@ -17,9 +17,9 @@ export const calculateFilterArea = (
     // PI()*165/1000*Bag length*5*No. bags in a row*No. EMC flaps
     return Math.PI * (165/1000) * bagLength * 5 * bagsPerRow * numEMCFlaps;
   } else {
-    // For Modular design - removed actual calculation formula
-    console.log(`Modular design filter area calculation requested, but formula calculation is removed`);
-    return 0; // Return 0 as placeholder since formula is removed
+    // For Modular design
+    // Filter Bag Length × 1.6 × Total EMC Flaps × Bags Per Row × 5
+    return bagLength * 1.6 * numEMCFlaps * bagsPerRow * 5;
   }
 };
 
@@ -40,9 +40,8 @@ export const calculateNetFilterArea = (
     // For bolt-weld design, use numEMCFlaps-1 in the calculation
     return Math.PI * (165/1000) * bagLength * 5 * bagsPerRow * (numEMCFlaps - 1);
   } else {
-    // For modular design - removed actual calculation formula
-    console.log(`Modular design net filter area calculation requested, but formula calculation is removed`);
-    return 0; // Return 0 as placeholder since formula is removed
+    // For modular design - using same formula as gross area but with one less EMC flap
+    return bagLength * 1.6 * (numEMCFlaps - 1) * bagsPerRow * 5;
   }
 };
 
