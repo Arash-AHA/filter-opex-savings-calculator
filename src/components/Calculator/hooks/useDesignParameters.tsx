@@ -31,7 +31,7 @@ export const useDesignParameters = () => {
       // Set EMC flaps to empty string if the stored value is empty
       airVolumeState.setNumEMCFlaps(airVolumeState.boltWeldNumEMCFlaps);
       
-      // Set bags configuration - these always have defaults
+      // Set bags configuration - use null if no selection has been made
       airVolumeState.setBagsPerRow(airVolumeState.boltWeldBagsPerRow);
       airVolumeState.setBagLength(airVolumeState.boltWeldBagLength);
     } else {
@@ -49,7 +49,7 @@ export const useDesignParameters = () => {
       // Set EMC flaps to empty string if the stored value is empty
       airVolumeState.setNumEMCFlaps(airVolumeState.modularNumEMCFlaps);
       
-      // Set bags configuration - these always have defaults
+      // Set bags configuration - use null if no selection has been made
       airVolumeState.setBagsPerRow(airVolumeState.modularBagsPerRow);
       airVolumeState.setBagLength(airVolumeState.modularBagLength);
     }
@@ -133,6 +133,15 @@ export const useDesignParameters = () => {
     }
   }, [designTypeState.designType, airVolumeState]);
 
+  // Get non-null values for UI rendering and calculations
+  const getSafeBagsPerRow = () => {
+    return airVolumeState.bagsPerRow ?? 0; // Use 0 for calculations when null
+  };
+
+  const getSafeBagLength = () => {
+    return airVolumeState.bagLength ?? 0; // Use 0 for calculations when null
+  };
+
   return {
     // Constants
     conversionFactor,
@@ -157,5 +166,9 @@ export const useDesignParameters = () => {
     // Override handlers to update design-specific values
     handleAirVolumeM3hChange,
     handleAirVolumeACFMChange,
+    
+    // Safe getters for potentially null values
+    getSafeBagsPerRow,
+    getSafeBagLength,
   };
 };

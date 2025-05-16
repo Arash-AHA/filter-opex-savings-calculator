@@ -6,8 +6,8 @@ interface InputsSectionProps {
   airVolumeM3h: string;
   airVolumeACFM: string;
   numEMCFlaps: number | string;
-  bagsPerRow: number;
-  bagLength: number;
+  bagsPerRow: number | null;
+  bagLength: number | null;
   designType: string;
   handleAirVolumeM3hChange: (value: string) => void;
   handleAirVolumeACFMChange: (value: string) => void;

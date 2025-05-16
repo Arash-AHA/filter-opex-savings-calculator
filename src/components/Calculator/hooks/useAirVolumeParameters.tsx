@@ -1,24 +1,25 @@
+
 import { useState, useCallback, useEffect } from 'react';
 
 export const useAirVolumeParameters = (conversionFactor: number) => {
   // Bolt-weld specific parameters with empty defaults for user input
   const [boltWeldAirVolume, setBoltWeldAirVolume] = useState('');
   const [boltWeldNumEMCFlaps, setBoltWeldNumEMCFlaps] = useState<number | string>('');
-  const [boltWeldBagsPerRow, setBoltWeldBagsPerRow] = useState(18);
-  const [boltWeldBagLength, setBoltWeldBagLength] = useState(10);
+  const [boltWeldBagsPerRow, setBoltWeldBagsPerRow] = useState<number | null>(null);
+  const [boltWeldBagLength, setBoltWeldBagLength] = useState<number | null>(null);
   
   // Modular specific parameters with empty defaults for user input
   const [modularAirVolume, setModularAirVolume] = useState('');
   const [modularNumEMCFlaps, setModularNumEMCFlaps] = useState<number | string>('');
-  const [modularBagsPerRow, setModularBagsPerRow] = useState(15);
-  const [modularBagLength, setModularBagLength] = useState(24); // Default to 24 to match expected calculation
+  const [modularBagsPerRow, setModularBagsPerRow] = useState<number | null>(null);
+  const [modularBagLength, setModularBagLength] = useState<number | null>(null);
 
   // Current active values (will be switched based on design type)
   const [airVolumeM3h, setAirVolumeM3h] = useState(boltWeldAirVolume);
   const [airVolumeACFM, setAirVolumeACFM] = useState('');
   const [numEMCFlaps, setNumEMCFlaps] = useState<number | string>(boltWeldNumEMCFlaps);
-  const [bagsPerRow, setBagsPerRow] = useState(boltWeldBagsPerRow);
-  const [bagLength, setBagLength] = useState(boltWeldBagLength);
+  const [bagsPerRow, setBagsPerRow] = useState<number | null>(boltWeldBagsPerRow);
+  const [bagLength, setBagLength] = useState<number | null>(boltWeldBagLength);
 
   const [isM3hUpdating, setIsM3hUpdating] = useState(false);
   const [isACFMUpdating, setIsACFMUpdating] = useState(false);

@@ -1,5 +1,12 @@
 
 import React, { useEffect } from 'react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface BagsConfigProps {
   bagsPerRow: number;
@@ -20,16 +27,16 @@ const BagsConfig: React.FC<BagsConfigProps> = ({
     console.log(`BagsConfig rendered with: designType=${designType}, bagLength=${bagLength}, bagsPerRow=${bagsPerRow}`);
   }, [designType, bagLength, bagsPerRow]);
 
-  const handleBagsPerRowChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = parseInt(e.target.value) || 0;
-    console.log(`Setting bags per row to: ${value}`);
-    setBagsPerRow(value);
+  const handleBagsPerRowChange = (value: string) => {
+    const numValue = parseInt(value) || 0;
+    console.log(`Setting bags per row to: ${numValue}`);
+    setBagsPerRow(numValue);
   };
 
-  const handleBagLengthChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = parseInt(e.target.value) || 0;
-    console.log(`Setting bag length to: ${value}`);
-    setBagLength(value);
+  const handleBagLengthChange = (value: string) => {
+    const numValue = parseInt(value) || 0;
+    console.log(`Setting bag length to: ${numValue}`);
+    setBagLength(numValue);
   };
 
   return (
@@ -40,24 +47,28 @@ const BagsConfig: React.FC<BagsConfigProps> = ({
 (cleaned by one pulsejet valve):</span>
         </div>
         <div>
-          <select 
-            value={bagsPerRow} 
-            onChange={handleBagsPerRowChange} 
-            className="calculator-input w-full"
+          <Select 
+            value={bagsPerRow ? bagsPerRow.toString() : ""} 
+            onValueChange={handleBagsPerRowChange}
           >
-            {designType === 'bolt-weld' ? (
-              <>
-                <option value={15}>15</option>
-                <option value={18}>18</option>
-              </>
-            ) : (
-              <>
-                <option value={15}>15</option>
-                <option value={12}>12</option>
-                <option value={9}>9</option>
-              </>
-            )}
-          </select>
+            <SelectTrigger className="calculator-input w-full">
+              <SelectValue placeholder="Select bags per row" />
+            </SelectTrigger>
+            <SelectContent>
+              {designType === 'bolt-weld' ? (
+                <>
+                  <SelectItem value="15">15</SelectItem>
+                  <SelectItem value="18">18</SelectItem>
+                </>
+              ) : (
+                <>
+                  <SelectItem value="15">15</SelectItem>
+                  <SelectItem value="12">12</SelectItem>
+                  <SelectItem value="9">9</SelectItem>
+                </>
+              )}
+            </SelectContent>
+          </Select>
         </div>
       </div>
       
@@ -66,26 +77,30 @@ const BagsConfig: React.FC<BagsConfigProps> = ({
           <span>Filter Bag Length:</span>
         </div>
         <div>
-          <select 
-            value={bagLength} 
-            onChange={handleBagLengthChange} 
-            className="calculator-input w-full"
+          <Select 
+            value={bagLength ? bagLength.toString() : ""}
+            onValueChange={handleBagLengthChange}
           >
-            {designType === 'bolt-weld' ? (
-              <>
-                <option value={8}>8 m</option>
-                <option value={9}>9 m</option>
-                <option value={10}>10 m</option>
-              </>
-            ) : (
-              <>
-                <option value={16}>16 ft</option>
-                <option value={21}>21 ft</option>
-                <option value={24}>24 ft</option>
-                <option value={28}>28 ft</option>
-              </>
-            )}
-          </select>
+            <SelectTrigger className="calculator-input w-full">
+              <SelectValue placeholder="Select bag length" />
+            </SelectTrigger>
+            <SelectContent>
+              {designType === 'bolt-weld' ? (
+                <>
+                  <SelectItem value="8">8 m</SelectItem>
+                  <SelectItem value="9">9 m</SelectItem>
+                  <SelectItem value="10">10 m</SelectItem>
+                </>
+              ) : (
+                <>
+                  <SelectItem value="16">16 ft</SelectItem>
+                  <SelectItem value="21">21 ft</SelectItem>
+                  <SelectItem value="24">24 ft</SelectItem>
+                  <SelectItem value="28">28 ft</SelectItem>
+                </>
+              )}
+            </SelectContent>
+          </Select>
         </div>
       </div>
     </>
