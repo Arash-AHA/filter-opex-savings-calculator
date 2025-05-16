@@ -87,16 +87,15 @@ const EMCFlapsInput: React.FC<EMCFlapsInputProps> = ({
     }
   };
 
-  // Modified to just use the user's input value without relying on suggested flaps
+  // For bolt-weld design only, provide apply suggested option
   const applySuggestedFlaps = () => {
-    if (suggestedFlaps) {
-      if (designType === 'modular') {
-        // Ensure suggested value is also a multiple of 3
-        const adjustedSuggested = Math.ceil(suggestedFlaps / 3) * 3;
-        setNumEMCFlaps(adjustedSuggested);
-      } else {
-        setNumEMCFlaps(suggestedFlaps);
-      }
+    if (suggestedFlaps && designType === 'bolt-weld') {
+      setNumEMCFlaps(suggestedFlaps);
+    } else if (suggestedFlaps && designType === 'modular') {
+      // For modular, only apply if user explicitly requests via tooltip button
+      // Ensure it's a multiple of 3
+      const adjustedSuggested = Math.ceil(suggestedFlaps / 3) * 3;
+      setNumEMCFlaps(adjustedSuggested);
     }
   };
 

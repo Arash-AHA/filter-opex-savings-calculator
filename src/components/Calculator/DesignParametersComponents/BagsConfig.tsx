@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 interface BagsConfigProps {
@@ -34,7 +35,11 @@ const BagsConfig: React.FC<BagsConfigProps> = ({
                 <option value={18}>18</option>
               </>
             ) : (
-              <option value={15}>15</option>
+              <>
+                <option value={15}>15</option>
+                <option value={12}>12</option>
+                <option value={9}>9</option>
+              </>
             )}
           </select>
         </div>
@@ -59,6 +64,7 @@ const BagsConfig: React.FC<BagsConfigProps> = ({
             ) : (
               <>
                 <option value={16}>16 ft</option>
+                <option value={21}>21 ft</option>
                 <option value={24}>24 ft</option>
                 <option value={28}>28 ft</option>
               </>

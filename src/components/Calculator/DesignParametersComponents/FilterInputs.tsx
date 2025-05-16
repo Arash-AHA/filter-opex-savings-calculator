@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { suggestEMCFlaps } from '../hooks/utils/calculationUtils';
 import AirVolumeInputs from './AirVolumeInputs';
@@ -35,35 +34,31 @@ const FilterInputs: React.FC<FilterInputsProps> = ({
   const [suggestedFlaps, setSuggestedFlaps] = useState<number | null>(null);
   
   useEffect(() => {
-    // Only calculate suggested flaps when no user input is provided yet
-    if (numEMCFlaps === '' || numEMCFlaps === 0) {
-      let suggested = suggestEMCFlaps(
-        designType,
-        bagLength,
-        bagsPerRow,
-        airVolumeM3h,
-        airVolumeACFM
-      );
-
-      if (designType === 'modular' && suggested) {
-        const remainder = suggested % 3;
-        if (remainder !== 0) {
-          suggested = suggested + (3 - remainder);
-        }
-        
-        const areaPerFlap = bagLength * bagsPerRow * 5 * 1.6;
-        const totalArea = areaPerFlap * suggested;
-        const airVolume = parseFloat(airVolumeACFM) || 0;
-        const acRatio = totalArea > 0 ? airVolume / totalArea : 0;
-        
-        if (acRatio > 3.2) {
-          suggested += 3;
-        }
+    // For bolt-weld design, calculate suggested flaps
+    if (designType === 'bolt-weld') {
+      if (numEMCFlaps === '' || numEMCFlaps === 0) {
+        let suggested = suggestEMCFlaps(
+          designType,
+          bagLength,
+          bagsPerRow,
+          airVolumeM3h,
+          airVolumeACFM
+        );
+        setSuggestedFlaps(suggested);
+      } else {
+        // If user has already provided input, just calculate a suggested value for comparison
+        const suggested = suggestEMCFlaps(
+          designType,
+          bagLength,
+          bagsPerRow,
+          airVolumeM3h,
+          airVolumeACFM
+        );
+        setSuggestedFlaps(suggested);
       }
-      
-      setSuggestedFlaps(suggested);
     } else {
-      // If user has already provided input, just calculate a suggested value for comparison
+      // For modular design, we don't provide suggested values
+      // We still calculate for reference but don't auto-apply
       const suggested = suggestEMCFlaps(
         designType,
         bagLength,

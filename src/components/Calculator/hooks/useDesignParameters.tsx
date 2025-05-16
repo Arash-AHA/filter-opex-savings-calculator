@@ -1,4 +1,3 @@
-
 import { useCallback, useEffect } from 'react';
 import { useDesignType } from './useDesignType';
 import { useAirVolumeParameters } from './useAirVolumeParameters';
@@ -25,10 +24,19 @@ export const useDesignParameters = () => {
       airVolumeState.setBagsPerRow(airVolumeState.boltWeldBagsPerRow);
       airVolumeState.setBagLength(airVolumeState.boltWeldBagLength);
     } else {
-      // Set current values to modular specific values
-      airVolumeState.setAirVolumeM3h(airVolumeState.modularAirVolume);
-      airVolumeState.setAirVolumeACFM((parseFloat(airVolumeState.modularAirVolume) * conversionFactor).toFixed(0));
-      airVolumeState.setNumEMCFlaps(airVolumeState.modularNumEMCFlaps);
+      // For modular design, use stored modular values but don't apply defaults
+      // If modular values are empty, keep them empty
+      if (airVolumeState.modularAirVolume) {
+        airVolumeState.setAirVolumeM3h(airVolumeState.modularAirVolume);
+        airVolumeState.setAirVolumeACFM((parseFloat(airVolumeState.modularAirVolume) * conversionFactor).toFixed(0));
+      } else {
+        // Clear the values if no stored modular values
+        airVolumeState.setAirVolumeM3h('');
+        airVolumeState.setAirVolumeACFM('');
+      }
+      
+      // Only set values if they exist, otherwise leave them empty for user input
+      airVolumeState.setNumEMCFlaps(airVolumeState.modularNumEMCFlaps || '');
       airVolumeState.setBagsPerRow(airVolumeState.modularBagsPerRow);
       airVolumeState.setBagLength(airVolumeState.modularBagLength);
     }
@@ -81,13 +89,13 @@ export const useDesignParameters = () => {
     }
   }, [processState.dustConcGramAm3, airVolumeState.airVolumeM3h, processState.handleOutletDustKgHChange]);
 
-  // Handle EMC Flaps changes - Modified to ensure modular flaps value is correctly set
+  // Handle EMC Flaps changes
   const setDesignSpecificNumEMCFlaps = useCallback((value: number | string) => {
     airVolumeState.setNumEMCFlaps(value);
     if (designTypeState.designType === 'bolt-weld') {
       airVolumeState.setBoltWeldNumEMCFlaps(value);
     } else {
-      // Explicitly set modular flaps to the user input value
+      // For modular, store exactly what user entered
       airVolumeState.setModularNumEMCFlaps(value);
     }
   }, [designTypeState.designType, airVolumeState]);
