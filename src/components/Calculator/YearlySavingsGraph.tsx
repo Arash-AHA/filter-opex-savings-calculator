@@ -16,6 +16,12 @@ interface YearlySavingsGraphProps {
   onCageFrequencyChange?: (value: number) => void;
   isOpen?: boolean;
   onClose?: () => void;
+  // Add new props for compressed air calculations
+  compressedAirCost?: string;
+  scheuchAirConsumption?: number;
+  scheuchMotorKW?: number;
+  kwhCost?: number;
+  workingHours?: number;
 }
 
 const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
@@ -26,7 +32,13 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
   bagChangeFrequency = 24, // Default to 24 months if not provided
   cageReplacementFrequency = 48, // Default to 48 months if not provided
   onBagFrequencyChange,
-  onCageFrequencyChange
+  onCageFrequencyChange,
+  // Add defaults for new props
+  compressedAirCost = '',
+  scheuchAirConsumption = 0,
+  scheuchMotorKW = 0,
+  kwhCost = 0.12,
+  workingHours = 8760
 }) => {
   // Local state for frequencies if not controlled from parent
   const [localBagFrequency, setLocalBagFrequency] = useState(bagChangeFrequency);
@@ -64,6 +76,13 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
     });
     
     let accumulatedBagCost = 0;
+    let accumulatedFanPowerCost = 0;
+    let accumulatedAirCost = 0;
+    
+    // Calculate yearly air savings based on provided values
+    const yearlyAirSavingAmount = compressedAirCost && compressedAirCost.trim() !== '' 
+      ? scheuchAirConsumption * parseFloat(compressedAirCost) * workingHours
+      : scheuchMotorKW * kwhCost * workingHours;
     
     // Generate the rest of the years
     for (let year = 1; year <= savingYears; year++) {
@@ -78,24 +97,37 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
         accumulatedBagCost += totalReplacementCostPerEvent;
       }
       
-      // Calculate linear fan power and air savings
-      const yearlyFanPowerSavings = fanPowerSavings / savingYears * year;
-      const yearlyAirSavings = airSavings / savingYears * year;
+      // Calculate linear fan power savings
+      accumulatedFanPowerCost = fanPowerSavings / savingYears * year;
+      
+      // Calculate linear air savings - add same amount each year
+      accumulatedAirCost = airSavings / savingYears * year;
       
       // Total savings include the accumulated bag costs plus the linear savings
-      const totalYearlySavings = accumulatedBagCost + yearlyFanPowerSavings + yearlyAirSavings;
+      const totalYearlySavings = accumulatedBagCost + accumulatedFanPowerCost + accumulatedAirCost;
       
       yearlyData.push({
         year: `Year ${year}`,
         'Bag Material & Labor': accumulatedBagCost,
-        'Fan Power': yearlyFanPowerSavings,
-        'Compressed Air': yearlyAirSavings,
+        'Fan Power': accumulatedFanPowerCost,
+        'Compressed Air': accumulatedAirCost,
         'Total': totalYearlySavings
       });
     }
     
     return yearlyData;
-  }, [bagSavings, fanPowerSavings, airSavings, savingYears, localBagFrequency]);
+  }, [
+    bagSavings, 
+    fanPowerSavings, 
+    airSavings, 
+    savingYears, 
+    localBagFrequency,
+    compressedAirCost,
+    scheuchAirConsumption,
+    scheuchMotorKW,
+    kwhCost,
+    workingHours
+  ]);
 
   return (
     <Card className="w-full">

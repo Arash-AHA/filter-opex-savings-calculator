@@ -1,4 +1,3 @@
-
 import React, { useRef, useState } from 'react';
 import InputField from './InputField';
 import ResultCard from './ResultCard';
@@ -418,6 +417,12 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
             onCageFrequencyChange={setCageReplacementFrequency}
             isOpen={true}
             onClose={() => {}}
+            // Pass additional props needed for compressed air calculations
+            compressedAirCost={compressedAirCost}
+            scheuchAirConsumption={scheuchAirConsumption}
+            scheuchMotorKW={scheuchMotorKW}
+            kwhCost={kwhCost}
+            workingHours={workingHours}
           />
         </DialogContent>
       </Dialog>

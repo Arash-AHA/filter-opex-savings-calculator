@@ -1,3 +1,4 @@
+
 import { useMemo } from 'react';
 import { useFilterAreaCalculation } from './useFilterAreaCalculation';
 import { useBagReplacementCalculation } from './useBagReplacementCalculation';
@@ -12,7 +13,7 @@ export const useResultsCalculation = (
   airVolumeM3h: string,
   emcCleaningFactor: number,
   bagPrice: number,
-  cagePrice: number, // Added cagePrice parameter
+  cagePrice: number,
   bagChangeTime: number,
   numPeople: number,
   travelCost: number,
@@ -52,7 +53,7 @@ export const useResultsCalculation = (
     bagChangeTime,
     numPeople,
     bagPrice,
-    cagePrice // Added cagePrice
+    cagePrice
   );
   
   // Calculate life extension
@@ -63,7 +64,7 @@ export const useResultsCalculation = (
   const emcReplacements = 120 / scheuchLifeTime;
   const replacementSavings = (standardReplacements - emcReplacements) * (bagResults.totalBags * bagPrice + parseFloat(bagReplacementCost.toString()));
   
-  // Calculate compressed air savings
+  // Calculate compressed air savings based on working hours
   const compressedAirSavings = (currentAirConsumption - scheuchAirConsumption) * workingHours;
   
   // Combined results
