@@ -63,8 +63,6 @@ const BagsConfig: React.FC<BagsConfigProps> = ({
               ) : (
                 <>
                   <SelectItem value="15">15</SelectItem>
-                  <SelectItem value="12">12</SelectItem>
-                  <SelectItem value="9">9</SelectItem>
                 </>
               )}
             </SelectContent>
