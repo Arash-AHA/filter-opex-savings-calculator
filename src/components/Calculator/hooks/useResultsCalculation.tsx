@@ -162,12 +162,15 @@ export const useResultsCalculation = (
     formattedResults,
     totalSavings,
     effectiveKwhCost,
-    // Add the following additional props for the YearlySavingsGraph
+    // Additional props for the YearlySavingsGraph
     airVolumeM3h,
     scheuchDiffPressure,
     workingHours,
     scheuchAirConsumption,
     compressedAirCost,
-    scheuchMotorKW
+    scheuchMotorKW,
+    bagPrice,  // Add bagPrice to return object
+    cagePrice, // Add cagePrice to return object
+    totalBags: bagResults.totalBags // Add totalBags to return object
   };
 };
