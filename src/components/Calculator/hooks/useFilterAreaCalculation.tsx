@@ -1,5 +1,5 @@
 
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useEffect } from 'react';
 import { calculateFilterArea, calculateNetFilterArea } from './utils/calculationUtils';
 
 export const useFilterAreaCalculation = (
@@ -11,6 +11,18 @@ export const useFilterAreaCalculation = (
   airVolumeM3h: string,
   airVolumeACFM?: string
 ) => {
+  // Log input parameters whenever they change
+  useEffect(() => {
+    console.log('useFilterAreaCalculation input parameters:');
+    console.log(`designType: ${designType}`);
+    console.log(`bagLength: ${bagLength}`);
+    console.log(`bagsPerRow: ${bagsPerRow}`);
+    console.log(`numEMCFlaps: ${numEMCFlaps}`);
+    console.log(`emcCleaningFactor: ${emcCleaningFactor}`);
+    console.log(`airVolumeM3h: ${airVolumeM3h}`);
+    console.log(`airVolumeACFM: ${airVolumeACFM}`);
+  }, [designType, bagLength, bagsPerRow, numEMCFlaps, emcCleaningFactor, airVolumeM3h, airVolumeACFM]);
+
   // Calculate filter area
   const calculateTotalFilterArea = useCallback(() => {
     return calculateFilterArea(designType, bagLength, bagsPerRow, numEMCFlaps);
@@ -26,7 +38,10 @@ export const useFilterAreaCalculation = (
     try {
       // Calculate total filter area based on design type
       const totalFilterArea = calculateTotalFilterArea();
+      console.log(`Calculated totalFilterArea: ${totalFilterArea}`);
+      
       const netFilterArea = calculateTotalNetFilterArea(totalFilterArea);
+      console.log(`Calculated netFilterArea: ${netFilterArea}`);
       
       // Calculate OPEX metrics - check for valid inputs to prevent NaN
       let parsedAirVolume: number;
@@ -42,6 +57,9 @@ export const useFilterAreaCalculation = (
       const acRatioNet = parsedAirVolume / netFilterArea || 0;
       const baselinePowerConsumption = parsedAirVolume * 0.0002 || 0; // 0.0002 kW per m³/h
       const improvedPowerConsumption = baselinePowerConsumption * 0.8 || 0; // 20% reduction
+      
+      console.log(`Calculated acRatioGross: ${acRatioGross}`);
+      console.log(`Calculated acRatioNet: ${acRatioNet}`);
       
       return {
         filterArea: totalFilterArea,

@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 
 interface BagsConfigProps {
   bagsPerRow: number;
@@ -16,6 +16,22 @@ const BagsConfig: React.FC<BagsConfigProps> = ({
   setBagsPerRow,
   setBagLength
 }) => {
+  useEffect(() => {
+    console.log(`BagsConfig rendered with: designType=${designType}, bagLength=${bagLength}, bagsPerRow=${bagsPerRow}`);
+  }, [designType, bagLength, bagsPerRow]);
+
+  const handleBagsPerRowChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = parseInt(e.target.value) || 0;
+    console.log(`Setting bags per row to: ${value}`);
+    setBagsPerRow(value);
+  };
+
+  const handleBagLengthChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = parseInt(e.target.value) || 0;
+    console.log(`Setting bag length to: ${value}`);
+    setBagLength(value);
+  };
+
   return (
     <>
       <div className="flex flex-col mb-4">
@@ -26,7 +42,7 @@ const BagsConfig: React.FC<BagsConfigProps> = ({
         <div>
           <select 
             value={bagsPerRow} 
-            onChange={e => setBagsPerRow(parseInt(e.target.value) || 0)} 
+            onChange={handleBagsPerRowChange} 
             className="calculator-input w-full"
           >
             {designType === 'bolt-weld' ? (
@@ -52,7 +68,7 @@ const BagsConfig: React.FC<BagsConfigProps> = ({
         <div>
           <select 
             value={bagLength} 
-            onChange={e => setBagLength(parseInt(e.target.value) || 0)} 
+            onChange={handleBagLengthChange} 
             className="calculator-input w-full"
           >
             {designType === 'bolt-weld' ? (
