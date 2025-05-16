@@ -81,12 +81,13 @@ export const useDesignParameters = () => {
     }
   }, [processState.dustConcGramAm3, airVolumeState.airVolumeM3h, processState.handleOutletDustKgHChange]);
 
-  // Handle EMC Flaps changes
+  // Handle EMC Flaps changes - Modified to ensure modular flaps value is correctly set
   const setDesignSpecificNumEMCFlaps = useCallback((value: number | string) => {
     airVolumeState.setNumEMCFlaps(value);
     if (designTypeState.designType === 'bolt-weld') {
       airVolumeState.setBoltWeldNumEMCFlaps(value);
     } else {
+      // Explicitly set modular flaps to the user input value
       airVolumeState.setModularNumEMCFlaps(value);
     }
   }, [designTypeState.designType, airVolumeState]);

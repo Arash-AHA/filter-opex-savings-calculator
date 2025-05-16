@@ -87,6 +87,7 @@ const EMCFlapsInput: React.FC<EMCFlapsInputProps> = ({
     }
   };
 
+  // Modified to just use the user's input value without relying on suggested flaps
   const applySuggestedFlaps = () => {
     if (suggestedFlaps) {
       if (designType === 'modular') {
