@@ -65,7 +65,7 @@ const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
       
       {/* Column 3: Results */}
       <div className="bg-white rounded-xl shadow-soft p-5 border border-gray-100 md:mt-0 mt-4">
-        <h3 className="text-sm font-medium text-gray-700 mb-4 border-b pb-2">Filter Bag Replacement Cost</h3>
+        <h3 className="text-sm font-medium text-gray-700 mb-4 border-b pb-2">Filter Bag Replacement Cost Estimation</h3>
         
         <div className="space-y-4">
           <div className="grid grid-cols-2 items-center py-2 border-b border-gray-100">
@@ -84,7 +84,7 @@ const FilterBagReplacement: React.FC<FilterBagReplacementProps> = ({
           </div>
           
           <div className="grid grid-cols-2 items-center py-2">
-            <span className="text-sm text-gray-600 font-semibold\nw-[160px]">Total Replacement Cost</span>
+            <span className="text-sm text-gray-600 font-semibold\nw-[160px]">Total Filter Bag Replacement Cost</span>
             <span className="text-sm font-semibold text-right">${(formattedResults.bagMaterialCost + travelCost).toLocaleString()}</span>
           </div>
         </div>

@@ -1,4 +1,3 @@
-
 import React, { useRef, useState } from 'react';
 import InputField from './InputField';
 import ResultCard from './ResultCard';
@@ -111,6 +110,16 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
     acRatioNet: "0",
     totalBags: 0
   };
+
+  // Calculate effective kWh cost
+  const CONVERSION_FACTORS = {
+    'kWh': 1,
+    'MMBtu': 293.07107,
+    'therms': 29.3071,
+  };
+  
+  // Calculate effective kWh cost
+  const effectiveKwhCost = kwhCost / CONVERSION_FACTORS[energyUnit] * CONVERSION_FACTORS['kWh'];
 
   const handlePrint = () => {
     if (printContentRef.current) {
@@ -418,6 +427,13 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
             onCageFrequencyChange={setCageReplacementFrequency}
             isOpen={true}
             onClose={() => {}}
+            airVolumeM3h={airVolumeM3h}
+            scheuchDiffPressure={scheuchDiffPressure}
+            effectiveKwhCost={effectiveKwhCost}
+            workingHours={workingHours}
+            scheuchAirConsumption={scheuchAirConsumption}
+            compressedAirCost={compressedAirCost}
+            scheuchMotorKW={scheuchMotorKW}
           />
         </DialogContent>
       </Dialog>
