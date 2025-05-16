@@ -6,6 +6,7 @@ import ActionButtons from './ActionButtons';
 import AdditionalParametersSection from './AdditionalParametersSection';
 import DimensionsSection from './DimensionsSection';
 import DesignParamsCard from '../DesignParametersComponents/DesignParamsCard';
+import { useToast } from '@/hooks/use-toast';
 
 interface DesignParametersProps {
   designType: string;
@@ -66,10 +67,28 @@ interface DesignParametersProps {
 }
 
 const DesignParameters: React.FC<DesignParametersProps> = (props) => {
+  const { toast } = useToast();
+  
   // Parse numEMCFlaps to a number when needed for functions expecting a number
   const parsedNumEMCFlaps = typeof props.numEMCFlaps === 'string' 
     ? (props.numEMCFlaps === '' ? 0 : parseInt(props.numEMCFlaps))
     : props.numEMCFlaps;
+
+  // Function to clear input fields when using modular design
+  const handleEraseInputs = () => {
+    if (props.designType === 'modular') {
+      props.handleAirVolumeM3hChange('');
+      props.handleAirVolumeACFMChange('');
+      props.setNumEMCFlaps('');
+      props.setBagsPerRow(0); // Reset to default value
+      props.setBagLength(0); // Reset to default value
+      
+      toast({
+        title: "Inputs Cleared",
+        description: "All modular design inputs have been cleared. You can enter new values.",
+      });
+    }
+  };
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -133,6 +152,7 @@ const DesignParameters: React.FC<DesignParametersProps> = (props) => {
         bagLength={props.bagLength}
         airVolumeM3h={props.airVolumeM3h}
         airVolumeACFM={props.airVolumeACFM}
+        onEraseInputs={handleEraseInputs} // Pass the erase function
       />
     </div>
   );
