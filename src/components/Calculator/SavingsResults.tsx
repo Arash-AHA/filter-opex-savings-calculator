@@ -1,4 +1,3 @@
-
 import React, { useRef, useState } from 'react';
 import InputField from './InputField';
 import ResultCard from './ResultCard';
@@ -102,7 +101,6 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
 }) => {
   const [showPrintDialog, setShowPrintDialog] = useState(false);
   const [showGraphDialog, setShowGraphDialog] = useState(false);
-  const [showYearlyGraphDialog, setShowYearlyGraphDialog] = useState(false);
   const [bagChangeFrequency, setBagChangeFrequency] = useState(currentLifeTime);
   const [cageReplacementFrequency, setCageReplacementFrequency] = useState(currentLifeTime * 2); // Default to twice the bag lifetime
   const printContentRef = useRef<HTMLDivElement>(null);
@@ -118,13 +116,6 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
     totalBags: 0
   };
 
-  // Calculate effective kWh cost
-  const CONVERSION_FACTORS = {
-    'kWh': 1,
-    'MMBtu': 293.07107,
-    'therms': 29.3071,
-  };
-  
   // Calculate effective kWh cost
   const effectiveKwhCost = kwhCost / CONVERSION_FACTORS[energyUnit] * CONVERSION_FACTORS['kWh'];
 
@@ -349,6 +340,10 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
             fanPowerSavings={totalSavings.fanPowerSavings}
             airSavings={totalSavings.airSavings}
             savingYears={savingYears}
+            bagChangeFrequency={bagChangeFrequency}
+            cageReplacementFrequency={cageReplacementFrequency}
+            onBagFrequencyChange={setBagChangeFrequency}
+            onCageFrequencyChange={setCageReplacementFrequency}
             airVolumeM3h={airVolumeM3h}
             scheuchDiffPressure={scheuchDiffPressure}
             effectiveKwhCost={effectiveKwhCost}
@@ -440,7 +435,7 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
         </DialogContent>
       </Dialog>
 
-      {/* Yearly Savings Graph Dialog - Now shown when Show Graph is clicked */}
+      {/* Yearly Savings Graph Dialog - With additional configuration options */}
       <Dialog open={showGraphDialog} onOpenChange={setShowGraphDialog}>
         <DialogContent className="max-w-5xl w-[90vw] max-h-[90vh]">
           <DialogHeader>
