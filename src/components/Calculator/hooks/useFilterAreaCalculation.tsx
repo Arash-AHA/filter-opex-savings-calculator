@@ -51,26 +51,44 @@ export const useFilterAreaCalculation = (
       // For modular design, use ACFM value
       if (designType === 'modular' && airVolumeACFM) {
         parsedAirVolume = parseFloat(airVolumeACFM) || 0;
+        
+        // For modular, the A/C ratio is calculated differently since filter area is already in sq ft
+        const acRatioGross = parsedAirVolume / totalFilterArea || 0;
+        const acRatioNet = parsedAirVolume / netFilterArea || 0;
+        const baselinePowerConsumption = parsedAirVolume * 0.0002 || 0; // 0.0002 kW per m³/h
+        const improvedPowerConsumption = baselinePowerConsumption * 0.8 || 0; // 20% reduction
+        
+        console.log(`Modular design - Calculated acRatioGross: ${acRatioGross}`);
+        console.log(`Modular design - Calculated acRatioNet: ${acRatioNet}`);
+        
+        return {
+          filterArea: totalFilterArea,
+          netFilterArea: netFilterArea,
+          acRatioGross: acRatioGross,
+          acRatioNet: acRatioNet,
+          baselinePower: baselinePowerConsumption,
+          improvedPower: improvedPowerConsumption
+        };
       } else {
+        // For bolt-weld, use m³/h
         parsedAirVolume = parseFloat(airVolumeM3h) || 0;
+        const acRatioGross = parsedAirVolume / totalFilterArea || 0;
+        const acRatioNet = parsedAirVolume / netFilterArea || 0;
+        const baselinePowerConsumption = parsedAirVolume * 0.0002 || 0; // 0.0002 kW per m³/h
+        const improvedPowerConsumption = baselinePowerConsumption * 0.8 || 0; // 20% reduction
+        
+        console.log(`Bolt-weld design - Calculated acRatioGross: ${acRatioGross}`);
+        console.log(`Bolt-weld design - Calculated acRatioNet: ${acRatioNet}`);
+        
+        return {
+          filterArea: totalFilterArea,
+          netFilterArea: netFilterArea,
+          acRatioGross: acRatioGross,
+          acRatioNet: acRatioNet,
+          baselinePower: baselinePowerConsumption,
+          improvedPower: improvedPowerConsumption
+        };
       }
-      
-      const acRatioGross = parsedAirVolume / totalFilterArea || 0;
-      const acRatioNet = parsedAirVolume / netFilterArea || 0;
-      const baselinePowerConsumption = parsedAirVolume * 0.0002 || 0; // 0.0002 kW per m³/h
-      const improvedPowerConsumption = baselinePowerConsumption * 0.8 || 0; // 20% reduction
-      
-      console.log(`Calculated acRatioGross: ${acRatioGross}`);
-      console.log(`Calculated acRatioNet: ${acRatioNet}`);
-      
-      return {
-        filterArea: totalFilterArea,
-        netFilterArea: netFilterArea,
-        acRatioGross: acRatioGross,
-        acRatioNet: acRatioNet,
-        baselinePower: baselinePowerConsumption,
-        improvedPower: improvedPowerConsumption
-      };
     } catch (error) {
       console.error("Error calculating filter results:", error);
       // Return default values if calculation fails

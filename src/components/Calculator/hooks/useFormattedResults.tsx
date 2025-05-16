@@ -52,17 +52,12 @@ export const useFormattedResults = (
           lifeExtension: `${lifeExtension} months`
         };
       } else {
-        // Imperial units
-        const filterAreaSqFt = (filterResults.filterArea * m2ToSqFtFactor).toFixed(2);
-        const netFilterAreaSqFt = (filterResults.netFilterArea * m2ToSqFtFactor).toFixed(2);
-        const acRatioGrossImperial = (filterResults.acRatioGross / m2ToSqFtFactor * conversionFactor).toFixed(2);
-        const acRatioNetImperial = (filterResults.acRatioNet / m2ToSqFtFactor * conversionFactor).toFixed(2);
-        
+        // Imperial units - for modular design, values are already in sq ft, no conversion needed
         return {
-          filterArea: `${filterAreaSqFt} sq ft`,
-          netFilterArea: `${netFilterAreaSqFt} sq ft`,
-          acRatioGross: `${acRatioGrossImperial} cfm/sq ft`,
-          acRatioNet: `${acRatioNetImperial} cfm/sq ft`,
+          filterArea: `${filterResults.filterArea.toFixed(2)} sq ft`,
+          netFilterArea: `${filterResults.netFilterArea.toFixed(2)} sq ft`,
+          acRatioGross: `${filterResults.acRatioGross.toFixed(2)} cfm/sq ft`,
+          acRatioNet: `${filterResults.acRatioNet.toFixed(2)} cfm/sq ft`,
           baselinePower: `${filterResults.baselinePower.toFixed(2)} kW`,
           improvedPower: `${filterResults.improvedPower.toFixed(2)} kW`,
           totalBags: bagResults.totalBags,
