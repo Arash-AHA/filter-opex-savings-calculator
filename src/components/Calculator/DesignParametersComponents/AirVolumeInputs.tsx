@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 interface AirVolumeInputsProps {
   airVolumeM3h: string;
@@ -14,6 +14,19 @@ const AirVolumeInputs: React.FC<AirVolumeInputsProps> = ({
   handleAirVolumeM3hChange,
   handleAirVolumeACFMChange
 }) => {
+  const m3hInputRef = useRef<HTMLInputElement>(null);
+  const acfmInputRef = useRef<HTMLInputElement>(null);
+  
+  // Effect to update input elements when props change (e.g., after reset)
+  useEffect(() => {
+    if (m3hInputRef.current) {
+      m3hInputRef.current.value = airVolumeM3h;
+    }
+    if (acfmInputRef.current) {
+      acfmInputRef.current.value = airVolumeACFM;
+    }
+  }, [airVolumeM3h, airVolumeACFM]);
+
   // Handle Enter key press to maintain value during rendering
   const handleKeyDown = (e: React.KeyboardEvent, updateFunction: (value: string) => void, value: string) => {
     if (e.key === 'Enter') {
@@ -35,7 +48,8 @@ const AirVolumeInputs: React.FC<AirVolumeInputsProps> = ({
             onChange={e => handleAirVolumeM3hChange(e.target.value)} 
             onKeyDown={e => handleKeyDown(e, handleAirVolumeM3hChange, airVolumeM3h)}
             placeholder="Enter air volume" 
-            className="calculator-input pr-12 w-full" 
+            className="calculator-input pr-12 w-full"
+            ref={m3hInputRef}
           />
           <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500">m³/h</span>
         </div>
@@ -46,7 +60,8 @@ const AirVolumeInputs: React.FC<AirVolumeInputsProps> = ({
             onChange={e => handleAirVolumeACFMChange(e.target.value)} 
             onKeyDown={e => handleKeyDown(e, handleAirVolumeACFMChange, airVolumeACFM)}
             placeholder="Enter air volume" 
-            className="calculator-input pr-12 w-full" 
+            className="calculator-input pr-12 w-full"
+            ref={acfmInputRef}
           />
           <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500">ACFM</span>
         </div>

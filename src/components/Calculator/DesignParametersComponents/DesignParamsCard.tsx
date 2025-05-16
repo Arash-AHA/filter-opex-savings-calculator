@@ -1,5 +1,5 @@
 
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
@@ -7,6 +7,8 @@ import CardHeader from './CardHeader';
 import ParameterRow from './ParameterRow';
 import PrintButton from './PrintButton';
 import PrintableDesignParams from './PrintableDesignParams';
+import { Button } from '@/components/ui/button';
+import { RefreshCw } from 'lucide-react';
 
 interface DesignParamsCardProps {
   formattedResults: {
@@ -56,6 +58,7 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
   const [open, setOpen] = useState(false);
   const printContentRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const safeResults = formattedResults || {
     filterArea: '-',
@@ -97,14 +100,30 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
 
   const handleEraseInputs = () => {
     if (onEraseInputs) {
+      setIsRefreshing(true);
       onEraseInputs();
       toast({
         title: "Inputs cleared",
         description: "Design inputs have been reset.",
       });
-      setOpen(false);
+      
+      // Add a slight delay before closing the dialog and resetting refresh state
+      setTimeout(() => {
+        setOpen(false);
+        setIsRefreshing(false);
+      }, 300);
     }
   };
+
+  // Visual effect for refreshing state
+  useEffect(() => {
+    if (isRefreshing) {
+      const timer = setTimeout(() => {
+        setIsRefreshing(false);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [isRefreshing]);
 
   return (
     <>
@@ -117,7 +136,21 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
           <ParameterRow label="Air-to-Cloth Ratio (Net):" value={safeResults.acRatioNet} />
           <ParameterRow label="Total Number of Bags:" value={safeResults.totalBags} />
         </div>
-        <PrintButton onClick={() => setOpen(true)} />
+        <div className="mt-4 flex justify-between items-center">
+          <PrintButton onClick={() => setOpen(true)} />
+          {onEraseInputs && (
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={handleEraseInputs}
+              className="flex items-center gap-1"
+              disabled={isRefreshing}
+            >
+              <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+              {isRefreshing ? 'Resetting...' : 'Reset'}
+            </Button>
+          )}
+        </div>
       </Card>
 
       <Dialog open={open} onOpenChange={setOpen}>
@@ -140,7 +173,20 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
               onEraseInputs={handleEraseInputs}
             />
           </div>
-          <PrintButton onClick={handlePrint} />
+          <div className="flex justify-between">
+            <PrintButton onClick={handlePrint} />
+            {onEraseInputs && (
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={handleEraseInputs}
+                className="flex items-center gap-1"
+              >
+                <RefreshCw className="h-4 w-4" />
+                Reset Inputs
+              </Button>
+            )}
+          </div>
         </DialogContent>
       </Dialog>
     </>

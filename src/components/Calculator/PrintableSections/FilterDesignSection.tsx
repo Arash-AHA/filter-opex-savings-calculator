@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { Eraser } from "lucide-react";
+import { RefreshCw } from "lucide-react";
 
 interface FilterDesignSectionProps {
   designType: string;
@@ -37,8 +37,8 @@ export const FilterDesignSection: React.FC<FilterDesignSectionProps> = ({
             onClick={onEraseInputs}
             className="flex items-center gap-1"
           >
-            <Eraser className="h-4 w-4" />
-            Erase inputs
+            <RefreshCw className="h-4 w-4" />
+            Reset inputs
           </Button>
         )}
       </div>
@@ -46,11 +46,11 @@ export const FilterDesignSection: React.FC<FilterDesignSectionProps> = ({
         <div>Filter Design Type:</div>
         <div>{designType === 'bolt-weld' ? 'Bolt/Weld' : 'Modular Design'}</div>
         <div>Air Volume:</div>
-        <div>{airVolume}</div>
+        <div>{airVolume || '-'}</div>
         <div>{flapsLabel}</div>
-        <div>{numEMCFlaps}</div>
+        <div>{numEMCFlaps || '-'}</div>
         <div>Bag Length:</div>
-        <div>{bagLengthDisplay}</div>
+        <div>{bagLength ? bagLengthDisplay : '-'}</div>
       </div>
     </section>
   );
