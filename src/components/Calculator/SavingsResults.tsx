@@ -64,9 +64,6 @@ interface SavingsResultsProps {
     acRatioNet: string;
     totalBags: number;
   } | null;
-  bagPrice: number;
-  cagePrice: number;
-  totalBags: number;
 }
 
 const SavingsResults: React.FC<SavingsResultsProps> = ({
@@ -94,13 +91,11 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
   airVolumeACFM,
   numEMCFlaps,
   bagLength,
-  formattedResults,
-  bagPrice,
-  cagePrice,
-  totalBags
+  formattedResults
 }) => {
   const [showPrintDialog, setShowPrintDialog] = useState(false);
   const [showGraphDialog, setShowGraphDialog] = useState(false);
+  const [showYearlyGraphDialog, setShowYearlyGraphDialog] = useState(false);
   const [bagChangeFrequency, setBagChangeFrequency] = useState(currentLifeTime);
   const [cageReplacementFrequency, setCageReplacementFrequency] = useState(currentLifeTime * 2); // Default to twice the bag lifetime
   const printContentRef = useRef<HTMLDivElement>(null);
@@ -116,6 +111,13 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
     totalBags: 0
   };
 
+  // Calculate effective kWh cost
+  const CONVERSION_FACTORS = {
+    'kWh': 1,
+    'MMBtu': 293.07107,
+    'therms': 29.3071,
+  };
+  
   // Calculate effective kWh cost
   const effectiveKwhCost = kwhCost / CONVERSION_FACTORS[energyUnit] * CONVERSION_FACTORS['kWh'];
 
@@ -161,9 +163,8 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
 
   return (
     <>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {/* Left column - Parameters */}
-        <div className="lg:col-span-1">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="md:col-span-1">
           <h3 className="text-sm font-medium text-gray-700 mb-4">Calculation Parameters</h3>
           
           <div className="mb-6">
@@ -260,8 +261,7 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
           </div>
         </div>
         
-        {/* Middle column - Results */}
-        <div className="lg:col-span-2">
+        <div className="md:col-span-2">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="bg-white p-5 rounded-xl shadow-soft border border-gray-100">
               <h3 className="text-sm font-medium text-gray-700 mb-4 pb-2 border-b">Improvement Metrics</h3>
@@ -326,35 +326,6 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
               </div>
             </div>
           </div>
-        </div>
-        
-        {/* Right column - EMC System Cost Chart */}
-        <div className="lg:col-span-3 mt-6">
-          <div className="mb-2">
-            <h3 className="text-lg font-medium mb-2">EMC System Cost Chart</h3>
-            <p className="text-sm text-gray-500">Shows the accumulated costs for EMC system operation over time.</p>
-          </div>
-          
-          <YearlySavingsGraph 
-            bagSavings={totalSavings.bagSavings}
-            fanPowerSavings={totalSavings.fanPowerSavings}
-            airSavings={totalSavings.airSavings}
-            savingYears={savingYears}
-            bagChangeFrequency={bagChangeFrequency}
-            cageReplacementFrequency={cageReplacementFrequency}
-            onBagFrequencyChange={setBagChangeFrequency}
-            onCageFrequencyChange={setCageReplacementFrequency}
-            airVolumeM3h={airVolumeM3h}
-            scheuchDiffPressure={scheuchDiffPressure}
-            effectiveKwhCost={effectiveKwhCost}
-            workingHours={workingHours}
-            scheuchAirConsumption={scheuchAirConsumption}
-            compressedAirCost={compressedAirCost}
-            scheuchMotorKW={scheuchMotorKW}
-            bagPrice={bagPrice}
-            cagePrice={cagePrice}
-            totalBags={totalBags}
-          />
         </div>
       </div>
       
@@ -435,7 +406,7 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
         </DialogContent>
       </Dialog>
 
-      {/* Yearly Savings Graph Dialog - With additional configuration options */}
+      {/* Yearly Savings Graph Dialog - Now shown when Show Graph is clicked */}
       <Dialog open={showGraphDialog} onOpenChange={setShowGraphDialog}>
         <DialogContent className="max-w-5xl w-[90vw] max-h-[90vh]">
           <DialogHeader>
@@ -463,9 +434,6 @@ const SavingsResults: React.FC<SavingsResultsProps> = ({
             scheuchAirConsumption={scheuchAirConsumption}
             compressedAirCost={compressedAirCost}
             scheuchMotorKW={scheuchMotorKW}
-            bagPrice={bagPrice}
-            cagePrice={cagePrice}
-            totalBags={totalBags}
           />
         </DialogContent>
       </Dialog>

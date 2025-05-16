@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Card, CardContent } from "@/components/ui/card";
@@ -23,9 +22,6 @@ interface YearlySavingsGraphProps {
   onCageFrequencyChange?: (value: number) => void;
   isOpen?: boolean;
   onClose?: () => void;
-  bagPrice?: number; // Added bagPrice prop
-  cagePrice?: number; // Added cagePrice prop
-  totalBags?: number; // Added totalBags prop
 }
 
 const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
@@ -43,10 +39,7 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
   bagChangeFrequency = 24, // Default to 24 months if not provided
   cageReplacementFrequency = 48, // Default to 48 months if not provided
   onBagFrequencyChange,
-  onCageFrequencyChange,
-  bagPrice = 190, // Default bag price
-  cagePrice = 80, // Default cage price
-  totalBags = 0 // Default total bags
+  onCageFrequencyChange
 }) => {
   // Local state for frequencies if not controlled from parent
   const [localBagFrequency, setLocalBagFrequency] = useState(bagChangeFrequency);
@@ -88,13 +81,7 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
     }
     
     // Calculate the bag cost per event
-    const bagCostPerEvent = totalBags * bagPrice;
-    
-    // Calculate the cage cost per event
-    const cageCostPerEvent = totalBags * cagePrice;
-    
-    // Calculate the total bag replacement cost per event (including labor, which is in bagSavings calculation)
-    const bagReplacementCostPerEvent = bagSavings / (savingYears * 12 / localBagFrequency);
+    const totalReplacementCostPerEvent = bagSavings / (savingYears * 12 / localBagFrequency);
     
     // Create an array to track accumulated costs over time
     const yearlyData = [];
@@ -103,34 +90,26 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
     yearlyData.push({
       year: 'Year 0',
       'Bag Material & Labor': 0,
-      'Cage Material': 0,
       'Fan Power': 0,
       'Compressed Air': 0,
       'Total': 0
     });
     
     let accumulatedBagCost = 0;
-    let accumulatedCageCost = 0;
     let accumulatedFanPowerCost = 0;
     let accumulatedAirCost = 0;
     
     // Generate the rest of the years
     for (let year = 1; year <= savingYears; year++) {
-      // Convert years to months
+      // Check if a bag change is due this year
+      // Convert years to months and check if it's a multiple of the bag change frequency
       const monthsElapsed = year * 12;
       
       // If we've passed a bag change threshold, add the replacement cost
       if (monthsElapsed % localBagFrequency === 0 || 
           (monthsElapsed > localBagFrequency && Math.floor(monthsElapsed / localBagFrequency) > 
            Math.floor((monthsElapsed - 12) / localBagFrequency))) {
-        accumulatedBagCost += bagReplacementCostPerEvent;
-      }
-      
-      // If we've passed a cage replacement threshold, add the cage cost
-      if (monthsElapsed % localCageFrequency === 0 || 
-          (monthsElapsed > localCageFrequency && Math.floor(monthsElapsed / localCageFrequency) > 
-           Math.floor((monthsElapsed - 12) / localCageFrequency))) {
-        accumulatedCageCost += cageCostPerEvent;
+        accumulatedBagCost += totalReplacementCostPerEvent;
       }
       
       // Add the same fan power cost each year (accumulating)
@@ -140,12 +119,11 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
       accumulatedAirCost += airCost;
       
       // Total cost is the sum of all costs
-      const totalCost = accumulatedBagCost + accumulatedCageCost + accumulatedFanPowerCost + accumulatedAirCost;
+      const totalCost = accumulatedBagCost + accumulatedFanPowerCost + accumulatedAirCost;
       
       yearlyData.push({
         year: `Year ${year}`,
         'Bag Material & Labor': accumulatedBagCost,
-        'Cage Material': accumulatedCageCost,
         'Fan Power': accumulatedFanPowerCost,
         'Compressed Air': accumulatedAirCost,
         'Total': totalCost
@@ -163,11 +141,7 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
     scheuchMotorKW, 
     bagSavings, 
     savingYears, 
-    localBagFrequency,
-    localCageFrequency,
-    totalBags,
-    bagPrice,
-    cagePrice
+    localBagFrequency
   ]);
 
   return (
@@ -242,13 +216,6 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
                 type="monotone" 
                 dataKey="Bag Material & Labor" 
                 stroke="#4ade80" 
-                activeDot={{ r: 8 }}
-                strokeWidth={2}
-              />
-              <Line 
-                type="monotone" 
-                dataKey="Cage Material" 
-                stroke="#f472b6" 
                 activeDot={{ r: 8 }}
                 strokeWidth={2}
               />

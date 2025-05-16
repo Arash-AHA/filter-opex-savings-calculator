@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import CalculatorSection from './CalculatorSection';
 import Transition from '../UI/Transition';
@@ -204,9 +205,6 @@ const FilterOpexCalculator = () => {
                 numEMCFlaps={calculatorState.numEMCFlaps} 
                 bagLength={calculatorState.bagLength} 
                 formattedResults={calculatorState.formattedResults} 
-                bagPrice={calculatorState.bagPrice} 
-                cagePrice={calculatorState.cagePrice} 
-                totalBags={calculatorState.results.totalBags} 
               />
             </CollapsibleContent>
           </CalculatorSection>
