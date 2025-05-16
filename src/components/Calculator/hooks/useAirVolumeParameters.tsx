@@ -8,9 +8,9 @@ export const useAirVolumeParameters = (conversionFactor: number) => {
   const [boltWeldBagsPerRow, setBoltWeldBagsPerRow] = useState(18);
   const [boltWeldBagLength, setBoltWeldBagLength] = useState(10);
   
-  // Modular specific parameters with appropriate defaults
-  const [modularAirVolume, setModularAirVolume] = useState('135000');
-  const [modularNumEMCFlaps, setModularNumEMCFlaps] = useState<number | string>(12);
+  // Modular specific parameters with empty defaults for user input
+  const [modularAirVolume, setModularAirVolume] = useState('');
+  const [modularNumEMCFlaps, setModularNumEMCFlaps] = useState<number | string>('');
   const [modularBagsPerRow, setModularBagsPerRow] = useState(15);
   const [modularBagLength, setModularBagLength] = useState(24); // Default to 24 to match expected calculation
 

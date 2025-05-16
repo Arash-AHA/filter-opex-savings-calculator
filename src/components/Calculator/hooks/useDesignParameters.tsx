@@ -25,18 +25,20 @@ export const useDesignParameters = () => {
       airVolumeState.setBagLength(airVolumeState.boltWeldBagLength);
     } else {
       // For modular design, use stored modular values but don't apply defaults
-      // If modular values are empty, keep them empty
+      // Keep fields empty if no user input has been provided
+      airVolumeState.setAirVolumeM3h(airVolumeState.modularAirVolume);
+      
+      // Only calculate ACFM if we have a value for m3h
       if (airVolumeState.modularAirVolume) {
-        airVolumeState.setAirVolumeM3h(airVolumeState.modularAirVolume);
         airVolumeState.setAirVolumeACFM((parseFloat(airVolumeState.modularAirVolume) * conversionFactor).toFixed(0));
       } else {
-        // Clear the values if no stored modular values
-        airVolumeState.setAirVolumeM3h('');
         airVolumeState.setAirVolumeACFM('');
       }
       
-      // Only set values if they exist, otherwise leave them empty for user input
-      airVolumeState.setNumEMCFlaps(airVolumeState.modularNumEMCFlaps || '');
+      // Set EMC flaps to empty string if the stored value is empty
+      airVolumeState.setNumEMCFlaps(airVolumeState.modularNumEMCFlaps);
+      
+      // Set bags configuration - these always have defaults
       airVolumeState.setBagsPerRow(airVolumeState.modularBagsPerRow);
       airVolumeState.setBagLength(airVolumeState.modularBagLength);
     }

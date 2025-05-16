@@ -25,7 +25,7 @@ const AirVolumeInputs: React.FC<AirVolumeInputsProps> = ({
             type="text" 
             value={airVolumeM3h} 
             onChange={e => handleAirVolumeM3hChange(e.target.value)} 
-            placeholder="375000" 
+            placeholder="Enter air volume" 
             className="calculator-input pr-12 w-full" 
           />
           <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500">m³/h</span>
@@ -35,7 +35,7 @@ const AirVolumeInputs: React.FC<AirVolumeInputsProps> = ({
             type="text" 
             value={airVolumeACFM} 
             onChange={e => handleAirVolumeACFMChange(e.target.value)} 
-            placeholder="221000" 
+            placeholder="Enter air volume" 
             className="calculator-input pr-12 w-full" 
           />
           <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500">ACFM</span>
