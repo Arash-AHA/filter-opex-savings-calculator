@@ -161,6 +161,9 @@ export const useResultsCalculation = (
     results,
     formattedResults,
     totalSavings,
-    effectiveKwhCost
+    effectiveKwhCost,
+    // Also return these values for the YearlySavingsGraph component
+    airVolumeM3h,
+    scheuchDiffPressure
   };
 };
