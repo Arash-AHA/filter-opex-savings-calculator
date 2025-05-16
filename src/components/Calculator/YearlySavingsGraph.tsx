@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Card, CardContent } from "@/components/ui/card";
@@ -10,6 +9,13 @@ interface YearlySavingsGraphProps {
   fanPowerSavings: number;
   airSavings: number;
   savingYears: number;
+  airVolumeM3h: string;
+  scheuchDiffPressure: number;
+  effectiveKwhCost: number;
+  workingHours: number;
+  scheuchAirConsumption: number;
+  compressedAirCost: string;
+  scheuchMotorKW: number;
   bagChangeFrequency?: number;
   cageReplacementFrequency?: number;
   onBagFrequencyChange?: (value: number) => void;
@@ -23,6 +29,13 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
   fanPowerSavings,
   airSavings,
   savingYears,
+  airVolumeM3h,
+  scheuchDiffPressure,
+  effectiveKwhCost,
+  workingHours,
+  scheuchAirConsumption,
+  compressedAirCost,
+  scheuchMotorKW,
   bagChangeFrequency = 24, // Default to 24 months if not provided
   cageReplacementFrequency = 48, // Default to 48 months if not provided
   onBagFrequencyChange,
@@ -46,9 +59,28 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
     if (onCageFrequencyChange) onCageFrequencyChange(value);
   };
 
-  // Generate yearly data with accumulating bag costs based on frequency
+  // Generate yearly data with COSTS for the EMC system (not savings)
   const data = useMemo(() => {
-    // Calculate the total replacement cost per occurrence (bag replacement event)
+    // For EMC cost estimation, only consider the Scheuch values
+    // and zero out the current situation values as requested
+    
+    // Calculate the fan power cost for EMC (per year)
+    const fanPower = (((parseFloat(airVolumeM3h) * 
+                      (scheuchDiffPressure) * 100) / 
+                      (3600 * 1000 * 0.8)) * effectiveKwhCost * 
+                      workingHours);
+    
+    // Calculate compressed air cost for EMC (per year)
+    let airCost = 0;
+    if (compressedAirCost && compressedAirCost.trim() !== '') {
+      // If USD/Nm³ has a value, use air consumption
+      airCost = scheuchAirConsumption * parseFloat(compressedAirCost) * workingHours;
+    } else {
+      // Otherwise, use motor KW
+      airCost = scheuchMotorKW * effectiveKwhCost * workingHours;
+    }
+    
+    // Calculate the bag cost per event
     const totalReplacementCostPerEvent = bagSavings / (savingYears * 12 / localBagFrequency);
     
     // Create an array to track accumulated costs over time
@@ -64,6 +96,8 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
     });
     
     let accumulatedBagCost = 0;
+    let accumulatedFanPowerCost = 0;
+    let accumulatedAirCost = 0;
     
     // Generate the rest of the years
     for (let year = 1; year <= savingYears; year++) {
@@ -78,24 +112,37 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
         accumulatedBagCost += totalReplacementCostPerEvent;
       }
       
-      // Calculate linear fan power and air savings
-      const yearlyFanPowerSavings = fanPowerSavings / savingYears * year;
-      const yearlyAirSavings = airSavings / savingYears * year;
+      // Add the same fan power cost each year (accumulating)
+      accumulatedFanPowerCost += fanPower;
       
-      // Total savings include the accumulated bag costs plus the linear savings
-      const totalYearlySavings = accumulatedBagCost + yearlyFanPowerSavings + yearlyAirSavings;
+      // Add the same air cost each year (accumulating)
+      accumulatedAirCost += airCost;
+      
+      // Total cost is the sum of all costs
+      const totalCost = accumulatedBagCost + accumulatedFanPowerCost + accumulatedAirCost;
       
       yearlyData.push({
         year: `Year ${year}`,
         'Bag Material & Labor': accumulatedBagCost,
-        'Fan Power': yearlyFanPowerSavings,
-        'Compressed Air': yearlyAirSavings,
-        'Total': totalYearlySavings
+        'Fan Power': accumulatedFanPowerCost,
+        'Compressed Air': accumulatedAirCost,
+        'Total': totalCost
       });
     }
     
     return yearlyData;
-  }, [bagSavings, fanPowerSavings, airSavings, savingYears, localBagFrequency]);
+  }, [
+    airVolumeM3h, 
+    scheuchDiffPressure, 
+    effectiveKwhCost, 
+    workingHours, 
+    scheuchAirConsumption, 
+    compressedAirCost, 
+    scheuchMotorKW, 
+    bagSavings, 
+    savingYears, 
+    localBagFrequency
+  ]);
 
   return (
     <Card className="w-full">

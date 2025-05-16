@@ -1,3 +1,4 @@
+
 import { useMemo } from 'react';
 import { useFilterAreaCalculation } from './useFilterAreaCalculation';
 import { useBagReplacementCalculation } from './useBagReplacementCalculation';
@@ -160,6 +161,13 @@ export const useResultsCalculation = (
     results,
     formattedResults,
     totalSavings,
-    effectiveKwhCost
+    effectiveKwhCost,
+    // Add the following additional props for the YearlySavingsGraph
+    airVolumeM3h,
+    scheuchDiffPressure,
+    workingHours,
+    scheuchAirConsumption,
+    compressedAirCost,
+    scheuchMotorKW
   };
 };
