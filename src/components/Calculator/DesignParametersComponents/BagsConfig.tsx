@@ -84,7 +84,7 @@ const BagsConfig: React.FC<BagsConfigProps> = ({
             <SelectTrigger className="calculator-input w-full">
               <SelectValue placeholder="Select bag length" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-white">
               {designType === 'bolt-weld' ? (
                 <>
                   <SelectItem value="8">8 m</SelectItem>
