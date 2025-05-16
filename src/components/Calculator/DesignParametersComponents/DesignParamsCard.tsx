@@ -38,7 +38,6 @@ interface DesignParamsCardProps {
   bagLength?: number;
   airVolumeM3h?: string;
   airVolumeACFM?: string;
-  onEraseInputs?: () => void; // Add new prop for erasing inputs
 }
 
 const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
@@ -49,8 +48,7 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
   bagsPerRow = 0,
   bagLength = 0,
   airVolumeM3h = '',
-  airVolumeACFM = '',
-  onEraseInputs // Add the prop
+  airVolumeACFM = ''
 }) => {
   const [open, setOpen] = useState(false);
   const printContentRef = useRef<HTMLDivElement>(null);
@@ -124,7 +122,6 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
               airVolumeM3h={airVolumeM3h}
               airVolumeACFM={airVolumeACFM}
               formattedResults={formattedResults}
-              onEraseInputs={onEraseInputs} // Pass the erase function
             />
           </div>
           <PrintButton onClick={handlePrint} />
