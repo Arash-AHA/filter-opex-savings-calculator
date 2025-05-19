@@ -1,9 +1,11 @@
 
 import React, { useState, useEffect } from 'react';
-import { HelpCircle } from 'lucide-react';
+import { HelpCircle, AlertCircle, Check } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useToast } from '@/hooks/use-toast';
 import EMCFlapsTooltip from './EMCFlapsTooltip';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
 
 interface EMCFlapsInputProps {
   numEMCFlaps: number | string;
@@ -29,14 +31,37 @@ const EMCFlapsInput: React.FC<EMCFlapsInputProps> = ({
   currentAcRatio,
 }) => {
   const [inputValue, setInputValue] = useState<string>(numEMCFlaps?.toString() || '');
+  const [overrideACLimit, setOverrideACLimit] = useState<boolean>(false);
+  const [showACWarning, setShowACWarning] = useState<boolean>(false);
   const { toast } = useToast();
 
   useEffect(() => {
     setInputValue(numEMCFlaps?.toString() || '');
   }, [numEMCFlaps]);
 
+  useEffect(() => {
+    // Reset override when design type changes
+    if (designType !== 'modular') {
+      setOverrideACLimit(false);
+      setShowACWarning(false);
+    }
+  }, [designType]);
+
   const handleEMCFlapsInputChange = (value: string) => {
     setInputValue(value);
+  };
+
+  const checkACRatio = (parsedValue: number): { isValid: boolean; acRatio: number } => {
+    if (designType === 'modular') {
+      const areaPerFlap = bagLength * bagsPerRow * 5 * 1.6;
+      const totalArea = areaPerFlap * parsedValue;
+      const airVolume = parseFloat(airVolumeACFM) || 0;
+      const acRatio = totalArea > 0 ? airVolume / totalArea : 0;
+      
+      return { isValid: acRatio <= 3.2 || overrideACLimit, acRatio };
+    }
+    
+    return { isValid: true, acRatio: 0 };
   };
 
   const handleEMCFlapsBlur = () => {
@@ -71,23 +96,16 @@ const EMCFlapsInput: React.FC<EMCFlapsInputProps> = ({
           });
         }
         
-        // Check A/C ratio even if multiple of 3 is valid
-        const areaPerFlap = bagLength * bagsPerRow * 5 * 1.6;
-        const totalArea = areaPerFlap * parsedValue;
-        const airVolume = parseFloat(airVolumeACFM) || 0;
-        const acRatio = totalArea > 0 ? airVolume / totalArea : 0;
+        // Check A/C ratio if not overridden
+        const { isValid, acRatio } = checkACRatio(parsedValue);
         
-        if (acRatio > 3.2) {
-          // Round up to the next multiple of 3
-          const adjustedValue = parsedValue + 3;
-          toast({
-            title: "Warning: High A/C Ratio",
-            description: `Increasing EMC flaps to ${adjustedValue} to maintain A/C ratio below 3.2.`,
-            variant: "destructive",
-          });
-          setInputValue(adjustedValue.toString());
-          setNumEMCFlaps(adjustedValue);
+        if (!isValid) {
+          // Show warning but don't change value if override is disabled
+          setShowACWarning(true);
           return;
+        } else {
+          // Hide warning if previously shown
+          setShowACWarning(false);
         }
       }
       setNumEMCFlaps(parsedValue);
@@ -112,6 +130,23 @@ const EMCFlapsInput: React.FC<EMCFlapsInputProps> = ({
       // Ensure it's a multiple of 3
       const adjustedSuggested = Math.ceil(suggestedFlaps / 3) * 3;
       setNumEMCFlaps(adjustedSuggested);
+    }
+  };
+
+  // Handle override button click
+  const handleOverrideClick = () => {
+    setOverrideACLimit(true);
+    setShowACWarning(false);
+    
+    // Apply the current input value after override
+    const parsedValue = parseInt(inputValue);
+    if (!isNaN(parsedValue)) {
+      setNumEMCFlaps(parsedValue);
+      toast({
+        title: "A/C Ratio Limit Overridden",
+        description: "The Air-to-Cloth ratio limit has been overridden for this calculation.",
+        variant: "default",
+      });
     }
   };
 
@@ -151,10 +186,27 @@ const EMCFlapsInput: React.FC<EMCFlapsInputProps> = ({
           onChange={(e) => handleEMCFlapsInputChange(e.target.value)}
           onBlur={handleEMCFlapsBlur}
           onKeyDown={handleKeyDown}
-          className="calculator-input w-full"
+          className={`calculator-input w-full ${showACWarning ? 'border-red-500' : ''}`}
           placeholder="Enter value"
         />
       </div>
+      
+      {showACWarning && designType === 'modular' && (
+        <Alert variant="destructive" className="mt-2">
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription className="flex justify-between items-center">
+            <span>A/C Ratio exceeds 3.2 with this configuration.</span>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={handleOverrideClick}
+              className="flex items-center gap-1 border-red-500 hover:bg-red-50"
+            >
+              <Check className="h-4 w-4" /> Override Limit
+            </Button>
+          </AlertDescription>
+        </Alert>
+      )}
     </div>
   );
 };
