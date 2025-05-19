@@ -8,6 +8,7 @@ interface FilterDesignSectionProps {
   airVolume: string;
   numEMCFlaps: number | string;
   bagLength: number;
+  unitSystem?: 'metric' | 'imperial';
   onEraseInputs?: () => void;
 }
 
@@ -16,12 +17,13 @@ export const FilterDesignSection: React.FC<FilterDesignSectionProps> = ({
   airVolume,
   numEMCFlaps,
   bagLength,
+  unitSystem = 'metric',
   onEraseInputs,
 }) => {
-  // Determine unit and labels based on design type
-  const bagLengthDisplay = designType === 'bolt-weld' 
-    ? `${bagLength || '-'} m` 
-    : `${bagLength || '-'} ft`;
+  // Determine bag length display based on unit system
+  const bagLengthDisplay = unitSystem === 'metric'
+    ? `${bagLength.toFixed(2)} m`
+    : `${bagLength.toFixed(2)} ft`;
     
   const flapsLabel = designType === 'bolt-weld' 
     ? 'Total No. EMC Flaps (Panelized):' 

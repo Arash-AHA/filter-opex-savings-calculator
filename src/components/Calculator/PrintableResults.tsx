@@ -1,6 +1,6 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useUnitConversion } from './hooks/useUnitConversion';
 import { FilterDesignSection } from './PrintableSections/FilterDesignSection';
 import { FilterParametersSection } from './PrintableSections/FilterParametersSection';
 import { SavingsSection } from './PrintableSections/SavingsSection';
@@ -43,14 +43,56 @@ const PrintableResults: React.FC<PrintableResultsProps> = ({
   airSavings,
   totalSavings
 }) => {
-  const { unitSystem, setUnitSystem, convertedValues } = useUnitConversion(
-    designType,
-    filterArea,
-    netFilterArea,
-    acRatioGross,
-    acRatioNet,
-    airVolume
+  // Initialize unit system based on design type
+  const [unitSystem, setUnitSystem] = useState<'metric' | 'imperial'>(
+    designType === 'bolt-weld' ? 'metric' : 'imperial'
   );
+  
+  // Convert values based on selected unit system
+  const convertedValues = {
+    // Air volume conversion
+    airVolume: unitSystem === 'metric' 
+      ? (designType === 'modular' 
+          ? `${(parseFloat(airVolume.replace(/[^0-9.]/g, '') || '0') / 1.69901).toFixed(0)} m³/h`
+          : airVolume)
+      : (designType === 'bolt-weld' 
+          ? `${(parseFloat(airVolume.replace(/[^0-9.]/g, '') || '0') * 1.69901).toFixed(0)} ACFM`
+          : airVolume),
+    
+    // Filter area conversions
+    filterArea: unitSystem === 'metric'
+      ? (designType === 'bolt-weld' 
+          ? filterArea
+          : `${(parseFloat(filterArea.replace(/[^0-9.]/g, '') || '0') / 10.7639).toFixed(2)} m²`)
+      : (designType === 'bolt-weld' 
+          ? `${(parseFloat(filterArea.replace(/[^0-9.]/g, '') || '0') * 10.7639).toFixed(2)} sq ft`
+          : filterArea),
+    
+    netFilterArea: unitSystem === 'metric'
+      ? (designType === 'bolt-weld' 
+          ? netFilterArea
+          : `${(parseFloat(netFilterArea.replace(/[^0-9.]/g, '') || '0') / 10.7639).toFixed(2)} m²`)
+      : (designType === 'bolt-weld' 
+          ? `${(parseFloat(netFilterArea.replace(/[^0-9.]/g, '') || '0') * 10.7639).toFixed(2)} sq ft`
+          : netFilterArea),
+    
+    // A/C ratio conversions
+    acRatioGross: unitSystem === 'metric'
+      ? (designType === 'bolt-weld' 
+          ? acRatioGross
+          : `${(parseFloat(acRatioGross.replace(/[^0-9.]/g, '') || '0') / 3.28084).toFixed(2)} m³/min/m²`)
+      : (designType === 'bolt-weld' 
+          ? `${(parseFloat(acRatioGross.replace(/[^0-9.]/g, '') || '0') * 3.28084).toFixed(2)} ft/min`
+          : acRatioGross),
+    
+    acRatioNet: unitSystem === 'metric'
+      ? (designType === 'bolt-weld' 
+          ? acRatioNet
+          : `${(parseFloat(acRatioNet.replace(/[^0-9.]/g, '') || '0') / 3.28084).toFixed(2)} m³/min/m²`)
+      : (designType === 'bolt-weld' 
+          ? `${(parseFloat(acRatioNet.replace(/[^0-9.]/g, '') || '0') * 3.28084).toFixed(2)} ft/min`
+          : acRatioNet),
+  };
 
   return (
     <div className="p-6 print:p-0 space-y-8">
@@ -70,7 +112,10 @@ const PrintableResults: React.FC<PrintableResultsProps> = ({
         designType={designType}
         airVolume={convertedValues.airVolume}
         numEMCFlaps={numEMCFlaps}
-        bagLength={bagLength}
+        bagLength={unitSystem === 'metric' 
+          ? (designType === 'bolt-weld' ? bagLength : (bagLength * 0.3048)) 
+          : (designType === 'bolt-weld' ? (bagLength / 0.3048) : bagLength)}
+        unitSystem={unitSystem}
       />
 
       <FilterParametersSection
