@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { FilterDesignSection } from '../PrintableSections/FilterDesignSection';
 import { FilterParametersSection } from '../PrintableSections/FilterParametersSection';
@@ -77,6 +76,17 @@ const PrintableDesignParams: React.FC<PrintableDesignParamsProps> = ({
           : formattedResults?.acRatioNet),
   };
 
+  // Handle bagLength value for passing to FilterDesignSection
+  // Convert to the appropriate units and handle potential null/NaN values
+  const convertedBagLength = (() => {
+    if (bagLength === null || isNaN(bagLength)) {
+      return null;
+    }
+    return unitSystem === 'metric' 
+      ? (designType === 'bolt-weld' ? bagLength : (bagLength * 0.3048)) 
+      : (designType === 'bolt-weld' ? (bagLength / 0.3048) : bagLength);
+  })();
+
   return (
     <div className="p-6 space-y-8">
       <div className="print:hidden mb-4">
@@ -95,9 +105,7 @@ const PrintableDesignParams: React.FC<PrintableDesignParamsProps> = ({
         designType={designType}
         airVolume={convertedValues.airVolume}
         numEMCFlaps={numEMCFlaps}
-        bagLength={unitSystem === 'metric' 
-          ? (designType === 'bolt-weld' ? bagLength : (bagLength * 0.3048)) 
-          : (designType === 'bolt-weld' ? (bagLength / 0.3048) : bagLength)}
+        bagLength={convertedBagLength}
         unitSystem={unitSystem}
       />
       

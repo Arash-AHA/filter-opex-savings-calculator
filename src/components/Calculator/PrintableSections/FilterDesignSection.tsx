@@ -5,7 +5,7 @@ interface FilterDesignSectionProps {
   designType: string;
   airVolume: string;
   numEMCFlaps: number | string;
-  bagLength: number;
+  bagLength: number | null;
   unitSystem?: 'metric' | 'imperial';
 }
 
@@ -17,9 +17,11 @@ export const FilterDesignSection: React.FC<FilterDesignSectionProps> = ({
   unitSystem = 'metric',
 }) => {
   // Determine bag length display based on unit system
-  const bagLengthDisplay = unitSystem === 'metric'
-    ? `${bagLength.toFixed(2)} m`
-    : `${bagLength.toFixed(2)} ft`;
+  const bagLengthDisplay = bagLength !== null && bagLength !== undefined
+    ? unitSystem === 'metric'
+      ? `${bagLength.toFixed(2)} m`
+      : `${bagLength.toFixed(2)} ft`
+    : '-';
     
   const flapsLabel = designType === 'bolt-weld' 
     ? 'Total No. EMC Flaps (Panelized):' 
