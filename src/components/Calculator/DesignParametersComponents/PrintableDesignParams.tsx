@@ -18,7 +18,6 @@ export interface PrintableDesignParamsProps {
     acRatioNet: string;
     totalBags: number;
   } | null;
-  onEraseInputs?: () => void;
 }
 
 const PrintableDesignParams: React.FC<PrintableDesignParamsProps> = ({
@@ -28,8 +27,7 @@ const PrintableDesignParams: React.FC<PrintableDesignParamsProps> = ({
   bagLength,
   airVolumeM3h,
   airVolumeACFM,
-  formattedResults,
-  onEraseInputs
+  formattedResults
 }) => {
   // Initialize unit system based on design type
   const [unitSystem, setUnitSystem] = useState<'metric' | 'imperial'>(
@@ -101,7 +99,6 @@ const PrintableDesignParams: React.FC<PrintableDesignParamsProps> = ({
           ? (designType === 'bolt-weld' ? bagLength : (bagLength * 0.3048)) 
           : (designType === 'bolt-weld' ? (bagLength / 0.3048) : bagLength)}
         unitSystem={unitSystem}
-        onEraseInputs={onEraseInputs}
       />
       
       {formattedResults && (

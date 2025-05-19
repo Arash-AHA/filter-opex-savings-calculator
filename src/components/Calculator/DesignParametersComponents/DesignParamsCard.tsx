@@ -1,5 +1,4 @@
-
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
@@ -241,22 +240,10 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
               airVolumeM3h={airVolumeM3h}
               airVolumeACFM={airVolumeACFM}
               formattedResults={formattedResults}
-              onEraseInputs={handleEraseInputs}
             />
           </div>
-          <div className="flex justify-between">
+          <div className="flex justify-end">
             <PrintButton onClick={handlePrint} />
-            {onEraseInputs && (
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={handleEraseInputs}
-                className="flex items-center gap-1"
-              >
-                <RefreshCw className="h-4 w-4" />
-                Reset Inputs
-              </Button>
-            )}
           </div>
         </DialogContent>
       </Dialog>
