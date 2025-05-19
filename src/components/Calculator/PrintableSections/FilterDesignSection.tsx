@@ -7,6 +7,10 @@ interface FilterDesignSectionProps {
   numEMCFlaps: number | string;
   bagLength: number | null;
   unitSystem?: 'metric' | 'imperial';
+  negativePressure?: {
+    value: number | null;
+    unit: string;
+  };
 }
 
 export const FilterDesignSection: React.FC<FilterDesignSectionProps> = ({
@@ -15,6 +19,7 @@ export const FilterDesignSection: React.FC<FilterDesignSectionProps> = ({
   numEMCFlaps,
   bagLength,
   unitSystem = 'metric',
+  negativePressure,
 }) => {
   // Determine bag length display based on unit system
   const bagLengthDisplay = bagLength !== null && bagLength !== undefined
@@ -29,6 +34,11 @@ export const FilterDesignSection: React.FC<FilterDesignSectionProps> = ({
   
   // Design type name for display
   const designTypeName = designType === 'bolt-weld' ? 'Panelized Design' : 'Modular Design';
+  
+  // Format pressure display if available
+  const pressureDisplay = negativePressure?.value && negativePressure.unit
+    ? `${negativePressure.value} ${negativePressure.unit}`
+    : '-';
 
   return (
     <section className="relative">
@@ -42,6 +52,8 @@ export const FilterDesignSection: React.FC<FilterDesignSectionProps> = ({
         <div>{numEMCFlaps || '-'}</div>
         <div>Bag Length:</div>
         <div>{bagLengthDisplay}</div>
+        <div>Negative Pressure:</div>
+        <div>{pressureDisplay}</div>
       </div>
     </section>
   );

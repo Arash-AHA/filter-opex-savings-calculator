@@ -1,9 +1,16 @@
+
 import React, { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu';
 
 interface AdditionalParametersProps {
   gasTempC: number;
@@ -68,13 +75,18 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
   const [ductSize, setDuctSize] = useState<string>('');
   const [pressureUnit, setPressureUnit] = useState<string>('mbar');
   const [pressureValue, setPressureValue] = useState<string>('');
+  const [imperialUnit, setImperialUnit] = useState<string>('inchWG');
+  const [imperialValue, setImperialValue] = useState<string>('');
   
   useEffect(() => {
     // Initialize pressure value from props when component mounts
     if (negativePressureMbar !== null) {
       setPressureValue(negativePressureMbar.toString());
     }
-  }, []);
+    if (negativePressureInchWG !== null) {
+      setImperialValue(negativePressureInchWG.toString());
+    }
+  }, [negativePressureMbar, negativePressureInchWG]);
   
   useEffect(() => {
     if (pressureValue && pressureUnit) {
@@ -101,6 +113,29 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
       }
     }
   }, [pressureValue, pressureUnit]);
+
+  useEffect(() => {
+    if (imperialValue && imperialUnit) {
+      // Convert imperial value to inches W.G. based on selected unit
+      let inchWGValue: number;
+      switch (imperialUnit) {
+        case 'inchHg':
+          inchWGValue = parseFloat(imperialValue) * 13.6;
+          break;
+        case 'psi':
+          inchWGValue = parseFloat(imperialValue) * 27.7076;
+          break;
+        case 'inchWG':
+        default:
+          inchWGValue = parseFloat(imperialValue);
+          break;
+      }
+      
+      if (!isNaN(inchWGValue)) {
+        handleNegativePressureInchWGChange(inchWGValue.toString());
+      }
+    }
+  }, [imperialValue, imperialUnit]);
   
   useEffect(() => {
     if (airVolumeM3h) {
@@ -159,11 +194,22 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
       mmwg: mmwg.toFixed(1)
     };
   };
-
-  const additionalPressureUnits = calculatePressureUnits(negativePressureMbar);
   
   const handlePressureValueChange = (value: string) => {
     setPressureValue(value);
+  };
+
+  const handleImperialValueChange = (value: string) => {
+    setImperialValue(value);
+  };
+
+  // Get display text for imperial unit
+  const getImperialUnitDisplay = () => {
+    switch (imperialUnit) {
+      case 'inchHg': return 'in Hg';
+      case 'psi': return 'PSI';
+      case 'inchWG': default: return 'in W.G.';
+    }
   };
 
   return (
@@ -319,7 +365,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
           <span>Negative Pressure at Filter Inlet:</span>
         </div>
         <div className="flex flex-1 space-x-2">
-          <div className="w-1/2 relative">
+          <div className="w-1/2">
             <div className="flex">
               <Input 
                 type="text"
@@ -343,14 +389,28 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
               </Select>
             </div>
           </div>
-          <div className="w-1/2 relative">
-            <Input 
-              type="text"
-              value={negativePressureInchWG !== null ? negativePressureInchWG.toString() : ''}
-              onChange={(e) => handleNegativePressureInchWGChange(e.target.value)}
-              className="pr-14 w-full bg-white text-lg md:text-sm"
-            />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">Inches W.G.</span>
+          <div className="w-1/2">
+            <div className="flex">
+              <Input 
+                type="text"
+                value={imperialValue}
+                onChange={(e) => handleImperialValueChange(e.target.value)}
+                className="pr-10 w-full bg-white text-lg md:text-sm rounded-r-none"
+              />
+              <Select 
+                value={imperialUnit} 
+                onValueChange={setImperialUnit}
+              >
+                <SelectTrigger className="w-24 rounded-l-none border-l-0">
+                  <SelectValue placeholder="Unit" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="inchWG">in W.G.</SelectItem>
+                  <SelectItem value="inchHg">in Hg</SelectItem>
+                  <SelectItem value="psi">PSI</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </div>
       </div>
