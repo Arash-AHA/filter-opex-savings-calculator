@@ -81,7 +81,6 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
       // Convert pressureValue to mbar based on selected unit
       let mbarValue: number;
       switch (pressureUnit) {
-        // Metric units
         case 'mmH2O':
           mbarValue = parseFloat(pressureValue) * 0.0980665;
           break;
@@ -91,18 +90,6 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
         case 'mmHg':
           mbarValue = parseFloat(pressureValue) * 1.33322;
           break;
-        
-        // Imperial units
-        case 'inchesHg':
-          mbarValue = parseFloat(pressureValue) * 33.8639;
-          break;
-        case 'inchesWG':
-          mbarValue = parseFloat(pressureValue) * 2.49088;
-          break;
-        case 'psi':
-          mbarValue = parseFloat(pressureValue) * 68.9476;
-          break;
-          
         case 'mbar':
         default:
           mbarValue = parseFloat(pressureValue);
@@ -348,16 +335,10 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
                   <SelectValue placeholder="Unit" />
                 </SelectTrigger>
                 <SelectContent>
-                  {/* Metric Units */}
                   <SelectItem value="mbar">mbar</SelectItem>
                   <SelectItem value="mmH2O">mmH₂O</SelectItem>
                   <SelectItem value="pascal">Pa</SelectItem>
                   <SelectItem value="mmHg">mmHg</SelectItem>
-                  
-                  {/* Imperial Units */}
-                  <SelectItem value="inchesWG">in W.G.</SelectItem>
-                  <SelectItem value="inchesHg">in Hg</SelectItem>
-                  <SelectItem value="psi">PSI</SelectItem>
                 </SelectContent>
               </Select>
             </div>
