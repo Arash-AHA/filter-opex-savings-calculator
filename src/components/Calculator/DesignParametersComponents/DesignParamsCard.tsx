@@ -68,6 +68,46 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
     totalBags: 0,
   };
 
+  // Get metric equivalents for modular design (imperial units)
+  const getMetricEquivalent = (value: string, unit: string): string | null => {
+    if (designType !== 'modular') return null;
+    
+    // Extract numeric value from the formatted string
+    const numericValue = parseFloat(value.replace(/[^0-9.]/g, ''));
+    if (isNaN(numericValue)) return null;
+    
+    // Convert based on unit type
+    if (unit === 'area') {
+      // Convert sq ft to m²
+      return `(${(numericValue / 10.7639).toFixed(2)} m²)`;
+    } else if (unit === 'ratio') {
+      // Convert cfm/sq ft to m³/min/m²
+      return `(${(numericValue / 3.28084).toFixed(2)} m³/min/m²)`;
+    }
+    
+    return null;
+  };
+  
+  // Get imperial equivalents for bolt-weld design (metric units)
+  const getImperialEquivalent = (value: string, unit: string): string | null => {
+    if (designType === 'modular') return null;
+    
+    // Extract numeric value from the formatted string
+    const numericValue = parseFloat(value.replace(/[^0-9.]/g, ''));
+    if (isNaN(numericValue)) return null;
+    
+    // Convert based on unit type
+    if (unit === 'area') {
+      // Convert m² to sq ft
+      return `(${(numericValue * 10.7639).toFixed(2)} sq ft)`;
+    } else if (unit === 'ratio') {
+      // Convert m³/min/m² to cfm/sq ft
+      return `(${(numericValue * 3.28084).toFixed(2)} cfm/sq ft)`;
+    }
+    
+    return null;
+  };
+
   const handlePrint = () => {
     if (printContentRef.current) {
       const printContents = printContentRef.current.innerHTML;
@@ -133,10 +173,38 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
       <Card className="p-4 h-fit">
         <CardHeader designType={designType} />
         <div className="space-y-3">
-          <ParameterRow label="Filter Area (Gross):" value={safeResults.filterArea} />
-          <ParameterRow label="Net Filter Area:(Cleaning)" value={safeResults.netFilterArea} />
-          <ParameterRow label="Air-to-Cloth Ratio (Gross):" value={safeResults.acRatioGross} />
-          <ParameterRow label="Air-to-Cloth Ratio (Net):" value={safeResults.acRatioNet} />
+          <ParameterRow 
+            label="Filter Area (Gross):" 
+            value={safeResults.filterArea} 
+            secondaryValue={designType === 'modular' 
+              ? getMetricEquivalent(safeResults.filterArea, 'area')
+              : getImperialEquivalent(safeResults.filterArea, 'area')
+            } 
+          />
+          <ParameterRow 
+            label="Net Filter Area:(Cleaning)" 
+            value={safeResults.netFilterArea} 
+            secondaryValue={designType === 'modular' 
+              ? getMetricEquivalent(safeResults.netFilterArea, 'area')
+              : getImperialEquivalent(safeResults.netFilterArea, 'area')
+            } 
+          />
+          <ParameterRow 
+            label="Air-to-Cloth Ratio (Gross):" 
+            value={safeResults.acRatioGross} 
+            secondaryValue={designType === 'modular' 
+              ? getMetricEquivalent(safeResults.acRatioGross, 'ratio')
+              : getImperialEquivalent(safeResults.acRatioGross, 'ratio')
+            } 
+          />
+          <ParameterRow 
+            label="Air-to-Cloth Ratio (Net):" 
+            value={safeResults.acRatioNet} 
+            secondaryValue={designType === 'modular' 
+              ? getMetricEquivalent(safeResults.acRatioNet, 'ratio')
+              : getImperialEquivalent(safeResults.acRatioNet, 'ratio')
+            } 
+          />
           <ParameterRow label="Total Number of Bags:" value={safeResults.totalBags} />
         </div>
         <div className="mt-4 flex justify-between items-center">
