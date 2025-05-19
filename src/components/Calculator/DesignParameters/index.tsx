@@ -1,4 +1,3 @@
-
 import React from 'react';
 import DesignTypeSection from './DesignTypeSection';
 import InputsSection from './InputsSection';
@@ -135,6 +134,7 @@ const DesignParameters: React.FC<DesignParametersProps> = (props) => {
         airVolumeM3h={props.airVolumeM3h}
         airVolumeACFM={props.airVolumeACFM}
         onEraseInputs={props.eraseInputs}
+        filterRowType={props.filterRowType}
       />
     </div>
   );

@@ -53,7 +53,8 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
   bagLength = 0,
   airVolumeM3h = '',
   airVolumeACFM = '',
-  onEraseInputs
+  onEraseInputs,
+  filterRowType = 'single'
 }) => {
   const [open, setOpen] = useState(false);
   const printContentRef = useRef<HTMLDivElement>(null);
@@ -241,6 +242,7 @@ const DesignParamsCard: React.FC<DesignParamsCardProps> = ({
               airVolumeM3h={airVolumeM3h}
               airVolumeACFM={airVolumeACFM}
               formattedResults={formattedResults}
+              filterRowType={filterRowType}
             />
           </div>
           <div className="flex justify-end">
