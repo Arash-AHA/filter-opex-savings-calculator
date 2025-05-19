@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 interface AdditionalParametersProps {
   gasTempC: number;
@@ -64,6 +66,41 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
 }) => {
   const [ductVelocity, setDuctVelocity] = useState<string>('');
   const [ductSize, setDuctSize] = useState<string>('');
+  const [pressureUnit, setPressureUnit] = useState<string>('mbar');
+  const [pressureValue, setPressureValue] = useState<string>('');
+  
+  useEffect(() => {
+    // Initialize pressure value from props when component mounts
+    if (negativePressureMbar !== null) {
+      setPressureValue(negativePressureMbar.toString());
+    }
+  }, []);
+  
+  useEffect(() => {
+    if (pressureValue && pressureUnit) {
+      // Convert pressureValue to mbar based on selected unit
+      let mbarValue: number;
+      switch (pressureUnit) {
+        case 'mmH2O':
+          mbarValue = parseFloat(pressureValue) * 0.0980665;
+          break;
+        case 'pascal':
+          mbarValue = parseFloat(pressureValue) * 0.01;
+          break;
+        case 'mmHg':
+          mbarValue = parseFloat(pressureValue) * 1.33322;
+          break;
+        case 'mbar':
+        default:
+          mbarValue = parseFloat(pressureValue);
+          break;
+      }
+      
+      if (!isNaN(mbarValue)) {
+        handleNegativePressureMbarChange(mbarValue.toString());
+      }
+    }
+  }, [pressureValue, pressureUnit]);
   
   useEffect(() => {
     if (airVolumeM3h) {
@@ -124,6 +161,10 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
   };
 
   const additionalPressureUnits = calculatePressureUnits(negativePressureMbar);
+  
+  const handlePressureValueChange = (value: string) => {
+    setPressureValue(value);
+  };
 
   return (
     <div className="space-y-4 p-4 border border-blue-100 rounded-xl bg-blue-50/50 animate-fadeIn">
@@ -279,13 +320,28 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
         </div>
         <div className="flex flex-1 space-x-2">
           <div className="w-1/2 relative">
-            <Input 
-              type="text"
-              value={negativePressureMbar !== null ? negativePressureMbar.toString() : ''}
-              onChange={(e) => handleNegativePressureMbarChange(e.target.value)}
-              className="pr-10 w-full bg-white text-lg md:text-sm"
-            />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">mbar</span>
+            <div className="flex">
+              <Input 
+                type="text"
+                value={pressureValue}
+                onChange={(e) => handlePressureValueChange(e.target.value)}
+                className="pr-10 w-full bg-white text-lg md:text-sm rounded-r-none"
+              />
+              <Select 
+                value={pressureUnit} 
+                onValueChange={setPressureUnit}
+              >
+                <SelectTrigger className="w-24 rounded-l-none border-l-0">
+                  <SelectValue placeholder="Unit" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="mbar">mbar</SelectItem>
+                  <SelectItem value="mmH2O">mmH₂O</SelectItem>
+                  <SelectItem value="pascal">Pa</SelectItem>
+                  <SelectItem value="mmHg">mmHg</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
           <div className="w-1/2 relative">
             <Input 
