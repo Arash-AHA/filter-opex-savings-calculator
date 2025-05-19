@@ -60,9 +60,16 @@ export const FilterDesignSection: React.FC<FilterDesignSectionProps> = ({
     // First part: row configuration
     const rowPart = effectiveRowType === 'single' ? '1' : '2';
     
-    // Second part: EMC flaps divided by factor based on row configuration
-    const flapFactor = effectiveRowType === 'single' ? 3 : 6;
-    const flapsPart = Math.round(numFlaps / flapFactor);
+    // Second part: EMC flaps divided by factor
+    let flapsPart;
+    
+    if (effectiveRowType === 'double' && numFlaps % 2 === 0) {
+      // For double row with even number of flaps, divide by 6
+      flapsPart = Math.round(numFlaps / 6);
+    } else {
+      // For single row, divide by 3
+      flapsPart = Math.round(numFlaps / 3);
+    }
     
     // Combine with bag length
     return `${rowPart} x ${flapsPart} x ${bagLengthDisplay}`;
