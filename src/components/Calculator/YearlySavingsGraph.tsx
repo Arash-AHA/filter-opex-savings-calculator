@@ -3,6 +3,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Construction } from 'lucide-react';
 
 interface YearlySavingsGraphProps {
   bagSavings: number;
@@ -178,7 +179,17 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
           </div>
         </div>
 
-        <div className="h-[500px]">
+        <div className="h-[500px] relative">
+          {/* Under Construction overlay */}
+          <div className="absolute inset-0 flex items-center justify-center z-10 bg-white/80">
+            <div className="text-center">
+              <Construction className="h-16 w-16 mx-auto text-amber-500 mb-2" />
+              <h3 className="text-2xl font-bold text-amber-600">Under Construction</h3>
+              <p className="text-gray-500 mt-2">This feature is currently being developed</p>
+            </div>
+          </div>
+          
+          {/* Keep the chart in the background */}
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
               data={data}
