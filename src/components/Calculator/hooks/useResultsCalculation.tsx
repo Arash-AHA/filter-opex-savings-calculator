@@ -99,10 +99,10 @@ export const useResultsCalculation = (
     'therms': 29.3071, // 1 therm = 29.3071 kWh
   };
   
-  // Calculate effective kWh cost
-  const effectiveKwhCost = kwhCost / CONVERSION_FACTORS[energyUnit] * CONVERSION_FACTORS['kWh'];
+  // Calculate effective kWh cost by converting from the selected energy unit to kWh
+  const effectiveKwhCost = kwhCost / CONVERSION_FACTORS[energyUnit];
   
-  // Calculate total savings
+  // Calculate total savings using the kWh-equivalent cost
   const totalSavings = useMemo(() => {
     try {
       // Bag Material and Labor

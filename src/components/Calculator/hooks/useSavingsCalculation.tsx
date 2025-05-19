@@ -51,10 +51,11 @@ export const useSavingsCalculation = () => {
 
   // Convert energy cost to kWh equivalent
   const energyCostInKwh = useMemo(() => {
+    // For non-kWh units, divide by the conversion factor to get the per-kWh rate
     return kwhCost / CONVERSION_FACTORS[energyUnit];
   }, [kwhCost, energyUnit]);
 
-  // The calculation function
+  // The calculation function - always uses the kWh-equivalent cost
   const calculateSavings = (
     bagParams: BagSavingsParams,
     powerParams: PowerSavingsParams,
@@ -68,7 +69,7 @@ export const useSavingsCalculation = () => {
                           ((bagParams.totalBags * bagParams.bagPrice) + bagParams.travelCost)));
       
       // For power calculations, always use the kWh equivalent cost
-      const effectiveKwhCost = energyCostInKwh * CONVERSION_FACTORS['kWh']; // Convert back to per kWh
+      const effectiveKwhCost = energyCostInKwh;
 
       // Fan Power Consumption
       const fanPowerSavings = (((parseFloat(powerParams.airVolumeM3h) * 

@@ -12,7 +12,7 @@ interface YearlySavingsGraphProps {
   savingYears: number;
   airVolumeM3h: string;
   scheuchDiffPressure: number;
-  effectiveKwhCost: number;
+  effectiveKwhCost: number; // This is already the kWh-equivalent cost
   workingHours: number;
   scheuchAirConsumption: number;
   compressedAirCost: string;
@@ -66,6 +66,7 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
     // and zero out the current situation values as requested
     
     // Calculate the fan power cost for EMC (per year)
+    // Using the effectiveKwhCost which is already converted to kWh equivalent
     const fanPower = (((parseFloat(airVolumeM3h) * 
                       (scheuchDiffPressure) * 100) / 
                       (3600 * 1000 * 0.8)) * effectiveKwhCost * 
@@ -77,7 +78,7 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
       // If USD/Nm³ has a value, use air consumption
       airCost = scheuchAirConsumption * parseFloat(compressedAirCost) * workingHours;
     } else {
-      // Otherwise, use motor KW
+      // Otherwise, use motor KW with the effective kWh cost
       airCost = scheuchMotorKW * effectiveKwhCost * workingHours;
     }
     
@@ -135,7 +136,7 @@ const YearlySavingsGraph: React.FC<YearlySavingsGraphProps> = ({
   }, [
     airVolumeM3h, 
     scheuchDiffPressure, 
-    effectiveKwhCost, 
+    effectiveKwhCost, // Now uses the kWh-equivalent cost passed as prop
     workingHours, 
     scheuchAirConsumption, 
     compressedAirCost, 
