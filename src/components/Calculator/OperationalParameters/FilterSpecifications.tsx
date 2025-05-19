@@ -241,13 +241,24 @@ const LifetimeDisplay: React.FC<LifetimeDisplayProps> = ({
   let minLifetime = "-";
   let avgLifetime = "-";
   
+  let minLifetimeYears = 0;
+  let avgLifetimeYears = 0;
+  
   if (cleaningPressure === '2-3-bar') {
     if (bagQuality === 'ptfe-membrane') {
-      minLifetime = ((150000 * minCompleteCycle) / 60 / workingHours).toFixed(1) + " years";
-      avgLifetime = ((150000 * avgCompleteCycle) / 60 / workingHours).toFixed(1) + " years";
+      minLifetimeYears = (150000 * minCompleteCycle) / 60 / workingHours;
+      avgLifetimeYears = (150000 * avgCompleteCycle) / 60 / workingHours;
+      
+      // Check if values exceed 5 years
+      minLifetime = minLifetimeYears > 5 ? ">5 years" : `${minLifetimeYears.toFixed(1)} years`;
+      avgLifetime = avgLifetimeYears > 5 ? ">5 years" : `${avgLifetimeYears.toFixed(1)} years`;
     } else {
-      minLifetime = ((300000 * minCompleteCycle) / 60 / workingHours).toFixed(1) + " years";
-      avgLifetime = ((450000 * avgCompleteCycle) / 60 / workingHours).toFixed(1) + " years";
+      minLifetimeYears = (300000 * minCompleteCycle) / 60 / workingHours;
+      avgLifetimeYears = (450000 * avgCompleteCycle) / 60 / workingHours;
+      
+      // Check if values exceed 5 years
+      minLifetime = minLifetimeYears > 5 ? ">5 years" : `${minLifetimeYears.toFixed(1)} years`;
+      avgLifetime = avgLifetimeYears > 5 ? ">5 years" : `${avgLifetimeYears.toFixed(1)} years`;
     }
   }
   
