@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -278,8 +277,8 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
         <div className="w-full md:w-60 pr-4 calculator-field-label text-sm mb-2 md:mb-0">
           <span>Negative Pressure at Filter Inlet:</span>
         </div>
-        <div className="flex flex-1 flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
-          <div className="w-full md:w-1/2 relative">
+        <div className="flex flex-1 space-x-2">
+          <div className="w-1/2 relative">
             <Input 
               type="text"
               value={negativePressureMbar !== null ? negativePressureMbar.toString() : ''}
@@ -288,7 +287,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">mbar</span>
           </div>
-          <div className="w-full md:w-1/2 relative">
+          <div className="w-1/2 relative">
             <Input 
               type="text"
               value={negativePressureInchWG !== null ? negativePressureInchWG.toString() : ''}
@@ -297,25 +296,6 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">Inches W.G.</span>
           </div>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button variant="outline" size="sm" className="w-full md:w-auto">
-                Other units
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-64 p-4 bg-white">
-              <div className="space-y-2">
-                <div className="grid grid-cols-2 gap-2 text-sm">
-                  <div className="text-gray-600">kPa:</div>
-                  <div>{additionalPressureUnits.kpa || '-'}</div>
-                  <div className="text-gray-600">PSI:</div>
-                  <div>{additionalPressureUnits.psi || '-'}</div>
-                  <div className="text-gray-600">mm W.G.:</div>
-                  <div>{additionalPressureUnits.mmwg || '-'}</div>
-                </div>
-              </div>
-            </PopoverContent>
-          </Popover>
         </div>
       </div>
       
