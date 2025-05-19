@@ -42,40 +42,58 @@ export const FilterDesignSection: React.FC<FilterDesignSectionProps> = ({
     ? `${negativePressure.value} ${negativePressure.unit}`
     : '-';
 
-  // Calculate filter model for modular design
+  // Calculate filter model based on design type
   const getFilterModel = () => {
-    if (designType !== 'modular') return null;
-    
     // Convert numEMCFlaps to number for calculations
     const numFlaps = typeof numEMCFlaps === 'string' 
       ? parseInt(numEMCFlaps) || 0
       : numEMCFlaps || 0;
       
-    // If odd number of flaps, force single row configuration
+    // If modular design with odd number of flaps, force single row configuration
     let effectiveRowType = filterRowType;
-    if (numFlaps % 2 !== 0) {
+    if (designType === 'modular' && numFlaps % 2 !== 0) {
       effectiveRowType = 'single';
     }
     
-    // First part: row configuration
-    const rowPart = effectiveRowType === 'single' ? '1' : '2';
-    
-    // Second part: EMC flaps divided by factor
-    let flapsPart;
-    
-    if (effectiveRowType === 'double' && numFlaps % 2 === 0) {
-      // For double row with even number of flaps, divide by 6
-      flapsPart = Math.round(numFlaps / 6);
-    } else {
-      // For single row, divide by 3
-      flapsPart = Math.round(numFlaps / 3);
+    if (designType === 'modular') {
+      // First part: row configuration
+      const rowPart = effectiveRowType === 'single' ? '1' : '2';
+      
+      // Second part: EMC flaps divided by factor
+      let flapsPart;
+      
+      if (effectiveRowType === 'double' && numFlaps % 2 === 0) {
+        // For double row with even number of flaps, divide by 6
+        flapsPart = Math.round(numFlaps / 6);
+      } else {
+        // For single row, divide by 3
+        flapsPart = Math.round(numFlaps / 3);
+      }
+      
+      // Combine with bag length
+      return `${rowPart} x ${flapsPart} x ${bagLengthDisplay}`;
+    } else if (designType === 'bolt-weld') {
+      // For panelized design: FIPP xt-yy-z/(1 or 2)e
+      // x is Number of Bags per Row
+      // y is Filter Bag Length
+      // z is Total Quantity of EMC Flaps
+      
+      // Extract numeric part of bag length (remove unit)
+      const bagLengthValue = bagLength ? bagLength.toString() : '0';
+      
+      // Format bag length with leading zeros if needed (yy format)
+      const formattedBagLength = bagLengthValue.padStart(2, '0');
+      
+      // Row configuration suffix (1 for single, 2 for double)
+      const rowSuffix = effectiveRowType === 'single' ? '1' : '2';
+      
+      return `FIPP ${bagLength}t-${formattedBagLength}-${numFlaps}/${rowSuffix}e`;
     }
     
-    // Combine with bag length
-    return `${rowPart} x ${flapsPart} x ${bagLengthDisplay}`;
+    return null;
   };
 
-  // Get the filter model for modular design
+  // Get the filter model
   const filterModel = getFilterModel();
 
   return (
@@ -85,7 +103,7 @@ export const FilterDesignSection: React.FC<FilterDesignSectionProps> = ({
         <div>Filter Design Type:</div>
         <div>{designTypeName}</div>
         
-        {designType === 'modular' && filterModel && (
+        {filterModel && (
           <>
             <div>Filter Model:</div>
             <div>{filterModel}</div>
