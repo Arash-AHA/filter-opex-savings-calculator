@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface FilterDesignSectionProps {
@@ -77,24 +76,21 @@ export const FilterDesignSection: React.FC<FilterDesignSectionProps> = ({
     } else if (designType === 'bolt-weld') {
       // For panelized design: FIPP xt-y.y-z/(1 or 2)e
       // x is Number of Bags per Row
-      // y.y is Filter Bag Length formatted with a decimal point in the middle
+      // y.y is Filter Bag Length repeated with a decimal point between (e.g., 10.10)
       // z is Total Quantity of EMC Flaps
       
       // Use bagsPerRow as the x value in FIPP xt
       const bagsPerRowValue = bagsPerRow || 0;
       
-      // Format bag length with a decimal point in the middle (y.y format)
+      // Format bag length with the same value repeated on both sides of decimal point
       let formattedBagLength = '0.0';
       
       if (bagLength) {
-        // Convert bag length to string and remove any decimal points
-        const bagLengthStr = bagLength.toString().replace('.', '');
+        // Round the bag length to a whole number
+        const roundedLength = Math.round(bagLength);
         
-        // If the string is just one digit, pad with a leading zero
-        const paddedBagLength = bagLengthStr.padStart(2, '0');
-        
-        // Insert a decimal point in the middle: y.y format
-        formattedBagLength = `${paddedBagLength.charAt(0)}.${paddedBagLength.charAt(1)}`;
+        // Convert to string format y.y (same digit on both sides)
+        formattedBagLength = `${roundedLength}.${roundedLength}`;
       }
       
       // Row configuration suffix (1 for single, 2 for double)
