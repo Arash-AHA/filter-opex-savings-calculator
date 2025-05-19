@@ -35,17 +35,44 @@ const EMCFlapsInput: React.FC<EMCFlapsInputProps> = ({
   const [showACWarning, setShowACWarning] = useState<boolean>(false);
   const { toast } = useToast();
 
+  // Store override status in sessionStorage to persist across configuration changes
+  useEffect(() => {
+    // Load override status on component mount
+    const savedOverride = sessionStorage.getItem('acRatioOverride') === 'true';
+    if (savedOverride) {
+      setOverrideACLimit(savedOverride);
+    }
+  }, []);
+
+  // Update inputValue when numEMCFlaps changes externally
   useEffect(() => {
     setInputValue(numEMCFlaps?.toString() || '');
   }, [numEMCFlaps]);
 
   useEffect(() => {
-    // Reset override when design type changes
+    // Reset override only when design type changes from modular to bolt-weld
     if (designType !== 'modular') {
       setOverrideACLimit(false);
       setShowACWarning(false);
+      // Clear storage when changing away from modular
+      sessionStorage.removeItem('acRatioOverride');
     }
   }, [designType]);
+
+  // Check if warning should be shown when inputs affecting A/C ratio change
+  useEffect(() => {
+    if (designType === 'modular' && numEMCFlaps) {
+      const parsedValue = typeof numEMCFlaps === 'string' ? 
+                         (numEMCFlaps === '' ? 0 : parseInt(numEMCFlaps)) : 
+                         numEMCFlaps;
+      
+      // Only check if we have valid inputs
+      if (parsedValue > 0 && bagsPerRow > 0 && bagLength > 0 && airVolumeACFM) {
+        const { isValid } = checkACRatio(parsedValue);
+        setShowACWarning(!isValid);
+      }
+    }
+  }, [airVolumeACFM, bagsPerRow, bagLength, designType]);
 
   const handleEMCFlapsInputChange = (value: string) => {
     setInputValue(value);
@@ -136,6 +163,8 @@ const EMCFlapsInput: React.FC<EMCFlapsInputProps> = ({
   // Handle override button click
   const handleOverrideClick = () => {
     setOverrideACLimit(true);
+    // Save override status to sessionStorage for persistence
+    sessionStorage.setItem('acRatioOverride', 'true');
     setShowACWarning(false);
     
     // Apply the current input value after override
