@@ -12,6 +12,7 @@ interface FilterDesignSectionProps {
     unit: string;
   };
   filterRowType?: string;
+  bagsPerRow?: number;
 }
 
 export const FilterDesignSection: React.FC<FilterDesignSectionProps> = ({
@@ -21,7 +22,8 @@ export const FilterDesignSection: React.FC<FilterDesignSectionProps> = ({
   bagLength,
   unitSystem = 'metric',
   negativePressure,
-  filterRowType = 'single'
+  filterRowType = 'single',
+  bagsPerRow = 0
 }) => {
   // Determine bag length display based on unit system
   const bagLengthDisplay = bagLength !== null && bagLength !== undefined
@@ -78,6 +80,9 @@ export const FilterDesignSection: React.FC<FilterDesignSectionProps> = ({
       // y is Filter Bag Length
       // z is Total Quantity of EMC Flaps
       
+      // Use bagsPerRow as the x value in FIPP xt
+      const bagsPerRowValue = bagsPerRow || 0;
+      
       // Extract numeric part of bag length (remove unit)
       const bagLengthValue = bagLength ? bagLength.toString() : '0';
       
@@ -87,7 +92,7 @@ export const FilterDesignSection: React.FC<FilterDesignSectionProps> = ({
       // Row configuration suffix (1 for single, 2 for double)
       const rowSuffix = effectiveRowType === 'single' ? '1' : '2';
       
-      return `FIPP ${bagLength}t-${formattedBagLength}-${numFlaps}/${rowSuffix}e`;
+      return `FIPP ${bagsPerRowValue}t-${formattedBagLength}-${numFlaps}/${rowSuffix}e`;
     }
     
     return null;

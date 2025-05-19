@@ -120,6 +120,7 @@ const PrintableDesignParams: React.FC<PrintableDesignParamsProps> = ({
         bagLength={convertedBagLength}
         unitSystem={unitSystem}
         filterRowType={effectiveFilterRowType}
+        bagsPerRow={bagsPerRow}
       />
       
       {formattedResults && (
