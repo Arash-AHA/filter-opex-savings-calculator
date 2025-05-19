@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -11,6 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface AdditionalParametersProps {
   gasTempC: number;
@@ -77,6 +77,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
   const [pressureValue, setPressureValue] = useState<string>('');
   const [imperialUnit, setImperialUnit] = useState<string>('inchWG');
   const [imperialValue, setImperialValue] = useState<string>('');
+  const isMobile = useIsMobile();
   
   useEffect(() => {
     // Initialize pressure value from props when component mounts
@@ -336,8 +337,8 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
         <div className="w-full md:w-60 pr-4 calculator-field-label text-sm mb-2 md:mb-0">
           <span>Target Emission:</span>
         </div>
-        <div className="flex flex-1 space-x-2">
-          <div className="w-1/2 relative">
+        <div className={`flex flex-1 ${isMobile ? 'flex-col space-y-2' : 'space-x-2'}`}>
+          <div className={`${isMobile ? 'w-full' : 'w-1/2'} relative`}>
             <Input 
               type="text"
               value={safeToString(targetEmissionMgNm3)}
@@ -347,7 +348,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">mg/Nm³ (dry)</span>
           </div>
-          <div className="w-1/2 relative">
+          <div className={`${isMobile ? 'w-full' : 'w-1/2'} relative`}>
             <Input 
               type="text"
               value={safeToString(targetEmissionGrainDscf)}
@@ -364,8 +365,8 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
         <div className="w-full md:w-60 pr-4 calculator-field-label text-sm mb-2 md:mb-0">
           <span>Negative Pressure at Filter Inlet:</span>
         </div>
-        <div className="flex flex-1 space-x-2">
-          <div className="w-1/2">
+        <div className={`flex flex-1 ${isMobile ? 'flex-col space-y-2' : 'space-x-2'}`}>
+          <div className={`${isMobile ? 'w-full' : 'w-1/2'}`}>
             <div className="flex">
               <Input 
                 type="text"
@@ -389,7 +390,7 @@ const AdditionalParameters: React.FC<AdditionalParametersProps> = ({
               </Select>
             </div>
           </div>
-          <div className="w-1/2">
+          <div className={`${isMobile ? 'w-full' : 'w-1/2'}`}>
             <div className="flex">
               <Input 
                 type="text"
