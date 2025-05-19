@@ -41,6 +41,7 @@ interface DesignParamsCardProps {
   bagLength?: number;
   airVolumeM3h?: string;
   airVolumeACFM?: string;
+  filterRowType?: string;
   onEraseInputs?: () => void;
 }
 

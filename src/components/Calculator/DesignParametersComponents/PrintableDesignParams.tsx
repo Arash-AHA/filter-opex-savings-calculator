@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { FilterDesignSection } from '../PrintableSections/FilterDesignSection';
 import { FilterParametersSection } from '../PrintableSections/FilterParametersSection';
@@ -17,6 +18,7 @@ export interface PrintableDesignParamsProps {
     acRatioNet: string;
     totalBags: number;
   } | null;
+  filterRowType?: string;
 }
 
 const PrintableDesignParams: React.FC<PrintableDesignParamsProps> = ({
@@ -26,7 +28,8 @@ const PrintableDesignParams: React.FC<PrintableDesignParamsProps> = ({
   bagLength,
   airVolumeM3h,
   airVolumeACFM,
-  formattedResults
+  formattedResults,
+  filterRowType = 'single'
 }) => {
   // Initialize unit system based on design type
   const [unitSystem, setUnitSystem] = useState<'metric' | 'imperial'>(
@@ -107,6 +110,7 @@ const PrintableDesignParams: React.FC<PrintableDesignParamsProps> = ({
         numEMCFlaps={numEMCFlaps}
         bagLength={convertedBagLength}
         unitSystem={unitSystem}
+        filterRowType={filterRowType}
       />
       
       {formattedResults && (
