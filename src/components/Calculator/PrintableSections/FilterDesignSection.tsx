@@ -50,12 +50,18 @@ export const FilterDesignSection: React.FC<FilterDesignSectionProps> = ({
     const numFlaps = typeof numEMCFlaps === 'string' 
       ? parseInt(numEMCFlaps) || 0
       : numEMCFlaps || 0;
+      
+    // If odd number of flaps, force single row configuration
+    let effectiveRowType = filterRowType;
+    if (numFlaps % 2 !== 0) {
+      effectiveRowType = 'single';
+    }
     
     // First part: row configuration
-    const rowPart = filterRowType === 'single' ? '1' : '2';
+    const rowPart = effectiveRowType === 'single' ? '1' : '2';
     
     // Second part: EMC flaps divided by factor based on row configuration
-    const flapFactor = filterRowType === 'single' ? 3 : 6;
+    const flapFactor = effectiveRowType === 'single' ? 3 : 6;
     const flapsPart = Math.round(numFlaps / flapFactor);
     
     // Combine with bag length

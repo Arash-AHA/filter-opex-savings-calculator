@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 
 export const useDesignType = () => {
@@ -19,6 +18,25 @@ export const useDesignType = () => {
     }
   }, [designType]);
 
+  // Function to set filter row type with validation for odd EMC flaps
+  const setFilterRowTypeWithValidation = (value: string, numEMCFlaps?: number | string) => {
+    // If EMC flaps is provided and we're attempting to set double row with odd flaps,
+    // prevent the change and keep it as single row
+    if (numEMCFlaps !== undefined) {
+      const flapsValue = typeof numEMCFlaps === 'string' ? 
+        (numEMCFlaps === '' ? 0 : parseInt(numEMCFlaps)) : numEMCFlaps || 0;
+        
+      if (value === 'double' && flapsValue % 2 !== 0) {
+        // For odd number of flaps, force single row configuration
+        setFilterRowType('single');
+        return;
+      }
+    }
+    
+    // Otherwise, set the requested filter row type
+    setFilterRowType(value);
+  };
+
   return {
     designType,
     setDesignType,
@@ -27,7 +45,7 @@ export const useDesignType = () => {
     showOtherParams,
     setShowOtherParams,
     filterRowType,
-    setFilterRowType,
+    setFilterRowType: setFilterRowTypeWithValidation,
     channelWidthMm,
     setChannelWidthMm,
     channelHeightMm,

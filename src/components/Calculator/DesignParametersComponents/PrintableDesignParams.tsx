@@ -36,6 +36,15 @@ const PrintableDesignParams: React.FC<PrintableDesignParamsProps> = ({
     designType === 'bolt-weld' ? 'metric' : 'imperial'
   );
   
+  // For modular design, if numEMCFlaps is odd, force single row
+  const effectiveFilterRowType = (() => {
+    if (designType === 'modular') {
+      const flapsValue = typeof numEMCFlaps === 'string' ? parseInt(numEMCFlaps) || 0 : numEMCFlaps || 0;
+      return flapsValue % 2 !== 0 ? 'single' : filterRowType;
+    }
+    return filterRowType;
+  })();
+  
   // Convert values based on selected unit system
   const convertedValues = {
     airVolume: unitSystem === 'metric' 
@@ -110,7 +119,7 @@ const PrintableDesignParams: React.FC<PrintableDesignParamsProps> = ({
         numEMCFlaps={numEMCFlaps}
         bagLength={convertedBagLength}
         unitSystem={unitSystem}
-        filterRowType={filterRowType}
+        filterRowType={effectiveFilterRowType}
       />
       
       {formattedResults && (

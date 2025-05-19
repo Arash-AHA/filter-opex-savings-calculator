@@ -62,6 +62,15 @@ const EMCFlapsInput: React.FC<EMCFlapsInputProps> = ({
           return;
         }
         
+        // If the number of flaps is odd (e.g. 9, 15, etc.), alert user about row type limitation
+        if (parsedValue % 2 !== 0) {
+          toast({
+            title: "Single Row Configuration Required",
+            description: `With ${parsedValue} EMC flaps, only single row configuration is possible.`,
+            variant: "default",
+          });
+        }
+        
         // Check A/C ratio even if multiple of 3 is valid
         const areaPerFlap = bagLength * bagsPerRow * 5 * 1.6;
         const totalArea = areaPerFlap * parsedValue;
