@@ -85,6 +85,8 @@ const BagsConfig: React.FC<BagsConfigProps> = ({
             <SelectContent className="bg-white">
               {designType === 'bolt-weld' ? (
                 <>
+                  <SelectItem value="6">6 m</SelectItem>
+                  <SelectItem value="7">7 m</SelectItem>
                   <SelectItem value="8">8 m</SelectItem>
                   <SelectItem value="9">9 m</SelectItem>
                   <SelectItem value="10">10 m</SelectItem>
