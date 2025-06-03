@@ -21,13 +21,12 @@ export const useUnitConversion = (
 
   const airVolumeDisplay = () => {
     if (unitSystem === 'metric') {
-      return designType === 'modular' 
-        ? `${(parseFloat(airVolume) / 1.69901).toFixed(0)} m³/h`
-        : `${airVolume} m³/h`;
+      // For metric display, always show m³/h
+      return `${airVolume} m³/h`;
     } else {
-      return designType === 'modular'
-        ? `${airVolume} ACFM`
-        : `${(parseFloat(airVolume) * 1.69901).toFixed(0)} ACFM`;
+      // For imperial display, show ACFM (convert from m³/h if needed)
+      const acfmValue = parseFloat(airVolume) * 0.588774;
+      return `${acfmValue.toFixed(0)} ACFM`;
     }
   };
 
