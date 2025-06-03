@@ -25,25 +25,29 @@ export const useAirVolumeParameters = (conversionFactor: number) => {
   const [isACFMUpdating, setIsACFMUpdating] = useState(false);
 
   const handleAirVolumeM3hChange = useCallback((value: string) => {
-    setAirVolumeM3h(value);
+    if (isACFMUpdating) return; // Prevent feedback loop
     
-    if (!isACFMUpdating) {
-      setIsM3hUpdating(true);
-      const acfmValue = value ? (parseFloat(value || '0') * conversionFactor).toFixed(0) : '';
-      setAirVolumeACFM(acfmValue);
-      setTimeout(() => setIsM3hUpdating(false), 100);
-    }
+    setAirVolumeM3h(value);
+    setIsM3hUpdating(true);
+    
+    const acfmValue = value ? (parseFloat(value || '0') * conversionFactor).toFixed(0) : '';
+    setAirVolumeACFM(acfmValue);
+    
+    // Use a shorter timeout to reduce delay
+    setTimeout(() => setIsM3hUpdating(false), 50);
   }, [isACFMUpdating, conversionFactor]);
 
   const handleAirVolumeACFMChange = useCallback((value: string) => {
-    setAirVolumeACFM(value);
+    if (isM3hUpdating) return; // Prevent feedback loop
     
-    if (!isM3hUpdating) {
-      setIsACFMUpdating(true);
-      const m3hValue = value ? (parseFloat(value || '0') / conversionFactor).toFixed(0) : '';
-      setAirVolumeM3h(m3hValue);
-      setTimeout(() => setIsACFMUpdating(false), 100);
-    }
+    setAirVolumeACFM(value);
+    setIsACFMUpdating(true);
+    
+    const m3hValue = value ? (parseFloat(value || '0') / conversionFactor).toFixed(0) : '';
+    setAirVolumeM3h(m3hValue);
+    
+    // Use a shorter timeout to reduce delay
+    setTimeout(() => setIsACFMUpdating(false), 50);
   }, [isM3hUpdating, conversionFactor]);
 
   return {
