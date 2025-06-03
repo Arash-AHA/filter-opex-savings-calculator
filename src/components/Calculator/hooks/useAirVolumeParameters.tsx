@@ -1,5 +1,5 @@
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 
 export const useAirVolumeParameters = (conversionFactor: number) => {
   // Bolt-weld specific parameters with empty defaults for user input
@@ -21,34 +21,42 @@ export const useAirVolumeParameters = (conversionFactor: number) => {
   const [bagsPerRow, setBagsPerRow] = useState<number | null>(boltWeldBagsPerRow);
   const [bagLength, setBagLength] = useState<number | null>(boltWeldBagLength);
 
-  const [isM3hUpdating, setIsM3hUpdating] = useState(false);
-  const [isACFMUpdating, setIsACFMUpdating] = useState(false);
+  // Track which field is being actively edited to prevent conversion loops
+  const [activeField, setActiveField] = useState<'m3h' | 'acfm' | null>(null);
 
   const handleAirVolumeM3hChange = useCallback((value: string) => {
-    if (isACFMUpdating) return; // Prevent feedback loop
+    console.log('M3h change called with:', value, 'activeField:', activeField);
     
+    // Always update the M3h field
     setAirVolumeM3h(value);
-    setIsM3hUpdating(true);
     
-    const acfmValue = value ? (parseFloat(value || '0') * conversionFactor).toFixed(0) : '';
-    setAirVolumeACFM(acfmValue);
-    
-    // Use a shorter timeout to reduce delay
-    setTimeout(() => setIsM3hUpdating(false), 50);
-  }, [isACFMUpdating, conversionFactor]);
+    // Only convert to ACFM if we're actively editing M3h field or no field is active
+    if (activeField !== 'acfm') {
+      setActiveField('m3h');
+      const acfmValue = value ? (parseFloat(value || '0') * conversionFactor).toFixed(0) : '';
+      setAirVolumeACFM(acfmValue);
+      
+      // Clear active field after a brief delay
+      setTimeout(() => setActiveField(null), 100);
+    }
+  }, [activeField, conversionFactor]);
 
   const handleAirVolumeACFMChange = useCallback((value: string) => {
-    if (isM3hUpdating) return; // Prevent feedback loop
+    console.log('ACFM change called with:', value, 'activeField:', activeField);
     
+    // Always update the ACFM field
     setAirVolumeACFM(value);
-    setIsACFMUpdating(true);
     
-    const m3hValue = value ? (parseFloat(value || '0') / conversionFactor).toFixed(0) : '';
-    setAirVolumeM3h(m3hValue);
-    
-    // Use a shorter timeout to reduce delay
-    setTimeout(() => setIsACFMUpdating(false), 50);
-  }, [isM3hUpdating, conversionFactor]);
+    // Only convert to M3h if we're actively editing ACFM field or no field is active
+    if (activeField !== 'm3h') {
+      setActiveField('acfm');
+      const m3hValue = value ? (parseFloat(value || '0') / conversionFactor).toFixed(0) : '';
+      setAirVolumeM3h(m3hValue);
+      
+      // Clear active field after a brief delay
+      setTimeout(() => setActiveField(null), 100);
+    }
+  }, [activeField, conversionFactor]);
 
   return {
     boltWeldAirVolume,
